@@ -9,11 +9,11 @@ namespace Library
 {
     public static class FileHandler
     {
-        static string PATH = "";
+        static string PATH = @"..\..\..\..\TestData\";
 
         public static string[] LoadFile(string fileName)
         {
-            return File.ReadAllLines("test.txt");
+            return File.ReadAllLines(PATH + fileName);
         }
     }
 }
