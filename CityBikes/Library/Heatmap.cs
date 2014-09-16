@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Library
 {
@@ -61,8 +62,14 @@ namespace Library
         /// Constructs a <see cref="Heatmap"/> from an array of integers by comparing its values to those in the min-max range.
         /// </summary>
         /// <param name="data">The data that should be translated into a <see cref="Heatmap"/>.</param>
-        /// <param name="min">The minimum value of values in the <see cref="Heatmap"/>. Anything below <paramref name="min"/> is set to <c>0</c>. If set to <c>null</c>, the minimum is set to be the lowest value in <paramref name="data"/>.</param>
-        /// <param name="max">The maximum value of values in the <see cref="Heatmap"/>. Anything above <paramref name="max"/> is set to <c>1</c>. If set to <c>null</c>, the maximum is set to be the greatest value in <paramref name="data"/>.</param>
+        /// <param name="min">
+        /// The minimum value of values in the <see cref="Heatmap"/>.
+        /// Anything below <paramref name="min"/> is set to <c>0</c>.
+        /// If set to <c>null</c>, the minimum is set to be the lowest value in <paramref name="data"/>.</param>
+        /// <param name="max">
+        /// The maximum value of values in the <see cref="Heatmap"/>.
+        /// Anything above <paramref name="max"/> is set to <c>1</c>.
+        /// If set to <c>null</c>, the maximum is set to be the greatest value in <paramref name="data"/>.</param>
         /// <returns>A new <see cref="Heatmap"/> constructed from <paramref name="data"/>.</returns>
         public static Heatmap ConstructByCount(int[,] data, int? min, int? max)
         {
@@ -130,6 +137,43 @@ namespace Library
                     if (data[x, y] > max)
                         max = data[x, y];
                 }
+        }
+
+        /// <summary>
+        /// Constructs a <see cref="Heatmap"/> from a collection of elements by mapping the elements to cells and counting them.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements that are mapped to the <see cref="Heatmap"/>.</typeparam>
+        /// <param name="width">The width of the <see cref="Heatmap"/> (in number of cells).</param>
+        /// <param name="height">The height of the <see cref="Heatmap"/> (in number of cells).</param>
+        /// <param name="collection">The elements that are mapped to the <see cref="Heatmap"/>.</param>
+        /// <param name="min">
+        /// The minimum count of a cell, corresponding to a value of <c>0</c>.
+        /// Cells with count less than <paramref name="min"/> is set to <c>0</c>.
+        /// If set to <c>null</c>, the minimum is set to be the lowest count.
+        /// </param>
+        /// <param name="max">
+        /// The maximum count of a cell, corresponding to a value of <c>1</c>.
+        /// Cells with count greater than <paramref name="max"/> is set to <c>1</c>.
+        /// If set to <c>null</c>, the maximum is set to be the greatest count.</param>
+        /// <param name="mapper">A method that performs mapping of <typeparamref name="T"/> onto a grid.</param>
+        /// <returns>A new <see cref="Heatmap"/> constructed from <paramref name="collection"/>.</returns>
+        public static Heatmap ConstructByCount<T>(int width, int height, IEnumerable<T> collection, int? min, int? max, MapToIndex<T> mapper)
+        {
+            if (width <= 0)
+                throw new ArgumentOutOfRangeException("width", "Heatmap width must be >= 1.");
+
+            if (height <= 0)
+                throw new ArgumentOutOfRangeException("width", "Heatmap height must be >= 1.");
+
+            int x, y;
+            int[,] data = new int[width, height];
+            foreach(var e in collection)
+            {
+                mapper(e, width, height, out x, out y);
+                data[x, y]++;
+            }
+
+            return ConstructByCount(data, min, max);
         }
     }
 }
