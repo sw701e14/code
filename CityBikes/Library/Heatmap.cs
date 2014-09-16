@@ -64,7 +64,7 @@ namespace Library
         /// <param name="min">The minimum value of values in the <see cref="Heatmap"/>. Anything below this value is set to <c>0</c>.</param>
         /// <param name="max">The maximum value of values in the <see cref="Heatmap"/>. Anything above this value is set to <c>1</c>.</param>
         /// <returns>A new <see cref="Heatmap"/> constructed from <paramref name="data"/>.</returns>
-        public static Heatmap ConstructByCount(int[,] data, int min, int max)
+        public static Heatmap ConstructByCount(int[,] data, int? min, int? max)
         {
             if (data == null)
                 throw new ArgumentNullException("data");
@@ -80,8 +80,15 @@ namespace Library
             if (h <= 0)
                 throw new ArgumentOutOfRangeException("data", "Heatmap height must be >= 1.");
 
-            double mi = min;
-            double ma = max - min;
+            if (!min.HasValue && !max.HasValue)
+                getMinMax(data, w, h, out min, out max);
+            else if (!min.HasValue)
+                getMin(data, w, h, out min);
+            else if (!max.HasValue)
+                getMax(data, w, h, out max);
+
+            double mi = min.Value;
+            double ma = max.Value - min.Value;
 
             Heatmap map = new Heatmap(w, h);
             for (int y = 0; y < h; y++)
@@ -94,6 +101,35 @@ namespace Library
                 }
 
             return map;
+        }
+        private static void getMax(int[,] data, int w, int h, out int? max)
+        {
+            max = int.MinValue;
+            for (int y = 0; y < h; y++)
+                for (int x = 0; x < w; x++)
+                    if (data[x, y] > max)
+                        max = data[x, y];
+        }
+        private static void getMin(int[,] data, int w, int h, out int? min)
+        {
+            min = int.MaxValue;
+            for (int y = 0; y < h; y++)
+                for (int x = 0; x < w; x++)
+                    if (data[x, y] < min)
+                        min = data[x, y];
+        }
+        private static void getMinMax(int[,] data, int w, int h, out int? min, out int? max)
+        {
+            min = int.MaxValue;
+            max = int.MinValue;
+            for (int y = 0; y < h; y++)
+                for (int x = 0; x < w; x++)
+                {
+                    if (data[x, y] < min)
+                        min = data[x, y];
+                    if (data[x, y] > max)
+                        max = data[x, y];
+                }
         }
     }
 }
