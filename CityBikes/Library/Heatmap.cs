@@ -61,8 +61,8 @@ namespace Library
         /// Constructs a <see cref="Heatmap"/> from an array of integers by comparing its values to those in the min-max range.
         /// </summary>
         /// <param name="data">The data that should be translated into a <see cref="Heatmap"/>.</param>
-        /// <param name="min">The minimum value of values in the <see cref="Heatmap"/>. Anything below this value is set to <c>0</c>.</param>
-        /// <param name="max">The maximum value of values in the <see cref="Heatmap"/>. Anything above this value is set to <c>1</c>.</param>
+        /// <param name="min">The minimum value of values in the <see cref="Heatmap"/>. Anything below <paramref name="min"/> is set to <c>0</c>. If set to <c>null</c>, the minimum is set to be the lowest value in <paramref name="data"/>.</param>
+        /// <param name="max">The maximum value of values in the <see cref="Heatmap"/>. Anything above <paramref name="max"/> is set to <c>1</c>. If set to <c>null</c>, the maximum is set to be the greatest value in <paramref name="data"/>.</param>
         /// <returns>A new <see cref="Heatmap"/> constructed from <paramref name="data"/>.</returns>
         public static Heatmap ConstructByCount(int[,] data, int? min, int? max)
         {
