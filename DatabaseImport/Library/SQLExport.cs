@@ -27,7 +27,12 @@ namespace Library
 
         private static string writeGPSPoint(this GPSPoint point)
         {
-            return "(" + point.TimeStamp + "," + point.Latitude + "," + point.Longitude + "," + point.Accuracy + "," + point.BikeId + ")";
+            return "(" + 
+                point.TimeStamp + "," + 
+                point.Latitude + "," + 
+                point.Longitude + "," + 
+                point.Accuracy == null ? "null" : point.Accuracy + "," + 
+                point.BikeId + ")";
         }
     }
 
