@@ -3,8 +3,19 @@ using System.Drawing;
 
 namespace Library
 {
+    /// <summary>
+    /// Provides static methods for generating images that represent <see cref="Heatmap"/>s.
+    /// </summary>
     public static class HeatmapImagegenerator
     {
+        /// <summary>
+        /// Generates an image that represents a given <see cref="Heatmap"/> using a userdefined color-rule.
+        /// </summary>
+        /// <param name="map">The <see cref="Heatmap"/> from which the image should be generated.</param>
+        /// <param name="imageWidth">Width of the image (in pixels).</param>
+        /// <param name="imageHeight">Height of the image (in pixels).</param>
+        /// <param name="getColor">A method that, given the weight of a single cell, returns the color of the cell.</param>
+        /// <returns>The generated <see cref="Heatmap"/>.</returns>
         public static Image Generate(Heatmap map, int imageWidth, int imageHeight, Func<double, Color> getColor)
         {
             if (map == null)
