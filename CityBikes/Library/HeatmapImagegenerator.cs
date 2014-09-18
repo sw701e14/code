@@ -7,6 +7,18 @@ namespace Library
     {
         public static Image Generate(Heatmap map, int imageWidth, int imageHeight, Func<double, Color> getColor)
         {
+            if (map == null)
+                throw new ArgumentNullException("map");
+
+            if (getColor == null)
+                throw new ArgumentNullException("getColor");
+
+            if (imageWidth <= 0)
+                throw new ArgumentOutOfRangeException("imageWidth", "Image width must be >= 1.");
+
+            if (imageHeight <= 0)
+                throw new ArgumentOutOfRangeException("imageHeight", "Image height must be >= 1.");
+
             Bitmap bmp = new Bitmap(imageWidth, imageHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
             using (Graphics g = Graphics.FromImage(bmp))
