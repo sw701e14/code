@@ -52,5 +52,18 @@ namespace Library
 
             return bmp;
         }
+
+        private static Color getColorAtPercent(Color color1, Color color2, double percent)
+        {
+            if (percent < 0 || percent > 1)
+                throw new ArgumentOutOfRangeException("percent", "Percent must be a value between 0 and 1.");
+
+            double resultAlpha = color1.A + percent * (color2.A - color1.A);
+            double resultRed = color1.R + percent * (color2.R - color1.R);
+            double resultGreen = color1.G + percent * (color2.G - color1.G);
+            double resultBlue = color1.B + percent * (color2.B - color1.B);
+
+            return Color.FromArgb((int)resultAlpha, (int)resultRed, (int)resultGreen, (int)resultBlue);
+        }
     }
 }
