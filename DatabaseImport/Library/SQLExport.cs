@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -42,9 +43,8 @@ namespace Library
 
             return string.Format("('{0}', {1}, {2}, {3}, {4})",
                             point.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss"),
-
-                            point.Latitude,
-                            point.Longitude,
+                            point.Latitude.ToString(CultureInfo.CreateSpecificCulture("da-DK")),
+                            point.Longitude.ToString(CultureInfo.CreateSpecificCulture("da-DK")),
                             point.Accuracy.HasValue ? point.Accuracy.Value.ToString() : "null",
                             point.BikeId);
 
