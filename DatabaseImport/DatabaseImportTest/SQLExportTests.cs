@@ -20,15 +20,10 @@ namespace Library.Tests
             gps1 = new GPSPoint(new DateTime(2014, 1, 1, 12, 0, 0), 57.01163, 9.99110, 10, 1);
             gps2 = new GPSPoint(new DateTime(2014, 1, 1, 12, 30, 09), 57.03106, 9.94580, 30, 1);
             gps3 = new GPSPoint(new DateTime(2014, 3, 13, 23, 24, 23), 57.01271, 9.98780, null, 1);
+
         }
 
-        [TestMethod()]
-        public void ExportTest()
-        {
-
-
-            Assert.Fail();
-        }
+      
 
         [TestMethod()]
         public void writeGPSPointTest1()
@@ -49,9 +44,6 @@ namespace Library.Tests
             Assert.IsTrue(expected.SequenceEqual(output));
 
         }
-
-        //  gps2 = new GPSPoint(new DateTime(2014, 1, 1, 12, 30, 09), 57.03106, 9.94580, 30, 1);
-        //gps3 = new GPSPoint(new DateTime(2014, 3, 13, 23, 24, 23), 57.01271, 9.98780, 3, 1);
 
         [TestMethod()]
         public void writeGPSPointTestNullAccuracy()
