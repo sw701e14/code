@@ -11,7 +11,9 @@ namespace Run
     {
         static void Main(string[] args)
         {
-            
+            string[] s = FileHandler.LoadFile("bruno1.txt");
+            Console.WriteLine(s.ToString());
+            Console.ReadKey();
         }
     }
 }
