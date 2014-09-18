@@ -11,28 +11,34 @@ namespace Library
     {
         public const string TABLENAME = "gpsdata";
         public const string COLUMNS = "(time,lat,long,acc,bike)";
-        public static void Export(GPSPoint[] points,string filename)
+        public static void Export(GPSPoint[] points, string filename)
         {
-            StreamWriter output = new System.IO.StreamWriter(filename);
-
-            output.WriteLine("INSERT INTO " + TABLENAME + "\n"+COLUMNS + "\nVALUES\n");
-            
-            foreach (var point in points)
+            using (StreamWriter output = new System.IO.StreamWriter(filename))
             {
-                output.WriteLine( point.writeGPSPoint());
-            }
 
-            output.WriteLine(";");
+                output.WriteLine("INSERT INTO " + TABLENAME + "\n" + COLUMNS + "\nVALUES\n");
+
+                foreach (var point in points)
+                {
+                    output.WriteLine(point.writeGPSPoint());
+                }
+
+                output.WriteLine(";");
+            }
         }
 
-        private static string writeGPSPoint(this GPSPoint point)
+        public static string writeGPSPoint(this GPSPoint point)
         {
-            return "(" + 
-                point.TimeStamp + "," + 
-                point.Latitude + "," + 
-                point.Longitude + "," + 
-                point.Accuracy == null ? "null" : point.Accuracy + "," + 
-                point.BikeId + ")";
+
+            return string.Format("('{0}', {1}, {2}, {3}, {4})",
+                            point.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss"),
+
+                            point.Latitude,
+                            point.Longitude,
+                            point.Accuracy.HasValue ? point.Accuracy.Value.ToString() : "null",
+                            point.BikeId);
+
+
         }
     }
 
