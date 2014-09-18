@@ -25,14 +25,14 @@ namespace Library
         {
             StringBuilder output = new StringBuilder();
             
-            output.Append( "INSERT INTO " + TABLENAME + "\n" + COLUMNS + "\nVALUES\n");
+            output.Append( "INSERT INTO " + TABLENAME + "\n" + COLUMNS + "\nVALUES\n (");
 
             foreach (var point in points)
             {
                 output.Append(point.writeGPSPoint());
             }
 
-            output.Append(";");
+            output.Append(");");
 
             return output.ToString();
         }
