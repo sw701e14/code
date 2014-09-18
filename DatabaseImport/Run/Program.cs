@@ -11,7 +11,8 @@ namespace Run
     {
         static void Main(string[] args)
         {
-            
+            //GPSPoint[] d = CSVParser.GetData("bruno1.txt",1);
+            Console.ReadKey();
         }
     }
 }
