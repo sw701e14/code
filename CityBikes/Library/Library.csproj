@@ -40,6 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Heatmap.cs" />
+    <Compile Include="Heatmap.Imagegenerator.cs">
+      <DependentUpon>Heatmap.cs</DependentUpon>
+    </Compile>
     <Compile Include="MapToIndex.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
