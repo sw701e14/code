@@ -9,6 +9,54 @@ namespace Library
     public static class HeatmapImagegenerator
     {
         /// <summary>
+        /// Generates an image that represents a given <see cref="Heatmap"/> using a two color scale.
+        /// </summary>
+        /// <param name="map">The <see cref="Heatmap"/> from which the image should be generated.</param>
+        /// <param name="imageWidth">Width of the image (in pixels). If <c>null</c> is specified, the generated image will have the same width as the number of cells in the <see cref="Heatmap"/>.</param>
+        /// <param name="imageHeight">Height of the image (in pixels). If <c>null</c> is specified, the generated image will have the same height as the number of cells in the <see cref="Heatmap"/>.</param>
+        /// <param name="min">The <see cref="Color"/> associated with a cell value of <c>0.0</c>.</param>
+        /// <param name="max">The <see cref="Color"/> associated with a cell value of <c>1.0</c>.</param>
+        /// <returns>The generated <see cref="Heatmap"/>.</returns>
+        public static Image Generate(Heatmap map, int imageWidth, int imageHeight, Color min, Color max)
+        {
+            return Generate(map, imageWidth, imageHeight, value =>
+            {
+                if (value <= 0.0)
+                    return min;
+                else if (value >= 1)
+                    return max;
+                else
+                    return getColorAtPercent(min, max, value);
+            });
+        }
+        /// <summary>
+        /// Generates an image that represents a given <see cref="Heatmap"/> using a three color scale.
+        /// </summary>
+        /// <param name="map">The <see cref="Heatmap"/> from which the image should be generated.</param>
+        /// <param name="imageWidth">Width of the image (in pixels). If <c>null</c> is specified, the generated image will have the same width as the number of cells in the <see cref="Heatmap"/>.</param>
+        /// <param name="imageHeight">Height of the image (in pixels). If <c>null</c> is specified, the generated image will have the same height as the number of cells in the <see cref="Heatmap"/>.</param>
+        /// <param name="min">The <see cref="Color"/> associated with a cell value of <c>0.0</c>.</param>
+        /// <param name="mid">The <see cref="Color"/> associated with a cell value of <c>0.5</c>.</param>
+        /// <param name="max">The <see cref="Color"/> associated with a cell value of <c>1.0</c>.</param>
+        /// <returns>The generated <see cref="Heatmap"/>.</returns>
+        public static Image Generate(Heatmap map, int? imageWidth, int? imageHeight, Color min, Color mid, Color max)
+        {
+            return Generate(map, imageWidth, imageHeight, value =>
+                {
+                    if (value <= 0.0)
+                        return min;
+                    else if (value < 0.5)
+                        return getColorAtPercent(min, mid, value * 2);
+                    else if (value == 0.5)
+                        return mid;
+                    else if (value >= 1)
+                        return max;
+                    else
+                        return getColorAtPercent(mid, max, (value - 0.5) * 2);
+                });
+        }
+
+        /// <summary>
         /// Generates an image that represents a given <see cref="Heatmap"/> using a userdefined color-rule.
         /// </summary>
         /// <param name="map">The <see cref="Heatmap"/> from which the image should be generated.</param>
