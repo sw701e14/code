@@ -14,7 +14,7 @@ namespace Library
         public int? Accuracy { get; set; }
         public int BikeId { get; set; }
 
-        public GPSPoint(DateTime timestamp, double latitude, double longitude, int accuracy, int bikeId)
+        public GPSPoint(DateTime timestamp, double latitude, double longitude, int? accuracy, int bikeId)
         {
             this.TimeStamp = timestamp;
             this.Latitude = latitude;
