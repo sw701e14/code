@@ -17,7 +17,7 @@ namespace Library
                 throw new ArgumentOutOfRangeException("width", "Heatmap width must be >= 1.");
 
             if (height <= 0)
-                throw new ArgumentOutOfRangeException("width", "Heatmap height must be >= 1.");
+                throw new ArgumentOutOfRangeException("height", "Heatmap height must be >= 1.");
 
             this.width = width;
             this.height = height;
@@ -163,7 +163,7 @@ namespace Library
                 throw new ArgumentOutOfRangeException("width", "Heatmap width must be >= 1.");
 
             if (height <= 0)
-                throw new ArgumentOutOfRangeException("width", "Heatmap height must be >= 1.");
+                throw new ArgumentOutOfRangeException("height", "Heatmap height must be >= 1.");
 
             int x, y;
             int[,] data = new int[width, height];
