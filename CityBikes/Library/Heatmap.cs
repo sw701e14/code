@@ -94,17 +94,18 @@ namespace Library
             else if (!max.HasValue)
                 getMax(data, w, h, out max);
 
-            double mi = min.Value;
-            double ma = max.Value - min.Value;
+            // translating min and max to the range from 0 to (max - min)
+            double old_min = min.Value;
+            double mapped_max = max.Value - min.Value;
 
             Heatmap map = new Heatmap(w, h);
             for (int y = 0; y < h; y++)
                 for (int x = 0; x < w; x++)
                 {
-                    double d = data[x, y] - mi;
+                    double d = data[x, y] - old_min;
                     if (d < 0) d = 0;
-                    else if (d > ma) d = ma;
-                    map.grid[x, y] = d / ma;
+                    else if (d > mapped_max) d = mapped_max;
+                    map.grid[x, y] = d / mapped_max;
                 }
 
             return map;
