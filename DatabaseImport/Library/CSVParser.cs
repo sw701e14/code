@@ -7,10 +7,19 @@ using System.Threading.Tasks;
 
 namespace Library
 {
+    /// <summary>
+    /// Exposes methods for parsing a csv file with gps info.
+    /// </summary>
     public static class CSVParser
     {
         private static CultureInfo dateCulture = CultureInfo.CreateSpecificCulture("en-UK");
 
+        /// <summary>
+        /// Gets GPS data from a CSV file and uses a predefined id for the bike.
+        /// </summary>
+        /// <param name="fileName">The name of the file from which data should be loaded.</param>
+        /// <param name="bikeID">The bike identifier.</param>
+        /// <returns>A collection of <see cref="GPSPoint"/> representing the data in the file.</returns>
         public static GPSPoint[] GetData(string fileName, int bikeID)
         {
             string[] lines = FileHandler.LoadFile(fileName);
