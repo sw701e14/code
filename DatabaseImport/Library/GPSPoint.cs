@@ -36,6 +36,12 @@ namespace Library
 
         public GPSPoint(DateTime timestamp, double latitude, double longitude, int? accuracy, int bikeId)
         {
+            if (latitude > 90 || latitude < -90)
+                throw new ArgumentOutOfRangeException("latitude");
+
+            if (longitude > 180 || longitude < -180)
+                throw new ArgumentOutOfRangeException("longitude");
+
             this.timestamp = timestamp;
             this.latitude = latitude;
             this.longitude = longitude;
