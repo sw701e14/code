@@ -16,6 +16,7 @@ namespace Library
         private const string TABLENAME = "gps_data";
         private const string COLUMNS = "(queried, latitude, longitude, accuracy, bikeId)";
         private static Random rnd = new Random();
+        private static CultureInfo ukCulture = CultureInfo.CreateSpecificCulture("en-UK");
 
         /// <summary>
         /// Exports the specified points to a file as an SQL statement.
@@ -58,8 +59,8 @@ namespace Library
 
             return string.Format("('{0}', {1}, {2}, {3}, {4})",
                             point.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss"),
-                            point.Latitude.ToString(CultureInfo.CreateSpecificCulture("en-UK")),
-                            point.Longitude.ToString(CultureInfo.CreateSpecificCulture("en-UK")),
+                            point.Latitude.ToString(ukCulture),
+                            point.Longitude.ToString(ukCulture),
                             getAccuracy(point.Accuracy),
                             point.BikeId);
 
