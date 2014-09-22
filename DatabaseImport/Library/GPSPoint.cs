@@ -43,6 +43,15 @@ namespace Library
             this.bikeId = bikeId;
         }
 
+        public static bool operator ==(GPSPoint p1, GPSPoint p2)
+        {
+            return p1.Equals(p1);
+        }
+        public static bool operator !=(GPSPoint p1, GPSPoint p2)
+        {
+            return !p1.Equals(p2);
+        }
+
         public override int GetHashCode()
         {
             return timestamp.GetHashCode() ^ latitude.GetHashCode() ^ longitude.GetHashCode() ^ accuracy.GetHashCode() ^ bikeId.GetHashCode();
