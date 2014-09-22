@@ -25,11 +25,15 @@ namespace Library
 
         private static string WriteInsertStatement(IEnumerable<GPSPoint> points)
         {
+            if (!points.Any())
+                throw new ArgumentException("No points!", "points");
+
             StringBuilder output = new StringBuilder();
 
             output.Append("INSERT INTO " + TABLENAME + "\n" + COLUMNS + "\nVALUES\n");
 
-            foreach (var point in points)
+            output.Append(points.First().writeGPSPoint());
+            foreach (var point in points.Skip(1))
             {
                 output.Append(", ");
                 output.Append(point.writeGPSPoint());
