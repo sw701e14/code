@@ -14,9 +14,9 @@ namespace Library
         private const string COLUMNS = "(queried, latitude, longitude, accuracy, bikeId)";
         private static Random rnd = new Random();
 
-        public static void Export(IEnumerable<GPSPoint> points, string filename)
+        public static void Export(IEnumerable<GPSPoint> points, string filename, bool append)
         {
-            using (StreamWriter output = new System.IO.StreamWriter(filename))
+            using (StreamWriter output = new System.IO.StreamWriter(filename, append))
             {
                 string insertStatement = WriteInsertStatement(points);
                 output.Write(insertStatement);
