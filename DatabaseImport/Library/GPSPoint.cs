@@ -8,11 +8,11 @@ namespace Library
 {
     public class GPSPoint
     {
-        public DateTime TimeStamp { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
-        public int? Accuracy { get; set; }
-        public int BikeId { get; set; }
+        public DateTime TimeStamp { get; private set; }
+        public double Latitude { get; private set; }
+        public double Longitude { get; private set; }
+        public int? Accuracy { get; private set; }
+        public int BikeId { get; private set; }
 
         public GPSPoint(DateTime timestamp, double latitude, double longitude, int? accuracy, int bikeId)
         {
