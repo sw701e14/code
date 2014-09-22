@@ -39,7 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddTestDataWithGDirections.cs" />
+    <Compile Include="GDirectionsParser.cs" />
     <Compile Include="CSVParser.cs" />
     <Compile Include="FileHandler.cs" />
     <Compile Include="GPSPoint.cs" />

@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace ConsoleApplication1
+namespace Library
 {
-    public class AddTestDataWithGDirections
+    public class GDirectionsParser
     {
         private static DateTime tempDateTime = DateTime.Now;
         private static DateTime tempDatePlusDuration = DateTime.Now;
@@ -17,26 +17,58 @@ namespace ConsoleApplication1
         private static double tempEndLatitude;
         private static double tempEndLongtitude;
 
+        /// <summary>
+        /// Main that adds all gps point from the the specified urls (GDirections).
+        /// </summary>
+        /// <param name="urls">The urls.</param>
         public static void Main(string[] urls)
         {
+            /*//For testing purposes.
             string testString = "https://maps.googleapis.com/maps/api/directions/xml?origin=39+Kastetvej,+Aalborg,+Nordjylland,+Danmark&destination=300+Selma+Lagerl%C3%B8fs+Vej,+Aalborg+%C3%98st,+Nordjylland,+Danmark&sensor=false&key=AIzaSyBLIB1DsgmDpNPuhUaFKSMO-SEt2gLA9Vk&avoid=highways&mode=bicycling";
-            ParseGDirectionToGpsData(FetchGDirectionData(testString));
+            try
+            {
+                parseGDirectionToGpsData(FetchGDirectionData(testString));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+            }*/
 
             foreach (string url in urls)
             {
-                ParseGDirectionToGpsData(FetchGDirectionData(url));
+                try
+                {
+                    parseGDirectionToGpsData(FetchGDirectionData(url));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.StackTrace);
+                }
             }
         }
 
-        private static XmlDocument FetchGDirectionData(string url)
+        public static XmlDocument FetchGDirectionData(string url)
         {
-            Uri requestUrl = new Uri(@url);
+            XmlDocument xmlDoc = null;
+            Uri requestUrl = null;
             System.IO.Stream responseStream = null;
-            XmlDocument xmlDoc = new XmlDocument();
             System.Net.WebRequest request = null;
             System.Net.HttpWebResponse response = null;
             System.IO.StreamReader responseReader = null;
             string responseString = null;
+
+            try
+            {
+                requestUrl = new Uri(@url);
+            }
+            catch (ArgumentNullException e)
+            {
+                throw;
+            }
+            catch (UriFormatException e)
+            {
+                throw;
+            }
 
             try
             {
@@ -110,6 +142,7 @@ namespace ConsoleApplication1
 
             try
             {
+                xmlDoc = new XmlDocument();
                 xmlDoc.LoadXml(responseString);
             }
             catch (XmlException e)
@@ -120,17 +153,17 @@ namespace ConsoleApplication1
             return xmlDoc;
         }
 
-        //for testing purpose only, accept any dodgy certificate... 
+        //For testing purposes.
         private static bool ValidateServerCertificate(object sender, System.Security.Cryptography.X509Certificates.X509Certificate certificate, System.Security.Cryptography.X509Certificates.X509Chain chain, System.Net.Security.SslPolicyErrors sslPolicyErrors)
         {
             return true;
         }
 
-        private static void ParseGDirectionToGpsData(XmlDocument xmlDoc)
+        private static void parseGDirectionToGpsData(XmlDocument xmlDoc)
         {
             if (xmlDoc == null)
             {
-                throw new ArgumentNullException(@"inputStream is null");
+                throw new ArgumentNullException(@"xmlDoc is null");
             }
 
             XmlNodeList xmlNodeList = xmlDoc.GetElementsByTagName("step");
@@ -141,20 +174,21 @@ namespace ConsoleApplication1
                 new GPSPoint(tempDateTime, tempStartLatitude, tempStartLongtitude, -1, -1);
                 //AddDataToDatabase()
 
-                /*
+                /*//For testing purposes.
                 Console.WriteLine("GPSPoint {0}", i);
                 Console.WriteLine("Start Lat: {0}", tempStartLatitude);
                 Console.WriteLine("Start Lng: {0}", tempStartLongtitude);
                 Console.WriteLine("Time: {0}\n", tempDateTime);
                 */
 
+                //Adds the last point in the route - given its different position in the xml document
                 if (i == (xmlNodeList.Count - 1))
                 {
                     parseLocationData(xmlNodeList[i], true);
                     new GPSPoint(tempDatePlusDuration, tempEndLatitude, tempEndLongtitude, -1, -1);
                     //AddDataToDatabase()
 
-                    /*
+                    /*//For testing purposes.
                     Console.WriteLine("GPSPoint {0}", i+1);
                     Console.WriteLine("End Lat: {0}", tempEndLatitude);
                     Console.WriteLine("End Lng: {0}", tempEndLongtitude);
@@ -162,10 +196,12 @@ namespace ConsoleApplication1
                     */
                 }
 
+                //For testing purposes.
                 //Console.ReadKey();
             }
         }
 
+        //
         private static void parseLocationData(XmlNode xmlNode, bool last)
         {
             //Timestamp
