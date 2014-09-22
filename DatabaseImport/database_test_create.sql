@@ -2,11 +2,11 @@ DROP DATABASE IF EXISTS citybike_test;
 CREATE DATABASE citybike_test;
 CREATE TABLE citybike_test.gps_data (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
-  bikeId SMALLINT UNSIGNED,
-  latitude DECIMAL(10,8),
-  longitude DECIMAL(10,8),
-  accuracy TINYINT UNSIGNED,
-  queried DATETIME
+  bikeId SMALLINT UNSIGNED NOT NULL,
+  latitude DECIMAL(10,8) NOT NULL,
+  longitude DECIMAL(11,8) NOT NULL,
+  accuracy TINYINT UNSIGNED NOT NULL,
+  queried DATETIME NOT NULL
 );
 
 -- INSERT INTO citybike_test.gps_data (bikeId, latitude, longitude, accuracy, queried)

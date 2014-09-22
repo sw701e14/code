@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DirectionsResponse>
+ <status>OK</status>
+ <route>
+  <summary>Hadsundvej</summary>
+  <leg>
+   <step>
+    <travel_mode>BICYCLING</travel_mode>
+    <start_location>
+     <lat>57.0535126</lat>
+     <lng>9.9044909</lng>
+    </start_location>
+    <end_location>
+     <lat>57.0518971</lat>
+     <lng>9.9128876</lng>
+    </end_location>
+    <polyline>
+     <points>mgf{Ianm{@Hw@h@qEXcC\uC\_Dd@mEX_CBYVwBZiDf@{DVeC</points>
+    </polyline>
+    <duration>
+     <value>134</value>
+     <text>2 min.</text>
+    </duration>
+    <html_instructions>Kør mod &lt;b&gt;øst&lt;/b&gt; på &lt;b&gt;Kastetvej&lt;/b&gt; mod &lt;b&gt;Dannebrogsgade&lt;/b&gt;</html_instructions>
+    <distance>
+     <value>539</value>
+     <text>0,5 km</text>
+    </distance>
+   </step>
+   <step>
+    <travel_mode>BICYCLING</travel_mode>
+    <start_location>
+     <lat>57.0518971</lat>
+     <lng>9.9128876</lng>
+    </start_location>
+    <end_location>
+     <lat>57.0509884</lat>
+     <lng>9.9185678</lng>
+    </end_location>
+    <polyline>
+     <points>k}e{Iqbo{@R_Cb@oGBWb@mEDa@RsBTaC@Ib@wE</points>
+    </polyline>
+    <duration>
+     <value>102</value>
+     <text>2 min.</text>
+    </duration>
+    <html_instructions>Fortsæt ad &lt;b&gt;Borgergade&lt;/b&gt;</html_instructions>
+    <distance>
+     <value>358</value>
+     <text>0,4 km</text>
+    </distance>
+   </step>
+   <step>
+    <travel_mode>BICYCLING</travel_mode>
+    <start_location>
+     <lat>57.0509884</lat>
+     <lng>9.9185678</lng>
+    </start_location>
+    <end_location>
+     <lat>57.0505060</lat>
+     <lng>9.9209450</lng>
+    </end_location>
+    <polyline>
+     <points>uwe{Iafp{@VmARi@PsBDg@?EJeAHyAD_@</points>
+    </polyline>
+    <duration>
+     <value>30</value>
+     <text>1 min.</text>
+    </duration>
+    <html_instructions>Fortsæt ad &lt;b&gt;Ved Stranden&lt;/b&gt;</html_instructions>
+    <distance>
+     <value>155</value>
+     <text>0,2 km</text>
+    </distance>
+   </step>
+   <step>
+    <travel_mode>BICYCLING</travel_mode>
+    <start_location>
+     <lat>57.0505060</lat>
+     <lng>9.9209450</lng>
+    </start_location>
+    <end_location>
+     <lat>57.0509452</lat>
+     <lng>9.9214786</lng>
+    </end_location>
+    <polyline>
+     <points>ute{I{tp{@Y_@Ya@MOUY</points>
+    </polyline>
+    <duration>
+     <value>7</value>
+     <text>1 min.</text>
+    </duration>
+    <html_instructions>Drej til &lt;b&gt;venstre&lt;/b&gt;, og følg &lt;b&gt;3/Ved Stranden&lt;/b&gt;</html_instructions>
+    <distance>
+     <value>59</value>
+     <text>59 m</text>
+    </distance>
+    <maneuver>turn-left</maneuver>
+   </step>
+   <step>
+    <travel_mode>BICYCLING</travel_mode>
+    <start_location>
+     <lat>57.0509452</lat>
+     <lng>9.9214786</lng>
+    </start_location>
+    <end_location>
+     <lat>57.0490334</lat>
+     <lng>9.9258839</lng>
+    </end_location>
+    <polyline>
+     <points>mwe{Igxp{@hAcHDYPu@Lq@VkA`AuCHUL_@JW\g@\c@b@e@p@g@</points>
+    </polyline>
+    <duration>
+     <value>85</value>
+     <text>1 min.</text>
+    </duration>
+    <html_instructions>Drej til &lt;b&gt;højre&lt;/b&gt;, og følg &lt;b&gt;Slotspladsen/Strandvejen&lt;/b&gt;&lt;div style=&quot;font-size:0.9em&quot;&gt;Fortsæt ad Slotspladsen&lt;/div&gt;</html_instructions>
+    <distance>
+     <value>351</value>
+     <text>0,4 km</text>
+    </distance>
+    <maneuver>turn-right</maneuver>
+   </step>
+   <step>
+    <travel_mode>BICYCLING</travel_mode>
+    <start_location>
+     <lat>57.0490334</lat>
+     <lng>9.9258839</lng>
+    </start_location>
+    <end_location>
+     <lat>57.0468636</lat>
+     <lng>9.9343301</lng>
+    </end_location>
+    <polyline>
+     <points>mke{Iwsq{@`@YBA@E@Qh@[PMP[@AHWPw@BKNo@VuARkAp@sDN{@P_AXwAVsAt@eEBSBa@DiAD_A@aB@eA?e@AQFw@@uB</points>
+    </polyline>
+    <duration>
+     <value>157</value>
+     <text>3 min.</text>
+    </duration>
+    <html_instructions>Fortsæt ad &lt;b&gt;Nyhavnsgade&lt;/b&gt;</html_instructions>
+    <distance>
+     <value>594</value>
+     <text>0,6 km</text>
+    </distance>
+   </step>
+   <step>
+    <travel_mode>BICYCLING</travel_mode>
+    <start_location>
+     <lat>57.0468636</lat>
+     <lng>9.9343301</lng>
+    </start_location>
+    <end_location>
+     <lat>57.0427807</lat>
+     <lng>9.9334358</lng>
+    </end_location>
+    <polyline>
+     <points>{}d{Iqhs{@dAIl@EJ?X?~@@X@l@FlAP~@Hz@Nn@JVBRDh@F^Dj@FLBJBLFJFHFJJV^NP</points>
+    </polyline>
+    <duration>
+     <value>77</value>
+     <text>1 min.</text>
+    </duration>
+    <html_instructions>Drej til &lt;b&gt;højre&lt;/b&gt;, og følg &lt;b&gt;Karolinelundsvej&lt;/b&gt;</html_instructions>
+    <distance>
+     <value>463</value>
+     <text>0,5 km</text>
+    </distance>
+    <maneuver>turn-right</maneuver>
+   </step>
+   <step>
+    <travel_mode>BICYCLING</travel_mode>
+    <start_location>
+     <lat>57.0427807</lat>
+     <lng>9.9334358</lng>
+    </start_location>
+    <end_location>
+     <lat>57.0427649</lat>
+     <lng>9.9337430</lng>
+    </end_location>
+    <polyline>
+     <points>kdd{I_cs{@Ng@KS</points>
+    </polyline>
+    <duration>
+     <value>3</value>
+     <text>1 min.</text>
+    </duration>
+    <html_instructions>Foretag en &lt;b&gt;U-vending&lt;/b&gt; ved &lt;b&gt;Bornholmsgade&lt;/b&gt;</html_instructions>
+    <distance>
+     <value>24</value>
+     <text>24 m</text>
+    </distance>
+    <maneuver>uturn-left</maneuver>
+   </step>
+   <step>
+    <travel_mode>BICYCLING</travel_mode>
+    <start_location>
+     <lat>57.0427649</lat>
+     <lng>9.9337430</lng>
+    </start_location>
+    <end_location>
+     <lat>57.0385197</lat>
+     <lng>9.9354813</lng>
+    </end_location>
+    <polyline>
+     <points>gdd{I{ds{@Zu@LEJGTA~B@rC]vAYdBk@BA@A|@[lAe@fAk@vAaA</points>
+    </polyline>
+    <duration>
+     <value>88</value>
+     <text>1 min.</text>
+    </duration>
+    <html_instructions>Drej til &lt;b&gt;højre&lt;/b&gt;, og følg &lt;b&gt;Bornholmsgade/Fyensgade&lt;/b&gt;&lt;div style=&quot;font-size:0.9em&quot;&gt;Fortsæt ad Bornholmsgade&lt;/div&gt;</html_instructions>
+    <distance>
+     <value>491</value>
+     <text>0,5 km</text>
+    </distance>
+    <maneuver>turn-right</maneuver>
+   </step>
+   <step>
+    <travel_mode>BICYCLING</travel_mode>
+    <start_location>
+     <lat>57.0385197</lat>
+     <lng>9.9354813</lng>
+    </start_location>
+    <end_location>
+     <lat>57.0379482</lat>
+     <lng>9.9358422</lng>
+    </end_location>
+    <polyline>
+     <points>wic{Iwos{@FCxAs@NO</points>
+    </polyline>
+    <duration>
+     <value>12</value>
+     <text>1 min.</text>
+    </duration>
+    <html_instructions>Hold til &lt;b&gt;højre&lt;/b&gt;, og bliv på &lt;b&gt;Bornholmsgade&lt;/b&gt;</html_instructions>
+    <distance>
+     <value>67</value>
+     <text>67 m</text>
+    </distance>
+    <maneuver>turn-slight-right</maneuver>
+   </step>
+   <step>
+    <travel_mode>BICYCLING</travel_mode>
+    <start_location>
+     <lat>57.0379482</lat>
+     <lng>9.9358422</lng>
+    </start_location>
+    <end_location>
+     <lat>57.0327859</lat>
+     <lng>9.9429215</lng>
+    </end_location>
+    <polyline>
+     <points>efc{I_rs{@xAuA@GBO^a@VUDGl@}@bAoBLSnDkGtCeFfCoEdAgBb@m@~@kA`AgA\[PO</points>
+    </polyline>
+    <duration>
+     <value>284</value>
+     <text>5 min.</text>
+    </duration>
+    <html_instructions>Fortsæt ad &lt;b&gt;Sohngårdsholmsvej&lt;/b&gt;</html_instructions>
+    <distance>
+     <value>720</value>
+     <text>0,7 km</text>
+    </distance>
+   </step>
+   <step>
+    <travel_mode>BICYCLING</travel_mode>
+    <start_location>
+     <lat>57.0327859</lat>
+     <lng>9.9429215</lng>
+    </start_location>
+    <end_location>
+     <lat>57.0337492</lat>
+     <lng>9.9542791</lng>
+    </end_location>
+    <polyline>
+     <points>}eb{Ig~t{@Cg@?EMoB[sJAi@?AAYy@s[IyBQcDk@gIBYOsB</points>
+    </polyline>
+    <duration>
+     <value>117</value>
+     <text>2 min.</text>
+    </duration>
+    <html_instructions>Drej til &lt;b&gt;venstre&lt;/b&gt;, og følg &lt;b&gt;Humlebakken&lt;/b&gt;</html_instructions>
+    <distance>
+     <value>697</value>
+     <text>0,7 km</text>
+    </distance>
+    <maneuver>turn-left</maneuver>
+   </step>
+   <step>
+    <travel_mode>BICYCLING</travel_mode>
+    <start_location>
+     <lat>57.0337492</lat>
+     <lng>9.9542791</lng>
+    </start_location>
+    <end_location>
+     <lat>57.0218100</lat>
+     <lng>9.9651300</lng>
+    </end_location>
+    <polyline>
+     <points>}kb{Igew{@LEl@UFCd@O`EkBj@[vAq@@ATOx@c@n@c@pAaAnAy@p@o@pAeARIJKpAiA|@{@|AsAjCeCrAoArCkCdDyCbA}@nDgDLK|@}@|@_Al@o@V]`@c@f@s@LS?AJOR[@ALS@AJORc@BEZk@Re@f@gAHS</points>
+    </polyline>
+    <duration>
+     <value>302</value>
+     <text>5 min.</text>
+    </duration>
+    <html_instructions>Drej til &lt;b&gt;højre&lt;/b&gt;, og følg &lt;b&gt;Hadsundvej&lt;/b&gt;</html_instructions>
+    <distance>
+     <value>1492</value>
+     <text>1,5 km</text>
+    </distance>
+    <maneuver>turn-right</maneuver>
+   </step>
+   <step>
+    <travel_mode>BICYCLING</travel_mode>
+    <start_location>
+     <lat>57.0218100</lat>
+     <lng>9.9651300</lng>
+    </start_location>
+    <end_location>
+     <lat>57.0207651</lat>
+     <lng>9.9680525</lng>
+    </end_location>
+    <polyline>
+     <points>ia`{Iaiy{@HFD@FCHQ\}@L]FMHKNUX]X_@PWJWFQHa@BY@i@?SCu@Eu@?q@?W</points>
+    </polyline>
+    <duration>
+     <value>34</value>
+     <text>1 min.</text>
+    </duration>
+    <html_instructions>Drej til &lt;b&gt;højre&lt;/b&gt;</html_instructions>
+    <distance>
+     <value>241</value>
+     <text>0,2 km</text>
+    </distance>
+    <maneuver>turn-right</maneuver>
+   </step>
+   <step>
+    <travel_mode>BICYCLING</travel_mode>
+    <start_location>
+     <lat>57.0207651</lat>
+     <lng>9.9680525</lng>
+    </start_location>
+    <end_location>
+     <lat>57.0201720</lat>
+     <lng>9.9689987</lng>
+    </end_location>
+    <polyline>
+     <points>yz_{Ii{y{@t@sAx@_BFI</points>
+    </polyline>
+    <duration>
+     <value>11</value>
+     <text>1 min.</text>
+    </duration>
+    <html_instructions>Drej til &lt;b&gt;højre&lt;/b&gt;</html_instructions>
+    <distance>
+     <value>87</value>
+     <text>87 m</text>
+    </distance>
+    <maneuver>turn-right</maneuver>
+   </step>
+   <step>
+    <travel_mode>BICYCLING</travel_mode>
+    <start_location>
+     <lat>57.0201720</lat>
+     <lng>9.9689987</lng>
+    </start_location>
+    <end_location>
+     <lat>57.0197398</lat>
+     <lng>9.9734876</lng>
+    </end_location>
+    <polyline>
+     <points>aw_{Igaz{@@QDOFWBEFGHMHKBKFULwFB{BB{ABgC@eB?c@A[</points>
+    </polyline>
+    <duration>
+     <value>35</value>
+     <text>1 min.</text>
+    </duration>
+    <html_instructions>Hold til &lt;b&gt;venstre&lt;/b&gt;</html_instructions>
+    <distance>
+     <value>286</value>
+     <text>0,3 km</text>
+    </distance>
+    <maneuver>turn-slight-left</maneuver>
+   </step>
+   <step>
+    <travel_mode>BICYCLING</travel_mode>
+    <start_location>
+     <lat>57.0197398</lat>
+     <lng>9.9734876</lng>
+    </start_location>
+    <end_location>
+     <lat>57.0200751</lat>
+     <lng>9.9872291</lng>
+    </end_location>
+    <polyline>
+     <points>kt_{Ii}z{@Cs@AmHA}AC{A?QAS?W@YFy@@S?W@cC?uDByB@uE@eBBcBAsBIaBIeBAU_@aGMcCQeCAkA?qAHqC</points>
+    </polyline>
+    <duration>
+     <value>132</value>
+     <text>2 min.</text>
+    </duration>
+    <html_instructions>Hold til &lt;b&gt;venstre&lt;/b&gt;</html_instructions>
+    <distance>
+     <value>838</value>
+     <text>0,8 km</text>
+    </distance>
+    <maneuver>turn-slight-left</maneuver>
+   </step>
+   <step>
+    <travel_mode>BICYCLING</travel_mode>
+    <start_location>
+     <lat>57.0200751</lat>
+     <lng>9.9872291</lng>
+    </start_location>
+    <end_location>
+     <lat>57.0162483</lat>
+     <lng>9.9878097</lng>
+    </end_location>
+    <polyline>
+     <points>ov_{Ies}{@`AJj@DZ@V@T@f@?~@BN?J?D?TAJKBAv@wARc@FKHAVC~BDJ?z@Bl@@h@@</points>
+    </polyline>
+    <duration>
+     <value>85</value>
+     <text>1 min.</text>
+    </duration>
+    <html_instructions>Drej til &lt;b&gt;højre&lt;/b&gt;</html_instructions>
+    <distance>
+     <value>442</value>
+     <text>0,4 km</text>
+    </distance>
+    <maneuver>turn-right</maneuver>
+   </step>
+   <step>
+    <travel_mode>BICYCLING</travel_mode>
+    <start_location>
+     <lat>57.0162483</lat>
+     <lng>9.9878097</lng>
+    </start_location>
+    <end_location>
+     <lat>57.0162424</lat>
+     <lng>9.9882533</lng>
+    </end_location>
+    <polyline>
+     <points>q~~zIyv}{@@y@?]</points>
+    </polyline>
+    <duration>
+     <value>6</value>
+     <text>1 min.</text>
+    </duration>
+    <html_instructions>Drej til &lt;b&gt;venstre&lt;/b&gt;</html_instructions>
+    <distance>
+     <value>27</value>
+     <text>27 m</text>
+    </distance>
+    <maneuver>turn-left</maneuver>
+   </step>
+   <step>
+    <travel_mode>BICYCLING</travel_mode>
+    <start_location>
+     <lat>57.0162424</lat>
+     <lng>9.9882533</lng>
+    </start_location>
+    <end_location>
+     <lat>57.0116854</lat>
+     <lng>9.9920508</lng>
+    </end_location>
+    <polyline>
+     <points>o~~zIqy}{@tBDFN^x@JRjBFnBAB?jBDNJBGDCvBD@?nA@PCL?|AH@A@C?S@kD?G@Cb@cA@IBiE?aABiI</points>
+    </polyline>
+    <duration>
+     <value>150</value>
+     <text>3 min.</text>
+    </duration>
+    <html_instructions>Drej til &lt;b&gt;højre&lt;/b&gt; mod &lt;b&gt;Selma Lagerløfs Vej&lt;/b&gt;</html_instructions>
+    <distance>
+     <value>768</value>
+     <text>0,8 km</text>
+    </distance>
+    <maneuver>turn-right</maneuver>
+   </step>
+   <step>
+    <travel_mode>BICYCLING</travel_mode>
+    <start_location>
+     <lat>57.0116854</lat>
+     <lng>9.9920508</lng>
+    </start_location>
+    <end_location>
+     <lat>57.0120001</lat>
+     <lng>9.9919630</lng>
+    </end_location>
+    <polyline>
+     <points>ab~zIiq~{@[DWBIF</points>
+    </polyline>
+    <duration>
+     <value>7</value>
+     <text>1 min.</text>
+    </duration>
+    <html_instructions>Drej til &lt;b&gt;venstre&lt;/b&gt; mod &lt;b&gt;Selma Lagerløfs Vej&lt;/b&gt;</html_instructions>
+    <distance>
+     <value>36</value>
+     <text>36 m</text>
+    </distance>
+    <maneuver>turn-left</maneuver>
+   </step>
+   <step>
+    <travel_mode>BICYCLING</travel_mode>
+    <start_location>
+     <lat>57.0120001</lat>
+     <lng>9.9919630</lng>
+    </start_location>
+    <end_location>
+     <lat>57.0123129</lat>
+     <lng>9.9919955</lng>
+    </end_location>
+    <polyline>
+     <points>_d~zIwp~{@g@CGAMA</points>
+    </polyline>
+    <duration>
+     <value>5</value>
+     <text>1 min.</text>
+    </duration>
+    <html_instructions>Fortsæt ad &lt;b&gt;Selma Lagerløfs Vej&lt;/b&gt;</html_instructions>
+    <distance>
+     <value>35</value>
+     <text>35 m</text>
+    </distance>
+   </step>
+   <duration>
+    <value>1863</value>
+    <text>31 min.</text>
+   </duration>
+   <distance>
+    <value>8770</value>
+    <text>8,8 km</text>
+   </distance>
+   <start_location>
+    <lat>57.0535126</lat>
+    <lng>9.9044909</lng>
+   </start_location>
+   <end_location>
+    <lat>57.0123129</lat>
+    <lng>9.9919955</lng>
+   </end_location>
+   <start_address>Kastetvej 39, 9000 Aalborg, Danmark</start_address>
+   <end_address>Selma Lagerløfs Vej 300, Aalborg Universitet, 9220 Aalborg Øst, Danmark</end_address>
+  </leg>
+  <copyrights>Kortdata ©2014 Google</copyrights>
+  <overview_polyline>
+   <points>mgf{Ianm{@jBcP`BgOr@aH~@aIv@oKf@eFp@aHb@wEVmARi@PsBDm@T_DD_@Y_@g@q@UYhAcHVoAd@}BjAkDXw@z@kAb@e@p@g@d@[BWz@i@R]ZoA~@}ElBgKlAyGFu@JiCBgDAw@Fw@@uBrBOd@?xABzBXzBXfANhCZXFXNTRf@p@Ng@KSZu@LEJGTA~B@rC]vAYdBk@DCjCaAfAk@vAaA`Bw@hBeBDWv@w@r@eApAcCrOiXbByB~AcBPOCg@MuB_@yLcAm_@QcDk@gIBYOsBz@[l@SlFgCxAs@nAs@`CeBnAy@p@o@pAeARI|AuAzJeJlPkOvDyDx@aAt@gA^m@\g@fA{Bp@{ANHFCHQj@{APYh@s@j@w@Ri@L{@@}@IkB?iAnBsDFI@QLg@JMRYJa@PsJFcF@iCEoAGyNAk@HsABeJJyOAsBIaBK{Bm@eKQeCAkA?qAHqClBPr@B|@@`BBTAJKz@yAZo@`@EtFJh@@@y@?]tBDf@hAJRjBFrBAjBDNJHKxBDnA@PCjBHBE@_E@Kd@mABkGBiI[DWBIFo@EMA</points>
+  </overview_polyline>
+  <warning>Rutevejledning til cyklister er i betaversion. Vær forsigtig – Denne rute kan omfatte veje, der ikke egner sig til cykler.</warning>
+  <bounds>
+   <southwest>
+    <lat>57.0116854</lat>
+    <lng>9.9044909</lng>
+   </southwest>
+   <northeast>
+    <lat>57.0535126</lat>
+    <lng>9.9920508</lng>
+   </northeast>
+  </bounds>
+ </route>
+</DirectionsResponse>

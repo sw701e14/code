@@ -12,6 +12,7 @@ namespace Run
         static void Main(string[] args)
         {
             //GPSPoint[] d = CSVParser.GetData("bruno1.txt",1);
+            //GDirectionsParser.Main(new String[0]);
             Console.ReadKey();
         }
     }
