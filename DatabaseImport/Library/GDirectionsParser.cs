@@ -24,7 +24,7 @@ namespace Library
         public static void Main(string[] urls)
         {
             /*//For testing purposes.
-            string testString = "https://maps.googleapis.com/maps/api/directions/xml?origin=39+Kastetvej,+Aalborg,+Nordjylland,+Danmark&destination=300+Selma+Lagerl%C3%B8fs+Vej,+Aalborg+%C3%98st,+Nordjylland,+Danmark&sensor=false&key=AIzaSyBLIB1DsgmDpNPuhUaFKSMO-SEt2gLA9Vk&avoid=highways&mode=bicycling";
+            string testString = "https://maps.googleapis.com/maps/api/directions/xml?origin=39+Kastetvej,+Aalborg,+Nordjylland,+Danmark&destination=300+Selma+Lagerl%C3%B8fs+Vej,+Aalborg+%C3%98st,+Nordjylland,+Danmark&sensor=false&key=AIzaSyBLIB1DsgmDpNPuhUaFKSMO-SEt2gLA9Vk&avoid=highways&mode=bicycling&language=da";
             try
             {
                 parseGDirectionToGpsData(FetchGDirectionData(testString));
@@ -63,11 +63,11 @@ namespace Library
             }
             catch (ArgumentNullException e)
             {
-                throw;
+                return null;
             }
             catch (UriFormatException e)
             {
-                throw;
+                return null;
             }
 
             try
@@ -78,15 +78,15 @@ namespace Library
             }
             catch (ArgumentNullException e)
             {
-                throw;
+                return null;
             }
             catch (NotSupportedException e)
             {
-                throw;
+                return null;
             }
             catch (System.Security.SecurityException e)
             {
-                throw;
+                return null;
             }
 
             //Allows for validation of SSL certificates 
@@ -98,7 +98,7 @@ namespace Library
             }
             catch (NotImplementedException e)
             {
-                throw;
+                return null;
             }
 
             try
@@ -107,11 +107,11 @@ namespace Library
             }
             catch (System.Net.ProtocolViolationException e)
             {
-                throw;
+                return null;
             }
             catch (ObjectDisposedException e)
             {
-                throw;
+                return null;
             }
 
             try
@@ -120,11 +120,11 @@ namespace Library
             }
             catch (ArgumentNullException e)
             {
-                throw;
+                return null;
             }
             catch (ArgumentException e)
             {
-                throw;
+                return null;
             }
 
             try
@@ -133,11 +133,11 @@ namespace Library
             }
             catch (OutOfMemoryException e)
             {
-                throw;
+                return null;
             }
             catch (System.IO.IOException e)
             {
-                throw;
+                return null;
             }
 
             try
@@ -147,7 +147,7 @@ namespace Library
             }
             catch (XmlException e)
             {
-                throw;
+                return null;
             }
 
             return xmlDoc;
