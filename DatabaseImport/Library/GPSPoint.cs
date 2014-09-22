@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Library
 {
-    public class GPSPoint
+    public struct GPSPoint : IEquatable<GPSPoint>
     {
         private readonly DateTime timestamp;
         private readonly double latitude, longitude;
@@ -41,6 +41,28 @@ namespace Library
             this.longitude = longitude;
             this.accuracy = accuracy;
             this.bikeId = bikeId;
+        }
+
+        public override int GetHashCode()
+        {
+            return timestamp.GetHashCode() ^ latitude.GetHashCode() ^ longitude.GetHashCode() ^ accuracy.GetHashCode() ^ bikeId.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is GPSPoint)
+                return Equals((GPSPoint)obj);
+            else
+                return false;
+        }
+
+        public bool Equals(GPSPoint other)
+        {
+            return this.timestamp.Equals(other.timestamp)
+                && this.latitude.Equals(other.latitude)
+                && this.longitude.Equals(other.longitude)
+                && this.accuracy.Equals(other.accuracy)
+                && this.bikeId.Equals(other.bikeId);
         }
     }
 }
