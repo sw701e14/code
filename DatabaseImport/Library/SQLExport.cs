@@ -8,12 +8,21 @@ using System.Threading.Tasks;
 
 namespace Library
 {
+    /// <summary>
+    /// Provides methods for generating SQL statements that insert GPS data into the database.
+    /// </summary>
     public static class SQLExport
     {
         private const string TABLENAME = "gps_data";
         private const string COLUMNS = "(queried, latitude, longitude, accuracy, bikeId)";
         private static Random rnd = new Random();
 
+        /// <summary>
+        /// Exports the specified points to a file as an SQL statement.
+        /// </summary>
+        /// <param name="points">The points that should be exported.</param>
+        /// <param name="filename">The name of the file to which the SQL statement should be exported.</param>
+        /// <param name="append">if set to <c>true</c> the <paramref name="points"/> are appended; otherwise the entire file is set to only the new points.</param>
         public static void Export(IEnumerable<GPSPoint> points, string filename, bool append)
         {
             using (StreamWriter output = new System.IO.StreamWriter(filename, append))
