@@ -12,6 +12,8 @@ namespace Library
     {
         public const string TABLENAME = "gpsdata";
         public const string COLUMNS = "(time,lat,long,acc,bike)";
+        private static Random rnd = new Random();
+
         public static void Export(IEnumerable<GPSPoint> points, string filename)
         {
             using (StreamWriter output = new System.IO.StreamWriter(filename))
@@ -22,11 +24,11 @@ namespace Library
             }
         }
 
-        public static string  WriteInsertStatement(IEnumerable<GPSPoint> points)
+        public static string WriteInsertStatement(IEnumerable<GPSPoint> points)
         {
             StringBuilder output = new StringBuilder();
-            
-            output.Append( "INSERT INTO " + TABLENAME + "\n" + COLUMNS + "\nVALUES\n (");
+
+            output.Append("INSERT INTO " + TABLENAME + "\n" + COLUMNS + "\nVALUES\n (");
 
             foreach (var point in points)
             {
@@ -38,17 +40,25 @@ namespace Library
             return output.ToString();
         }
 
-        public static string writeGPSPoint(this GPSPoint point)     
+        public static string writeGPSPoint(this GPSPoint point)
         {
 
             return string.Format("('{0}', {1}, {2}, {3}, {4})",
                             point.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss"),
                             point.Latitude.ToString(CultureInfo.CreateSpecificCulture("en-UK")),
                             point.Longitude.ToString(CultureInfo.CreateSpecificCulture("en-UK")),
-                            point.Accuracy.HasValue ? point.Accuracy.Value.ToString() : "null",
+                            getAccuracy(point.Accuracy),
                             point.BikeId);
 
 
+        }
+
+        private static int getAccuracy(int? accuracy)
+        {
+            if (accuracy.HasValue)
+                return accuracy.Value;
+            else
+                return rnd.Next(30);
         }
     }
 

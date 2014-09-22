@@ -44,15 +44,5 @@ namespace Library.Tests
             Assert.IsTrue(expected.SequenceEqual(output));
 
         }
-
-        [TestMethod()]
-        public void writeGPSPointTestNullAccuracy()
-        {
-            string output = gps3.writeGPSPoint();
-            string expected = "('2014-03-13 23:24:23', 57.01271, 9.9878, null, 1)";
-
-            Assert.IsTrue(expected.SequenceEqual(output));
-
-        }
     }
 }
