@@ -10,21 +10,20 @@ namespace Library
 {
     public static class SQLExport
     {
-        public const string TABLENAME = "gpsdata";
-        public const string COLUMNS = "(time,lat,long,acc,bike)";
+        private const string TABLENAME = "gpsdata";
+        private const string COLUMNS = "(time,lat,long,acc,bike)";
         private static Random rnd = new Random();
 
         public static void Export(IEnumerable<GPSPoint> points, string filename)
         {
             using (StreamWriter output = new System.IO.StreamWriter(filename))
             {
-
                 string insertStatement = WriteInsertStatement(points);
                 output.Write(insertStatement);
             }
         }
 
-        public static string WriteInsertStatement(IEnumerable<GPSPoint> points)
+        private static string WriteInsertStatement(IEnumerable<GPSPoint> points)
         {
             StringBuilder output = new StringBuilder();
 
@@ -40,7 +39,7 @@ namespace Library
             return output.ToString();
         }
 
-        public static string writeGPSPoint(this GPSPoint point)
+        private static string writeGPSPoint(this GPSPoint point)
         {
 
             return string.Format("('{0}', {1}, {2}, {3}, {4})",
