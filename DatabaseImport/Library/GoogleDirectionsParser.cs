@@ -11,7 +11,7 @@ using System.Xml.Linq;
 
 namespace Library
 {
-    public class GDirectionsParser
+    public class GoogleDirectionsParser
     {
         private static DateTime tempDatePlusDuration = DateTime.Now;
         private static int bikeId;

@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DatabaseImportTest
 {
     [TestClass]
-    public class GDirectionsParserTests
+    public class GoogleDirectionsParserTests
     {
         string testGDirectionUrl;
         GPSPoint gpsPoint1;
@@ -26,7 +26,7 @@ namespace DatabaseImportTest
         [TestMethod]
         public void GetXMLDocumentWithCorrectUrl()
         {
-            XmlDocument actualXmlDoc = Library.GDirectionsParser.FetchGDirectionData(testGDirectionUrl);
+            XmlDocument actualXmlDoc = Library.GoogleDirectionsParser.FetchGDirectionData(testGDirectionUrl);
             string actualString = actualXmlDoc.InnerXml;
 
             XmlDocument expectedXmlDoc = new XmlDocument();
@@ -39,7 +39,7 @@ namespace DatabaseImportTest
         [TestMethod]
         public void GetXMLDocumentWithWrongUrl()
         {
-            XmlDocument actual = Library.GDirectionsParser.FetchGDirectionData("");
+            XmlDocument actual = Library.GoogleDirectionsParser.FetchGDirectionData("");
             XmlDocument expected = null;
 
             Assert.AreEqual(expected, actual);
@@ -48,7 +48,7 @@ namespace DatabaseImportTest
         [TestMethod]
         public void GetXMLDocumentWithNullUrl()
         {
-            XmlDocument actual = Library.GDirectionsParser.FetchGDirectionData(null);
+            XmlDocument actual = Library.GoogleDirectionsParser.FetchGDirectionData(null);
             XmlDocument expected = null;
 
             Assert.AreEqual(expected, actual);
