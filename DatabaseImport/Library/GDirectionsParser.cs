@@ -174,30 +174,13 @@ namespace Library
                 new GPSPoint(tempDateTime, tempStartLatitude, tempStartLongtitude, -1, -1);
                 //AddDataToDatabase()
 
-                /*//For testing purposes.
-                Console.WriteLine("GPSPoint {0}", i);
-                Console.WriteLine("Start Lat: {0}", tempStartLatitude);
-                Console.WriteLine("Start Lng: {0}", tempStartLongtitude);
-                Console.WriteLine("Time: {0}\n", tempDateTime);
-                */
-
                 //Adds the last point in the route - given its different position in the xml document
                 if (i == (xmlNodeList.Count - 1))
                 {
                     parseLocationData(xmlNodeList[i], true);
                     new GPSPoint(tempDatePlusDuration, tempEndLatitude, tempEndLongtitude, -1, -1);
                     //AddDataToDatabase()
-
-                    /*//For testing purposes.
-                    Console.WriteLine("GPSPoint {0}", i+1);
-                    Console.WriteLine("End Lat: {0}", tempEndLatitude);
-                    Console.WriteLine("End Lng: {0}", tempEndLongtitude);
-                    Console.WriteLine("Time: {0}\n", tempDatePlusDuration);
-                    */
                 }
-
-                //For testing purposes.
-                //Console.ReadKey();
             }
         }
 
