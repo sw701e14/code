@@ -66,30 +66,17 @@ namespace Library
             return XDocument.Load(responseStream);
         }
 
-        private static void parseGDirectionToGpsData(XDocument xmlDoc)
+        private static IEnumerable<GPSPoint> parseGDirectionToGpsData(XDocument xmlDoc)
         {
             if (xmlDoc == null)
                 throw new ArgumentNullException("xmlDoc");
 
-            XmlNodeList xmlNodeList = xmlDoc.GetElementsByTagName("step");
+            foreach (var step in xmlDoc.Descendants("step"))
+                yield return parseLocationData(step, false);
 
-            for (int i = 0; i < xmlNodeList.Count; i++)
-            {
-                parseLocationData(xmlNodeList[i], false);
-                new GPSPoint(tempDateTime, tempStartLatitude, tempStartLongtitude, -1, -1);
-                //AddDataToDatabase()
-
-                //Adds the last point in the route - given its different position in the xml document
-                if (i == (xmlNodeList.Count - 1))
-                {
-                    parseLocationData(xmlNodeList[i], true);
-                    new GPSPoint(tempDatePlusDuration, tempEndLatitude, tempEndLongtitude, -1, -1);
-                    //AddDataToDatabase()
-                }
-            }
+            yield return parseLocationData(xmlDoc.Descendants("step").Last(), true);
         }
 
-        //
         private static GPSPoint parseLocationData(XElement element, bool last)
         {
             var location = last ? element.Element("end_location") : element.Element("start_location");
