@@ -46,7 +46,7 @@ namespace Library
             }
         }
 
-        public static XDocument FetchGDirectionData(string url)
+        public static IEnumerable<GPSPoint> FetchGDirectionData(string url)
         {
             Uri requestUrl = new Uri(url);
             Stream responseStream = null;
@@ -63,13 +63,7 @@ namespace Library
             response = (System.Net.HttpWebResponse)request.GetResponse();
             responseStream = response.GetResponseStream();
 
-            return XDocument.Load(responseStream);
-        }
-
-        private static IEnumerable<GPSPoint> parseGDirectionToGpsData(XDocument xmlDoc)
-        {
-            if (xmlDoc == null)
-                throw new ArgumentNullException("xmlDoc");
+            XDocument xmlDoc = XDocument.Load(responseStream);
 
             foreach (var step in xmlDoc.Descendants("step"))
                 yield return parseLocationData(step, false);
