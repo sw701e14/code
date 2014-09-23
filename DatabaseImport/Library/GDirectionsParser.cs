@@ -92,7 +92,7 @@ namespace Library
             }
 
             //Allows for validation of SSL certificates 
-            System.Net.ServicePointManager.ServerCertificateValidationCallback += new System.Net.Security.RemoteCertificateValidationCallback(ValidateServerCertificate);
+            System.Net.ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, ssl) => true;
 
             try
             {
@@ -153,12 +153,6 @@ namespace Library
             }
 
             return xmlDoc;
-        }
-
-        //For testing purposes.
-        private static bool ValidateServerCertificate(object sender, System.Security.Cryptography.X509Certificates.X509Certificate certificate, System.Security.Cryptography.X509Certificates.X509Chain chain, System.Net.Security.SslPolicyErrors sslPolicyErrors)
-        {
-            return true;
         }
 
         private static void parseGDirectionToGpsData(XmlDocument xmlDoc)
