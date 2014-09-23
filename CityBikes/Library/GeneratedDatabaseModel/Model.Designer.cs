@@ -24,32 +24,32 @@ namespace Library.GeneratedDatabaseModel
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    public partial class citybike_testEntities : ObjectContext
+    public partial class citybike_testEntities1 : ObjectContext
     {
         #region Constructors
     
         /// <summary>
-        /// Initializes a new citybike_testEntities object using the connection string found in the 'citybike_testEntities' section of the application configuration file.
+        /// Initializes a new citybike_testEntities1 object using the connection string found in the 'citybike_testEntities1' section of the application configuration file.
         /// </summary>
-        public citybike_testEntities() : base("name=citybike_testEntities", "citybike_testEntities")
+        public citybike_testEntities1() : base("name=citybike_testEntities1", "citybike_testEntities1")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
         }
     
         /// <summary>
-        /// Initialize a new citybike_testEntities object.
+        /// Initialize a new citybike_testEntities1 object.
         /// </summary>
-        public citybike_testEntities(string connectionString) : base(connectionString, "citybike_testEntities")
+        public citybike_testEntities1(string connectionString) : base(connectionString, "citybike_testEntities1")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
         }
     
         /// <summary>
-        /// Initialize a new citybike_testEntities object.
+        /// Initialize a new citybike_testEntities1 object.
         /// </summary>
-        public citybike_testEntities(EntityConnection connection) : base(connection, "citybike_testEntities")
+        public citybike_testEntities1(EntityConnection connection) : base(connection, "citybike_testEntities1")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
