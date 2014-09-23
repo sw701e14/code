@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Library;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-namespace Library.Tests
+
+namespace DatabaseImportTest
 {
     [TestClass()]
     public class CSVParserTests

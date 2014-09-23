@@ -6,8 +6,8 @@ CREATE TABLE citybike_test.gps_data (
   latitude DECIMAL(10,8) NOT NULL,
   longitude DECIMAL(11,8) NOT NULL,
   accuracy TINYINT UNSIGNED NOT NULL,
-  queried DATETIME NOT NULL
+  queried TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
--- INSERT INTO citybike_test.gps_data (bikeId, latitude, longitude, accuracy, queried)
---   VALUES (65535, 12.12345678, -12.12345678, 255, '9999-12-31 23:59:59');
+-- INSERT INTO citybike_test.gps_data (bikeId, latitude, longitude, accuracy)
+--   VALUES (65535, 12.12345678, -12.12345678, 255);
