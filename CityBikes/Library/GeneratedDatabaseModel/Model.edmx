@@ -24,7 +24,7 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="citybike_testModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityContainer Name="citybike_testEntities" p1:LazyLoadingEnabled="true">
+        <EntityContainer Name="citybike_testEntities1" p1:LazyLoadingEnabled="true">
           <EntitySet Name="gps_data" EntityType="citybike_testModel.gps_data" />
         </EntityContainer>
         <EntityType Name="gps_data">
@@ -43,7 +43,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="citybike_testModelStoreContainer" CdmEntityContainer="citybike_testEntities">
+        <EntityContainerMapping StorageEntityContainer="citybike_testModelStoreContainer" CdmEntityContainer="citybike_testEntities1">
           <EntitySetMapping Name="gps_data">
             <EntityTypeMapping TypeName="citybike_testModel.gps_data">
               <MappingFragment StoreEntitySet="gps_data">
