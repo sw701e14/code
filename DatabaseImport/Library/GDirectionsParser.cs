@@ -1,7 +1,9 @@
 ﻿using Library;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -51,15 +53,15 @@ namespace Library
         {
             XmlDocument xmlDoc = null;
             Uri requestUrl = null;
-            System.IO.Stream responseStream = null;
-            System.Net.WebRequest request = null;
-            System.Net.HttpWebResponse response = null;
-            System.IO.StreamReader responseReader = null;
+            Stream responseStream = null;
+            WebRequest request = null;
+            HttpWebResponse response = null;
+            StreamReader responseReader = null;
             string responseString = null;
 
             try
             {
-                requestUrl = new Uri(@url);
+                requestUrl = new Uri(url);
             }
             catch (ArgumentNullException e)
             {
