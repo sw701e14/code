@@ -52,25 +52,12 @@ namespace Library
         public static XmlDocument FetchGDirectionData(string url)
         {
             XmlDocument xmlDoc = null;
-            Uri requestUrl = null;
+            Uri requestUrl = new Uri(url);
             Stream responseStream = null;
             WebRequest request = null;
             HttpWebResponse response = null;
             StreamReader responseReader = null;
             string responseString = null;
-
-            try
-            {
-                requestUrl = new Uri(url);
-            }
-            catch (ArgumentNullException e)
-            {
-                return null;
-            }
-            catch (UriFormatException e)
-            {
-                return null;
-            }
 
             try
             {
@@ -186,7 +173,7 @@ namespace Library
             //Timestamp
             tempDateTime = tempDatePlusDuration;
             //start_location lat
-            tempStartLatitude = Double.Parse(xmlNode.FirstChild.NextSibling.FirstChild.InnerText,  System.Globalization.CultureInfo.InvariantCulture);
+            tempStartLatitude = Double.Parse(xmlNode.FirstChild.NextSibling.FirstChild.InnerText, System.Globalization.CultureInfo.InvariantCulture);
             //start_location lng
             tempStartLongtitude = Double.Parse(xmlNode.FirstChild.NextSibling.FirstChild.NextSibling.InnerText, System.Globalization.CultureInfo.InvariantCulture);
             //duration
