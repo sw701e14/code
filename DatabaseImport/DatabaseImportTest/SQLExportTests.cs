@@ -23,12 +23,13 @@ namespace Library.Tests
 
         }
 
-      
+
 
         [TestMethod()]
         public void writeGPSPointTest1()
         {
-            string output = gps1.writeGPSPoint();
+            var method = typeof(SQLExport).GetMethod("writeGPSPoint");
+            string output = method.Invoke(null, new object[] { gps1 }) as string;
             string expected = "('2014-01-01 12:00:00', 57.01163, 9.9911, 10, 1)";
 
             Assert.IsTrue(expected.SequenceEqual(output));
@@ -38,18 +39,9 @@ namespace Library.Tests
         [TestMethod()]
         public void writeGPSPointTest2()
         {
-            string output = gps2.writeGPSPoint();
+            var method = typeof(SQLExport).GetMethod("writeGPSPoint");
+            string output = method.Invoke(null, new object[] { gps2 }) as string;
             string expected = "('2014-01-01 12:30:09', 57.03106, 9.9458, 30, 1)";
-
-            Assert.IsTrue(expected.SequenceEqual(output));
-
-        }
-
-        [TestMethod()]
-        public void writeGPSPointTestNullAccuracy()
-        {
-            string output = gps3.writeGPSPoint();
-            string expected = "('2014-03-13 23:24:23', 57.01271, 9.9878, null, 1)";
 
             Assert.IsTrue(expected.SequenceEqual(output));
 
