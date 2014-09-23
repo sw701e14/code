@@ -55,7 +55,7 @@
     <Compile Include="PrivateTesting.cs" />
     <Compile Include="SQLExportTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="GDirectionsParserTests.cs" />
+    <Compile Include="GoogleDirectionsParserTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Library\Library.csproj">
