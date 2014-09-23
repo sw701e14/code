@@ -11,6 +11,9 @@ using System.Xml.Linq;
 
 namespace Library
 {
+    /// <summary>
+    /// Exposes methods for retrieving <see cref="GPSPoint"/>s from a Google Directions route.
+    /// </summary>
     public class GoogleDirectionsParser
     {
         private DateTime nextDate;
@@ -22,6 +25,13 @@ namespace Library
             this.bikeId = bikeId;
         }
 
+        /// <summary>
+        /// Queries Google Directions with a URL and generates a set of <see cref="GPSPoint"/>s representing the generated route.
+        /// </summary>
+        /// <param name="url">The URL from which Google Directions should generate a route.</param>
+        /// <param name="startTime">The time associated with the first <see cref="GPSPoint"/> in the result.</param>
+        /// <param name="bikeId">The bike identifier.</param>
+        /// <returns>A collection of <see cref="GPSPoint"/>s representing the generated route.</returns>
         public static IEnumerable<GPSPoint> GetData(string url, DateTime startTime, int bikeId)
         {
             var parser = new GoogleDirectionsParser(startTime, bikeId);
