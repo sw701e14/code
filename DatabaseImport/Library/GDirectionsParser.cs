@@ -70,12 +70,10 @@ namespace Library
             return XDocument.Load(responseStream);
         }
 
-        private static void parseGDirectionToGpsData(XmlDocument xmlDoc)
+        private static void parseGDirectionToGpsData(XDocument xmlDoc)
         {
             if (xmlDoc == null)
-            {
-                throw new ArgumentNullException(@"xmlDoc is null");
-            }
+                throw new ArgumentNullException("xmlDoc");
 
             XmlNodeList xmlNodeList = xmlDoc.GetElementsByTagName("step");
 
