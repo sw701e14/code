@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="9cf674df18fa45f5801c56743638152d" Name="Diagram1">
+      <Diagram DiagramId="6c7d8bf45ace4ae8ba07bf68049bd607" Name="Diagram1">
         <EntityTypeShape EntityType="citybike_testModel.gps_data" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
       </Diagram>
     </edmx:Diagrams>

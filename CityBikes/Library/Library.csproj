@@ -50,16 +50,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Heatmap.cs" />
-    <Compile Include="HeatmapImagegenerator.cs">
-      <DependentUpon>Heatmap.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MapToIndex.cs" />
     <Compile Include="GeneratedDatabaseModel\Model.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Model.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Heatmap.cs" />
+    <Compile Include="HeatmapImagegenerator.cs">
+      <DependentUpon>Heatmap.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MapToIndex.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
