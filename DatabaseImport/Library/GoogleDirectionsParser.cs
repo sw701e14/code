@@ -22,7 +22,7 @@ namespace Library
             this.bikeId = bikeId;
         }
 
-        public static IEnumerable<GPSPoint> FetchGDirectionData(string url, DateTime startTime, int bikeId)
+        public static IEnumerable<GPSPoint> GetData(string url, DateTime startTime, int bikeId)
         {
             var parser = new GoogleDirectionsParser(startTime, bikeId);
             return parser.loadPoints(url);
