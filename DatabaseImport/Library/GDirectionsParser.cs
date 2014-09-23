@@ -13,12 +13,8 @@ namespace Library
 {
     public class GDirectionsParser
     {
-        private static DateTime tempDateTime = DateTime.Now;
         private static DateTime tempDatePlusDuration = DateTime.Now;
-        private static double tempStartLatitude;
-        private static double tempStartLongtitude;
-        private static double tempEndLatitude;
-        private static double tempEndLongtitude;
+        private static int bikeId;
 
         /// <summary>
         /// Main that adds all gps point from the the specified urls (GDirections).
@@ -94,26 +90,18 @@ namespace Library
         }
 
         //
-        private static void parseLocationData(XmlNode xmlNode, bool last)
+        private static GPSPoint parseLocationData(XElement element, bool last)
         {
-            //Timestamp
-            tempDateTime = tempDatePlusDuration;
-            //start_location lat
-            tempStartLatitude = Double.Parse(xmlNode.FirstChild.NextSibling.FirstChild.InnerText, System.Globalization.CultureInfo.InvariantCulture);
-            //start_location lng
-            tempStartLongtitude = Double.Parse(xmlNode.FirstChild.NextSibling.FirstChild.NextSibling.InnerText, System.Globalization.CultureInfo.InvariantCulture);
-            //duration
-            double tempDurationInSeconds = Double.Parse(xmlNode.FirstChild.NextSibling.NextSibling.NextSibling.NextSibling.FirstChild.InnerText, System.Globalization.CultureInfo.InvariantCulture);
-            TimeSpan duration = TimeSpan.FromSeconds(tempDurationInSeconds);
-            tempDatePlusDuration = tempDatePlusDuration.Add(duration);
+            var location = last ? element.Element("end_location") : element.Element("start_location");
+            double lat = double.Parse(location.Element("lat").Value, System.Globalization.CultureInfo.InvariantCulture);
+            double lng = double.Parse(location.Element("lng").Value, System.Globalization.CultureInfo.InvariantCulture);
 
-            if (last)
-            {
-                //end_location lat
-                tempEndLatitude = Double.Parse(xmlNode.FirstChild.NextSibling.NextSibling.FirstChild.InnerText, System.Globalization.CultureInfo.InvariantCulture);
-                //end_location lng
-                tempEndLongtitude = Double.Parse(xmlNode.FirstChild.NextSibling.NextSibling.FirstChild.NextSibling.InnerText, System.Globalization.CultureInfo.InvariantCulture);
-            }
+            var point = new GPSPoint(tempDatePlusDuration, lat, lng, null, bikeId);
+
+            int durationSeconds = int.Parse(element.Element("duration").Element("value").Value);
+            tempDatePlusDuration.AddSeconds(durationSeconds);
+
+            return point;
         }
     }
 }
