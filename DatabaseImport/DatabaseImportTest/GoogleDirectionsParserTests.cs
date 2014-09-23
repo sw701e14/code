@@ -21,37 +21,5 @@ namespace DatabaseImportTest
         {
             testGDirectionUrl = "https://maps.googleapis.com/maps/api/directions/xml?origin=39+Kastetvej,+Aalborg,+Nordjylland,+Danmark&destination=300+Selma+Lagerl%C3%B8fs+Vej,+Aalborg+%C3%98st,+Nordjylland,+Danmark&sensor=false&key=AIzaSyBLIB1DsgmDpNPuhUaFKSMO-SEt2gLA9Vk&avoid=highways&mode=bicycling&language=da";
         }
-
-
-        [TestMethod]
-        public void GetXMLDocumentWithCorrectUrl()
-        {
-            XmlDocument actualXmlDoc = Library.GoogleDirectionsParser.FetchGDirectionData(testGDirectionUrl);
-            string actualString = actualXmlDoc.InnerXml;
-
-            XmlDocument expectedXmlDoc = new XmlDocument();
-            expectedXmlDoc.Load(@"..\..\..\..\TestData\" + "GDirectionsTestXml.xml");
-            string expectedString = expectedXmlDoc.InnerXml;
-
-            Assert.AreEqual(expectedString, actualString);
-        }
-
-        [TestMethod]
-        public void GetXMLDocumentWithWrongUrl()
-        {
-            XmlDocument actual = Library.GoogleDirectionsParser.FetchGDirectionData("");
-            XmlDocument expected = null;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void GetXMLDocumentWithNullUrl()
-        {
-            XmlDocument actual = Library.GoogleDirectionsParser.FetchGDirectionData(null);
-            XmlDocument expected = null;
-
-            Assert.AreEqual(expected, actual);
-        }
     }
 }
