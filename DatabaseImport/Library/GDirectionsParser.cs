@@ -59,24 +59,9 @@ namespace Library
             StreamReader responseReader = null;
             string responseString = null;
 
-            try
-            {
-                request = System.Net.WebRequest.Create(requestUrl);
-                request.Proxy = null;
-                request.Credentials = System.Net.CredentialCache.DefaultCredentials;
-            }
-            catch (ArgumentNullException e)
-            {
-                return null;
-            }
-            catch (NotSupportedException e)
-            {
-                return null;
-            }
-            catch (System.Security.SecurityException e)
-            {
-                return null;
-            }
+            request = System.Net.WebRequest.Create(requestUrl);
+            request.Proxy = null;
+            request.Credentials = System.Net.CredentialCache.DefaultCredentials;
 
             //Allows for validation of SSL certificates 
             System.Net.ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, ssl) => true;
