@@ -13,10 +13,22 @@ namespace Library
 {
     public class GoogleDirectionsParser
     {
-        private static DateTime tempDatePlusDuration = DateTime.Now;
-        private static int bikeId;
+        private DateTime tempDatePlusDuration = DateTime.Now;
+        private int bikeId;
 
-        public static IEnumerable<GPSPoint> FetchGDirectionData(string url)
+        private GoogleDirectionsParser(DateTime startTime, int bikeId)
+        {
+            this.tempDatePlusDuration = startTime;
+            this.bikeId = bikeId;
+        }
+
+        public static IEnumerable<GPSPoint> FetchGDirectionData(string url, DateTime startTime, int bikeId)
+        {
+            var parser = new GoogleDirectionsParser(startTime, bikeId);
+            return parser.loadPoints(url);
+        }
+
+        private IEnumerable<GPSPoint> loadPoints(string url)
         {
             Uri requestUrl = new Uri(url);
             Stream responseStream = null;
@@ -41,7 +53,7 @@ namespace Library
             yield return parseLocationData(xmlDoc.Descendants("step").Last(), true);
         }
 
-        private static GPSPoint parseLocationData(XElement element, bool last)
+        private GPSPoint parseLocationData(XElement element, bool last)
         {
             var location = last ? element.Element("end_location") : element.Element("start_location");
             double lat = double.Parse(location.Element("lat").Value, System.Globalization.CultureInfo.InvariantCulture);
