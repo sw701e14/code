@@ -16,36 +16,6 @@ namespace Library
         private static DateTime tempDatePlusDuration = DateTime.Now;
         private static int bikeId;
 
-        /// <summary>
-        /// Main that adds all gps point from the the specified urls (GDirections).
-        /// </summary>
-        /// <param name="urls">The urls.</param>
-        public static void Main(string[] urls)
-        {
-            /*//For testing purposes.
-            string testString = "https://maps.googleapis.com/maps/api/directions/xml?origin=39+Kastetvej,+Aalborg,+Nordjylland,+Danmark&destination=300+Selma+Lagerl%C3%B8fs+Vej,+Aalborg+%C3%98st,+Nordjylland,+Danmark&sensor=false&key=AIzaSyBLIB1DsgmDpNPuhUaFKSMO-SEt2gLA9Vk&avoid=highways&mode=bicycling&language=da";
-            try
-            {
-                parseGDirectionToGpsData(FetchGDirectionData(testString));
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.StackTrace);
-            }*/
-
-            foreach (string url in urls)
-            {
-                try
-                {
-                    parseGDirectionToGpsData(FetchGDirectionData(url));
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.StackTrace);
-                }
-            }
-        }
-
         public static IEnumerable<GPSPoint> FetchGDirectionData(string url)
         {
             Uri requestUrl = new Uri(url);
