@@ -13,12 +13,12 @@ namespace Library
 {
     public class GoogleDirectionsParser
     {
-        private DateTime tempDatePlusDuration = DateTime.Now;
+        private DateTime nextDate;
         private int bikeId;
 
         private GoogleDirectionsParser(DateTime startTime, int bikeId)
         {
-            this.tempDatePlusDuration = startTime;
+            this.nextDate = startTime;
             this.bikeId = bikeId;
         }
 
@@ -59,10 +59,10 @@ namespace Library
             double lat = double.Parse(location.Element("lat").Value, System.Globalization.CultureInfo.InvariantCulture);
             double lng = double.Parse(location.Element("lng").Value, System.Globalization.CultureInfo.InvariantCulture);
 
-            var point = new GPSPoint(tempDatePlusDuration, lat, lng, null, bikeId);
+            var point = new GPSPoint(nextDate, lat, lng, null, bikeId);
 
             int durationSeconds = int.Parse(element.Element("duration").Element("value").Value);
-            tempDatePlusDuration.AddSeconds(durationSeconds);
+            nextDate.AddSeconds(durationSeconds);
 
             return point;
         }
