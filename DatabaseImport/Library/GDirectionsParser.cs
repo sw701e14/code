@@ -66,63 +66,15 @@ namespace Library
             //Allows for validation of SSL certificates 
             System.Net.ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, ssl) => true;
 
-            try
-            {
-                response = (System.Net.HttpWebResponse)request.GetResponse();
-            }
-            catch (NotImplementedException e)
-            {
-                return null;
-            }
+            response = (System.Net.HttpWebResponse)request.GetResponse();
+            responseStream = response.GetResponseStream();
 
-            try
-            {
-                responseStream = response.GetResponseStream();
-            }
-            catch (System.Net.ProtocolViolationException e)
-            {
-                return null;
-            }
-            catch (ObjectDisposedException e)
-            {
-                return null;
-            }
+            responseReader = new System.IO.StreamReader(responseStream);
 
-            try
-            {
-                responseReader = new System.IO.StreamReader(responseStream);
-            }
-            catch (ArgumentNullException e)
-            {
-                return null;
-            }
-            catch (ArgumentException e)
-            {
-                return null;
-            }
+            responseString = responseReader.ReadToEnd();
 
-            try
-            {
-                responseString = responseReader.ReadToEnd();
-            }
-            catch (OutOfMemoryException e)
-            {
-                return null;
-            }
-            catch (System.IO.IOException e)
-            {
-                return null;
-            }
-
-            try
-            {
-                xmlDoc = new XmlDocument();
-                xmlDoc.LoadXml(responseString);
-            }
-            catch (XmlException e)
-            {
-                return null;
-            }
+            xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(responseString);
 
             return xmlDoc;
         }
