@@ -1,12 +1,8 @@
-﻿using Library;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 using System.Xml.Linq;
 
 namespace Library
@@ -36,6 +32,27 @@ namespace Library
         {
             var parser = new GoogleDirectionsParser(startTime, bikeId);
             return parser.loadPoints(url);
+        }
+
+        /// <summary>
+        /// Queries Google Directions with a from and a to string and generates a set of <see cref="GPSPoint"/>s representing the generated route.
+        /// </summary>
+        /// <param name="from">The location where the route should start (an address).</param>
+        /// <param name="to">The location where the route should end (an address).</param>
+        /// <param name="startTime">The time associated with the first <see cref="GPSPoint"/> in the result.</param>
+        /// <param name="bikeId">The bike identifier.</param>
+        /// <returns>A collection of <see cref="GPSPoint"/>s representing the generated route.</returns>
+        public static IEnumerable<GPSPoint> GetData(string from, string to, DateTime startTime, int bikeId)
+        {
+            string url = "https://maps.googleapis.com/maps/api/directions/xml?origin={0}&destination={1}&sensor=false&key=AIzaSyBLIB1DsgmDpNPuhUaFKSMO-SEt2gLA9Vk&avoid=highways&mode=bicycling&language=da";
+
+            string enc = System.Web.HttpUtility.UrlEncode(from);
+
+            url = string.Format(url,
+                System.Web.HttpUtility.UrlEncode(from),
+                System.Web.HttpUtility.UrlEncode(to));
+
+            return GetData(url, startTime, bikeId);
         }
 
         private IEnumerable<GPSPoint> loadPoints(string url)
