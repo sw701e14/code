@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace Library
 {
@@ -49,15 +50,12 @@ namespace Library
             }
         }
 
-        public static XmlDocument FetchGDirectionData(string url)
+        public static XDocument FetchGDirectionData(string url)
         {
-            XmlDocument xmlDoc = null;
             Uri requestUrl = new Uri(url);
             Stream responseStream = null;
             WebRequest request = null;
             HttpWebResponse response = null;
-            StreamReader responseReader = null;
-            string responseString = null;
 
             request = System.Net.WebRequest.Create(requestUrl);
             request.Proxy = null;
@@ -69,14 +67,7 @@ namespace Library
             response = (System.Net.HttpWebResponse)request.GetResponse();
             responseStream = response.GetResponseStream();
 
-            responseReader = new System.IO.StreamReader(responseStream);
-
-            responseString = responseReader.ReadToEnd();
-
-            xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(responseString);
-
-            return xmlDoc;
+            return XDocument.Load(responseStream);
         }
 
         private static void parseGDirectionToGpsData(XmlDocument xmlDoc)
