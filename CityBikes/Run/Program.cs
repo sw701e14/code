@@ -11,7 +11,10 @@ namespace Run
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(BikesNearby.GetBikesNearby(1,1));
+            foreach (var item in BikesNearby.GetBikesNearby(1,1))
+            {
+                Console.WriteLine("bikeID: " + item.Key + " Distance to given point: " + item.Value.Item1 + " Date: " + item.Value.Item2);
+            }
             Console.ReadKey();
         }
     }

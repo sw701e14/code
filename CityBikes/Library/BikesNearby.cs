@@ -9,16 +9,27 @@ namespace Library
 {
     public static class BikesNearby
     {
-        public static SortedList<decimal,gps_data> GetBikesNearby(decimal latitude, decimal longitude)
+        public static SortedList<int,Tuple<decimal,DateTime>> GetBikesNearby(decimal latitude, decimal longitude)
         {
-            SortedList<decimal, gps_data> bikes = new SortedList<decimal, gps_data>();
+            SortedList<int, Tuple<decimal,DateTime>> bikes = new SortedList<int,Tuple<decimal,DateTime>>();
             Database context = new Database();
             var query = from b in context.gps_data
                         select b;
 
             foreach (gps_data g in query)
             {
-                bikes.Add(getDistance(latitude, longitude, g.latitude, g.longitude), g);
+                if (bikes.Keys.Contains(g.bikeId))
+                {
+                    if (DateTime.Compare(bikes[g.bikeId].Item2, g.queried) > 0)
+                    {
+                        bikes[g.bikeId] = Tuple.Create(getDistance(latitude, longitude, g.latitude, g.longitude), g.queried);
+                    }
+                }
+                else
+                {
+                    bikes.Add(g.bikeId, Tuple.Create(getDistance(latitude, longitude, g.latitude, g.longitude), g.queried));
+                }
+                
             }
             return bikes;
         }
