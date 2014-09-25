@@ -9,7 +9,7 @@ namespace Library
 {
     public static class BikesNearby
     {
-        public static string GetBikesNearby(decimal latitude, decimal longitude)
+        public static SortedList<decimal,gps_data> GetBikesNearby(decimal latitude, decimal longitude)
         {
             SortedList<decimal, gps_data> bikes = new SortedList<decimal, gps_data>();
             Database context = new Database();
@@ -18,9 +18,9 @@ namespace Library
 
             foreach (gps_data g in query)
             {
-                //bikes.Add(getDistance(latitude, longitude, g.latitude, g.longitude), g);
+                bikes.Add(getDistance(latitude, longitude, g.latitude, g.longitude), g);
             }
-            return "bikes";
+            return bikes;
         }
 
         private static decimal getDistance(decimal fromLatitude, decimal fromLongitude, decimal toLatitude, decimal toLongitude)
