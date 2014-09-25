@@ -11,7 +11,11 @@ namespace Run
     {
         static void Main(string[] args)
         {
-            
+            AllBikesLocation abl = new AllBikesLocation();
+            foreach (var item in abl.GetBikeLocations())
+            {
+                Console.WriteLine(item.id);
+            }
         }
     }
 }
