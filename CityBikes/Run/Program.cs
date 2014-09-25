@@ -11,7 +11,7 @@ namespace Run
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(BikesNearby.GetBikesNearby());
+            //Console.WriteLine(BikesNearby.GetBikesNearby());
             Console.ReadKey();
         }
     }
