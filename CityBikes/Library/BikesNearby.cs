@@ -11,16 +11,16 @@ namespace Library
     {
         public static string GetBikesNearby(decimal latitude, decimal longitude)
         {
-            citybike_testEntities1 context = new citybike_testEntities1();
+            SortedList<decimal, gps_data> bikes = new SortedList<decimal, gps_data>();
+            Database context = new Database();
             var query = from b in context.gps_data
-                        orderby b.bikeId
                         select b;
 
             foreach (gps_data g in query)
             {
-                return g.accuracy.ToString();
+                //bikes.Add(getDistance(latitude, longitude, g.latitude, g.longitude), g);
             }
-            return "abekat";
+            return "bikes";
         }
 
         private static decimal getDistance(decimal fromLatitude, decimal fromLongitude, decimal toLatitude, decimal toLongitude)
