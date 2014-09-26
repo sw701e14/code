@@ -14,8 +14,10 @@ namespace Run
             AllBikesLocation abl = new AllBikesLocation();
             foreach (var item in abl.GetBikeLocations())
             {
-                Console.WriteLine(item.id);
+                Console.WriteLine(item.bikeId);
             }
+
+            Console.ReadKey();
         }
     }
 }
