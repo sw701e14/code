@@ -13,7 +13,7 @@ namespace Run
         {
             foreach (var item in BikesNearby.GetBikesNearby(1,1))
             {
-                Console.WriteLine("bikeID: " + item.Key + " Distance to given point: " + item.Value.Item1 + " Date: " + item.Value.Item2);
+                Console.WriteLine("bikeID: " + item.Item1 + " Distance to given point: " + item.Item2);
             }
             Console.ReadKey();
         }
