@@ -17,19 +17,17 @@ namespace Library
             return location.First();
         }
 
-        public IQueryable<gps_data> GetBikeLocations()
+        public IEnumerable<Tuple<int, GPSLocation>> GetBikeLocations()
         {
-           var bg =  from bike in context.gps_data 
-                           group bike by bike.bikeId into b
-                           let newestLocation = b.Max(x=>x.queried)
+            return from bike in context.gps_data
+                     group bike by bike.bikeId into b
+                     let newestLocation = b.Max(x => x.queried)
 
-                           from g in b 
-                           where g.queried == newestLocation
-                           select g;
+                     from g in b
+                     where g.queried == newestLocation
+                     select  Tuple.Create(g.bikeId, g.Location);
 
-
-           var h = bg.ToArray();
-           return bg;
+            
         }
 
         public IEnumerable<int> findAllIds()
