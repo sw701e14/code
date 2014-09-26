@@ -10,10 +10,5 @@ namespace Library.Tests
     [TestClass()]
     public class BikesNearbyTests
     {
-        [TestMethod()]
-        public void GetBikesNearbyTest()
-        {
-            Assert.Fail();
-        }
     }
 }
