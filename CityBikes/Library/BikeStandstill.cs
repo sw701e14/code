@@ -13,7 +13,11 @@ namespace Library
 
         public static IEnumerable<Tuple<int, DateTime>> GetBikesImmobile()
         {
-            
+
+        }
+        public static IEnumerable<Tuple<int, DateTime>> GetBikesImmobile(DateTime immobileSince)
+        {
+            return GetBikesImmobile().Where(b => b.Item2 < immobileSince);
         }
     }
 }
