@@ -17,22 +17,36 @@ namespace Run
                 return;
 
             Menu<IEnumerable<GPSPoint>> menu = new Menu<IEnumerable<GPSPoint>>("Load data!");
-            menu.SetCancel("Exit");
+            menu.SetCancel("Done");
 
             menu.Add("Load from file", loadFromFile);
             menu.Add("Load from Google Directions", loadFromGoogle);
 
-            var points = menu.Show(true);
+            var points = menu.Show(true).ToArray();
 
-            if (points == null)
+            if (points == null || points.Count() == 0)
                 return;
 
-            if (File.Exists("temp.sql"))
-                File.Delete("temp.sql");
+            if (points.All(x => x == null))
+                return;
 
-            foreach (var p in points)
-                if (p != null)
-                    SQLExport.Export(p, "temp.sql", true);
+            Menu insertIn = new Menu("Insert into");
+            insertIn.SetCancel("Do nothing!");
+
+            insertIn.Add("Insert into database", () => insertInDB(points));
+            insertIn.Add("Write to file", () =>
+            {
+                string filename = "Filename (.sql is appended automatically): ".GetString() + ".sql";
+
+                if (File.Exists(filename))
+                    File.Delete(filename);
+
+                foreach (var p in points)
+                    if (p != null)
+                        SQLExport.Export(p, filename, true);
+            });
+
+            insertIn.Show();
         }
 
         static bool hasFiles()
@@ -81,6 +95,11 @@ namespace Run
             int id = "Specify bike ID: ".GetInt32(x => x > 0);
 
             return GoogleDirectionsParser.GetData(from, to, start, id);
+        }
+
+        static void insertInDB(IEnumerable<IEnumerable<GPSPoint>> points)
+        {
+            throw new NotImplementedException();
         }
     }
 }
