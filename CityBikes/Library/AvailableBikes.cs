@@ -9,20 +9,25 @@ namespace Library
 {
     public static class AvailableBikes
     {
-        public static IEnumerable<int> GetAvailableBikes()
+        public static IEnumerable<Tuple<int/*, GPSLocation*/>> GetAvailableBikes()
         {
-            Database database = new Database();
-            IQueryable<int> query = from bike in database.gps_data
-                                         select bike.bikeId ;
+            IEnumerable<Tuple<int, GPSLocation>> allBikesPosition; /*= FindLocationOfAllBikes();*/
+            IEnumerable<Tuple<int, DateTime>> allBikesImmobile; /*= BikesImmobileFor();*/
 
-            foreach (int bikeID in query.Distinct())
+
+            IEnumerable<Tuple<int, DateTime, GPSLocation>> answer = allBikesPosition.Join(allBikesImmobile, p => p.Item1, i => i.Item1, (p, i) => new {Tuple<p.Item1, p.Item2, i.Item2});
+
+
+
+            foreach (Tuple<int/*, GPSLocation*/> bike in allBikesPosition)
             {
-                if (/*BikeImmobileFor(bikeID) >= AVAILABLE_AFTER_IMMOBILE_FOR_TIME*/true)
+                if (true)
                 {
-                    yield return bikeID;
+                    yield return bike;
                 }
             }
 
         }
+
     }
 }
