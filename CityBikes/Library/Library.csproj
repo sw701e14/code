@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BikeStandstill.cs" />
     <Compile Include="GeneratedDatabaseModel\GPSLocation.cs" />
     <Compile Include="GeneratedDatabaseModel\gps_data.cs" />
     <Compile Include="GeneratedDatabaseModel\Model.Designer.cs">
