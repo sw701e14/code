@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace Library
         /// <returns>A collection of <see cref="GPSPoint"/> representing the data in the file.</returns>
         public static GPSPoint[] GetData(string fileName, int bikeID)
         {
-            string[] lines = FileHandler.LoadFile(fileName);
+            string[] lines = File.ReadAllLines(fileName);
             GPSPoint[] data = new GPSPoint[lines.Count()-1];
             for (int i = 1; i < lines.Count(); i++)
             {

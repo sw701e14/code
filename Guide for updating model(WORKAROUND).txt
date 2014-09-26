@@ -1,0 +1,25 @@
+Delete Model.dmx file in the folder 'GeneratedDatabaseModel
+Delete all connection strings called 'Database' ndjs
+
+Add new item to the folder -> the item is ADO.net Entity Data Model  and name it 'Model'
+
+A setup wizard starts:
+
+	choose generate from databse
+	add connection
+		server: localhost
+		user: root
+		password: takecare
+		MAKE SURE that your local database is running and has the necessary schema
+	Answer yes to inlcuding sensitive data to the connection string
+	Call the entity 'Database'
+	Press Next
+	
+	Select the objects u want to inlcude
+	Name the namespace: 'DatabaseModel'
+	Press Finish
+
+U now see the tables generated from the database
+Now we need to generate the code from the xml files generated
+We need to set the 'Code Generation Strategy' on the properties for the 'Model.edmx' to 'default'
+Then u should be avle to see the generated code in under the 'Model.edmx' -> 'Model.Designer.cs' in the solution explorer

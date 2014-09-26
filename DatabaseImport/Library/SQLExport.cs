@@ -29,7 +29,7 @@ namespace Library
             using (StreamWriter output = new System.IO.StreamWriter(filename, append))
             {
                 string insertStatement = WriteInsertStatement(points);
-                output.Write(insertStatement);
+                output.WriteLine(insertStatement);
             }
         }
 
