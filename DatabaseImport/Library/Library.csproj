@@ -42,7 +42,6 @@
   <ItemGroup>
     <Compile Include="GoogleDirectionsParser.cs" />
     <Compile Include="CSVParser.cs" />
-    <Compile Include="FileHandler.cs" />
     <Compile Include="GPSPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLExport.cs" />
