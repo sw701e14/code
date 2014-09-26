@@ -21,7 +21,13 @@ namespace Library
         {
            var bg =  from bike in context.gps_data 
                            group bike by bike.bikeId into b
-                           select b.OrderByDescending(x=>x.queried).First();
+                           let newestLocation = b.Max(x=>x.queried)
+
+                           from g in b 
+                           where g.queried == newestLocation
+                           select g;
+
+
            var h = bg.ToArray();
            return bg;
         }
