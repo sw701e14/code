@@ -17,12 +17,6 @@ namespace Library.Tests
         decimal toLongitude = 1m;
 
         [TestMethod()]
-        public void GetBikesNearbyTest()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod()]
         public void getDistance()
         {
             decimal actual = typeof(BikesNearby).InvokeStaticPrivate<decimal>("getDistance", fromLatitude, fromLongitude, toLatitude, toLongitude);
