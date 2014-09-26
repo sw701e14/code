@@ -13,22 +13,18 @@ namespace Library.Tests
     {
         Database context = new Database();
 
-        [TestMethod()]
-        public void GetBikesNearbyTest()
-        {
-            Assert.Fail();
-        }
-
+        //Requires test_data.sql in the database
         [TestMethod()]
         public void GetBikeLocationTest()
         {
             AllBikesLocation abl = new AllBikesLocation();
             GPSLocation loc = abl.GetBikeLocation(65530);
 
-            GPSLocation expected = new GPSLocation(4.12345678m,-4.12345678m);
+            GPSLocation expected = new GPSLocation(4.12345678m, -4.12345678m);
             Assert.AreEqual(expected, loc);
         }
 
+        //Requires test_data.sql in the database
         [TestMethod()]
         public void GetBikeLocationsTest()
         {
@@ -44,7 +40,7 @@ namespace Library.Tests
                 Tuple.Create(65535,new GPSLocation (5.12345678m,-1.12345678m))
             };
 
-            
+
 
             if (locations.Count() != bikesExpected.Count)
                 Assert.Fail();
