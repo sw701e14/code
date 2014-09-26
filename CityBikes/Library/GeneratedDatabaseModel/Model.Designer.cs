@@ -80,6 +80,22 @@ namespace Library.GeneratedDatabaseModel
             }
         }
         private ObjectSet<gps_data> _gps_data;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<stations> stations
+        {
+            get
+            {
+                if ((_stations == null))
+                {
+                    _stations = base.CreateObjectSet<stations>("stations");
+                }
+                return _stations;
+            }
+        }
+        private ObjectSet<stations> _stations;
 
         #endregion
 
@@ -91,6 +107,14 @@ namespace Library.GeneratedDatabaseModel
         public void AddTogps_data(gps_data gps_data)
         {
             base.AddObject("gps_data", gps_data);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the stations EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddTostations(stations stations)
+        {
+            base.AddObject("stations", stations);
         }
 
         #endregion
@@ -282,6 +306,140 @@ namespace Library.GeneratedDatabaseModel
         private global::System.DateTime _queried;
         partial void OnqueriedChanging(global::System.DateTime value);
         partial void OnqueriedChanged();
+
+        #endregion
+
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="DatabaseModel", Name="stations")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class stations : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new stations object.
+        /// </summary>
+        /// <param name="id">Initial value of the id property.</param>
+        /// <param name="station_name">Initial value of the station_name property.</param>
+        /// <param name="latitude">Initial value of the latitude property.</param>
+        /// <param name="longitude">Initial value of the longitude property.</param>
+        public static stations Createstations(global::System.Int64 id, global::System.String station_name, global::System.Decimal latitude, global::System.Decimal longitude)
+        {
+            stations stations = new stations();
+            stations.id = id;
+            stations.station_name = station_name;
+            stations.latitude = latitude;
+            stations.longitude = longitude;
+            return stations;
+        }
+
+        #endregion
+
+        #region Simple Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 id
+        {
+            get
+            {
+                return _id;
+            }
+            set
+            {
+                if (_id != value)
+                {
+                    OnidChanging(value);
+                    ReportPropertyChanging("id");
+                    _id = StructuralObject.SetValidValue(value, "id");
+                    ReportPropertyChanged("id");
+                    OnidChanged();
+                }
+            }
+        }
+        private global::System.Int64 _id;
+        partial void OnidChanging(global::System.Int64 value);
+        partial void OnidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String station_name
+        {
+            get
+            {
+                return _station_name;
+            }
+            set
+            {
+                Onstation_nameChanging(value);
+                ReportPropertyChanging("station_name");
+                _station_name = StructuralObject.SetValidValue(value, false, "station_name");
+                ReportPropertyChanged("station_name");
+                Onstation_nameChanged();
+            }
+        }
+        private global::System.String _station_name;
+        partial void Onstation_nameChanging(global::System.String value);
+        partial void Onstation_nameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Decimal latitude
+        {
+            get
+            {
+                return _latitude;
+            }
+            set
+            {
+                OnlatitudeChanging(value);
+                ReportPropertyChanging("latitude");
+                _latitude = StructuralObject.SetValidValue(value, "latitude");
+                ReportPropertyChanged("latitude");
+                OnlatitudeChanged();
+            }
+        }
+        private global::System.Decimal _latitude;
+        partial void OnlatitudeChanging(global::System.Decimal value);
+        partial void OnlatitudeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Decimal longitude
+        {
+            get
+            {
+                return _longitude;
+            }
+            set
+            {
+                OnlongitudeChanging(value);
+                ReportPropertyChanging("longitude");
+                _longitude = StructuralObject.SetValidValue(value, "longitude");
+                ReportPropertyChanged("longitude");
+                OnlongitudeChanged();
+            }
+        }
+        private global::System.Decimal _longitude;
+        partial void OnlongitudeChanging(global::System.Decimal value);
+        partial void OnlongitudeChanged();
 
         #endregion
 
