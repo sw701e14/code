@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Library
+namespace DatabaseImport
 {
     /// <summary>
     /// Provides methods for generating SQL statements that insert GPS data into the database.

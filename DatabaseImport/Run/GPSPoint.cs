@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Library
+namespace DatabaseImport
 {
     /// <summary>
     /// Describes the coordinates of a GPS-measurement (a point).
