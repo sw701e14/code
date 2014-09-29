@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Library;
 using Library.GeneratedDatabaseModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using DatabaseImportTest;
 namespace Library.Tests
 {
     [TestClass()]
@@ -54,6 +55,19 @@ namespace Library.Tests
             }
 
             Assert.IsTrue(true);
+	}
+
+        decimal fromLatitude = 4m;
+        decimal fromLongitude = 1m;
+        decimal toLatitude = 0m;
+        decimal toLongitude = 1m;
+
+        [TestMethod()]
+        public void getDistance()
+        {
+            decimal actual = typeof(BikesNearby).InvokeStaticPrivate<decimal>("getDistance", fromLatitude, fromLongitude, toLatitude, toLongitude);
+            decimal expected = 4m;
+            Assert.AreEqual(expected, actual);
         }
     }
 }
