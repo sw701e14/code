@@ -11,7 +11,7 @@ namespace Library
     {
 
         /// <summary>
-        /// Gets a sorted list, based on distance, of bikes and their location from the location given.
+        /// Gets a sorted list, based on distance, of bikes and their location.
         /// </summary>
         /// <param name="gpsLocation">The GPS location.</param>
         /// <returns>Returns a list of bike id and their location.</returns>
@@ -19,19 +19,20 @@ namespace Library
         {
             Dictionary<int, Tuple<decimal, DateTime, GPSLocation>> bikes = new Dictionary<int, Tuple<decimal, DateTime, GPSLocation>>();
             Database context = new Database();
-            var query = from b in context.gps_data
-                        orderby b.queried descending
-                        select b;
+            var query =  from bike in context.gps_data
+                         group bike by bike.bikeId into b
+                         let newestLocation = b.Max(x => x.queried)
+
+                         from g in b
+                         where g.queried == newestLocation
+                         select g;
 
             foreach (gps_data g in query)
             {
-                if (!bikes.Keys.Contains(g.bikeId))
-                {
-                    bikes.Add(g.bikeId, Tuple.Create(getDistance(gpsLocation.Latitude, gpsLocation.Longitude, g.latitude, g.longitude), g.queried, new GPSLocation(g.latitude, g.longitude)));
-                }
+                bikes.Add(g.bikeId, Tuple.Create(getDistance(gpsLocation.Latitude, gpsLocation.Longitude, g.latitude, g.longitude), g.queried, new GPSLocation(g.latitude, g.longitude)));
             }
 
-            foreach (var bike in bikes.OrderBy(x => x.Value.Item1))
+            foreach (KeyValuePair<int, Tuple<decimal, DateTime, GPSLocation>> bike in bikes.OrderBy(x => x.Value.Item1))
             {
                 yield return Tuple.Create(bike.Key, bike.Value.Item3);
             }

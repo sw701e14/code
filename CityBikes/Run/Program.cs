@@ -15,7 +15,7 @@ namespace Run
 
             //For testing the bikesnearby method..
             /*
-            foreach (var item in BikesNearby.GetBikesNearby(new GPSLocation(90,10)))
+            foreach (var item in BikesNearby.GetBikesNearby(new GPSLocation(2,-2)))
             {
                 Console.WriteLine("bikeID: " + item.Item1 + " Distance to given point: " + item.Item2.Latitude + ", " + item.Item2.Longitude);
             }
