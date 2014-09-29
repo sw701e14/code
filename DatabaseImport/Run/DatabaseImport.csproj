@@ -7,8 +7,8 @@
     <ProjectGuid>{9848ECDA-9CB8-47C3-874B-82B070A5272C}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Run</RootNamespace>
-    <AssemblyName>Run</AssemblyName>
+    <RootNamespace>DatabaseImport</RootNamespace>
+    <AssemblyName>DatabaseImport</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

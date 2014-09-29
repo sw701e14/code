@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library", "Library\Library.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseImportTest", "DatabaseImportTest\DatabaseImportTest.csproj", "{A86D6945-38B4-43FF-8AE8-9BBD28DBE23B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Run", "Run\Run.csproj", "{9848ECDA-9CB8-47C3-874B-82B070A5272C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseImport", "Run\DatabaseImport.csproj", "{9848ECDA-9CB8-47C3-874B-82B070A5272C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeadDog", "DeadDog\DeadDog.csproj", "{675AB5E0-4637-4E6C-8D38-AA7BB135B5CE}"
 EndProject
