@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,8 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CSVParser.cs" />
+    <Compile Include="GoogleDirectionsParser.cs" />
+    <Compile Include="GPSPoint.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SQLExport.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -51,10 +56,6 @@
     <ProjectReference Include="..\DeadDog\DeadDog.csproj">
       <Project>{675ab5e0-4637-4e6c-8d38-aa7bb135b5ce}</Project>
       <Name>DeadDog</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Library\Library.csproj">
-      <Project>{4b66be80-97e3-4b7f-8fc6-317cedfcd6dc}</Project>
-      <Name>Library</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
