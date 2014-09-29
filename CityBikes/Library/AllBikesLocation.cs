@@ -16,12 +16,12 @@ namespace Library
         /// Gets the location of the bike with <para>Id</para>.
         /// </summary>
         /// <param name="Id">The id of the bike to find the location of.</param>
-        /// <returns>The GPSLocation of the bike with <para>id</para></returns>
+        /// <returns>The GPSLocation of the bike with <para>id</para> or null if var location is null</returns>
         public GPSLocation GetBikeLocation(int Id)
         {
             var location = (from bike in context.gps_data where bike.bikeId == Id orderby bike.queried descending select bike);
 
-            return location.First().Location;
+            return location.FirstOrDefault().Location;
         }
 
         /// <summary>
