@@ -89,7 +89,7 @@ namespace DatabaseImport
             var point = new GPSPoint(nextDate, lat, lng, null, bikeId);
 
             int durationSeconds = int.Parse(element.Element("duration").Element("value").Value);
-            nextDate.AddSeconds(durationSeconds);
+            nextDate = nextDate.AddSeconds(durationSeconds);
 
             return point;
         }
