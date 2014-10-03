@@ -58,9 +58,9 @@
     <Compile Include="GoogleDirectionsParserTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Library\Library.csproj">
-      <Project>{4B66BE80-97E3-4B7F-8FC6-317CEDFCD6DC}</Project>
-      <Name>Library</Name>
+    <ProjectReference Include="..\Run\DatabaseImport.csproj">
+      <Project>{9848ecda-9cb8-47c3-874b-82b070a5272c}</Project>
+      <Name>DatabaseImport</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

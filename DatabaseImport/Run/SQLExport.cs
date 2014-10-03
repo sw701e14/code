@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Library
+namespace DatabaseImport
 {
     /// <summary>
     /// Provides methods for generating SQL statements that insert GPS data into the database.
@@ -29,7 +29,7 @@ namespace Library
             using (StreamWriter output = new System.IO.StreamWriter(filename, append))
             {
                 string insertStatement = WriteInsertStatement(points);
-                output.Write(insertStatement);
+                output.WriteLine(insertStatement);
             }
         }
 

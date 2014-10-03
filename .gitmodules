@@ -1,0 +1,3 @@
+[submodule "DatabaseImport/DeadDog"]
+	path = DatabaseImport/DeadDog
+	url = https://github.com/deaddog/DeadDog.git
