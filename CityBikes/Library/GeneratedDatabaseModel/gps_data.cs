@@ -14,7 +14,7 @@ namespace Library.GeneratedDatabaseModel
             set { this.latitude = value.Latitude; this.longitude = value.Longitude; }
         }
 
-        public static bool inVicinity(gps_data d1, gps_data d2)
+        public static bool WithinAccuracy(gps_data d1, gps_data d2)
         {
             double dist = GPSLocation.Distance(d1.Location, d2.Location) * 1000;
             return d1.accuracy + d2.accuracy >= dist;

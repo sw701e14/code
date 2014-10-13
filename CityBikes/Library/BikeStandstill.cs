@@ -33,7 +33,7 @@ namespace Library
                 }
                 else
                 {
-                    if (gps_data.inVicinity(firstData[v.bikeId], v))
+                    if (gps_data.WithinAccuracy(firstData[v.bikeId], v))
                         lastData[v.bikeId] = v;
                     else
                         stopped.Add(v.bikeId);
