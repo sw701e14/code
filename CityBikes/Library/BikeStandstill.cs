@@ -43,6 +43,11 @@ namespace Library
             foreach (var v in lastData)
                 yield return Tuple.Create(v.Key, v.Value.queried);
         }
+        /// <summary>
+        /// Gets a collection of all bikes and a <see cref="DateTime"/> value indicating when they were "parked".
+        /// </summary>
+        /// <param name="immobileSince">Any bikes that were parked after <paramref name="immobileSince"/> will not be returned.</param>
+        /// <returns>A collection of bikes and park-times.</returns>
         public static IEnumerable<Tuple<int, DateTime>> GetBikesImmobile(DateTime immobileSince)
         {
             return GetBikesImmobile().Where(b => b.Item2 < immobileSince);
