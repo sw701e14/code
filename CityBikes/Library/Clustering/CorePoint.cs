@@ -43,6 +43,10 @@ namespace Library.Clustering
             {
                 this.vicinityPoints.Add(point);
             }
+            public void AddRange(PointCollection points)
+            {
+                this.vicinityPoints.AddRange(points);
+            }
 
         }
     }

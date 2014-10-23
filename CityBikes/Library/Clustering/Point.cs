@@ -7,7 +7,7 @@ using Library.GeneratedDatabaseModel;
 
 namespace Library.Clustering
 {
-    public class Point
+    public class Point : IEquatable<Point>
     {
         public Point(GPSLocation gpsLocation) 
         {
@@ -21,5 +21,9 @@ namespace Library.Clustering
             get { return location; }
         }
         
+        public bool Equals(Point other)
+        {
+            return location.Equals(other);
+        }
     }
 }
