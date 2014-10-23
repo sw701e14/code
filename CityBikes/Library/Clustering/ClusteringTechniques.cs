@@ -15,17 +15,18 @@ namespace Library.Clustering
             return null;
         }
 
-        private static List<CorePoint> getCorePoints(GPSLocation[] gpsLocations, decimal[,] distanceMatrix, int minimumPoints, decimal radius)
+        private static List<CorePoint> getCorePoints(GPSLocation[] gpsLocations, int minimumPoints, decimal radius)
         {
+            int size = gpsLocations.Count();
             List<CorePoint> corePoints = new List<CorePoint>();
             List<Point> neighborhood = new List<Point>();
-            for (int i = 0; i < distanceMatrix.GetLength(i); i++)
+            for (int i = 0; i < size; i++)
             {
                 int count = 0;
                 neighborhood.Clear();
-                for (int j = 0; j < distanceMatrix.GetLength(j); j++)
-                {                    
-                    if (distanceMatrix[i, j] < radius)
+                for (int j = 0; j < size; j++)
+                {
+                    if (GPSTools.GetDistance(gpsLocations[i], gpsLocations[j]) < radius)
                     {
                         neighborhood.Add(new Point(gpsLocations[j]));
                         count++;
@@ -56,16 +57,6 @@ namespace Library.Clustering
                 clusters.Add(cp1);
             }
             return clusters; 
-        }
-
-        private static decimal[,] clalculateDistanceMatrix(GPSLocation[] gpsLocations)
-        {
-            int size = gpsLocations.Count();
-            decimal[,] distanceMatrix = new decimal[size,size];
-            for (int i = 0; i < size; i++)
-                for (int j = 0; j < size; j++)
-                    distanceMatrix[i, j] = GPSTools.GetDistance(gpsLocations[i], gpsLocations[j]);
-            return distanceMatrix;
         }
     }
 }
