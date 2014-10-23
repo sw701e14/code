@@ -45,5 +45,11 @@ namespace Library.GeneratedDatabaseModel
                 this.longitude = value;
             }
         }
+
+        public static GPSLocation operator -(GPSLocation g1, GPSLocation g2)
+        {
+            return new GPSLocation(g1.latitude - g2.latitude, g1.longitude - g2.longitude);
+        }
+
     }
 }
