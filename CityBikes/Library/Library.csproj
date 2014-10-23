@@ -52,10 +52,8 @@
   <ItemGroup>
     <Compile Include="AllBikesLocation.cs" />
     <Compile Include="BikesNearby.cs" />
-    <Compile Include="Clustering\BorderPoint.cs" />
     <Compile Include="Clustering\ClusteringTechniques.cs" />
     <Compile Include="Clustering\CorePoint.cs" />
-    <Compile Include="Clustering\NoisePoint.cs" />
     <Compile Include="Clustering\Point.cs" />
     <Compile Include="GeneratedDatabaseModel\GPSLocation.cs" />
     <Compile Include="GeneratedDatabaseModel\gps_data.cs" />

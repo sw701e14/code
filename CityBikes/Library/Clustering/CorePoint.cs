@@ -9,15 +9,41 @@ namespace Library.Clustering
 {
     public class CorePoint : Point
     {
-        public CorePoint(GPSLocation gpsLocation) : base(gpsLocation) { }
+        public CorePoint(GPSLocation gpsLocation, List<Point> neighborhood) : base(gpsLocation) 
+        {
+            this.neighborhood = new PointCollection(neighborhood);     
+        }
 
-        public class PointCollection
+        private PointCollection neighborhood;
+
+        public PointCollection Neighborhood
+        {
+            get { return neighborhood; }
+        }
+        
+
+        public class PointCollection : IEnumerable<Point>
         {
             private List<Point> vicinityPoints;
-            public PointCollection()
+            public PointCollection(List<Point> points)
             {
-                this.vicinityPoints = new List<Point>();
+                this.vicinityPoints = points;
             }
+
+            public IEnumerator<Point> GetEnumerator()
+            {
+                return this.vicinityPoints.GetEnumerator();
+            }
+
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+            {
+                return this.vicinityPoints.GetEnumerator();
+            }
+            public void Add(Point point)
+            {
+                this.vicinityPoints.Add(point);
+            }
+
         }
     }
 }

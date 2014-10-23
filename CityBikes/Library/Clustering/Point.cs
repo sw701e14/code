@@ -7,7 +7,7 @@ using Library.GeneratedDatabaseModel;
 
 namespace Library.Clustering
 {
-    public abstract class Point
+    public class Point
     {
         public Point(GPSLocation gpsLocation) 
         {
