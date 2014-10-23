@@ -60,6 +60,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model.edmx</DependentUpon>
     </Compile>
+    <Compile Include="GPSTools.cs" />
     <Compile Include="Heatmap.cs" />
     <Compile Include="HeatmapImagegenerator.cs">
       <DependentUpon>Heatmap.cs</DependentUpon>
