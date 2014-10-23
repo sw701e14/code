@@ -30,7 +30,7 @@ namespace Run
             Console.ReadKey();
              */
             //testBikeStandstill();
-
+            //testAvailableBikes();
         }
 
         static void testBikeStandstill()
@@ -49,6 +49,16 @@ namespace Run
             foreach (Tuple<int, DateTime> bike in BikeStandstill.GetBikesImmobile(DateTime.Parse(testDate)))
             {
                 Console.WriteLine("Bike Id: {0}  Park Time: {1}", bike.Item1, bike.Item2);
+            }
+            Console.ReadKey(true);
+        }
+
+        static void testAvailableBikes()
+        {
+            Console.WriteLine("Test AvailableBikes:");
+            foreach (Tuple<int, GPSLocation> bike in AvailableBikes.GetAvailableBikes())
+            {
+                Console.WriteLine("Bike Id: {0}  Lat: {1}  Long: {2}", bike.Item1, bike.Item2.Latitude, bike.Item2.Longitude);
             }
             Console.ReadKey(true);
         }
