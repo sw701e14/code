@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="AllBikesLocation.cs" />
     <Compile Include="BikesNearby.cs" />
+    <Compile Include="Clustering.cs" />
     <Compile Include="GeneratedDatabaseModel\GPSLocation.cs" />
     <Compile Include="GeneratedDatabaseModel\gps_data.cs" />
     <Compile Include="GeneratedDatabaseModel\Model.Designer.cs">
