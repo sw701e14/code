@@ -9,13 +9,7 @@ namespace Library.Clustering
 {
     public static class ClusteringTechniques
     {
-        public static GPSLocation[,] DBSCAN(int minimumPoints, double radius)
-        {
-
-            return null;
-        }
-
-        private static List<CorePoint> getCorePoints(GPSLocation[] gpsLocations, int minimumPoints, decimal radius)
+        public static List<CorePoint> DBSCAN(GPSLocation[] gpsLocations, int minimumPoints, decimal radius)
         {
             int size = gpsLocations.Count();
             List<CorePoint> corePoints = new List<CorePoint>();
@@ -38,25 +32,24 @@ namespace Library.Clustering
                     corePoints.Add(cp);
                 }
             }
-            return corePoints;
+            return findClusters(corePoints);
         }
 
         private static List<CorePoint> findClusters(List<CorePoint> corePoints)
         {
-            List<CorePoint> clusters = new List<CorePoint>();
             foreach (var cp1 in corePoints)
             {
                 foreach (var cp2 in corePoints)
                 {
-                    if (cp1.Neighborhood.Contains(cp2))
+                    if (!cp1.Equals(cp2) && cp1.Neighborhood.Contains(cp2))
                     {
                         cp1.Neighborhood.AddRange(cp2.Neighborhood);
                         cp1.Neighborhood.Add(cp2);
+                        corePoints.Remove(cp2);
                     }
                 }
-                clusters.Add(cp1);
             }
-            return clusters; 
+            return corePoints; 
         }
     }
 }
