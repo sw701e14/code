@@ -47,6 +47,10 @@ namespace Library.Clustering
             {
                 this.vicinityPoints.AddRange(points);
             }
+            public bool Contains(Point point)
+            {
+                return this.vicinityPoints.Contains(point);
+            }
 
         }
     }

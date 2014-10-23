@@ -20,13 +20,13 @@ namespace Library.Clustering
                 neighborhood.Clear();
                 for (int j = 0; j < size; j++)
                 {
-                    if (GPSTools.GetDistance(gpsLocations[i], gpsLocations[j]) < radius)
+                    if (!gpsLocations[i].Equals(gpsLocations[j]) && GPSTools.GetDistance(gpsLocations[i], gpsLocations[j]) < radius)
                     {
                         neighborhood.Add(new Point(gpsLocations[j]));
                         count++;
                     }
                 }
-                if (count>minimumPoints)
+                if (count>=minimumPoints)
                 {
                     CorePoint cp = new CorePoint(gpsLocations[i], neighborhood);
                     corePoints.Add(cp);
