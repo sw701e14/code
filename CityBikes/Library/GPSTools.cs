@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Library.GeneratedDatabaseModel;
 
 namespace Library
 {
@@ -19,6 +20,18 @@ namespace Library
         public static decimal GetDistance(decimal fromLatitude, decimal fromLongitude, decimal toLatitude, decimal toLongitude)
         {
             return Convert.ToDecimal(Math.Sqrt(Math.Pow(Convert.ToDouble(toLatitude - fromLatitude), 2) + Math.Pow(Convert.ToDouble(toLongitude - fromLongitude), 2)));
+        }
+
+
+        /// <summary>
+        /// Gets the direct distance from one gps location to another. Does not take the globes bearing into account.
+        /// </summary>
+        /// <param name="from">From GPSLocation.</param>
+        /// <param name="to">To GPSLocation.</param>
+        /// <returns></returns>
+        public static decimal GetDistance(GPSLocation from, GPSLocation to)
+        {
+           return Convert.ToDecimal(Math.Sqrt(Math.Pow(Convert.ToDouble(to.Latitude - from.Latitude), 2) + Math.Pow(Convert.ToDouble(to.Longitude - from.Longitude), 2)));
         }
     }
 }
