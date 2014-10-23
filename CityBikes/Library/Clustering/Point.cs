@@ -9,7 +9,10 @@ namespace Library.Clustering
 {
     public abstract class Point
     {
-        public Point() { }
+        public Point(GPSLocation gpsLocation) 
+        {
+            this.location = gpsLocation;
+        }
 
         private GPSLocation location;
 

@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Library.GeneratedDatabaseModel;
 
-namespace Library
+namespace Library.Clustering
 {
-    public static class Clustering
+    public static class ClusteringTechniques
     {
-        public GPSLocation[,] DBSCAN(int minimumPoints, double radius)
+        public static GPSLocation[,] DBSCAN(int minimumPoints, double radius)
         {
 
             return null;
