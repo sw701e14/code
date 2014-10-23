@@ -9,35 +9,36 @@ namespace Library
 {
     public static class BikesNearby
     {
-        public static SortedList<int,Tuple<decimal,DateTime>> GetBikesNearby(decimal latitude, decimal longitude)
+
+        /// <summary>
+        /// Gets a sorted list, based on distance, of bikes and their location.
+        /// </summary>
+        /// <param name="gpsLocation">The GPS location.</param>
+        /// <returns>Returns a list of bike id and their location.</returns>
+        public static IEnumerable<Tuple<int, GPSLocation>> GetBikesNearby(GPSLocation gpsLocation)
         {
-            SortedList<int, Tuple<decimal,DateTime>> bikes = new SortedList<int,Tuple<decimal,DateTime>>();
+            Dictionary<int, Tuple<decimal, DateTime, GPSLocation>> bikes = new Dictionary<int, Tuple<decimal, DateTime, GPSLocation>>();
             Database context = new Database();
-            var query = from b in context.gps_data
-                        select b;
+            var query =  from bike in context.gps_data
+                         group bike by bike.bikeId into b
+                         let newestLocation = b.Max(x => x.queried)
+
+                         from g in b
+                         where g.queried == newestLocation
+                         select g;
 
             foreach (gps_data g in query)
             {
-                if (bikes.Keys.Contains(g.bikeId))
-                {
-                    if (DateTime.Compare(bikes[g.bikeId].Item2, g.queried) > 0)
-                    {
-                        bikes[g.bikeId] = Tuple.Create(getDistance(latitude, longitude, g.latitude, g.longitude), g.queried);
-                    }
-                }
-                else
-                {
-                    bikes.Add(g.bikeId, Tuple.Create(getDistance(latitude, longitude, g.latitude, g.longitude), g.queried));
-                }
-                
+                bikes.Add(g.bikeId, Tuple.Create(GPSTools.GetDistance(gpsLocation.Latitude, gpsLocation.Longitude, g.latitude, g.longitude), g.queried, new GPSLocation(g.latitude, g.longitude)));
             }
-            return bikes;
+
+            foreach (KeyValuePair<int, Tuple<decimal, DateTime, GPSLocation>> bike in bikes.OrderBy(x => x.Value.Item1))
+            {
+                yield return Tuple.Create(bike.Key, bike.Value.Item3);
+            }
         }
 
-        private static decimal getDistance(decimal fromLatitude, decimal fromLongitude, decimal toLatitude, decimal toLongitude)
-        {
-            return Convert.ToDecimal(Math.Sqrt(Math.Pow(Convert.ToDouble(toLatitude - fromLatitude), 2) + Math.Pow(Convert.ToDouble(toLongitude - fromLongitude), 2)));
-        }
         
+
     }
 }

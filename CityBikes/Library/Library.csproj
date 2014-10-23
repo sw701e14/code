@@ -52,6 +52,9 @@
   <ItemGroup>
     <Compile Include="AvailableBikes.cs" />
     <Compile Include="BikesNearby.cs" />
+    <Compile Include="BikeStandstill.cs" />
+    <Compile Include="AllBikesLocation.cs" />
+    <Compile Include="ConvexHull.cs" />
     <Compile Include="GeneratedDatabaseModel\GPSLocation.cs" />
     <Compile Include="GeneratedDatabaseModel\gps_data.cs" />
     <Compile Include="GeneratedDatabaseModel\Model.Designer.cs">
@@ -59,6 +62,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model.edmx</DependentUpon>
     </Compile>
+    <Compile Include="GPSTools.cs" />
     <Compile Include="Heatmap.cs" />
     <Compile Include="HeatmapImagegenerator.cs">
       <DependentUpon>Heatmap.cs</DependentUpon>

@@ -3,11 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library", "Library\Library.csproj", "{4B66BE80-97E3-4B7F-8FC6-317CEDFCD6DC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseImportTest", "DatabaseImportTest\DatabaseImportTest.csproj", "{A86D6945-38B4-43FF-8AE8-9BBD28DBE23B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Run", "Run\Run.csproj", "{9848ECDA-9CB8-47C3-874B-82B070A5272C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseImport", "Run\DatabaseImport.csproj", "{9848ECDA-9CB8-47C3-874B-82B070A5272C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeadDog", "DeadDog\DeadDog.csproj", "{675AB5E0-4637-4E6C-8D38-AA7BB135B5CE}"
 EndProject
@@ -17,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4B66BE80-97E3-4B7F-8FC6-317CEDFCD6DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4B66BE80-97E3-4B7F-8FC6-317CEDFCD6DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4B66BE80-97E3-4B7F-8FC6-317CEDFCD6DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4B66BE80-97E3-4B7F-8FC6-317CEDFCD6DC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A86D6945-38B4-43FF-8AE8-9BBD28DBE23B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A86D6945-38B4-43FF-8AE8-9BBD28DBE23B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A86D6945-38B4-43FF-8AE8-9BBD28DBE23B}.Release|Any CPU.ActiveCfg = Release|Any CPU

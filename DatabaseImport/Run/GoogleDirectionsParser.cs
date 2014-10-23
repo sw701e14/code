@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Xml.Linq;
 
-namespace Library
+namespace DatabaseImport
 {
     /// <summary>
     /// Exposes methods for retrieving <see cref="GPSPoint"/>s from a Google Directions route.
@@ -89,7 +89,7 @@ namespace Library
             var point = new GPSPoint(nextDate, lat, lng, null, bikeId);
 
             int durationSeconds = int.Parse(element.Element("duration").Element("value").Value);
-            nextDate.AddSeconds(durationSeconds);
+            nextDate = nextDate.AddSeconds(durationSeconds);
 
             return point;
         }
