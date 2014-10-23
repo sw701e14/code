@@ -12,15 +12,14 @@ namespace Library
         public static GPSLocation[] GrahamScan(IEnumerable<GPSLocation> data)
         {
             GPSLocation p0 = data.Aggregate((minItem, nextItem) => minItem.Longitude < nextItem.Longitude ? minItem : nextItem);
-            GPSLocation[] remaining = data.Where(x => !x.Equals(p0)).OrderBy(x => polarAngle(p0, x)).ToArray();
-
+            GPSLocation[] remaining = data.Where(x => !x.Equals(p0)).OrderBy(x => computePolarAngle(p0, x)).ToArray();
 
             Stack<GPSLocation> stack = new Stack<GPSLocation>();
             stack.Push(p0);
             stack.Push(remaining[0]);
             stack.Push(remaining[1]);
 
-            for (int i = 2; i < data.Count(); i++)
+            for (int i = 2; i < remaining.Count(); i++)
             {
                 while (!isLeftTurn(stack.ElementAt(1), stack.ElementAt(0), remaining[i]))
                 {
@@ -36,9 +35,8 @@ namespace Library
         {
 
             decimal longitude = point.Longitude - origin.Longitude;
-            decimal latitude = point.Latitude - point.Latitude;
-            return Math.Atan2((double)longitude, (double)latitude);
-
+            decimal latitude = point.Latitude - origin.Latitude;
+            return Math.Atan2((double)latitude, (double)longitude);
 
         }
 
@@ -50,10 +48,17 @@ namespace Library
             return g.Latitude * g2.Longitude - g2.Latitude * g.Longitude;
         }
 
+        /// <summary>
+        /// Determines whether the turn from the origin through p1 to p2 is a left turn 
+        /// </summary>
+        /// <param name="p1">The p1.</param>
+        /// <param name="p2">The p2.</param>
+        /// <param name="origin">The origin.</param>
+        /// <returns></returns>
         private static bool isLeftTurn(GPSLocation p1, GPSLocation p2, GPSLocation origin)
         {
 
-            return 0 > crossProduct(p1, p2, origin);
+            return 0 > computeCrossProduct(p1, p2, origin);
         }
     }
 }
