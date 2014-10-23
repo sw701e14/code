@@ -51,5 +51,10 @@ namespace Library.GeneratedDatabaseModel
             return new GPSLocation(g1.latitude - g2.latitude, g1.longitude - g2.longitude);
         }
 
+        public override string ToString()
+        {
+            return string.Format("(Lat: {0}, Long: {1})", latitude, longitude);
+        }
+
     }
 }
