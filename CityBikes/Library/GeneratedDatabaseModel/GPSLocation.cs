@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Library.GeneratedDatabaseModel
 {
-    public struct GPSLocation
+    public struct GPSLocation : IEquatable<GPSLocation>
     {
         private decimal latitude;
         private decimal longitude;
@@ -44,6 +44,21 @@ namespace Library.GeneratedDatabaseModel
 
                 this.longitude = value;
             }
+        }
+
+		public bool Equals(GPSLocation other)
+        {
+            return latitude == other.Latitude && longitude == other.Longitude;
+        }
+
+        public static GPSLocation operator -(GPSLocation g1, GPSLocation g2)
+        {
+            return new GPSLocation(g1.latitude - g2.latitude, g1.longitude - g2.longitude);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("(Lat: {0}, Long: {1})", latitude, longitude);
         }
     }
 }

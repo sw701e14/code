@@ -55,6 +55,7 @@
     <Compile Include="Clustering\ClusteringTechniques.cs" />
     <Compile Include="Clustering\CorePoint.cs" />
     <Compile Include="Clustering\Point.cs" />
+    <Compile Include="ConvexHull.cs" />
     <Compile Include="GeneratedDatabaseModel\GPSLocation.cs" />
     <Compile Include="GeneratedDatabaseModel\gps_data.cs" />
     <Compile Include="GeneratedDatabaseModel\Model.Designer.cs">
