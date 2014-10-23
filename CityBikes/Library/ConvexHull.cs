@@ -7,8 +7,21 @@ using Library.GeneratedDatabaseModel;
 
 namespace Library
 {
+    /// The algorithm in this class is implemented as described in the book
+    /// Introduction to algorithms
+    /// by Cormen, Thomas H and Leiserson, Charles E and Rivest, Ronald L and Stein, Clifford and others
+    /// published by MIT press Cambridge
     public static class ConvexHull
     {
+        
+
+
+
+        /// <summary>
+        /// Performs a grahamscan on the specified array of gpslocations
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns>The set of the points that make up the convex hull</returns>
         public static GPSLocation[] GrahamScan(IEnumerable<GPSLocation> data)
         {
             GPSLocation p0 = data.Aggregate((minItem, nextItem) => minItem.Longitude < nextItem.Longitude ? minItem : nextItem);
@@ -31,16 +44,28 @@ namespace Library
             return stack.ToArray();
         }
 
-        private static double polarAngle(GPSLocation origin, GPSLocation point)
+        /// <summary>
+        /// Computes the polar angle.
+        /// </summary>
+        /// <param name="origin">The origin.</param>
+        /// <param name="point">The point.</param>
+        /// <returns></returns>
+        private static double computePolarAngle(GPSLocation origin, GPSLocation point)
         {
-
             decimal longitude = point.Longitude - origin.Longitude;
             decimal latitude = point.Latitude - origin.Latitude;
             return Math.Atan2((double)latitude, (double)longitude);
 
         }
 
-        private static decimal crossProduct(GPSLocation p1, GPSLocation p2, GPSLocation origin)
+        /// <summary>
+        /// Computes the crossproduct of the two vectors p1-origin and p2-origin
+        /// </summary>
+        /// <param name="p1">The p1 point</param>
+        /// <param name="p2">The p2 point</param>
+        /// <param name="origin">The origin point to compute the vector from</param>
+        /// <returns>The crossproduct of the two vectors </returns>
+        private static decimal computeCrossProduct(GPSLocation p1, GPSLocation p2, GPSLocation origin)
         {
             GPSLocation g = p1 - origin;
             GPSLocation g2 = p2 - origin;
