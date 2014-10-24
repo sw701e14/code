@@ -29,11 +29,11 @@ namespace Run
                 count++;                
                 foreach (var n in item)
                 {
-                    Console.WriteLine(n.Location.Latitude+ "," +n.Location.Longitude);
+                    Console.WriteLine(n.Location.ToString());
                     foreach (var x in n.Neighborhood)
                     {
                         Console.WriteLine("Neighborhood:");
-                        Console.WriteLine(x.Location.Latitude +","+ x.Location.Longitude);
+                        Console.WriteLine(x.Location.ToString());
                     }
                 }
             }
