@@ -28,7 +28,7 @@ namespace Library.Clustering
                 }
                 if (count>=minimumPoints)
                 {
-                    CorePoint cp = new CorePoint(gpsLocations[i], neighborhood);
+                    CorePoint cp = new CorePoint(gpsLocations[i], new List<Point>(neighborhood));
                     corePoints.Add(cp);
                 }
             }
