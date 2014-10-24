@@ -21,19 +21,23 @@ namespace Run
             }
             Console.ReadKey();
              */
-            
+
+            int count = 0;
             foreach (var item in ClusteringTechniques.DBSCAN(new GPSLocation[] {new GPSLocation(0,2), new GPSLocation(1,1), new GPSLocation(10,10)}, 1, 2))
             {
-                Console.WriteLine("Cluster:");
-                Console.WriteLine(item.Location.Latitude);
-                Console.WriteLine(item.Location.Longitude);
-                foreach (var n in item.Neighborhood)
+                Console.WriteLine("Cluster: " + count + " ");
+                count++;                
+                foreach (var n in item)
                 {
-                    Console.WriteLine("Neighborhood:");
-                    Console.WriteLine(n.Location.Latitude);
-                    Console.WriteLine(n.Location.Longitude);
+                    Console.WriteLine(n.Location.Latitude+ "," +n.Location.Longitude);
+                    foreach (var x in n.Neighborhood)
+                    {
+                        Console.WriteLine("Neighborhood:");
+                        Console.WriteLine(x.Location.Latitude +","+ x.Location.Longitude);
+                    }
                 }
             }
+            
             Console.ReadKey();
         }
     }

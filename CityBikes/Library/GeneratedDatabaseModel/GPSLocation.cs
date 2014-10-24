@@ -48,7 +48,7 @@ namespace Library.GeneratedDatabaseModel
 
 		public bool Equals(GPSLocation other)
         {
-            return latitude == other.Latitude && longitude == other.Longitude;
+            return this.latitude == other.Latitude && this.longitude == other.Longitude;
         }
 
         public static GPSLocation operator -(GPSLocation g1, GPSLocation g2)

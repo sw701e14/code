@@ -9,7 +9,7 @@ namespace Library.Clustering
 {
     public static class ClusteringTechniques
     {
-        public static List<CorePoint> DBSCAN(GPSLocation[] gpsLocations, int minimumPoints, decimal radius)
+        public static List<List<CorePoint>> DBSCAN(GPSLocation[] gpsLocations, int minimumPoints, decimal radius)
         {
             int size = gpsLocations.Count();
             List<CorePoint> corePoints = new List<CorePoint>();
@@ -35,21 +35,29 @@ namespace Library.Clustering
             return findClusters(corePoints);
         }
 
-        private static List<CorePoint> findClusters(List<CorePoint> corePoints)
+        private static List<List<CorePoint>> findClusters(List<CorePoint> corePoints)
         {
+            List<List<CorePoint>> clusters = new List<List<CorePoint>>();
+            List<CorePoint> tmp = new List<CorePoint>();
+            List<CorePoint> corePointsCopy = new List<CorePoint>(corePoints);
             foreach (var cp1 in corePoints)
             {
-                foreach (var cp2 in corePoints)
+                if (corePointsCopy.Contains(cp1))
                 {
-                    if (!cp1.Equals(cp2) && cp1.Neighborhood.Contains(cp2))
+                    tmp.Add(cp1);                
+                    foreach (var cp2 in corePoints)
                     {
-                        cp1.Neighborhood.AddRange(cp2.Neighborhood);
-                        cp1.Neighborhood.Add(cp2);
-                        corePoints.Remove(cp2);
+                        if (!cp1.Equals(cp2) && cp2.Neighborhood.Contains(cp1))
+                        {
+                            tmp.Add(cp2);
+                            corePointsCopy.Remove(cp2);
+                        }
                     }
-                }
+                    clusters.Add(new List<CorePoint>(tmp));
+                }                
+                tmp.Clear();
             }
-            return corePoints; 
+            return clusters; 
         }
     }
 }

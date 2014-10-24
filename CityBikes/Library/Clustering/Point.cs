@@ -23,7 +23,7 @@ namespace Library.Clustering
         
         public bool Equals(Point other)
         {
-            return location.Equals(other);
+            return location.Equals(other.location);
         }
     }
 }
