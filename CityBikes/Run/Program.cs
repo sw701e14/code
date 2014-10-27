@@ -14,14 +14,23 @@ namespace Run
         {
             //For testing the bikesnearby method..
             /*
+            //Console.WriteLine("BikesNearby:");
             foreach (var item in BikesNearby.GetBikesNearby(new GPSLocation(2,-2)))
             {
                 Console.WriteLine("bikeID: " + item.Item1 + " Distance to given point: " + item.Item2.Latitude + ", " + item.Item2.Longitude);
             }
+
+            Console.WriteLine("AvailableBikes:");
+
+            foreach (int bikeID in AvailableBikes.GetAvailableBikes())
+            {
+                Console.WriteLine("bikeID: " + bikeID);
+            }
+
             Console.ReadKey();
              */
             //testBikeStandstill();
-
+            //testAvailableBikes();
         }
 
         static void testBikeStandstill()
@@ -40,6 +49,16 @@ namespace Run
             foreach (Tuple<int, DateTime> bike in BikeStandstill.GetBikesImmobile(DateTime.Parse(testDate)))
             {
                 Console.WriteLine("Bike Id: {0}  Park Time: {1}", bike.Item1, bike.Item2);
+            }
+            Console.ReadKey(true);
+        }
+
+        static void testAvailableBikes()
+        {
+            Console.WriteLine("Test AvailableBikes:");
+            foreach (Tuple<int, GPSLocation> bike in AvailableBikes.GetAvailableBikes())
+            {
+                Console.WriteLine("Bike Id: {0}  Lat: {1}  Long: {2}", bike.Item1, bike.Item2.Latitude, bike.Item2.Longitude);
             }
             Console.ReadKey(true);
         }

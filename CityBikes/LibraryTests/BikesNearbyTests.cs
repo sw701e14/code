@@ -12,6 +12,10 @@ namespace Library.Tests
     [TestClass()]
     public class BikesNearbyTests
     {
+        decimal fromLatitude = 4m;
+        decimal fromLongitude = 1m;
+        decimal toLatitude = 0m;
+        decimal toLongitude = 1m;
         Database context = new Database();
 
         //Requires test_data.sql in the database

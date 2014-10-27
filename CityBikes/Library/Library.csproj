@@ -50,9 +50,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AvailableBikes.cs" />
+    <Compile Include="BikesNearby.cs" />
     <Compile Include="BikeStandstill.cs" />
     <Compile Include="AllBikesLocation.cs" />
-    <Compile Include="BikesNearby.cs" />
     <Compile Include="ConvexHull.cs" />
     <Compile Include="GeneratedDatabaseModel\GPSLocation.cs" />
     <Compile Include="GeneratedDatabaseModel\gps_data.cs" />

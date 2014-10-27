@@ -11,12 +11,11 @@ namespace Library
     {
         Database context = new Database();
 
-
         /// <summary>
-        /// Gets the location of the bike with <para>Id</para>.
+        /// Gets the location of the bike with <paramref name="Id"/>.
         /// </summary>
         /// <param name="Id">The id of the bike to find the location of.</param>
-        /// <returns>The GPSLocation of the bike with <para>id</para> or null if var location is null</returns>
+        /// <returns>The GPSLocation of the bike with <paramref name="Id"/> or null if var location is null</returns>
         public GPSLocation GetBikeLocation(int Id)
         {
             var location = (from bike in context.gps_data where bike.bikeId == Id orderby bike.queried descending select bike);
@@ -30,19 +29,18 @@ namespace Library
         /// <returns>An IEnumerable containing a Tuple for each bike with its bikeId and its location </returns>
         public IEnumerable<Tuple<int, GPSLocation>> GetBikeLocations()
         {
-            var latest= from bike in context.gps_data
-                   group bike by bike.bikeId into b
-                   let newestLocation = b.Max(x => x.queried)
+            var latest = from bike in context.gps_data
+                         group bike by bike.bikeId into b
+                         let newestLocation = b.Max(x => x.queried)
 
-                   from g in b
-                   where g.queried == newestLocation
-                   select g;
+                         from g in b
+                         where g.queried == newestLocation
+                         select g;
 
             foreach (var item in latest)
             {
                 yield return Tuple.Create(item.bikeId, item.Location);
             }
         }
-
     }
 }
