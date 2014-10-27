@@ -21,6 +21,7 @@ namespace Run
             }
             Console.ReadKey();
              */
+            //testBikeStandstill();
 
             int count = 0;
             foreach (var item in ClusteringTechniques.DBSCAN(new GPSLocation[] {new GPSLocation(0,2), new GPSLocation(1,1), new GPSLocation(10,10)}, 1, 2))
@@ -39,6 +40,26 @@ namespace Run
             }
             
             Console.ReadKey();
+        }
+
+        static void testBikeStandstill()
+        {
+            Console.WriteLine("Test for GetBikesImmobile with 0 parameters:");
+            foreach (Tuple<int, DateTime> bike in BikeStandstill.GetBikesImmobile())
+            {
+                Console.WriteLine("Bike Id: {0}  Park Time: {1}", bike.Item1, bike.Item2);
+            }
+            Console.ReadKey(true);
+
+            Console.WriteLine();
+            string testDate = "02-09-2014";
+
+            Console.WriteLine("Test for GetBikesImmobile with date (" + testDate + ") parameter:");
+            foreach (Tuple<int, DateTime> bike in BikeStandstill.GetBikesImmobile(DateTime.Parse(testDate)))
+            {
+                Console.WriteLine("Bike Id: {0}  Park Time: {1}", bike.Item1, bike.Item2);
+            }
+            Console.ReadKey(true);
         }
     }
 }
