@@ -9,15 +9,14 @@ namespace Library
 {
     public static class AvailableBikes
     {
+        public const double IMMOBILE_MINUTES = 10;
+
         /// <summary>
         /// Gets a collection of all the available bikes.
         /// </summary>
         /// <returns>A collection of bikes and their location</returns>
         public static IEnumerable<Tuple<int, GPSLocation>> GetAvailableBikes()
         {
-            //Minutes before a bike is considered as available.
-            double acceptableStandStillMinutes = 10;
-
             AllBikesLocation allBikeLocationClass = new AllBikesLocation();
 
             IEnumerable<Tuple<int, GPSLocation>> allBikesPosition = allBikeLocationClass.GetBikeLocations();
@@ -27,7 +26,7 @@ namespace Library
 
             foreach (var bike in allBikes)
             {
-                if (DateTime.Now.Subtract(bike.tuple.Item3).CompareTo(TimeSpan.FromMinutes(acceptableStandStillMinutes)) == 1)
+                if (DateTime.Now.Subtract(bike.tuple.Item3).CompareTo(TimeSpan.FromMinutes(IMMOBILE_MINUTES)) == 1)
                     yield return Tuple.Create(bike.tuple.Item1, bike.tuple.Item2);
             }
         }
