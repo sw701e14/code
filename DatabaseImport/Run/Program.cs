@@ -11,25 +11,23 @@ namespace Run
 {
     class Program
     {
-     
+
 
 
         static void Main(string[] args)
         {
 
-            string[] destinations = { "Borgmester Jørgensensvej 5 aalborg", "Selma Lagerlöfsvej 300 aalborg" };
+            string[] bycykelstations = { "karolinelund aalborg", "strandvejen aalborg", "havnefronten aalborg", "vestbyens station aalborg", "utzon centret aalborg", "nytorv aalborg", "algade aalborg", "gammeltorv aalborg", "aalborg zoo alborg", "fibigerstræde aalborg", "kjellerups torv aalborg", "friis aalborg", "aalborg hallen aalborg", "aalborg banegård", "kunsten aalborg", "haraldslund aalborg", "nørresundby torv", "vestergade nørresundby" };
 
-            var  route = GoogleDirectionsParser.GetData(destinations[0], destinations[1], new DateTime(2014,1,1,12,0,0), 1).ToList();
+            string[] addresses = { "Borgmester Jørgensensvej 5 aalborg", "Selma Lagerlöfsvej 300 aalborg", "sønderbro 25 aalborg", "langesgade 3 aalborg", "kayerødsgade 10 aalborg", "toldstrupsgade 14 aalborg", "danmarksgade 30 aalborg", "christiansgade 44 aalborg", "sankelmarksgade 33 aalborg", "vesterbro 30 aalborg", "prinsensgade 4 aalborg" };
 
-            var gpsdata = GenerateGPSData.GenerateRealRoute(new DateTime(2014,1,1,12,0,0), 5, route);
+            string[] destinations = bycykelstations.Concat(addresses).ToArray();
 
+            List<GPSPoint> points = GenerateGPSData.GenerateBikeRoutes(100, destinations, new DateTime(2014, 1, 1, 8, 0, 0), 20).ToList();
 
-            int k = 1;
-            
+            SQLExport.Export(points, "testdata", false);
 
-             List<GPSPoint> points = GenerateGPSData.GenerateBikeRoutes(100,destinations, new DateTime(2014,1,1,12,0,0),10).ToList();
-
-             Console.Read();
+            Console.Read();
             return;
             // end test
             /*
