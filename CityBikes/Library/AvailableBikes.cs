@@ -9,7 +9,7 @@ namespace Library
 {
     public static class AvailableBikes
     {
-        public const double IMMOBILE_MINUTES = 10;
+        public const int IMMOBILE_MINUTES = 10;
 
         /// <summary>
         /// Gets a collection of all the available bikes.
@@ -19,16 +19,15 @@ namespace Library
         {
             AllBikesLocation allBikeLocationClass = new AllBikesLocation();
 
-            IEnumerable<Tuple<int, GPSLocation>> allBikesPosition = allBikeLocationClass.GetBikeLocations();
-            IEnumerable<Tuple<int, DateTime>> allBikesImmobile = BikeStandstill.GetBikesImmobile();
+            Dictionary<int, GPSLocation> positions = allBikeLocationClass.GetBikeLocations().ToDictionary(x => x.Item1, x => x.Item2);
+            Dictionary<int, DateTime> immobile = BikeStandstill.GetBikesImmobile().ToDictionary(x => x.Item1, x => x.Item2);
 
-            var allBikes = allBikesPosition.Join(allBikesImmobile, p => p.Item1, i => i.Item1, (p, i) => new { tuple = Tuple.Create(p.Item1, p.Item2, i.Item2) });
+            var immobileTimeSpan = new TimeSpan(0, IMMOBILE_MINUTES, 0);
+            DateTime now = DateTime.Now;
 
-            foreach (var bike in allBikes)
-            {
-                if (DateTime.Now.Subtract(bike.tuple.Item3).CompareTo(TimeSpan.FromMinutes(IMMOBILE_MINUTES)) == 1)
-                    yield return Tuple.Create(bike.tuple.Item1, bike.tuple.Item2);
-            }
+            foreach (var pair in immobile)
+                if ((now - pair.Value).CompareTo(immobileTimeSpan) > 0)
+                    yield return Tuple.Create(pair.Key, positions[pair.Key]);
         }
     }
 }
