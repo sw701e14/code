@@ -24,16 +24,15 @@ namespace Run
             //testBikeStandstill();
 
             int count = 0;
-            foreach (var item in ClusteringTechniques.DBSCAN(new GPSLocation[] {new GPSLocation(0,2), new GPSLocation(1,1), new GPSLocation(10,10)}, 1, 2))
+            foreach (var item in ClusteringTechniques.DBSCAN(new GPSLocation[] {new GPSLocation(0,2), new GPSLocation(1,1), new GPSLocation(2,2), new GPSLocation(10,10), new GPSLocation(11,11), new GPSLocation(12,12)}, 1, 100))
             {
                 Console.WriteLine("Cluster: " + count + " ");
-                count++;                
+                count++;
+                Console.WriteLine("Neighborhood:");
                 foreach (var n in item)
-                {
-                    Console.WriteLine(n.Location.ToString());
+                {                    
                     foreach (var x in n.Neighborhood)
-                    {
-                        Console.WriteLine("Neighborhood:");
+                    {                        
                         Console.WriteLine(x.Location.ToString());
                     }
                 }
