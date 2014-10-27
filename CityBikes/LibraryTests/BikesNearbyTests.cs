@@ -59,12 +59,7 @@ namespace Library.Tests
             }
 
             Assert.IsTrue(true);
-	}
-
-        decimal fromLatitude = 4m;
-        decimal fromLongitude = 1m;
-        decimal toLatitude = 0m;
-        decimal toLongitude = 1m;
+        }
 
         [TestMethod()]
         public void getDistance()
