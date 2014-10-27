@@ -121,5 +121,10 @@ namespace DatabaseImport
                 && this.accuracy.Equals(other.accuracy)
                 && this.bikeId.Equals(other.bikeId);
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0},{1} at {2} bikeID: {3}", latitude, longitude, timestamp, bikeId);
+        }
     }
 }
