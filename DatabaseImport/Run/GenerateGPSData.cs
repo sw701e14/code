@@ -158,7 +158,13 @@ namespace DatabaseImport
         {
             Random rand = new Random();
 
-            return startTime + new TimeSpan(0, rand.Next(MAXSTANDSTILLTIME), 0);
+            DateTime endTime = startTime + new TimeSpan(0, rand.Next(MAXSTANDSTILLTIME), 0);
+
+            while (startTime < endTime)
+            {
+                yield return startTime;
+                startTime = startTime.AddMinutes(interval);
+            }
 
         }
 
