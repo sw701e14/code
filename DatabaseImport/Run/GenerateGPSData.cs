@@ -194,7 +194,7 @@ namespace DatabaseImport
 
             if (pointtime != 0)
             {
-                double part =  pointtime / triptime;
+                double part = pointtime / triptime;
 
                 latitude = (np.Latitude - lp.Latitude) * part;
                 longitude = (np.Longitude - lp.Longitude) * part;
@@ -223,10 +223,13 @@ namespace DatabaseImport
             Random rand = new Random();
 
             string dest;
-            while ((dest = destinations[rand.Next(destinations.Length)]) == exclude)
+
+            do
             {
-                // when random string is equal to the exclude string, generate new random
+                dest = destinations[rand.Next(destinations.Length)];
             }
+            while (dest == exclude);
+
 
             return dest;
         }
