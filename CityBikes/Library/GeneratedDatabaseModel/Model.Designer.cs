@@ -144,7 +144,8 @@ namespace Library.GeneratedDatabaseModel
         /// <param name="longitude">Initial value of the longitude property.</param>
         /// <param name="accuracy">Initial value of the accuracy property.</param>
         /// <param name="queried">Initial value of the queried property.</param>
-        public static gps_data Creategps_data(global::System.Int64 id, global::System.Int32 bikeId, global::System.Decimal latitude, global::System.Decimal longitude, global::System.Byte accuracy, global::System.DateTime queried)
+        /// <param name="hasNotMoved">Initial value of the hasNotMoved property.</param>
+        public static gps_data Creategps_data(global::System.Int64 id, global::System.Int32 bikeId, global::System.Decimal latitude, global::System.Decimal longitude, global::System.Byte accuracy, global::System.DateTime queried, global::System.Boolean hasNotMoved)
         {
             gps_data gps_data = new gps_data();
             gps_data.id = id;
@@ -153,6 +154,7 @@ namespace Library.GeneratedDatabaseModel
             gps_data.longitude = longitude;
             gps_data.accuracy = accuracy;
             gps_data.queried = queried;
+            gps_data.hasNotMoved = hasNotMoved;
             return gps_data;
         }
 
@@ -306,6 +308,30 @@ namespace Library.GeneratedDatabaseModel
         private global::System.DateTime _queried;
         partial void OnqueriedChanging(global::System.DateTime value);
         partial void OnqueriedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean hasNotMoved
+        {
+            get
+            {
+                return _hasNotMoved;
+            }
+            set
+            {
+                OnhasNotMovedChanging(value);
+                ReportPropertyChanging("hasNotMoved");
+                _hasNotMoved = StructuralObject.SetValidValue(value, "hasNotMoved");
+                ReportPropertyChanged("hasNotMoved");
+                OnhasNotMovedChanged();
+            }
+        }
+        private global::System.Boolean _hasNotMoved;
+        partial void OnhasNotMovedChanging(global::System.Boolean value);
+        partial void OnhasNotMovedChanged();
 
         #endregion
 
