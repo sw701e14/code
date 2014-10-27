@@ -11,8 +11,28 @@ namespace Run
 {
     class Program
     {
+     
+
+
         static void Main(string[] args)
         {
+
+            string[] destinations = { "Borgmester Jørgensensvej 5 aalborg", "Selma Lagerlöfsvej 300 aalborg" };
+
+            var  route = GoogleDirectionsParser.GetData(destinations[0], destinations[1], new DateTime(2014,1,1,12,0,0), 1).ToList();
+
+            var gpsdata = GenerateGPSData.GenerateRealRoute(new DateTime(2014,1,1,12,0,0), 5, route);
+
+
+            int k = 1;
+            
+
+             List<GPSPoint> points = GenerateGPSData.GenerateBikeRoutes(100,destinations, new DateTime(2014,1,1,12,0,0),10).ToList();
+
+             Console.Read();
+            return;
+            // end test
+            /*
             if (!hasFiles())
                 return;
 
@@ -46,7 +66,7 @@ namespace Run
                         SQLExport.Export(p, filename, true);
             });
 
-            insertIn.Show();
+            insertIn.Show();*/
         }
 
         static bool hasFiles()

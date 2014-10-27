@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CSVParser.cs" />
+    <Compile Include="GenerateGPSData.cs" />
     <Compile Include="GoogleDirectionsParser.cs" />
     <Compile Include="GPSPoint.cs" />
     <Compile Include="Program.cs" />
