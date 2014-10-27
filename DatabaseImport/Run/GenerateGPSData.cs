@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -44,23 +45,30 @@ namespace DatabaseImport
                 var route = GoogleDirectionsParser.GetData(startPoint, destination, startTime, id).ToList();
 
                 var gpsdata = GenerateRealRoute(startTime, POINTINTERVAL, route);
-                gpsdata.ToList();
-                foreach (var point in route)
+
+                foreach (var point in gpsdata)
                 {
                     yield return point;
                 }
 
                 GPSPoint lastpoint = route.Last();
 
-                Console.WriteLine(route.Count() + " points generated");
-                Console.WriteLine("Start: {0}\nEnd: {1}\nStartTime: {2}\nEndTime: {3}", startPoint, destination, startTime, lastpoint.TimeStamp);
+                Debug.WriteLine(route.Count() + " points generated");
+                Debug.WriteLine("Start: {0}\nEnd: {1}\nStartTime: {2}\nEndTime: {3}", startPoint, destination, startTime, lastpoint.TimeStamp);
 
                 startPoint = destination;
                 destination = nextDestination(destinations, startPoint);
 
-                startTime = generateBikeStandStill(lastpoint.TimeStamp);
 
-                Console.WriteLine();
+                startTime = startTime.AddMinutes(POINTINTERVAL * gpsdata.Count());
+
+
+                foreach (var item in generateBikeStandStill(startTime, POINTINTERVAL))
+                {
+                    yield return new GPSPoint(item, lastpoint.Latitude, lastpoint.Longitude, null, id);
+                    startTime = item;
+                }
+                Debug.WriteLine("");
             }
         }
 
@@ -76,10 +84,8 @@ namespace DatabaseImport
         {
             for (int i = 0; i < bikes; i++)
             {
-                var route = GenerateBikeRoute(i, destinations, startTime, iterations);
-                route.ToList();
-
-                foreach (var item in route)
+                Console.WriteLine("Generating bike {0}", i);
+                foreach (var item in GenerateBikeRoute(i, destinations, startTime, iterations))
                 {
                     yield return item;
                 }
@@ -123,15 +129,17 @@ namespace DatabaseImport
                 if (route[nextPoint].TimeStamp > nextTime)
                 {
                     var point = GenerateBetweenPoint(route, lastPoint, nextPoint, nextTime);
-                    yield return new GPSPoint(nextTime, point.Item1, point.Item2, 10, 1);
-                    foreach (var item in GenerateRealPoint(nextTime.AddMinutes(interval), interval, route, lastPoint + 1, nextPoint + 1))
+                    yield return new GPSPoint(nextTime, point.Item1, point.Item2, null, route.First().BikeId);
+
+
+                    foreach (var item in GenerateRealPoints(nextTime.AddMinutes(interval), interval, route, lastPoint, nextPoint))
                     {
                         yield return item;
                     }
                 }
                 else
                 {
-                    foreach (var item in GenerateRealPoint(nextTime, interval, route, lastPoint + 1, nextPoint + 1))
+                    foreach (var item in GenerateRealPoints(nextTime, interval, route, lastPoint + 1, nextPoint + 1))
                     {
                         yield return item;
                     }
