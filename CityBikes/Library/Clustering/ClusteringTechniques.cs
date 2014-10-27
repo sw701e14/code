@@ -16,7 +16,7 @@ namespace Library.Clustering
             List<Point> neighborhood = new List<Point>();
             for (int i = 0; i < size; i++)
             {
-                int count = 0;
+                int count = 1;
                 neighborhood.Clear();
                 for (int j = 0; j < size; j++)
                 {
@@ -54,10 +54,11 @@ namespace Library.Clustering
                         }
                     }
                     clusters.Add(new List<CorePoint>(tmp));
-                }                
+                }
                 tmp.Clear();
+                corePointsCopy.Clear();
             }
-            return clusters; 
+            return clusters;
         }
     }
 }
