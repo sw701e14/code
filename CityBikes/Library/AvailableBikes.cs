@@ -23,12 +23,12 @@ namespace Library
             IEnumerable<Tuple<int, GPSLocation>> allBikesPosition = allBikeLocationClass.GetBikeLocations();
             IEnumerable<Tuple<int, DateTime>> allBikesImmobile = BikeStandstill.GetBikesImmobile();
 
-            var allBikes = allBikesPosition.Join(allBikesImmobile, p => p.Item1, i => i.Item1, (p, i) => new {tuple = Tuple.Create(p.Item1, p.Item2, i.Item2)});
+            var allBikes = allBikesPosition.Join(allBikesImmobile, p => p.Item1, i => i.Item1, (p, i) => new { tuple = Tuple.Create(p.Item1, p.Item2, i.Item2) });
 
             foreach (var bike in allBikes)
             {
                 if (DateTime.Now.Subtract(bike.tuple.Item3).CompareTo(TimeSpan.FromMinutes(acceptableStandStillMinutes)) == 1)
-                    yield return Tuple.Create(bike.tuple.Item1, bike.tuple.Item2);   
+                    yield return Tuple.Create(bike.tuple.Item1, bike.tuple.Item2);
             }
         }
     }
