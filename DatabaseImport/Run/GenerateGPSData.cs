@@ -182,13 +182,28 @@ namespace DatabaseImport
             GPSPoint np = route[nextPoint];
             GPSPoint lp = route[lastPoint];
 
-            double triptime = (np.TimeStamp - lp.TimeStamp).Seconds;
-            double pointtime = (time - route[lastPoint].TimeStamp).Seconds;
+            var diff = (np.TimeStamp - lp.TimeStamp);
 
-            double part = triptime / pointtime;
+            double triptime = diff.TotalSeconds;
 
-            double latitude = (np.Latitude - lp.Latitude) * part;
-            double longitude = (np.Longitude - lp.Longitude) * part;
+            var g = (time - route[lastPoint].TimeStamp);
+            double pointtime = g.TotalSeconds;
+
+
+            double latitude, longitude;
+
+            if (pointtime != 0)
+            {
+                double part =  pointtime / triptime;
+
+                latitude = (np.Latitude - lp.Latitude) * part;
+                longitude = (np.Longitude - lp.Longitude) * part;
+            }
+            else
+            {
+                latitude = 0;
+                longitude = 0;
+            }
 
             return new Tuple<double, double>(lp.Latitude + latitude, lp.Longitude + longitude);
         }
