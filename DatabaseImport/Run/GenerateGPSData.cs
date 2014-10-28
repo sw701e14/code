@@ -36,6 +36,7 @@ namespace DatabaseImport
             string startPoint = nextDestination(destinations, "");
             string destination = nextDestination(destinations, startPoint);
 
+            Debug.WriteLine("Bike: {0}", id);
             for (int i = 0; i < iterations; i++)
             {
 
