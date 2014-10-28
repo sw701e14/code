@@ -14,6 +14,19 @@ namespace Run
     {
         static void Main(string[] args)
         {
+            Menu menu = new Menu("Select an option");
+
+            menu.Add("Load data", loadData);
+            menu.Add("Clear data", clearData);
+
+            menu.SetCancel("Exit");
+        }
+
+        static void clearData()
+        { }
+
+        static void loadData()
+        {
             if (!hasFiles())
                 return;
 
