@@ -46,7 +46,6 @@
     <Compile Include="CSVParser.cs" />
     <Compile Include="DatabaseExport.cs" />
     <Compile Include="GoogleDirectionsParser.cs" />
-    <Compile Include="GPSPoint.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLExport.cs" />
