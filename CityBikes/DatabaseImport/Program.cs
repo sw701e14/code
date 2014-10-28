@@ -6,17 +6,18 @@ using System.Threading.Tasks;
 using DatabaseImport;
 using DeadDog.Console;
 using System.IO;
+using Library.GeneratedDatabaseModel;
 
 namespace Run
 {
-    class Program
+    static class Program
     {
         static void Main(string[] args)
         {
             if (!hasFiles())
                 return;
 
-            Menu<IEnumerable<GPSPoint>> menu = new Menu<IEnumerable<GPSPoint>>("Load data!");
+            Menu<IEnumerable<gps_data>> menu = new Menu<IEnumerable<gps_data>>("Load data!");
             menu.SetCancel("Done");
 
             menu.Add("Load from file", loadFromFile);
@@ -71,9 +72,9 @@ namespace Run
             return true;
         }
 
-        static IEnumerable<GPSPoint> loadFromFile()
+        static IEnumerable<gps_data> loadFromFile()
         {
-            Menu<IEnumerable<GPSPoint>> menu = new Menu<IEnumerable<GPSPoint>>("Select a file:");
+            Menu<IEnumerable<gps_data>> menu = new Menu<IEnumerable<gps_data>>("Select a file:");
             menu.SetCancel("Cancel");
 
             foreach (var f in Directory.EnumerateFiles(".", "*.txt"))
@@ -81,13 +82,13 @@ namespace Run
 
             return menu.Show();
         }
-        static IEnumerable<GPSPoint> loadFromFile(string path)
+        static IEnumerable<gps_data> loadFromFile(string path)
         {
             int id = "Specify bike ID: ".GetInt32(x => x > 0);
             return CSVParser.GetData(path, id);
         }
 
-        static IEnumerable<GPSPoint> loadFromGoogle()
+        static IEnumerable<gps_data> loadFromGoogle()
         {
             string from = "From: ".GetString(x => x.Trim().Length > 0);
             string to = "To: ".GetString(x => x.Trim().Length > 0);
@@ -97,9 +98,17 @@ namespace Run
             return GoogleDirectionsParser.GetData(from, to, start, id);
         }
 
-        static void insertInDB(IEnumerable<IEnumerable<GPSPoint>> points)
+        static void insertInDB(IEnumerable<IEnumerable<gps_data>> points)
         {
-            throw new NotImplementedException();
+            using (var database = new Database())
+                DatabaseExport.Export(database, points.Concatenate());
+        }
+
+        static IEnumerable<T> Concatenate<T>(this IEnumerable<IEnumerable<T>> collection)
+        {
+            foreach (var c in collection)
+                foreach (var t in c)
+                    yield return t;
         }
     }
 }
