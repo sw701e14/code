@@ -75,11 +75,9 @@ namespace Library
 
             foreach (gps_data bikeLocation in locationList)
             {
-                streamWriter.WriteLine("placeMarker(new google.maps.LatLng(" + bikeLocation.latitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "," + bikeLocation.longitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "),'" + bikeLocation.bikeId + "','" + bikeLocation.queried.ToString() + "');");
-
                 if (!(previousData == null))
                 {
-                    if (previousData.bikeId == bikeLocation.bikeId)
+                    if ( previousData.bikeId == bikeLocation.bikeId)
                     {
                         if (!(lineString.StartsWith("var myLine" + bikeLocation.bikeId + "=[")))
                         {
@@ -91,9 +89,20 @@ namespace Library
                     else
                     {
                         createLineForBike(streamWriter, lineString, bikeLocation.bikeId);
-                        lineString = "";
+                        lineString = "var myLine" + bikeLocation.bikeId + "=[";
+                        lineString = lineString + "new google.maps.LatLng(" + bikeLocation.latitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "," + bikeLocation.longitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "),";
                     }
                 }
+                else
+                {
+                    if (!(lineString.StartsWith("var myLine" + bikeLocation.bikeId + "=[")))
+                    {
+                        lineString = "var myLine" + bikeLocation.bikeId + "=[";
+                    }
+
+                    lineString = lineString + "new google.maps.LatLng(" + bikeLocation.latitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "," + bikeLocation.longitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "),";
+                }
+                streamWriter.WriteLine("placeMarker(new google.maps.LatLng(" + bikeLocation.latitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "," + bikeLocation.longitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "),'" + bikeLocation.bikeId + "','" + bikeLocation.queried.ToString() + "');");
 
                 previousData = bikeLocation;
             }
@@ -115,14 +124,22 @@ namespace Library
             streamWriter.WriteLine("src=\"http://maps.googleapis.com/maps/api/js?key=" + apiKey + "&sensor=false\">");
             streamWriter.WriteLine("</script>");
             streamWriter.WriteLine("<script>");
+
             streamWriter.WriteLine("var map;");
             streamWriter.WriteLine("var myCenter=new google.maps.LatLng(" + centerLatitude + "," + centerLongtitude + ");");
+
             streamWriter.WriteLine("function initialize(){");
+
             streamWriter.WriteLine("var mapProp = {");
             streamWriter.WriteLine("center:myCenter,");
             streamWriter.WriteLine("zoom:" + zoom + ",");
             streamWriter.WriteLine("mapTypeId:google.maps.MapTypeId.ROADMAP};");
             streamWriter.WriteLine("map = new google.maps.Map(document.getElementById(\"googleMap\"),mapProp);");
+
+
+
+
+
         }
 
         private static void createLineForBike(StreamWriter streamWriter, string lineString, int bikeID)
@@ -131,7 +148,7 @@ namespace Library
 
             streamWriter.WriteLine("var completeLine" + (bikeID - 1) + "=new google.maps.Polyline({");
             streamWriter.WriteLine("path:myLine" + (bikeID - 1) + ",");
-            streamWriter.WriteLine("strokeColor:\"#0000FF\",");
+            streamWriter.WriteLine("strokeColor:\"#FE2E2E\",");
             streamWriter.WriteLine("strokeOpacity:0.8,");
             streamWriter.WriteLine("strokeWeight:2});");
             streamWriter.WriteLine("completeLine" + (bikeID - 1) + ".setMap(map);");
@@ -145,7 +162,8 @@ namespace Library
             streamWriter.WriteLine("function placeMarker(location,bikeID, date) {");
             streamWriter.WriteLine("var marker = new google.maps.Marker({");
             streamWriter.WriteLine("position: location,");
-            streamWriter.WriteLine("map: map,});");
+            streamWriter.WriteLine("map: map,"); //streamWriter.WriteLine("});");
+            streamWriter.WriteLine("icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'});");
             streamWriter.WriteLine("var infowindow = new google.maps.InfoWindow({");
             streamWriter.WriteLine("content: 'BikeID: ' + bikeID + '<br>Date: ' + date+ '<br>Latitude: ' + location.lat() + '<br>Longitude: ' + location.lng()" + "});");
             streamWriter.WriteLine("google.maps.event.addListener(marker, 'click', function() {");
