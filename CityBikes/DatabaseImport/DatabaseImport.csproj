@@ -57,6 +57,10 @@
       <Project>{675ab5e0-4637-4e6c-8d38-aa7bb135b5ce}</Project>
       <Name>DeadDog</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Library\Library.csproj">
+      <Project>{0b5c6a5b-dcbf-4f1c-a80e-50c3877bffe5}</Project>
+      <Name>Library</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
