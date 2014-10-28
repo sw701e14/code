@@ -58,6 +58,17 @@ namespace Library.GeneratedDatabaseModel
             return new GPSLocation(g1.latitude - g2.latitude, g1.longitude - g2.longitude);
         }
 
+        /// <summary>
+        /// Calculates the distance (in meters) between this <see cref="GPSLocation"/> and another.
+        /// See <see cref="Distance"/> for more.
+        /// </summary>
+        /// <param name="location">The location to include in the calculation.</param>
+        /// <returns>The distance (in meters) between the two locations.</returns>
+        public double DistanceTo(GPSLocation location)
+        {
+            return Distance(this, location);
+        }
+
         public override string ToString()
         {
             return string.Format("(Lat: {0}, Long: {1})", latitude, longitude);
