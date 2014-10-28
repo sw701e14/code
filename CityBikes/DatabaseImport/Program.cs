@@ -20,10 +20,15 @@ namespace Run
             menu.Add("Clear data", clearData);
 
             menu.SetCancel("Exit");
+
+            menu.Show(true);
         }
 
         static void clearData()
-        { }
+        {
+            using (Database database = new Database())
+                database.ExecuteStoreCommand("TRUNCATE TABLE gps_data");
+        }
 
         static void loadData()
         {
