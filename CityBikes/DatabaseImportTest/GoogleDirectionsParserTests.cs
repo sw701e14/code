@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DatabaseImport;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Library.GeneratedDatabaseModel;
 
 
 namespace DatabaseImportTest
@@ -14,7 +15,7 @@ namespace DatabaseImportTest
     public class GoogleDirectionsParserTests
     {
         string testGDirectionUrl;
-        GPSPoint gpsPoint1;
+        gps_data gpsPoint1;
 
         [TestInitialize]
         public void Setup()
