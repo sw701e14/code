@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Library.GeneratedDatabaseModel;
 
-namespace DatabaseImport
+namespace Library
 {
     public static class BikeUpdateLocation
     {
