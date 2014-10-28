@@ -36,6 +36,12 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Google.Maps">
+      <HintPath>..\packages\gmaps-api-net.0.12.113\lib\net\Google.Maps.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\gmaps-api-net.0.12.113\lib\net\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -61,6 +67,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model.edmx</DependentUpon>
     </Compile>
+    <Compile Include="GPSPointMapPlotter.cs" />
     <Compile Include="GPSTools.cs" />
     <Compile Include="Heatmap.cs" />
     <Compile Include="HeatmapImagegenerator.cs">
