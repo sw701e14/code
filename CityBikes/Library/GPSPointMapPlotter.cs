@@ -68,28 +68,46 @@ namespace Library
             string centerLatitude = "57.0338295";
             string centerLongtitude = "9.9277601";
             string zoom = "12";
-
-
+            gps_data previousData = null;
+            string lineString = "";
 
             createHTML(apiKey, centerLatitude, centerLongtitude, zoom, streamWriter);
 
             foreach (gps_data bikeLocation in locationList)
             {
                 streamWriter.WriteLine("placeMarker(new google.maps.LatLng(" + bikeLocation.latitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "," + bikeLocation.longitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "),'" + bikeLocation.bikeId + "','" + bikeLocation.queried.ToString() + "');");
+
+                if (!(previousData == null))
+                {
+                    if (previousData.bikeId == bikeLocation.bikeId)
+                    {
+                        if (!(lineString.StartsWith("var myLine" + bikeLocation.bikeId + "=[")))
+                        {
+                            lineString = "var myLine" + bikeLocation.bikeId + "=[";
+                        }
+
+                        lineString = lineString + "new google.maps.LatLng(" + bikeLocation.latitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "," + bikeLocation.longitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "),";
+                    }
+                    else
+                    {
+                        createLineForBike(streamWriter, lineString, bikeLocation.bikeId);
+                        lineString = "";
+                    }
+                }
+
+                previousData = bikeLocation;
             }
-            streamWriter.WriteLine("}");
+
+            createPlaceMarkerMethod(streamWriter);
 
             finalizeHTML(streamWriter);
 
             streamWriter.Close();
-
-
         }
 
 
         private static void createHTML(string apiKey, string centerLatitude, string centerLongtitude, string zoom, StreamWriter streamWriter)
         {
-
             streamWriter.WriteLine("<!DOCTYPE html>");
             streamWriter.WriteLine("<html>");
             streamWriter.WriteLine("<head>");
@@ -107,8 +125,23 @@ namespace Library
             streamWriter.WriteLine("map = new google.maps.Map(document.getElementById(\"googleMap\"),mapProp);");
         }
 
-        private static void finalizeHTML(StreamWriter streamWriter)
+        private static void createLineForBike(StreamWriter streamWriter, string lineString, int bikeID)
         {
+            streamWriter.WriteLine(lineString + "]");
+
+            streamWriter.WriteLine("var completeLine" + (bikeID - 1) + "=new google.maps.Polyline({");
+            streamWriter.WriteLine("path:myLine" + (bikeID - 1) + ",");
+            streamWriter.WriteLine("strokeColor:\"#0000FF\",");
+            streamWriter.WriteLine("strokeOpacity:0.8,");
+            streamWriter.WriteLine("strokeWeight:2});");
+            streamWriter.WriteLine("completeLine" + (bikeID - 1) + ".setMap(map);");
+        }
+
+
+        private static void createPlaceMarkerMethod(StreamWriter streamWriter)
+        {
+            streamWriter.WriteLine("}");
+
             streamWriter.WriteLine("function placeMarker(location,bikeID, date) {");
             streamWriter.WriteLine("var marker = new google.maps.Marker({");
             streamWriter.WriteLine("position: location,");
@@ -117,6 +150,10 @@ namespace Library
             streamWriter.WriteLine("content: 'BikeID: ' + bikeID + '<br>Date: ' + date+ '<br>Latitude: ' + location.lat() + '<br>Longitude: ' + location.lng()" + "});");
             streamWriter.WriteLine("google.maps.event.addListener(marker, 'click', function() {");
             streamWriter.WriteLine("infowindow.open(map,marker);" + "});}");
+        }
+
+        private static void finalizeHTML(StreamWriter streamWriter)
+        {
             streamWriter.WriteLine("google.maps.event.addDomListener(window, 'load', initialize);");
             streamWriter.WriteLine("</script>");
             streamWriter.WriteLine("</head>");
