@@ -69,6 +69,8 @@ namespace DatabaseImport
                     yield return new GPSPoint(item, lastpoint.Latitude, lastpoint.Longitude, null, id);
                     startTime = item;
                 }
+
+                startTime = startTime.AddMinutes(POINTINTERVAL);
                 Debug.WriteLine("");
             }
         }
