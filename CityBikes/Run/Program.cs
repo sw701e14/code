@@ -22,8 +22,9 @@ namespace Run
              */
             //testBikeStandstill();
             Uri link = GPSPointMapPlotter.PlotAllGPSPointImage();
-            //Uri map = GPSPointMapPlotter.PlotAllGPSPointMap();
+            GPSPointMapPlotter.PlotAllGPSPointMap("c:\\test.html");
             Console.ReadKey(true);
+
         }
 
         static void testBikeStandstill()

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Library.GeneratedDatabaseModel;
 using Google.Maps;
+using System.IO;
 
 
 namespace Library
@@ -43,6 +44,87 @@ namespace Library
             return new Uri(link);
         }
 
+
+        public static void PlotAllGPSPointMap(string path)
+        {
+            //Center
+            //57.0338295,9.9277601
+            //Zoom
+            //12
+
+
+            /* Test Data */
+            /*
+                57.01168540 , 9.99205080
+                57.01200010 , 9.99196300
+                57.01231290 , 9.99199550
+            */
+
+            var locationList = from locations in context.gps_data
+                               select locations;
+
+            StreamWriter streamWriter = new StreamWriter(path);
+            string apiKey = "AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM";
+            string centerLatitude = "57.0338295";
+            string centerLongtitude = "9.9277601";
+            string zoom = "12";
+
+
+
+            createHTML(apiKey, centerLatitude, centerLongtitude, zoom, streamWriter);
+
+            foreach (gps_data bikeLocation in locationList)
+            {
+                streamWriter.WriteLine("placeMarker(new google.maps.LatLng(" + bikeLocation.latitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "," + bikeLocation.longitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "),'" + bikeLocation.bikeId + "','" + bikeLocation.queried.ToString() + "');");
+            }
+            streamWriter.WriteLine("}");
+
+            finalizeHTML(streamWriter);
+
+            streamWriter.Close();
+
+
+        }
+
+
+        private static void createHTML(string apiKey, string centerLatitude, string centerLongtitude, string zoom, StreamWriter streamWriter)
+        {
+
+            streamWriter.WriteLine("<!DOCTYPE html>");
+            streamWriter.WriteLine("<html>");
+            streamWriter.WriteLine("<head>");
+            streamWriter.WriteLine("<script");
+            streamWriter.WriteLine("src=\"http://maps.googleapis.com/maps/api/js?key=" + apiKey + "&sensor=false\">");
+            streamWriter.WriteLine("</script>");
+            streamWriter.WriteLine("<script>");
+            streamWriter.WriteLine("var map;");
+            streamWriter.WriteLine("var myCenter=new google.maps.LatLng(" + centerLatitude + "," + centerLongtitude + ");");
+            streamWriter.WriteLine("function initialize(){");
+            streamWriter.WriteLine("var mapProp = {");
+            streamWriter.WriteLine("center:myCenter,");
+            streamWriter.WriteLine("zoom:" + zoom + ",");
+            streamWriter.WriteLine("mapTypeId:google.maps.MapTypeId.ROADMAP};");
+            streamWriter.WriteLine("map = new google.maps.Map(document.getElementById(\"googleMap\"),mapProp);");
+        }
+
+        private static void finalizeHTML(StreamWriter streamWriter)
+        {
+            streamWriter.WriteLine("function placeMarker(location,bikeID, date) {");
+            streamWriter.WriteLine("var marker = new google.maps.Marker({");
+            streamWriter.WriteLine("position: location,");
+            streamWriter.WriteLine("map: map,});");
+            streamWriter.WriteLine("var infowindow = new google.maps.InfoWindow({");
+            streamWriter.WriteLine("content: 'BikeID: ' + bikeID + '<br>Date: ' + date+ '<br>Latitude: ' + location.lat() + '<br>Longitude: ' + location.lng()" + "});");
+            streamWriter.WriteLine("google.maps.event.addListener(marker, 'click', function() {");
+            streamWriter.WriteLine("infowindow.open(map,marker);" + "});}");
+            streamWriter.WriteLine("google.maps.event.addDomListener(window, 'load', initialize);");
+            streamWriter.WriteLine("</script>");
+            streamWriter.WriteLine("</head>");
+            streamWriter.WriteLine("<body>");
+            streamWriter.WriteLine("<div id=\"googleMap\" style=\"width:600px;height:600px;\"></div>");
+            streamWriter.WriteLine("</body>");
+            streamWriter.WriteLine("</html>");
+        }
 
     }
 }
