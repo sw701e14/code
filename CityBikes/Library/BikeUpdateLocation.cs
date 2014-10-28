@@ -9,7 +9,7 @@ namespace Library
 {
     public static class BikeUpdateLocation
     {
-        public static int insertLocation(gps_data newLocation)
+        public static int InsertLocation(gps_data newLocation)
         {
             Database db = new Database();
 
