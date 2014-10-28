@@ -13,7 +13,7 @@ namespace Library
         {
             Database db = new Database();
 
-            gps_data latestLocation = db.gps_data.Where(x => x.id == newLocation.id).OrderBy(x => x.queried).FirstOrDefault();
+            gps_data latestLocation = db.gps_data.Where(x => x.bikeId == newLocation.bikeId).OrderByDescending(x => x.queried).FirstOrDefault();
 
             if (latestLocation != null && gps_data.WithinAccuracy(newLocation, latestLocation))
                 latestLocation.hasNotMoved = true;
