@@ -17,17 +17,9 @@ namespace Library
         /// <returns>Returns a list of bike id and their location.</returns>
         public static IEnumerable<Tuple<int, GPSLocation>> GetBikesNearby(this Database context, GPSLocation gpsLocation)
         {
-            var query = from bike in context.gps_data
-                        group bike by bike.bikeId into b
-                        let newestLocation = b.Max(x => x.queried)
+            var bikeList = AllBikesLocation.GetBikeLocations(context).ToList();
 
-                        from g in b
-                        where g.queried == newestLocation
-                        select Tuple.Create(g.bikeId, new GPSLocation(g.latitude, g.longitude));
-
-            var bikeList = query.ToList();
             var distances = bikeList.ToDictionary(x => x.Item1, x => x.Item2.DistanceTo(gpsLocation));
-
             bikeList.Sort((x, y) => distances[x.Item1].CompareTo(distances[y.Item1]));
 
             foreach (var b in bikeList)
