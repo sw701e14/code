@@ -17,9 +17,7 @@ namespace Library
         /// <returns>A collection of bikes and their location</returns>
         public static IEnumerable<Tuple<int, GPSLocation>> GetAvailableBikes()
         {
-            AllBikesLocation allBikeLocationClass = new AllBikesLocation();
-
-            Dictionary<int, GPSLocation> positions = allBikeLocationClass.GetBikeLocations().ToDictionary(x => x.Item1, x => x.Item2);
+            Dictionary<int, GPSLocation> positions = AllBikesLocation.GetBikeLocations().ToDictionary(x => x.Item1, x => x.Item2);
             Dictionary<int, DateTime> immobile = BikeStandstill.GetBikesImmobile().ToDictionary(x => x.Item1, x => x.Item2);
 
             var immobileTimeSpan = new TimeSpan(0, IMMOBILE_MINUTES, 0);

@@ -7,16 +7,16 @@ using Library.GeneratedDatabaseModel;
 
 namespace Library
 {
-    public class AllBikesLocation
+    public static class AllBikesLocation
     {
-        Database context = new Database();
+        static Database context = new Database();
 
         /// <summary>
         /// Gets the location of the bike with <paramref name="Id"/>.
         /// </summary>
         /// <param name="Id">The id of the bike to find the location of.</param>
         /// <returns>The GPSLocation of the bike with <paramref name="Id"/> or null if var location is null</returns>
-        public GPSLocation GetBikeLocation(int Id)
+        public static GPSLocation GetBikeLocation(int Id)
         {
             var location = (from bike in context.gps_data where bike.bikeId == Id orderby bike.queried descending select bike);
 
@@ -27,7 +27,7 @@ namespace Library
         /// Gets the latest location of all bikes
         /// </summary>
         /// <returns>An IEnumerable containing a Tuple for each bike with its bikeId and its location </returns>
-        public IEnumerable<Tuple<int, GPSLocation>> GetBikeLocations()
+        public static IEnumerable<Tuple<int, GPSLocation>> GetBikeLocations()
         {
             var latest = from bike in context.gps_data
                          group bike by bike.bikeId into b
