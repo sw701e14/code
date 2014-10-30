@@ -44,7 +44,10 @@ namespace DatabaseImport
         /// <returns>A collection of <see cref="GPSPoint"/>s representing the generated route.</returns>
         public static IEnumerable<GPSPoint> GetData(string from, string to, DateTime startTime, int bikeId)
         {
-            string url = "https://maps.googleapis.com/maps/api/directions/xml?origin={0}&destination={1}&sensor=false&key=AIzaSyBLIB1DsgmDpNPuhUaFKSMO-SEt2gLA9Vk&avoid=highways&mode=bicycling&language=da";
+            string apialexander = "AIzaSyDIy0olG2SFd75gMbdshoEc61wZyzlGLOg";
+            string apimikael = "AIzaSyBLIB1DsgmDpNPuhUaFKSMO-SEt2gLA9Vk";
+
+            string url = "https://maps.googleapis.com/maps/api/directions/xml?origin={0}&destination={1}&sensor=false&key="+apialexander +"&avoid=highways&mode=bicycling&language=da";
 
             string enc = System.Web.HttpUtility.UrlEncode(from);
 
