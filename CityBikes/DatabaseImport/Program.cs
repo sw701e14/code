@@ -36,7 +36,7 @@ namespace Run
                 return;
 
             Menu<IEnumerable<gps_data>> menu = new Menu<IEnumerable<gps_data>>("Load data!");
-            menu.SetCancel("Done");
+            menu.SetCancel("Done", new gps_data[0]);
 
             menu.Add("Load from file", loadFromFile);
             menu.Add("Load from Google Directions", loadFromGoogle);
