@@ -81,7 +81,7 @@ namespace Library.GeneratedDatabaseModel
                     Math.Sin(Δλ / 2) * Math.Sin(Δλ / 2);
             var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
 
-            return RADIUS_OF_EARTH_IN_KM * c;
+            return RADIUS_OF_EARTH_IN_KM * c * 1000; //Converting to meters by multiplying with 1000
         }
 
         private static double degreeToRadians(decimal value)
