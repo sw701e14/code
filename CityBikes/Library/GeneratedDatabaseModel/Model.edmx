@@ -37,10 +37,7 @@ warning 6002: The table/view 'citybike_test.hotspots' does not have a primary ke
         <EntityContainer Name="DatabaseModelStoreContainer">
           <EntitySet Name="gps_data" EntityType="Self.gps_data" Schema="citybike_test" store:Type="Tables" />
           <EntitySet Name="stations" EntityType="Self.stations" Schema="citybike_test" store:Type="Tables" />
-          <EntitySet Name="hotspots" EntityType="Self.hotspots" store:Type="Tables" store:Schema="citybike_test">
-            <DefiningQuery>SELECT
-`hotspots`.`convex_hull`
-FROM `hotspots` AS `hotspots`</DefiningQuery>
+          <EntitySet Name="hotspots" EntityType="Self.hotspots" store:Type="Tables" Schema="citybike_test">
           </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
