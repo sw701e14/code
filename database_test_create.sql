@@ -17,5 +17,9 @@ CREATE TABLE citybike_test.stations (
   longitude DECIMAL(11,8) NOT NULL
 );
 
+CREATE TABLE citybike_test.hotspots (
+  convex_hull BLOB NOT NULL
+);
+
 -- INSERT INTO citybike_test.gps_data (bikeId, latitude, longitude, accuracy, queried)
 --   VALUES (65535, 12.12345678, -12.12345678, 255, '9999-12-31 23:59:59');
