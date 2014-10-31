@@ -96,6 +96,22 @@ namespace Library.GeneratedDatabaseModel
             }
         }
         private ObjectSet<stations> _stations;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<hotspots> hotspots
+        {
+            get
+            {
+                if ((_hotspots == null))
+                {
+                    _hotspots = base.CreateObjectSet<hotspots>("hotspots");
+                }
+                return _hotspots;
+            }
+        }
+        private ObjectSet<hotspots> _hotspots;
 
         #endregion
 
@@ -115,6 +131,14 @@ namespace Library.GeneratedDatabaseModel
         public void AddTostations(stations stations)
         {
             base.AddObject("stations", stations);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the hotspots EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddTohotspots(hotspots hotspots)
+        {
+            base.AddObject("hotspots", hotspots);
         }
 
         #endregion
@@ -332,6 +356,62 @@ namespace Library.GeneratedDatabaseModel
         private global::System.Boolean _hasNotMoved;
         partial void OnhasNotMovedChanging(global::System.Boolean value);
         partial void OnhasNotMovedChanged();
+
+        #endregion
+
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="DatabaseModel", Name="hotspots")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class hotspots : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new hotspots object.
+        /// </summary>
+        /// <param name="convex_hull">Initial value of the convex_hull property.</param>
+        public static hotspots Createhotspots(global::System.Byte[] convex_hull)
+        {
+            hotspots hotspots = new hotspots();
+            hotspots.convex_hull = convex_hull;
+            return hotspots;
+        }
+
+        #endregion
+
+        #region Simple Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Byte[] convex_hull
+        {
+            get
+            {
+                return StructuralObject.GetValidValue(_convex_hull);
+            }
+            set
+            {
+                if (!StructuralObject.BinaryEquals(_convex_hull, value))
+                {
+                    Onconvex_hullChanging(value);
+                    ReportPropertyChanging("convex_hull");
+                    _convex_hull = StructuralObject.SetValidValue(value, false, "convex_hull");
+                    ReportPropertyChanged("convex_hull");
+                    Onconvex_hullChanged();
+                }
+            }
+        }
+        private global::System.Byte[] _convex_hull;
+        partial void Onconvex_hullChanging(global::System.Byte[] value);
+        partial void Onconvex_hullChanged();
 
         #endregion
 

@@ -5,8 +5,9 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="5c704e18b2334770b1b0af8f28922ff8" Name="Diagram1">
-        <EntityTypeShape EntityType="DatabaseModel.gps_data" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DatabaseModel.stations" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.gps_data" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DatabaseModel.stations" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DatabaseModel.hotspots" Width="1.5" PointX="2.75" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
