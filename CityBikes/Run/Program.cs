@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Library;
 using Library.GeneratedDatabaseModel;
+using HtmlAgilityPack;
 
 namespace Run
 {
@@ -20,11 +21,16 @@ namespace Run
             }
             Console.ReadKey();
              */
-            //testBikeStandstill();
-            Uri link = GPSPointMapPlotter.PlotAllGPSPointImage();
-            GPSPointMapPlotter.PlotAllGPSPointMap("c:\\test.html");
-            Console.ReadKey(true);
 
+
+            //testBikeStandstill();
+
+            //testGPSPointMapPlotter();
+
+
+
+
+            Console.ReadKey(true);
         }
 
         static void testBikeStandstill()
@@ -45,6 +51,33 @@ namespace Run
                 Console.WriteLine("Bike Id: {0}  Park Time: {1}", bike.Item1, bike.Item2);
             }
             Console.ReadKey(true);
+        }
+
+        static void testGPSPointMapPlotter()
+        {
+            string apiKey = "AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM";
+            string centerLatitude = "57.0338295";
+            string centerLongtitude = "9.9277601";
+            string zoom = "12";
+            string mapSizeWidth = "600";
+            string mapSizeHeight = "600";
+
+            Database context = new Database();
+            IQueryable<gps_data> locationList = from locations in context.gps_data
+                                                where locations.bikeId > 2
+                                                select locations;
+
+
+            Uri link = GPSPointMapPlotter.PlotAllGPSPointsToImage();
+
+            HtmlDocument htmlDocumentAll = GPSPointMapPlotter.PlotAllGPSPointsToMap(apiKey, centerLatitude, centerLongtitude, zoom, mapSizeWidth, mapSizeHeight);
+            htmlDocumentAll.Save("C:\\htmlFileAll.html");
+
+            HtmlDocument htmlDocumentSelected = GPSPointMapPlotter.PlotSelectedGPSPointsToMap(locationList, apiKey, centerLatitude, centerLongtitude, zoom, mapSizeWidth, mapSizeHeight);
+            htmlDocumentSelected.Save("C:\\htmlFileSelected.html");
+
+            Console.WriteLine(htmlDocumentAll.DocumentNode.WriteTo());
+            Console.WriteLine(htmlDocumentSelected.DocumentNode.WriteTo());
         }
     }
 }
