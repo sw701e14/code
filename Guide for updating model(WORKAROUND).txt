@@ -1,25 +1,10 @@
-Delete Model.dmx file in the folder 'GeneratedDatabaseModel
-Delete all connection strings called 'Database' ndjs
+SETUP
+a. Make sure MySQL server is running with instance localhost
+b. Make sure localhost instance has username root and password takecare
+c. Make sure the latest citybike_test database schema is in database ('~/database_test_create.sql')
 
-Add new item to the folder -> the item is ADO.net Entity Data Model  and name it 'Model'
-
-A setup wizard starts:
-
-	choose generate from databse
-	add connection
-		server: localhost
-		user: root
-		password: takecare
-		MAKE SURE that your local database is running and has the necessary schema
-	Answer yes to inlcuding sensitive data to the connection string
-	Call the entity 'Database'
-	Press Next
-	
-	Select the objects u want to inlcude
-	Name the namespace: 'DatabaseModel'
-	Press Finish
-
-U now see the tables generated from the database
-Now we need to generate the code from the xml files generated
-We need to set the 'Code Generation Strategy' on the properties for the 'Model.edmx' to 'default'
-Then u should be avle to see the generated code in under the 'Model.edmx' -> 'Model.Designer.cs' in the solution explorer
+ACTIONS
+1. In Visual Studio, open '~/CityBikes/Library/GeneratedDatabaseModel/Model.edmx'
+2. Select all entities and delete them
+3. Right-click on background, click 'Update Model from Database'
+4. Under 'Add' tab, check 'Tables' and click 'Finish'
