@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Library.GeneratedDatabaseModel
 {
+    [Serializable]
     public struct GPSLocation : IEquatable<GPSLocation>
     {
         private const double RADIUS_OF_EARTH_IN_KM = 6371.0;
