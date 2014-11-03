@@ -9,8 +9,17 @@ using Library.GeneratedDatabaseModel;
 
 namespace Library
 {
+    /// <summary>
+    /// Saving and loading of hotspots to/from database.
+    /// </summary>
     public static class Hotspot
     {
+        /// <summary>
+        /// Takes the resulting <typeparamref name="GPSLocation[]"/> from
+        /// <typeparamref name="ConvexHull"/> and saves it to database.
+        /// </summary>
+        /// <param name="context">The database context.</param>
+        /// <param name="convexHull">The convex hull.</param>
         public static void SaveToDatabase(this Database context, GPSLocation[] convexHull)
         {
             hotspots hotspot = new hotspots();
@@ -20,6 +29,11 @@ namespace Library
             context.SaveChanges();
         }
 
+        /// <summary>
+        /// Loads all hotspots from database.
+        /// </summary>
+        /// <param name="context">The database context.</param>
+        /// <returns>A list of <typeparamref name="GPSLocation[]"/>.</returns>
         public static List<GPSLocation[]> LoadFromDatabase(this Database context)
         {
             List<GPSLocation[]> hotspots = new List<GPSLocation[]>();
@@ -46,7 +60,6 @@ namespace Library
         private static GPSLocation[] deserialize(byte[] blob)
         {
             MemoryStream stream = new MemoryStream(blob);
-
             BinaryFormatter formatter = new BinaryFormatter();
 
             GPSLocation[] convex_hull = (GPSLocation[])formatter.Deserialize(stream);
