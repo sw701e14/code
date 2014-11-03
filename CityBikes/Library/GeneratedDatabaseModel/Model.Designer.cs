@@ -68,6 +68,22 @@ namespace Library.GeneratedDatabaseModel
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        public ObjectSet<bikes> bikes
+        {
+            get
+            {
+                if ((_bikes == null))
+                {
+                    _bikes = base.CreateObjectSet<bikes>("bikes");
+                }
+                return _bikes;
+            }
+        }
+        private ObjectSet<bikes> _bikes;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         public ObjectSet<gps_data> gps_data
         {
             get
@@ -102,6 +118,14 @@ namespace Library.GeneratedDatabaseModel
         #region AddTo Methods
     
         /// <summary>
+        /// Deprecated Method for adding a new object to the bikes EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddTobikes(bikes bikes)
+        {
+            base.AddObject("bikes", bikes);
+        }
+    
+        /// <summary>
         /// Deprecated Method for adding a new object to the gps_data EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddTogps_data(gps_data gps_data)
@@ -124,6 +148,62 @@ namespace Library.GeneratedDatabaseModel
     #endregion
 
     #region Entities
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="DatabaseModel", Name="bikes")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class bikes : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new bikes object.
+        /// </summary>
+        /// <param name="id">Initial value of the id property.</param>
+        public static bikes Createbikes(global::System.Int64 id)
+        {
+            bikes bikes = new bikes();
+            bikes.id = id;
+            return bikes;
+        }
+
+        #endregion
+
+        #region Simple Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 id
+        {
+            get
+            {
+                return _id;
+            }
+            set
+            {
+                if (_id != value)
+                {
+                    OnidChanging(value);
+                    ReportPropertyChanging("id");
+                    _id = StructuralObject.SetValidValue(value, "id");
+                    ReportPropertyChanged("id");
+                    OnidChanged();
+                }
+            }
+        }
+        private global::System.Int64 _id;
+        partial void OnidChanging(global::System.Int64 value);
+        partial void OnidChanged();
+
+        #endregion
+
+    }
     
     /// <summary>
     /// No Metadata Documentation available.
