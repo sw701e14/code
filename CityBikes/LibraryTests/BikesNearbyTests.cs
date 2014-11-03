@@ -22,7 +22,7 @@ namespace Library.Tests
         [TestMethod()]
         public void GetBikeLocationTest()
         {
-            GPSLocation loc = AllBikesLocation.GetBikeLocation(65530);
+            GPSLocation loc = AllBikesLocation.GetBikeLocation(context, 65530);
 
             GPSLocation expected = new GPSLocation(4.12345678m, -4.12345678m);
             Assert.AreEqual(expected, loc);
@@ -32,7 +32,7 @@ namespace Library.Tests
         [TestMethod()]
         public void GetBikeLocationsTest()
         {
-            var locations = AllBikesLocation.GetBikeLocations().ToArray();
+            var locations = AllBikesLocation.GetBikeLocations(context).ToArray();
 
             List<Tuple<int, GPSLocation>> bikesExpected = new List<Tuple<int, GPSLocation>>() {
                 Tuple.Create(65530,new GPSLocation (4.12345678m,-4.12345678m)),
