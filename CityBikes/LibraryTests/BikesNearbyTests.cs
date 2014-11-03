@@ -12,10 +12,6 @@ namespace Library.Tests
     [TestClass()]
     public class BikesNearbyTests
     {
-        decimal fromLatitude = 4m;
-        decimal fromLongitude = 1m;
-        decimal toLatitude = 0m;
-        decimal toLongitude = 1m;
         Database context = new Database();
 
         //Requires test_data.sql in the database
@@ -57,14 +53,6 @@ namespace Library.Tests
             }
 
             Assert.IsTrue(true);
-        }
-
-        [TestMethod()]
-        public void getDistance()
-        {
-            decimal actual = typeof(BikesNearby).InvokeStaticPrivate<decimal>("getDistance", fromLatitude, fromLongitude, toLatitude, toLongitude);
-            decimal expected = 4m;
-            Assert.AreEqual(expected, actual);
         }
     }
 }
