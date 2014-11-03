@@ -22,10 +22,10 @@ namespace Library
         /// <param name="convexHull">The convex hull.</param>
         public static void SaveToDatabase(this Database context, GPSLocation[] convexHull)
         {
-            hotspots hotspot = new hotspots();
+            hotspot hotspot = new hotspot();
             hotspot.convex_hull = serialize(convexHull);
 
-            context.hotspots.AddObject(hotspot);
+            context.hotspot.AddObject(hotspot);
             context.SaveChanges();
         }
 
@@ -38,7 +38,7 @@ namespace Library
         {
             List<GPSLocation[]> hotspots = new List<GPSLocation[]>();
 
-            foreach (hotspots hotspot in context.hotspots)
+            foreach (hotspot hotspot in context.hotspot)
                 hotspots.Add(deserialize(hotspot.convex_hull));
 
             return hotspots;

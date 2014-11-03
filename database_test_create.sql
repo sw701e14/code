@@ -17,7 +17,8 @@ CREATE TABLE citybike_test.stations (
   longitude DECIMAL(11,8) NOT NULL
 );
 
-CREATE TABLE citybike_test.hotspots (
+CREATE TABLE citybike_test.hotspot (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
   convex_hull BLOB NOT NULL
 );
 
