@@ -14,13 +14,12 @@ namespace Library
         /// <summary>
         /// Gets a collection of all the available bikes.
         /// </summary>
+        /// <param name="context">A database context from which data should be retrieved.</param>
         /// <returns>A collection of bikes and their location</returns>
-        public static IEnumerable<Tuple<int, GPSLocation>> GetAvailableBikes()
+        public static IEnumerable<Tuple<int, GPSLocation>> GetAvailableBikes(this Database context)
         {
-            AllBikesLocation allBikeLocationClass = new AllBikesLocation();
-
-            Dictionary<int, GPSLocation> positions = allBikeLocationClass.GetBikeLocations().ToDictionary(x => x.Item1, x => x.Item2);
-            Dictionary<int, DateTime> immobile = BikeStandstill.GetBikesImmobile().ToDictionary(x => x.Item1, x => x.Item2);
+            Dictionary<int, GPSLocation> positions = AllBikesLocation.GetBikeLocations(context).ToDictionary(x => x.Item1, x => x.Item2);
+            Dictionary<int, DateTime> immobile = BikeStandstill.GetBikesImmobile(context).ToDictionary(x => x.Item1, x => x.Item2);
 
             var immobileTimeSpan = new TimeSpan(0, IMMOBILE_MINUTES, 0);
             DateTime now = DateTime.Now;
