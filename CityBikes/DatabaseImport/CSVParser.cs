@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library.GeneratedDatabaseModel;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -20,11 +21,11 @@ namespace DatabaseImport
         /// </summary>
         /// <param name="fileName">The name of the file from which data should be loaded.</param>
         /// <param name="bikeID">The bike identifier.</param>
-        /// <returns>A collection of <see cref="GPSPoint"/> representing the data in the file.</returns>
-        public static GPSPoint[] GetData(string fileName, int bikeID)
+        /// <returns>A collection of <see cref="gps_data"/> representing the data in the file.</returns>
+        public static gps_data[] GetData(string fileName, int bikeID)
         {
             string[] lines = File.ReadAllLines(fileName);
-            GPSPoint[] data = new GPSPoint[lines.Count() - 1];
+            gps_data[] data = new gps_data[lines.Count() - 1];
             for (int i = 1; i < lines.Count(); i++)
             {
                 string[] l = lines[i].Split(',');
@@ -34,7 +35,7 @@ namespace DatabaseImport
                 double longitude = Convert.ToDouble(l[2].Replace('.', ','));
                 int? accuracy = parseInt(l[7], null);
 
-                data[i - 1] = new GPSPoint(timestamp, latitude, longitude, accuracy, bikeID);
+                data[i - 1] = new gps_data(timestamp, (decimal)latitude, (decimal)longitude, accuracy, bikeID);
             }
             return data;
         }
