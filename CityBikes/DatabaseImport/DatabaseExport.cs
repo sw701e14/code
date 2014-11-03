@@ -18,6 +18,8 @@ namespace DatabaseImport
         {
             foreach (var p in points)
                 database.gps_data.AddObject(p);
+
+            database.SaveChanges();
         }
     }
 }
