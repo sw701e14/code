@@ -36,7 +36,7 @@ namespace Run
                 return;
 
             Menu<IEnumerable<gps_data>> menu = new Menu<IEnumerable<gps_data>>("Load data!");
-            menu.SetCancel("Done", new gps_data[0]);
+            menu.SetCancel("Done");
 
             menu.Add("Load from file", loadFromFile);
             menu.Add("Load from Google Directions", loadFromGoogle);
@@ -125,8 +125,9 @@ namespace Run
         static IEnumerable<T> Concatenate<T>(this IEnumerable<IEnumerable<T>> collection)
         {
             foreach (var c in collection)
-                foreach (var t in c)
-                    yield return t;
+                if (c != null)
+                    foreach (var t in c)
+                        yield return t;
         }
     }
 }
