@@ -16,8 +16,17 @@ namespace DatabaseImport
         /// <param name="points">The points that should be exported.</param>
         public static void Export(Database database, IEnumerable<gps_data> points)
         {
+            List<long> bikes = database.bikes.Select(x => x.id).ToList();
+
             foreach (var p in points)
+            {
+                if(!bikes.Contains(p.bikeId))
+                {
+                    database.bikes.AddObject(new bike() { id = p.bikeId });
+                    bikes.Add(p.bikeId);
+                }
                 database.gps_data.AddObject(p);
+            }
 
             database.SaveChanges();
         }
