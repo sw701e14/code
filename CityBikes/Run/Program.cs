@@ -38,7 +38,7 @@ namespace Run
             HtmlDocument htmlDocumentAll = GPSPointMapPlotter.PlotAllGPSPointsToMap(context, apiKey, centerLatitude, centerLongtitude, zoom, mapSizeWidth, mapSizeHeight);
             htmlDocumentAll.Save("C:\\htmlFileAll.html");
 
-            HtmlDocument htmlDocumentSelected = GPSPointMapPlotter.PlotSelectedGPSPointsToMap(locationList, apiKey, centerLatitude, centerLongtitude, zoom, mapSizeWidth, mapSizeHeight);
+            HtmlDocument htmlDocumentSelected = GPSPointMapPlotter.PlotSelectedGPSPointsToMap(context, locationList, apiKey, centerLatitude, centerLongtitude, zoom, mapSizeWidth, mapSizeHeight);
             htmlDocumentSelected.Save("C:\\htmlFileSelected.html");
 
             Console.WriteLine(htmlDocumentAll.DocumentNode.WriteTo());

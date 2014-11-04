@@ -17,40 +17,6 @@ namespace Library
     public static class GPSPointMapPlotter
     {
         /// <summary>
-        /// Plots all GPS points (no lines between points) to image of size 800x800 (max).
-        /// </summary>
-        /// <returns></returns>
-        public static Uri PlotAllGPSPointsToImage(this Database context)
-        {
-            //https://developers.google.com/maps/docum  entation/staticmaps/
-            //Example: https://maps.googleapis.com/maps/api/staticmap?parameters
-
-            IEnumerable<Tuple<int, GPSLocation>> allBikes = AllBikesLocation.GetBikeLocations(context);
-            List<Uri> mapLinks = new List<Uri>();
-
-            string googleCore = "https://maps.googleapis.com/maps/api/staticmap?";
-            string center = "center=aalborg,denmark&zoom=12&size=800x800";
-            string link = googleCore + center;
-
-            var locationList = from locations in context.gps_data
-                            select locations;
-
-            foreach (Tuple<int, GPSLocation> bikeLocation in allBikes)
-            {
-                int bikeId = bikeLocation.Item1;
-                decimal latitude = bikeLocation.Item2.Latitude;
-                decimal longtitude = bikeLocation.Item2.Longitude;
-                string marker = "&markers=color:blue%7C";
-                string label = "label:" + bikeId + ";" + "%7C";
-                string location = latitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "," + longtitude.ToString(System.Globalization.CultureInfo.InvariantCulture);
-
-                link = link + marker + label + location;
-            }
-
-            return new Uri(link);
-        }
-
-        /// <summary>
         /// Plots ALL gps_data from the database to a Google Map and connects them with lines.
         /// </summary>
         /// <param name="apiKey">The API key.</param>
@@ -62,9 +28,19 @@ namespace Library
         /// <returns></returns>
         public static HtmlDocument PlotAllGPSPointsToMap(this Database context, string apiKey, string centerLatitude, string centerLongtitude, string zoom, string mapSizeWidth, string mapSizeHeight)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException();
+            }
+            else if (String.IsNullOrEmpty(apiKey) || String.IsNullOrEmpty(centerLatitude) || String.IsNullOrEmpty(centerLongtitude) ||
+                     String.IsNullOrEmpty(zoom) || String.IsNullOrEmpty(mapSizeWidth) || String.IsNullOrEmpty(mapSizeHeight))
+            {
+                throw new ArgumentException("Arguments must not be null or empty.", "Please specify non empty arguments.");
+            }
+
             IQueryable<gps_data> locationList = from locations in context.gps_data
                                                 select locations;
-            return PlotSelectedGPSPointsToMap(locationList, apiKey, centerLatitude, centerLongtitude, zoom, mapSizeWidth, mapSizeHeight);
+            return PlotSelectedGPSPointsToMap(context, locationList, apiKey, centerLatitude, centerLongtitude, zoom, mapSizeWidth, mapSizeHeight);
         }
 
         /// <summary>
@@ -78,8 +54,18 @@ namespace Library
         /// <param name="mapSizeWidth">Width of the map size.</param>
         /// <param name="mapSizeHeight">Height of the map size.</param>
         /// <returns></returns>
-        public static HtmlDocument PlotSelectedGPSPointsToMap(IQueryable<gps_data> selectedGPSPoints, string apiKey, string centerLatitude, string centerLongtitude, string zoom, string mapSizeWidth, string mapSizeHeight)
+        public static HtmlDocument PlotSelectedGPSPointsToMap(this Database context, IQueryable<gps_data> selectedGPSPoints, string apiKey, string centerLatitude, string centerLongtitude, string zoom, string mapSizeWidth, string mapSizeHeight)
         {
+            if (context == null || selectedGPSPoints == null)
+            {
+                throw new ArgumentNullException();
+            }
+            else if (String.IsNullOrEmpty(apiKey) || String.IsNullOrEmpty(centerLatitude) || String.IsNullOrEmpty(centerLongtitude) || 
+                     String.IsNullOrEmpty(zoom) || String.IsNullOrEmpty(mapSizeWidth) || String.IsNullOrEmpty(mapSizeHeight))
+            {
+                throw new ArgumentException("Arguments must not be null or empty.", "Please specify non empty arguments.");
+            }
+
             HtmlDocument htmlDocument = new HtmlDocument();   
 
             htmlDocument.LoadHtml(writeHTMLStart() +
