@@ -18,7 +18,7 @@ CREATE TABLE citybike_test.stations (
 );
 
 CREATE TABLE citybike_test.bikes (
-  id INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY
+  id INT UNSIGNED NOT NULL UNIQUE PRIMARY KEY
 );
 
 CREATE TABLE citybike_test.hotspots (
