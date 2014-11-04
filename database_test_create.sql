@@ -10,13 +10,6 @@ CREATE TABLE citybike_test.gps_data (
   hasNotMoved BOOL NOT NULL DEFAULT FALSE
 );
 
-CREATE TABLE citybike_test.stations (
-  id INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
-  station_name varchar(20) NOT NULL,
-  latitude DECIMAL(10,8) NOT NULL,
-  longitude DECIMAL(11,8) NOT NULL
-);
-
 CREATE TABLE citybike_test.bikes (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY
 );
