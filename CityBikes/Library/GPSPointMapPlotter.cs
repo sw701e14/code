@@ -17,20 +17,15 @@ namespace Library
     public static class GPSPointMapPlotter
     {
         /// <summary>
-        /// Connection with the database, should be deleted and/or corrected to new method of database connection.
-        /// </summary>
-        static Database context = new Database();
-
-        /// <summary>
         /// Plots all GPS points (no lines between points) to image of size 800x800 (max).
         /// </summary>
         /// <returns></returns>
-        public static Uri PlotAllGPSPointsToImage()
+        public static Uri PlotAllGPSPointsToImage(this Database context)
         {
             //https://developers.google.com/maps/docum  entation/staticmaps/
             //Example: https://maps.googleapis.com/maps/api/staticmap?parameters
 
-            AllBikesLocation allBikesLocation = new AllBikesLocation();
+            IEnumerable<Tuple<int, GPSLocation>> allBikes = AllBikesLocation.GetBikeLocations(context);
             List<Uri> mapLinks = new List<Uri>();
 
             string googleCore = "https://maps.googleapis.com/maps/api/staticmap?";
@@ -40,13 +35,13 @@ namespace Library
             var locationList = from locations in context.gps_data
                             select locations;
 
-            foreach (gps_data bikeLocation in locationList)
+            foreach (Tuple<int, GPSLocation> bikeLocation in allBikes)
             {
-                int bikeId = bikeLocation.bikeId;
-                decimal latitude = bikeLocation.latitude;
-                decimal longtitude = bikeLocation.longitude;
+                int bikeId = bikeLocation.Item1;
+                decimal latitude = bikeLocation.Item2.Latitude;
+                decimal longtitude = bikeLocation.Item2.Longitude;
                 string marker = "&markers=color:blue%7C";
-                string label = "label:" + bikeId + ";" + bikeLocation.queried.ToString() + "%7C";
+                string label = "label:" + bikeId + ";" + "%7C";
                 string location = latitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "," + longtitude.ToString(System.Globalization.CultureInfo.InvariantCulture);
 
                 link = link + marker + label + location;
@@ -65,7 +60,7 @@ namespace Library
         /// <param name="mapSizeWidth">Width of the map size.</param>
         /// <param name="mapSizeHeight">Height of the map size.</param>
         /// <returns></returns>
-        public static HtmlDocument PlotAllGPSPointsToMap(string apiKey, string centerLatitude, string centerLongtitude, string zoom, string mapSizeWidth, string mapSizeHeight)
+        public static HtmlDocument PlotAllGPSPointsToMap(this Database context, string apiKey, string centerLatitude, string centerLongtitude, string zoom, string mapSizeWidth, string mapSizeHeight)
         {
             IQueryable<gps_data> locationList = from locations in context.gps_data
                                                 select locations;
