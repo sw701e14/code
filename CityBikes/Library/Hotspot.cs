@@ -25,7 +25,7 @@ namespace Library
             hotspot hotspot = new hotspot();
             hotspot.convex_hull = serialize(convexHull);
 
-            context.hotspot.AddObject(hotspot);
+            context.hotspots.AddObject(hotspot);
             context.SaveChanges();
         }
 
@@ -38,7 +38,7 @@ namespace Library
         {
             List<GPSLocation[]> hotspots = new List<GPSLocation[]>();
 
-            foreach (hotspot hotspot in context.hotspot)
+            foreach (hotspot hotspot in context.hotspots)
                 hotspots.Add(deserialize(hotspot.convex_hull));
 
             return hotspots;
