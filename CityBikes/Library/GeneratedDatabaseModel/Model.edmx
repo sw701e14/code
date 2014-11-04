@@ -4,112 +4,91 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="DatabaseModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="bikes">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
-        </EntityType>
-        <EntityType Name="gps_data">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="bikeId" Type="usmallint" Nullable="false" />
-          <Property Name="latitude" Type="decimal" Precision="10" Scale="8" Nullable="false" />
-          <Property Name="longitude" Type="decimal" Precision="11" Scale="8" Nullable="false" />
-          <Property Name="accuracy" Type="utinyint" Nullable="false" />
-          <Property Name="queried" Type="datetime" Precision="0" Nullable="false" />
-          <Property Name="hasNotMoved" Type="bool" Nullable="false" />
-        </EntityType>
-        <EntityType Name="stations">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="station_name" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="latitude" Type="decimal" Precision="10" Scale="8" Nullable="false" />
-          <Property Name="longitude" Type="decimal" Precision="11" Scale="8" Nullable="false" />
-        </EntityType>
-        <EntityContainer Name="DatabaseModelStoreContainer">
-          <EntitySet Name="bikes" EntityType="Self.bikes" Schema="citybike_test" store:Type="Tables" />
-          <EntitySet Name="gps_data" EntityType="Self.gps_data" Schema="citybike_test" store:Type="Tables" />
-          <EntitySet Name="stations" EntityType="Self.stations" Schema="citybike_test" store:Type="Tables" />
-        </EntityContainer>
-      </Schema></edmx:StorageModels>
+    <Schema Namespace="DatabaseModel.Store" Alias="Self" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="DatabaseModelStoreContainer">
+    <EntitySet Name="gps_data" EntityType="DatabaseModel.Store.gps_data" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="stations" EntityType="DatabaseModel.Store.stations" store:Type="Tables" Schema="dbo" />
+  </EntityContainer>
+  <EntityType Name="gps_data">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="bikeId" Type="int" Nullable="false" />
+    <Property Name="latitude" Type="decimal" Nullable="false" />
+    <Property Name="longitude" Type="decimal" Nullable="false" />
+    <Property Name="accuracy" Type="utinyint" Nullable="false" />
+    <Property Name="queried" Type="datetime" Nullable="false" />
+    <Property Name="hasNotMoved" Type="bool" Nullable="false" />
+  </EntityType>
+  <EntityType Name="stations">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="station_name" Type="varchar" Nullable="false" MaxLength="20" />
+    <Property Name="latitude" Type="decimal" Nullable="false" />
+    <Property Name="longitude" Type="decimal" Nullable="false" />
+  </EntityType>
+</Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DatabaseModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="Database" p1:LazyLoadingEnabled="true">
-          <EntitySet Name="bikes" EntityType="DatabaseModel.bikes" />
           <EntitySet Name="gps_data" EntityType="DatabaseModel.gps_data" />
           <EntitySet Name="stations" EntityType="DatabaseModel.stations" />
         </EntityContainer>
-        <EntityType Name="bikes">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-        </EntityType>
         <EntityType Name="gps_data">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="Int64" Nullable="false" p1:StoreGeneratedPattern="Identity" />
           <Property Name="bikeId" Type="Int32" Nullable="false" />
           <Property Name="latitude" Type="Decimal" Nullable="false" />
           <Property Name="longitude" Type="Decimal" Nullable="false" />
           <Property Name="accuracy" Type="Byte" Nullable="false" />
           <Property Name="queried" Type="DateTime" Nullable="false" />
-          <Property Name="hasNotMoved" Type="Boolean" Nullable="false" />
+          <Property Type="Boolean" Name="hasNotMoved" Nullable="false" />
         </EntityType>
         <EntityType Name="stations">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="station_name" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="id" Type="Int64" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="station_name" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
           <Property Name="latitude" Type="Decimal" Nullable="false" />
           <Property Name="longitude" Type="Decimal" Nullable="false" />
         </EntityType>
-        </Schema>
+      </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
     <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="DatabaseModelStoreContainer" CdmEntityContainer="Database">
-          <EntitySetMapping Name="bikes">
-            <EntityTypeMapping TypeName="DatabaseModel.bikes">
-              <MappingFragment StoreEntitySet="bikes">
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="gps_data">
-            <EntityTypeMapping TypeName="DatabaseModel.gps_data">
-              <MappingFragment StoreEntitySet="gps_data">
-                <ScalarProperty Name="hasNotMoved" ColumnName="hasNotMoved" />
-                <ScalarProperty Name="queried" ColumnName="queried" />
-                <ScalarProperty Name="accuracy" ColumnName="accuracy" />
-                <ScalarProperty Name="longitude" ColumnName="longitude" />
-                <ScalarProperty Name="latitude" ColumnName="latitude" />
-                <ScalarProperty Name="bikeId" ColumnName="bikeId" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="stations">
-            <EntityTypeMapping TypeName="DatabaseModel.stations">
-              <MappingFragment StoreEntitySet="stations">
-                <ScalarProperty Name="longitude" ColumnName="longitude" />
-                <ScalarProperty Name="latitude" ColumnName="latitude" />
-                <ScalarProperty Name="station_name" ColumnName="station_name" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-        </EntityContainerMapping>
+    <EntitySetMapping Name="gps_data">
+      <EntityTypeMapping TypeName="IsTypeOf(DatabaseModel.gps_data)">
+        <MappingFragment StoreEntitySet="gps_data">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="bikeId" ColumnName="bikeId" />
+          <ScalarProperty Name="latitude" ColumnName="latitude" />
+          <ScalarProperty Name="longitude" ColumnName="longitude" />
+          <ScalarProperty Name="accuracy" ColumnName="accuracy" />
+          <ScalarProperty Name="queried" ColumnName="queried" />
+          <ScalarProperty Name="hasNotMoved" ColumnName="hasNotMoved" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="stations">
+      <EntityTypeMapping TypeName="IsTypeOf(DatabaseModel.stations)">
+        <MappingFragment StoreEntitySet="stations">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="station_name" ColumnName="station_name" />
+          <ScalarProperty Name="latitude" ColumnName="latitude" />
+          <ScalarProperty Name="longitude" ColumnName="longitude" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
@@ -125,7 +104,6 @@
         <DesignerProperty Name="EnablePluralization" Value="False" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="Default" />
-        <DesignerProperty Name="UseLegacyProvider" Value="True" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

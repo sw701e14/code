@@ -100,6 +100,22 @@ namespace Library.GeneratedDatabaseModel
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        public ObjectSet<hotspot> hotspot
+        {
+            get
+            {
+                if ((_hotspot == null))
+                {
+                    _hotspot = base.CreateObjectSet<hotspot>("hotspot");
+                }
+                return _hotspot;
+            }
+        }
+        private ObjectSet<hotspot> _hotspot;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         public ObjectSet<stations> stations
         {
             get
@@ -131,6 +147,14 @@ namespace Library.GeneratedDatabaseModel
         public void AddTogps_data(gps_data gps_data)
         {
             base.AddObject("gps_data", gps_data);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the hotspot EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddTohotspot(hotspot hotspot)
+        {
+            base.AddObject("hotspot", hotspot);
         }
     
         /// <summary>
@@ -412,6 +436,88 @@ namespace Library.GeneratedDatabaseModel
         private global::System.Boolean _hasNotMoved;
         partial void OnhasNotMovedChanging(global::System.Boolean value);
         partial void OnhasNotMovedChanged();
+
+        #endregion
+
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="DatabaseModel", Name="hotspot")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class hotspot : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new hotspot object.
+        /// </summary>
+        /// <param name="id">Initial value of the id property.</param>
+        /// <param name="convex_hull">Initial value of the convex_hull property.</param>
+        public static hotspot Createhotspot(global::System.Int64 id, global::System.Byte[] convex_hull)
+        {
+            hotspot hotspot = new hotspot();
+            hotspot.id = id;
+            hotspot.convex_hull = convex_hull;
+            return hotspot;
+        }
+
+        #endregion
+
+        #region Simple Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 id
+        {
+            get
+            {
+                return _id;
+            }
+            set
+            {
+                if (_id != value)
+                {
+                    OnidChanging(value);
+                    ReportPropertyChanging("id");
+                    _id = StructuralObject.SetValidValue(value, "id");
+                    ReportPropertyChanged("id");
+                    OnidChanged();
+                }
+            }
+        }
+        private global::System.Int64 _id;
+        partial void OnidChanging(global::System.Int64 value);
+        partial void OnidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Byte[] convex_hull
+        {
+            get
+            {
+                return StructuralObject.GetValidValue(_convex_hull);
+            }
+            set
+            {
+                Onconvex_hullChanging(value);
+                ReportPropertyChanging("convex_hull");
+                _convex_hull = StructuralObject.SetValidValue(value, false, "convex_hull");
+                ReportPropertyChanged("convex_hull");
+                Onconvex_hullChanged();
+            }
+        }
+        private global::System.Byte[] _convex_hull;
+        partial void Onconvex_hullChanging(global::System.Byte[] value);
+        partial void Onconvex_hullChanged();
 
         #endregion
 
