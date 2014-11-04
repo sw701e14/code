@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Library.GeneratedDatabaseModel;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace DatabaseImport
 {
@@ -15,7 +15,6 @@ namespace DatabaseImport
     {
         private const string TABLENAME = "gps_data";
         private const string COLUMNS = "(queried, latitude, longitude, accuracy, bikeId)";
-        private static Random rnd = new Random();
         private static CultureInfo ukCulture = CultureInfo.CreateSpecificCulture("en-UK");
 
         /// <summary>
@@ -24,7 +23,7 @@ namespace DatabaseImport
         /// <param name="points">The points that should be exported.</param>
         /// <param name="filename">The name of the file to which the SQL statement should be exported.</param>
         /// <param name="append">if set to <c>true</c> the <paramref name="points"/> are appended; otherwise the entire file is set to only the new points.</param>
-        public static void Export(IEnumerable<GPSPoint> points, string filename, bool append)
+        public static void Export(IEnumerable<gps_data> points, string filename, bool append)
         {
             using (StreamWriter output = new System.IO.StreamWriter(filename, append))
             {
@@ -33,7 +32,7 @@ namespace DatabaseImport
             }
         }
 
-        private static string WriteInsertStatement(IEnumerable<GPSPoint> points)
+        private static string WriteInsertStatement(IEnumerable<gps_data> points)
         {
             if (!points.Any())
                 throw new ArgumentException("No points!", "points");
@@ -54,26 +53,14 @@ namespace DatabaseImport
             return output.ToString();
         }
 
-        private static string writeGPSPoint(this GPSPoint point)
+        private static string writeGPSPoint(this gps_data point)
         {
-
             return string.Format("('{0}', {1}, {2}, {3}, {4})",
-                            point.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss"),
-                            point.Latitude.ToString(ukCulture),
-                            point.Longitude.ToString(ukCulture),
-                            getAccuracy(point.Accuracy),
-                            point.BikeId);
-
-
-        }
-
-        private static int getAccuracy(int? accuracy)
-        {
-            if (accuracy.HasValue)
-                return accuracy.Value;
-            else
-                return rnd.Next(30);
+                            point.queried.ToString("yyyy-MM-dd HH:mm:ss"),
+                            point.latitude.ToString(ukCulture),
+                            point.longitude.ToString(ukCulture),
+                            point.accuracy,
+                            point.bikeId);
         }
     }
-
 }

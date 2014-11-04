@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Library.GeneratedDatabaseModel
 {
+    [Serializable]
     public struct GPSLocation : IEquatable<GPSLocation>
     {
         private const double RADIUS_OF_EARTH_IN_KM = 6371.0;
@@ -58,6 +60,17 @@ namespace Library.GeneratedDatabaseModel
             return new GPSLocation(g1.latitude - g2.latitude, g1.longitude - g2.longitude);
         }
 
+        /// <summary>
+        /// Calculates the distance (in meters) between this <see cref="GPSLocation"/> and another.
+        /// See <see cref="Distance"/> for more.
+        /// </summary>
+        /// <param name="location">The location to include in the calculation.</param>
+        /// <returns>The distance (in meters) between the two locations.</returns>
+        public double DistanceTo(GPSLocation location)
+        {
+            return Distance(this, location);
+        }
+
         public override string ToString()
         {
             return string.Format("(Lat: {0}, Long: {1})", latitude, longitude);
@@ -81,7 +94,7 @@ namespace Library.GeneratedDatabaseModel
                     Math.Sin(Δλ / 2) * Math.Sin(Δλ / 2);
             var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
 
-            return RADIUS_OF_EARTH_IN_KM * c;
+            return RADIUS_OF_EARTH_IN_KM * c * 1000; //Converting to meters by multiplying with 1000
         }
 
         private static double degreeToRadians(decimal value)

@@ -6,14 +6,17 @@ CREATE TABLE citybike_test.gps_data (
   latitude DECIMAL(10,8) NOT NULL,
   longitude DECIMAL(11,8) NOT NULL,
   accuracy TINYINT UNSIGNED NOT NULL,
-  queried DATETIME NOT NULL
+  queried DATETIME NOT NULL,
+  hasNotMoved BOOL NOT NULL DEFAULT FALSE
 );
 
-CREATE TABLE citybike_test.stations (
+CREATE TABLE citybike_test.bikes (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY
+);
+
+CREATE TABLE citybike_test.hotspots (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
-  station_name varchar(20) NOT NULL,
-  latitude DECIMAL(10,8) NOT NULL,
-  longitude DECIMAL(11,8) NOT NULL
+  convex_hull BLOB NOT NULL
 );
 
 -- INSERT INTO citybike_test.gps_data (bikeId, latitude, longitude, accuracy, queried)
