@@ -2,7 +2,7 @@ DROP DATABASE IF EXISTS citybike_test;
 CREATE DATABASE citybike_test;
 CREATE TABLE citybike_test.gps_data (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
-  bikeId SMALLINT UNSIGNED NOT NULL,
+  bikeId INT UNSIGNED NOT NULL,
   latitude DECIMAL(10,8) NOT NULL,
   longitude DECIMAL(11,8) NOT NULL,
   accuracy TINYINT UNSIGNED NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE citybike_test.gps_data (
 
 CREATE TABLE citybike_test.stations (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
-  station_name varchar(20) NOT NULL,
+  station_name VARCHAR(20) NOT NULL,
   latitude DECIMAL(10,8) NOT NULL,
   longitude DECIMAL(11,8) NOT NULL
 );

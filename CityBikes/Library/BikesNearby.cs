@@ -15,7 +15,7 @@ namespace Library
         /// <param name="context">A database context from which data should be retrieved.</param>
         /// <param name="gpsLocation">The GPS location.</param>
         /// <returns>Returns a list of bike id and their location.</returns>
-        public static IEnumerable<Tuple<int, GPSLocation>> GetBikesNearby(this Database context, GPSLocation gpsLocation)
+        public static IEnumerable<Tuple<long, GPSLocation>> GetBikesNearby(this Database context, GPSLocation gpsLocation)
         {
             var bikeList = AllBikesLocation.GetBikeLocations(context).ToList();
 
