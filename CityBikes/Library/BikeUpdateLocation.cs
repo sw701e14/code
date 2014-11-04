@@ -15,6 +15,16 @@ namespace Library
         /// <param name="newLocation">The updated location to be inserted</param>
         public static void InsertLocation(gps_data newLocation)
         {
+            if (newLocation == null)
+            {
+                throw new ArgumentNullException();
+            }
+            else if (newLocation.accuracy == null || newLocation.bikeId == null || newLocation.hasNotMoved == null || newLocation.id == null || 
+                     newLocation.latitude == null || newLocation.longitude == null || newLocation.queried == null)
+            {
+                throw new ArgumentException("newLocation must not contain null values.", "Please specify a argument without null values.");
+            }
+
             Database db = new Database();
 
             gps_data latestLocation = db.gps_data
