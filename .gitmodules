@@ -1,3 +1,3 @@
-[submodule "DatabaseImport/DeadDog"]
+[submodule "CityBikes/DeadDog"]
 	path = CityBikes/DeadDog
 	url = https://github.com/deaddog/DeadDog.git
