@@ -66,6 +66,7 @@
     <Compile Include="HeatmapImagegenerator.cs">
       <DependentUpon>Heatmap.cs</DependentUpon>
     </Compile>
+    <Compile Include="Hotspot.cs" />
     <Compile Include="MapToIndex.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -7,4 +7,7 @@ ACTIONS
 1. In Visual Studio, open '~/CityBikes/Library/GeneratedDatabaseModel/Model.edmx'
 2. Select all entities and delete them
 3. Right-click on background, click 'Update Model from Database'
-4. Under 'Add' tab, check 'Tables' and click 'Finish'
+4. Open the 'Add' tab
+  4.a. Check 'Tables'
+  4.b. Check 'Pluralize or singularize generated object names'
+5. Click 'Finish'
