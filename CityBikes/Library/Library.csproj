@@ -53,11 +53,6 @@
     <Compile Include="ConvexHull.cs" />
     <Compile Include="GeneratedDatabaseModel\GPSLocation.cs" />
     <Compile Include="GeneratedDatabaseModel\gps_data.cs" />
-    <Compile Include="GeneratedDatabaseModel\Model.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Heatmap.cs" />
     <Compile Include="HeatmapImagegenerator.cs">
       <DependentUpon>Heatmap.cs</DependentUpon>
@@ -69,13 +64,6 @@
   <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>
-    </None>
-    <EntityDeploy Include="GeneratedDatabaseModel\Model.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="GeneratedDatabaseModel\Model.edmx.diagram">
-      <DependentUpon>Model.edmx</DependentUpon>
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
