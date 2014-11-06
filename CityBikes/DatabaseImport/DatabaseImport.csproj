@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="CSVParser.cs" />
     <Compile Include="DatabaseExport.cs" />
+    <Compile Include="GenerateGPSData.cs" />
     <Compile Include="GoogleDirectionsParser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
