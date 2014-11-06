@@ -9,36 +9,21 @@ namespace Library
 {
     public static class BikesNearby
     {
-
         /// <summary>
         /// Gets a sorted list, based on distance, of bikes and their location.
         /// </summary>
+        /// <param name="context">A database context from which data should be retrieved.</param>
         /// <param name="gpsLocation">The GPS location.</param>
         /// <returns>Returns a list of bike id and their location.</returns>
-        public static IEnumerable<Tuple<int, GPSLocation>> GetBikesNearby(GPSLocation gpsLocation)
+        public static IEnumerable<Tuple<long, GPSLocation>> GetBikesNearby(this Database context, GPSLocation gpsLocation)
         {
-            Dictionary<int, Tuple<decimal, DateTime, GPSLocation>> bikes = new Dictionary<int, Tuple<decimal, DateTime, GPSLocation>>();
-            Database context = new Database();
-            var query =  from bike in context.gps_data
-                         group bike by bike.bikeId into b
-                         let newestLocation = b.Max(x => x.queried)
+            var bikeList = AllBikesLocation.GetBikeLocations(context).ToList();
 
-                         from g in b
-                         where g.queried == newestLocation
-                         select g;
+            var distances = bikeList.ToDictionary(x => x.Item1, x => x.Item2.DistanceTo(gpsLocation));
+            bikeList.Sort((x, y) => distances[x.Item1].CompareTo(distances[y.Item1]));
 
-            foreach (gps_data g in query)
-            {
-                bikes.Add(g.bikeId, Tuple.Create(GPSTools.GetDistance(gpsLocation.Latitude, gpsLocation.Longitude, g.latitude, g.longitude), g.queried, new GPSLocation(g.latitude, g.longitude)));
-            }
-
-            foreach (KeyValuePair<int, Tuple<decimal, DateTime, GPSLocation>> bike in bikes.OrderBy(x => x.Value.Item1))
-            {
-                yield return Tuple.Create(bike.Key, bike.Value.Item3);
-            }
+            foreach (var b in bikeList)
+                yield return b;
         }
-
-        
-
     }
 }

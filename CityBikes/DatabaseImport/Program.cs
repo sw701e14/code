@@ -6,35 +6,39 @@ using System.Threading.Tasks;
 using DatabaseImport;
 using DeadDog.Console;
 using System.IO;
+using Library.GeneratedDatabaseModel;
 
 namespace Run
 {
-    class Program
+    static class Program
     {
 
 
 
         static void Main(string[] args)
         {
+            Menu menu = new Menu("Select an option");
 
-            string[] bycykelstations = { "karolinelund aalborg", "strandvejen aalborg", "havnefronten aalborg", "vestbyens station aalborg", "utzon centret aalborg", "nytorv aalborg", "algade aalborg", "gammeltorv aalborg", "aalborg zoo alborg", "fibigerstræde aalborg", "kjellerups torv aalborg", "friis aalborg", "aalborg hallen aalborg", "aalborg banegård", "kunsten aalborg", "haraldslund aalborg", "nørresundby torv", "vestergade nørresundby" };
+            menu.Add("Load data", loadData);
+            menu.Add("Clear data", clearData);
 
-            string[] addresses = { "Borgmester Jørgensensvej 5 aalborg", "Selma Lagerlöfsvej 300 aalborg", "sønderbro 25 aalborg", "langesgade 3 aalborg", "kayerødsgade 10 aalborg", "toldstrupsgade 14 aalborg", "danmarksgade 30 aalborg", "christiansgade 44 aalborg", "sankelmarksgade 33 aalborg", "vesterbro 30 aalborg", "prinsensgade 4 aalborg" };
+            menu.SetCancel("Exit");
 
-            string[] destinations = bycykelstations.Concat(addresses).ToArray();
+            menu.Show(true);
+        }
 
-            List<GPSPoint> points = GenerateGPSData.GenerateBikeRoutes(100, destinations, new DateTime(2014, 1, 1, 8, 0, 0), 20).ToList();
+        static void clearData()
+        {
+            using (Database database = new Database())
+                database.ExecuteStoreCommand("TRUNCATE TABLE gps_data");
+        }
 
-            SQLExport.Export(points, "testdata", false);
-
-            Console.Read();
-            return;
-            // end test
-            /*
+        static void loadData()
+        {
             if (!hasFiles())
                 return;
 
-            Menu<IEnumerable<GPSPoint>> menu = new Menu<IEnumerable<GPSPoint>>("Load data!");
+            Menu<IEnumerable<gps_data>> menu = new Menu<IEnumerable<gps_data>>("Load data!");
             menu.SetCancel("Done");
 
             menu.Add("Load from file", loadFromFile);
@@ -89,9 +93,9 @@ namespace Run
             return true;
         }
 
-        static IEnumerable<GPSPoint> loadFromFile()
+        static IEnumerable<gps_data> loadFromFile()
         {
-            Menu<IEnumerable<GPSPoint>> menu = new Menu<IEnumerable<GPSPoint>>("Select a file:");
+            Menu<IEnumerable<gps_data>> menu = new Menu<IEnumerable<gps_data>>("Select a file:");
             menu.SetCancel("Cancel");
 
             foreach (var f in Directory.EnumerateFiles(".", "*.txt"))
@@ -99,13 +103,13 @@ namespace Run
 
             return menu.Show();
         }
-        static IEnumerable<GPSPoint> loadFromFile(string path)
+        static IEnumerable<gps_data> loadFromFile(string path)
         {
             int id = "Specify bike ID: ".GetInt32(x => x > 0);
             return CSVParser.GetData(path, id);
         }
 
-        static IEnumerable<GPSPoint> loadFromGoogle()
+        static IEnumerable<gps_data> loadFromGoogle()
         {
             string from = "From: ".GetString(x => x.Trim().Length > 0);
             string to = "To: ".GetString(x => x.Trim().Length > 0);
@@ -115,9 +119,18 @@ namespace Run
             return GoogleDirectionsParser.GetData(from, to, start, id);
         }
 
-        static void insertInDB(IEnumerable<IEnumerable<GPSPoint>> points)
+        static void insertInDB(IEnumerable<IEnumerable<gps_data>> points)
         {
-            throw new NotImplementedException();
+            using (var database = new Database())
+                DatabaseExport.Export(database, points.Concatenate());
+        }
+
+        static IEnumerable<T> Concatenate<T>(this IEnumerable<IEnumerable<T>> collection)
+        {
+            foreach (var c in collection)
+                if (c != null)
+                    foreach (var t in c)
+                        yield return t;
         }
     }
 }
