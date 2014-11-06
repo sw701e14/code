@@ -9,20 +9,24 @@ namespace Library.Clustering
 {
     public static class ClusteringTechniques
     {
-        public static List<List<CorePoint>> DBSCAN(GPSLocation[] gpsLocations, int minimumPoints, decimal radius)
+        public static List<List<CorePoint>> DBSCAN(GPSLocation[] gpsLocations, int minimumPoints, double radius)
         {
             int size = gpsLocations.Count();
             List<CorePoint> corePoints = new List<CorePoint>();
             List<Point> neighborhood = new List<Point>();
+            int neighborCount = 0;
             for (int i = 0; i < size; i++)
             {
+                Console.WriteLine("Location: " + i);
                 int count = 1;
                 neighborhood.Clear();
                 for (int j = 0; j < size; j++)
                 {
-                    if (!gpsLocations[i].Equals(gpsLocations[j]) && GPSTools.GetDistance(gpsLocations[i], gpsLocations[j]) < radius)
+                    double dist = GPSLocation.Distance(gpsLocations[i], gpsLocations[j]);
+                    if (!gpsLocations[i].Equals(gpsLocations[j]) && dist < radius)
                     {
                         neighborhood.Add(new Point(gpsLocations[j]));
+                        neighborCount++;
                         count++;
                     }
                 }

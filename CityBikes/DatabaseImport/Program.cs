@@ -12,9 +12,6 @@ namespace Run
 {
     static class Program
     {
-
-
-
         static void Main(string[] args)
         {
             Menu menu = new Menu("Select an option");
@@ -68,7 +65,7 @@ namespace Run
                         SQLExport.Export(p, filename, true);
             });
 
-            insertIn.Show();*/
+            insertIn.Show();
         }
 
         static bool hasFiles()
