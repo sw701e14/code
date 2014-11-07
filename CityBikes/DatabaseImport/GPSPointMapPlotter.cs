@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Library.GeneratedDatabaseModel;
-using Google.Maps;
 using System.IO;
 using HtmlAgilityPack;
 
