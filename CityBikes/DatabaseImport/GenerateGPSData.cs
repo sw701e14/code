@@ -129,25 +129,18 @@ namespace DatabaseImport
         {
             if (nextPoint < route.Count())
             {
-
                 if (route[nextPoint].queried > nextTime)
                 {
                     var point = GenerateBetweenPoint(route, lastPoint, nextPoint, nextTime);
                     yield return new gps_data(nextTime, (decimal)point.Item1, (decimal)point.Item2, null, (int)route.First().bikeId);
 
-
                     foreach (var item in GenerateRealPoints(nextTime.AddMinutes(interval), interval, route, lastPoint, nextPoint))
-                    {
                         yield return item;
-                    }
                 }
                 else
                 {
                     foreach (var item in GenerateRealPoints(nextTime, interval, route, lastPoint + 1, nextPoint + 1))
-                    {
                         yield return item;
-                    }
-
                 }
             }
         }
@@ -169,7 +162,6 @@ namespace DatabaseImport
                 yield return startTime;
                 startTime = startTime.AddMinutes(interval);
             }
-
         }
 
 
@@ -192,7 +184,6 @@ namespace DatabaseImport
 
             var g = (time - route[lastPoint].queried);
             double pointtime = g.TotalSeconds;
-
 
             double latitude, longitude;
 
@@ -233,7 +224,6 @@ namespace DatabaseImport
                 dest = destinations[rand.Next(destinations.Length)];
             }
             while (dest == exclude);
-
 
             return dest;
         }
