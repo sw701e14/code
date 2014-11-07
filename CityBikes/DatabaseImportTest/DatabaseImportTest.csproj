@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <Choose>
@@ -61,6 +62,10 @@
     <ProjectReference Include="..\DatabaseImport\DatabaseImport.csproj">
       <Project>{9848ecda-9cb8-47c3-874b-82b070a5272c}</Project>
       <Name>DatabaseImport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Library\Library.csproj">
+      <Project>{0b5c6a5b-dcbf-4f1c-a80e-50c3877bffe5}</Project>
+      <Name>Library</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

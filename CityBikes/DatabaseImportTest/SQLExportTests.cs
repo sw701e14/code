@@ -5,21 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 using DatabaseImport;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Library.GeneratedDatabaseModel;
 namespace DatabaseImportTest
 {
     [TestClass()]
     public class SQLExportTests
     {
-        GPSPoint gps1;
-        GPSPoint gps2;
-        GPSPoint gps3;
+        gps_data gps1;
+        gps_data gps2;
+        gps_data gps3;
 
         [TestInitialize]
         public void Setup()
         {
-            gps1 = new GPSPoint(new DateTime(2014, 1, 1, 12, 0, 0), 57.01163, 9.99110, 10, 1);
-            gps2 = new GPSPoint(new DateTime(2014, 1, 1, 12, 30, 09), 57.03106, 9.94580, 30, 1);
-            gps3 = new GPSPoint(new DateTime(2014, 3, 13, 23, 24, 23), 57.01271, 9.98780, null, 1);
+            gps1 = new gps_data(new DateTime(2014, 1, 1, 12, 0, 0), 57.01163m, 9.99110m, 10, 1);
+            gps2 = new gps_data(new DateTime(2014, 1, 1, 12, 30, 09), 57.03106m, 9.94580m, 30, 1);
+            gps3 = new gps_data(new DateTime(2014, 3, 13, 23, 24, 23), 57.01271m, 9.98780m, null, 1);
         }
 
         [TestMethod()]
