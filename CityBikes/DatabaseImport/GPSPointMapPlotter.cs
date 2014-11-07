@@ -11,10 +11,12 @@ using HtmlAgilityPack;
 namespace Library
 {
     /// <summary>
-    /// 
+    /// Provides methods that creates a Google Map with plotted in GPS locations.
+    /// Maps are saved to working directory (default: /run/Debug/)
     /// </summary>
     public static class GPSPointMapPlotter
     {
+        //Setup for Google Maps API
         private const string API_KEY = "AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM";
         private const string CENTER_LATITUDE = "57.0338295";
         private const string CENTER_LONGITUDE = "9.9277601";
@@ -23,11 +25,11 @@ namespace Library
         private const string MAP_HEIGHT = "600";
 
         /// <summary>
-        /// Plots ALL gps_data from the database to a Google Map and connects them with lines.
+        /// Plots ALL gps_data from database to a Google Map and connects same-bike-id-points with lines.
+        /// Saves the map as a HTML-file in working directory.
         /// </summary>
         /// <param name="context">The database context.</param>
-        /// <returns></returns>
-        public static HtmlDocument PlotAllGPSPointsToMap(this Database context)
+        public static void SaveMapAsHtml(this Database context)
         {
             if (context == null)
             {
@@ -42,16 +44,16 @@ namespace Library
             IQueryable<gps_data> locationList = from locations in context.gps_data
                                                 select locations;
 
-            return PlotSelectedGPSPointsToMap(context, locationList);
+            SaveMapAsHtml(context, locationList);
         }
 
         /// <summary>
-        /// Plots the selected/given gps_points to a Google Map and connects them with lines.
+        /// Plots the given gps_data to a Google Map and connects same-bike-id-points with lines.
+        /// Saves the map as a HTML-file in working directory.
         /// </summary>
         /// <param name="context">The database context.</param>
-        /// <param name="selectedGPSPoints">The selected GPS points.</param>
-        /// <returns></returns>
-        public static HtmlDocument PlotSelectedGPSPointsToMap(this Database context, IQueryable<gps_data> selectedGPSPoints)
+        /// <param name="selectedGPSPoints">The selected GPS data.</param>
+        public static void SaveMapAsHtml(this Database context, IQueryable<gps_data> selectedGPSPoints)
         {
             if (context == null || selectedGPSPoints == null)
             {
@@ -73,13 +75,10 @@ namespace Library
                                    writeHTMLAddMarkerMethod() +
                                    writeHTMLDisplayMap(MAP_WIDTH, MAP_HEIGHT));
 
-            return htmlDocument;
+
+            htmlDocument.Save(Path.GetFullPath(".") + "\\map.html");
         }
 
-        /// <summary>
-        /// Creates HTML syntax and begins header.
-        /// </summary>
-        /// <returns></returns>
         private static string writeHTMLStart()
         {
             string result = "";
@@ -91,11 +90,6 @@ namespace Library
             return result;
         }
 
-        /// <summary>
-        /// Creates the source to use the Google Maps API thorugh the apiKey.
-        /// </summary>
-        /// <param name="apiKey">The API key.</param>
-        /// <returns></returns>
         private static string writeHTMLSource(string apiKey)
         {
             string result = "";
@@ -107,12 +101,6 @@ namespace Library
             return result;
         }
 
-        /// <summary>
-        /// Determines the coordinates for the center of the map.
-        /// </summary>
-        /// <param name="centerLatitude">The center latitude.</param>
-        /// <param name="centerLongtitude">The center longtitude.</param>
-        /// <returns></returns>
         private static string writeHTMLMapCenter(string centerLatitude, string centerLongtitude)
         {
             string result = "";
@@ -124,11 +112,6 @@ namespace Library
             return result;
         }
 
-        /// <summary>
-        /// Determines the settings for the Google Map.
-        /// </summary>
-        /// <param name="zoom">The zoom.</param>
-        /// <returns></returns>
         private static string writeHTMLMapSetting(string zoom)
         {
             string result = "";
@@ -143,11 +126,6 @@ namespace Library
             return result;
         }
 
-        /// <summary>
-        /// Draws all points and lines.
-        /// </summary>
-        /// <param name="locationList">The location list.</param>
-        /// <returns></returns>
         private static string writeHTMLPointsAndLines(IQueryable<gps_data> locationList)
         {
             string result = "";
@@ -203,13 +181,6 @@ namespace Library
             return result;
         }
 
-        /// <summary>
-        /// Creates method determining the settings and customization for a bikeIDs line.
-        /// </summary>
-        /// <param name="lineDataAsString">The line data as string.</param>
-        /// <param name="bikeID">The bike identifier.</param>
-        /// <param name="queried">The queried.</param>
-        /// <returns></returns>
         private static string writeHTMLLine(string lineDataAsString, int bikeID, DateTime queried)
         {
             string result = "";
@@ -226,12 +197,6 @@ namespace Library
             return result;
         }
 
-        /// <summary>
-        /// Calculates the color of a line.
-        /// </summary>
-        /// <param name="bikeID">The bike identifier.</param>
-        /// <param name="queriedInSeconds">The queried in seconds.</param>
-        /// <returns></returns>
         private static string calculateColor(int bikeID, DateTime queriedInSeconds)
         {
             double maxHexValue = 16777215;
@@ -248,10 +213,6 @@ namespace Library
             return hexValue;
         }
 
-        /// <summary>
-        /// Generates the addMarker method.
-        /// </summary>
-        /// <returns></returns>
         private static string writeHTMLAddMarkerMethod()
         {
             string result = "";
@@ -269,12 +230,6 @@ namespace Library
             return result;
         }
 
-        /// <summary>
-        /// Writes the body which displays the Google Map.
-        /// </summary>
-        /// <param name="sizeWidth">Width of the size.</param>
-        /// <param name="sizeHeight">Height of the size.</param>
-        /// <returns></returns>
         private static string writeHTMLDisplayMap(string sizeWidth, string sizeHeight)
         {
             string result = "";
