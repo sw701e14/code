@@ -16,52 +16,50 @@ namespace Library
     /// </summary>
     public static class GPSPointMapPlotter
     {
+        private const string API_KEY = "AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM";
+        private const string CENTER_LATITUDE = "57.0338295";
+        private const string CENTER_LONGITUDE = "9.9277601";
+        private const string ZOOM = "12";
+        private const string MAP_WIDTH = "600";
+        private const string MAP_HEIGHT = "600";
+
         /// <summary>
         /// Plots ALL gps_data from the database to a Google Map and connects them with lines.
         /// </summary>
-        /// <param name="apiKey">The API key.</param>
-        /// <param name="centerLatitude">The center latitude.</param>
-        /// <param name="centerLongtitude">The center longtitude.</param>
-        /// <param name="zoom">The zoom.</param>
-        /// <param name="mapSizeWidth">Width of the map size.</param>
-        /// <param name="mapSizeHeight">Height of the map size.</param>
+        /// <param name="context">The database context.</param>
         /// <returns></returns>
-        public static HtmlDocument PlotAllGPSPointsToMap(this Database context, string apiKey, string centerLatitude, string centerLongtitude, string zoom, string mapSizeWidth, string mapSizeHeight)
+        public static HtmlDocument PlotAllGPSPointsToMap(this Database context)
         {
             if (context == null)
             {
                 throw new ArgumentNullException();
             }
-            else if (String.IsNullOrEmpty(apiKey) || String.IsNullOrEmpty(centerLatitude) || String.IsNullOrEmpty(centerLongtitude) ||
-                     String.IsNullOrEmpty(zoom) || String.IsNullOrEmpty(mapSizeWidth) || String.IsNullOrEmpty(mapSizeHeight))
+            else if (String.IsNullOrEmpty(API_KEY) || String.IsNullOrEmpty(CENTER_LATITUDE) || String.IsNullOrEmpty(CENTER_LONGITUDE) ||
+                     String.IsNullOrEmpty(ZOOM) || String.IsNullOrEmpty(MAP_WIDTH) || String.IsNullOrEmpty(MAP_HEIGHT))
             {
                 throw new ArgumentException("Arguments must not be null or empty.", "Please specify non empty arguments.");
             }
 
             IQueryable<gps_data> locationList = from locations in context.gps_data
                                                 select locations;
-            return PlotSelectedGPSPointsToMap(context, locationList, apiKey, centerLatitude, centerLongtitude, zoom, mapSizeWidth, mapSizeHeight);
+
+            return PlotSelectedGPSPointsToMap(context, locationList);
         }
 
         /// <summary>
         /// Plots the selected/given gps_points to a Google Map and connects them with lines.
         /// </summary>
+        /// <param name="context">The database context.</param>
         /// <param name="selectedGPSPoints">The selected GPS points.</param>
-        /// <param name="apiKey">The API key.</param>
-        /// <param name="centerLatitude">The center latitude.</param>
-        /// <param name="centerLongtitude">The center longtitude.</param>
-        /// <param name="zoom">The zoom.</param>
-        /// <param name="mapSizeWidth">Width of the map size.</param>
-        /// <param name="mapSizeHeight">Height of the map size.</param>
         /// <returns></returns>
-        public static HtmlDocument PlotSelectedGPSPointsToMap(this Database context, IQueryable<gps_data> selectedGPSPoints, string apiKey, string centerLatitude, string centerLongtitude, string zoom, string mapSizeWidth, string mapSizeHeight)
+        public static HtmlDocument PlotSelectedGPSPointsToMap(this Database context, IQueryable<gps_data> selectedGPSPoints)
         {
             if (context == null || selectedGPSPoints == null)
             {
                 throw new ArgumentNullException();
             }
-            else if (String.IsNullOrEmpty(apiKey) || String.IsNullOrEmpty(centerLatitude) || String.IsNullOrEmpty(centerLongtitude) || 
-                     String.IsNullOrEmpty(zoom) || String.IsNullOrEmpty(mapSizeWidth) || String.IsNullOrEmpty(mapSizeHeight))
+            else if (String.IsNullOrEmpty(API_KEY) || String.IsNullOrEmpty(CENTER_LATITUDE) || String.IsNullOrEmpty(CENTER_LONGITUDE) || 
+                     String.IsNullOrEmpty(ZOOM) || String.IsNullOrEmpty(MAP_WIDTH) || String.IsNullOrEmpty(MAP_HEIGHT))
             {
                 throw new ArgumentException("Arguments must not be null or empty.", "Please specify non empty arguments.");
             }
@@ -69,12 +67,12 @@ namespace Library
             HtmlDocument htmlDocument = new HtmlDocument();   
 
             htmlDocument.LoadHtml(writeHTMLStart() +
-                                   writeHTMLSource(apiKey) +
-                                   writeHTMLMapCenter(centerLatitude, centerLongtitude) +
-                                   writeHTMLMapSetting(zoom) +
+                                   writeHTMLSource(API_KEY) +
+                                   writeHTMLMapCenter(CENTER_LATITUDE, CENTER_LONGITUDE) +
+                                   writeHTMLMapSetting(ZOOM) +
                                    writeHTMLPointsAndLines(selectedGPSPoints) +
                                    writeHTMLAddMarkerMethod() +
-                                   writeHTMLDisplayMap(mapSizeWidth, mapSizeHeight));
+                                   writeHTMLDisplayMap(MAP_WIDTH, MAP_HEIGHT));
 
             return htmlDocument;
         }

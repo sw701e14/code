@@ -20,23 +20,16 @@ namespace Run
 
         static void testGPSPointMapPlotter()
         {
-            string apiKey = "AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM";
-            string centerLatitude = "57.0338295";
-            string centerLongtitude = "9.9277601";
-            string zoom = "12";
-            string mapSizeWidth = "600";
-            string mapSizeHeight = "600";
-
             Database context = new Database();
             IQueryable<gps_data> locationList = from locations in context.gps_data
                                                 where locations.bikeId > 2
                                                 select locations;
 
 
-            HtmlDocument htmlDocumentAll = GPSPointMapPlotter.PlotAllGPSPointsToMap(context, apiKey, centerLatitude, centerLongtitude, zoom, mapSizeWidth, mapSizeHeight);
+            HtmlDocument htmlDocumentAll = GPSPointMapPlotter.PlotAllGPSPointsToMap(context);
             htmlDocumentAll.Save("C:\\htmlFileAll.html");
 
-            HtmlDocument htmlDocumentSelected = GPSPointMapPlotter.PlotSelectedGPSPointsToMap(context, locationList, apiKey, centerLatitude, centerLongtitude, zoom, mapSizeWidth, mapSizeHeight);
+            HtmlDocument htmlDocumentSelected = GPSPointMapPlotter.PlotSelectedGPSPointsToMap(context, locationList);
             htmlDocumentSelected.Save("C:\\htmlFileSelected.html");
 
             Console.WriteLine(htmlDocumentAll.DocumentNode.WriteTo());
