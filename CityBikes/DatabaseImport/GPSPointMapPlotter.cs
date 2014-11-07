@@ -32,14 +32,7 @@ namespace Library
         public static void SaveMapAsHtml(this Database context)
         {
             if (context == null)
-            {
                 throw new ArgumentNullException();
-            }
-            else if (String.IsNullOrEmpty(API_KEY) || String.IsNullOrEmpty(CENTER_LATITUDE) || String.IsNullOrEmpty(CENTER_LONGITUDE) ||
-                     String.IsNullOrEmpty(ZOOM) || String.IsNullOrEmpty(MAP_WIDTH) || String.IsNullOrEmpty(MAP_HEIGHT))
-            {
-                throw new ArgumentException("Arguments must not be null or empty.", "Please specify non empty arguments.");
-            }
 
             IQueryable<gps_data> locationList = from locations in context.gps_data
                                                 select locations;
@@ -56,14 +49,7 @@ namespace Library
         public static void SaveMapAsHtml(this Database context, IQueryable<gps_data> selectedGPSPoints)
         {
             if (context == null || selectedGPSPoints == null)
-            {
                 throw new ArgumentNullException();
-            }
-            else if (String.IsNullOrEmpty(API_KEY) || String.IsNullOrEmpty(CENTER_LATITUDE) || String.IsNullOrEmpty(CENTER_LONGITUDE) || 
-                     String.IsNullOrEmpty(ZOOM) || String.IsNullOrEmpty(MAP_WIDTH) || String.IsNullOrEmpty(MAP_HEIGHT))
-            {
-                throw new ArgumentException("Arguments must not be null or empty.", "Please specify non empty arguments.");
-            }
 
             HtmlDocument htmlDocument = new HtmlDocument();   
 
@@ -74,7 +60,6 @@ namespace Library
                                    writeHTMLPointsAndLines(selectedGPSPoints) +
                                    writeHTMLAddMarkerMethod() +
                                    writeHTMLDisplayMap(MAP_WIDTH, MAP_HEIGHT));
-
 
             htmlDocument.Save(Path.GetFullPath(".") + "\\map.html");
         }
