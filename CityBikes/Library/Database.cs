@@ -57,6 +57,13 @@ namespace Library
 
                 this.database = database;
             }
+
+            public void Execute(string query, params object[] args)
+            {
+                MySqlCommand cmd = new MySqlCommand(string.Format(query, args), database.connection);
+                cmd.ExecuteNonQuery();
+                cmd.Dispose();
+            }
         }
     }
 }
