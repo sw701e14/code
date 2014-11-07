@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Library
 {
+    /// <summary>
+    /// Exposes methods and classes enabling database interactions.
+    /// </summary>
     public class Database : IDisposable
     {
         private MySqlConnection connection;
@@ -15,6 +18,9 @@ namespace Library
         private string username;
         private string password;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Database"/> class.
+        /// </summary>
         public Database()
         {
             Initialize();
@@ -31,11 +37,18 @@ namespace Library
 
             connection = new MySqlConnection(connectionString);
         }
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
             connection.Dispose();
         }
 
+        /// <summary>
+        /// Runs a database session by connection to the database, executing <paramref name="operation"/> and disconnecting.
+        /// </summary>
+        /// <param name="operation">The operation that should be performed on the database.</param>
         public void RunSession(Action<DatabaseSession> operation)
         {
             connection.Open();
@@ -60,6 +73,9 @@ namespace Library
                 throw error;
         }
 
+        /// <summary>
+        /// Represents a single connection to a database, exposing methods for performing queries on the database.
+        /// </summary>
         public class DatabaseSession
         {
             private Database database;
@@ -72,6 +88,12 @@ namespace Library
                 this.database = database;
             }
 
+            /// <summary>
+            /// Executes a query (SELECT).
+            /// </summary>
+            /// <param name="query">The query that should be executed.</param>
+            /// <param name="args">An object array that contains zero or more objects to format.</param>
+            /// <returns>A <see cref="RowCollection"/> element from which data can be read.</returns>
             public RowCollection ExecuteRead(string query, params object[] args)
             {
                 if (!query.ToLower().Trim().StartsWith("select"))
@@ -80,6 +102,13 @@ namespace Library
                 return new RowCollection(string.Format(query, args), database.connection);
             }
 
+            /// <summary>
+            /// Executes a query (INSERT, UPDATE, DELETE).
+            /// <paramref name="args"/> is a set of arguments for the query applied using <see cref="String.Format"/>.
+            /// </summary>
+            /// <param name="query">The query that should be executed.</param>
+            /// <param name="args">An object array that contains zero or more objects to format.</param>
+            /// <returns>The number of affected rows.</returns>
             public int Execute(string query, params object[] args)
             {
                 if (query.ToLower().Trim().StartsWith("select"))
@@ -93,12 +122,15 @@ namespace Library
             }
         }
 
+        /// <summary>
+        /// Represents a collection of <see cref="Row"/> instances returned from a database query.
+        /// </summary>
         public class RowCollection : IEnumerable<Row>
         {
             private readonly string command;
             private readonly MySqlConnection connection;
 
-            public RowCollection(string command, MySqlConnection connection)
+            internal RowCollection(string command, MySqlConnection connection)
             {
                 this.command = command;
                 this.connection = connection;
@@ -171,22 +203,56 @@ namespace Library
             }
         }
 
+        /// <summary>
+        /// Exposes methods for retrieving data from a single database row.
+        /// </summary>
         public class Row
         {
             private MySqlDataReader reader;
 
-            public Row(MySqlDataReader reader)
+            internal Row(MySqlDataReader reader)
             {
                 this.reader = reader;
             }
 
-            public T GetValue<T>(int ordinal)
+            /// <summary>
+            /// Gets the value of the specified column as type <typeparamref name="T"/>.
+            /// </summary>
+            /// <typeparam name="T">The type of the element that is retrieved from the database.</typeparam>
+            /// <param name="column">The zero-based column index.</param>
+            /// <returns>The data at <paramref name="column"/> as type <typeparamref name="T"/>.</returns>
+            public T GetValue<T>(int column)
             {
-                return reader.GetFieldValue<T>(ordinal);
+                return reader.GetFieldValue<T>(column);
             }
-            public T GetValue<T>(string name)
+            /// <summary>
+            /// Gets the value of the specified columnname as type <typeparamref name="T"/>.
+            /// </summary>
+            /// <typeparam name="T">The type of the element that is retrieved from the database.</typeparam>
+            /// <param name="column">The name of the column.</param>
+            /// <returns>The data at <paramref name="column"/> as type <typeparamref name="T"/>.</returns>
+            public T GetValue<T>(string column)
             {
-                return GetValue<T>(reader.GetOrdinal(name));
+                return GetValue<T>(column);
+            }
+
+            /// <summary>
+            /// Gets the data type of the specified column.
+            /// </summary>
+            /// <param name="column">The zero-based column index.</param>
+            /// <returns>The data type of the specified column</returns>
+            public Type GetType(int column)
+            {
+                return reader.GetFieldType(column);
+            }
+            /// <summary>
+            /// Gets the data type of the specified columnname.
+            /// </summary>
+            /// <param name="column">The name of the column.</param>
+            /// <returns>The data type of the specified column</returns>
+            public Type GetType(string column)
+            {
+                return reader.GetFieldType(column);
             }
         }
     }
