@@ -33,8 +33,6 @@ namespace Run
                                                 select locations;
 
 
-            Uri link = GPSPointMapPlotter.PlotAllGPSPointsToImage(context);
-
             HtmlDocument htmlDocumentAll = GPSPointMapPlotter.PlotAllGPSPointsToMap(context, apiKey, centerLatitude, centerLongtitude, zoom, mapSizeWidth, mapSizeHeight);
             htmlDocumentAll.Save("C:\\htmlFileAll.html");
 
