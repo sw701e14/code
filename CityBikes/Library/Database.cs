@@ -31,9 +31,32 @@ namespace Library
 
             connection = new MySqlConnection(connectionString);
         }
-        void IDisposable.Dispose()
+        public void Dispose()
         {
             connection.Dispose();
+        }
+
+        public void RunSession(Action<DatabaseSession> operation)
+        {
+            connection.Open();
+
+            DatabaseSession session = new DatabaseSession(this);
+            operation(session);
+
+            connection.Close();
+        }
+
+        public class DatabaseSession
+        {
+            private Database database;
+
+            internal DatabaseSession(Database database)
+            {
+                if (database == null)
+                    throw new ArgumentNullException("database");
+
+                this.database = database;
+            }
         }
     }
 }
