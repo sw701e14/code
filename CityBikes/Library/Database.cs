@@ -74,11 +74,17 @@ namespace Library
 
             public RowCollection ExecuteRead(string query, params object[] args)
             {
+                if (!query.ToLower().Trim().StartsWith("select"))
+                    throw new ArgumentException("ExecuteRead must be performed with a SELECT query. Use Execute instead.");
+
                 return new RowCollection(string.Format(query, args), database.connection);
             }
 
             public void Execute(string query, params object[] args)
             {
+                if (query.ToLower().Trim().StartsWith("select"))
+                    throw new ArgumentException("Execute cannot be performed with a SELECT query. Use ExecuteRead instead.");
+
                 MySqlCommand cmd = new MySqlCommand(string.Format(query, args), database.connection);
                 cmd.ExecuteNonQuery();
                 cmd.Dispose();
