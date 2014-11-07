@@ -80,14 +80,16 @@ namespace Library
                 return new RowCollection(string.Format(query, args), database.connection);
             }
 
-            public void Execute(string query, params object[] args)
+            public int Execute(string query, params object[] args)
             {
                 if (query.ToLower().Trim().StartsWith("select"))
                     throw new ArgumentException("Execute cannot be performed with a SELECT query. Use ExecuteRead instead.");
 
                 MySqlCommand cmd = new MySqlCommand(string.Format(query, args), database.connection);
-                cmd.ExecuteNonQuery();
+                int count = cmd.ExecuteNonQuery();
                 cmd.Dispose();
+
+                return count;
             }
         }
 
