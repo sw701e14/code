@@ -65,5 +65,24 @@ namespace Library
                 cmd.Dispose();
             }
         }
+
+        public class Row
+        {
+            private MySqlDataReader reader;
+
+            public Row(MySqlDataReader reader)
+            {
+                this.reader = reader;
+            }
+
+            public T GetValue<T>(int ordinal)
+            {
+                return reader.GetFieldValue<T>(ordinal);
+            }
+            public T GetValue<T>(string name)
+            {
+                return GetValue<T>(reader.GetOrdinal(name));
+            }
+        }
     }
 }
