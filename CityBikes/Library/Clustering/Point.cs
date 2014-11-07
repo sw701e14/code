@@ -12,6 +12,8 @@ namespace Library.Clustering
         public Point(GPSLocation gpsLocation) 
         {
             this.location = gpsLocation;
+            this.visited = false;
+            this.noise = false;
         }
 
         private GPSLocation location;
@@ -25,5 +27,23 @@ namespace Library.Clustering
         {
             return location.Equals(other.location);
         }
+
+        private bool visited;
+
+        public bool Visited
+        {
+            get { return visited; }
+            set { visited = value; }
+        }
+
+        private bool noise;
+
+        public bool Noise
+        {
+            get { return noise; }
+            set { noise = value; }
+        }
+        
+        
     }
 }
