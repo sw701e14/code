@@ -106,27 +106,40 @@ namespace Library
 
                 public Row Current
                 {
-                    get { throw new NotImplementedException(); }
+                    get { return row; }
                 }
 
                 public void Dispose()
                 {
-                    throw new NotImplementedException();
+                    if (reader != null)
+                    {
+                        reader.Close();
+                        reader.Dispose();
+                    }
+                    command.Dispose();
                 }
 
                 object System.Collections.IEnumerator.Current
                 {
-                    get { throw new NotImplementedException(); }
+                    get { return row; }
                 }
 
                 public bool MoveNext()
                 {
-                    throw new NotImplementedException();
+                    if (reader == null)
+                    {
+                        reader = command.ExecuteReader();
+                        row = new Row(reader);
+                    }
+
+                    return reader.Read();
                 }
 
                 public void Reset()
                 {
-                    throw new NotImplementedException();
+                    // Reset is defined by the IEnumerator interface, but is not used by the .NET framework.
+                    // See http://msdn.microsoft.com/en-us/library/system.collections.ienumerator.reset%28v=vs.110%29.aspx for details.
+                    throw new NotSupportedException();
                 }
             }
         }
