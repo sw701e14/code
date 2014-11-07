@@ -36,15 +36,9 @@ namespace LibraryTests
         public void addNewLocation()
         {
 
-            Library.GeneratedDatabaseModel.gps_data expected = new Library.GeneratedDatabaseModel.gps_data();
-            expected.accuracy = (byte)rndNumber;
-            expected.bikeId = rndNumber;
+            Library.GeneratedDatabaseModel.gps_data expected = new Library.GeneratedDatabaseModel.gps_data(DateTime.Now, rndNumber, rndNumber, rndNumber, rndNumber);
             expected.hasNotMoved = false;
-            expected.latitude = rndNumber;
-            expected.longitude = rndNumber;
-            expected.hasNotMoved = false;
-            expected.queried = DateTime.Now;
-
+            
             Library.BikeUpdateLocation.InsertLocation(expected);
 
             Library.GeneratedDatabaseModel.gps_data actual = database.gps_data.Where(x => x.bikeId == rndNumber && x.accuracy == (byte)rndNumber && x.latitude == rndNumber && x.longitude == rndNumber).FirstOrDefault();
@@ -63,14 +57,8 @@ namespace LibraryTests
         [TestMethod]
         public void updateLatestLocation()
         {
-            Library.GeneratedDatabaseModel.gps_data expected = new Library.GeneratedDatabaseModel.gps_data();
-            expected.accuracy = (byte)rndNumber;
-            expected.bikeId = rndNumber;
+            Library.GeneratedDatabaseModel.gps_data expected = new Library.GeneratedDatabaseModel.gps_data(DateTime.Now, rndNumber, rndNumber, rndNumber, rndNumber);
             expected.hasNotMoved = false;
-            expected.latitude = rndNumber;
-            expected.longitude = rndNumber;
-            expected.hasNotMoved = false;
-            expected.queried = DateTime.Now;
 
             Library.BikeUpdateLocation.InsertLocation(expected);
             Library.BikeUpdateLocation.InsertLocation(expected);
