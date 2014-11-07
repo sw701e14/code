@@ -9,6 +9,13 @@ namespace Library.Clustering
 {
     public static class ClusteringTechniques
     {
+        /// <summary>
+        /// Finds all clusters from the given locations.
+        /// </summary>
+        /// <param name="gpsLocations">An array of all locations.</param>
+        /// <param name="minimumPoints">The minimum amount of neighbour points in its vicinity before it can be a core point.</param>
+        /// <param name="radius">The radius for a point to be a core point.</param>
+        /// <returns>Returns a list of clusters.</returns>
         public static List<List<Point>> DBSCAN(GPSLocation[] gpsLocations, int minimumPoints, double radius)
         {
             List<List<Point>> clusters = new List<List<Point>>();
@@ -24,7 +31,7 @@ namespace Library.Clustering
                 point.Visited = true;
                 Console.WriteLine(point.Location.Latitude + "," + point.Location.Longitude + " visited and is no. " + count + ".");
                 count++;
-                neighbours = regionQuery(points, point, radius).Select(x => x).ToList();
+                neighbours = findNeighbours(points, point, radius).Select(x => x).ToList();
                 if (neighbours.Count < minimumPoints)
                 {
                     point.Noise = true;
@@ -45,7 +52,7 @@ namespace Library.Clustering
                 if (!p.Visited)
                 {
                     p.Visited = true;
-                    List<Point> n = regionQuery(neighbours, p, radius).Select(x => x).ToList();
+                    List<Point> n = findNeighbours(neighbours, p, radius).Select(x => x).ToList();
                     if (n.Count >= radius)
                     {
                         foreach (var item in n)
@@ -71,7 +78,7 @@ namespace Library.Clustering
             return false;
         }
 
-        private static IEnumerable<Point> regionQuery(List<Point> points, Point point, double radius)
+        private static IEnumerable<Point> findNeighbours(List<Point> points, Point point, double radius)
         {
             return points.Where(p => p.Location.DistanceTo(point.Location) < radius);
         }
