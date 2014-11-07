@@ -58,6 +58,11 @@ namespace Library
                 this.database = database;
             }
 
+            public RowCollection ExecuteRead(string query, params object[] args)
+            {
+                return new RowCollection(string.Format(query, args), database.connection);
+            }
+
             public void Execute(string query, params object[] args)
             {
                 MySqlCommand cmd = new MySqlCommand(string.Format(query, args), database.connection);
