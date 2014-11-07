@@ -9,60 +9,71 @@ namespace Library.Clustering
 {
     public static class ClusteringTechniques
     {
-        public static List<List<CorePoint>> DBSCAN(GPSLocation[] gpsLocations, int minimumPoints, double radius)
+        public static List<List<Point>> DBSCAN(GPSLocation[] gpsLocations, int minimumPoints, double radius)
         {
-            int size = gpsLocations.Count();
-            List<CorePoint> corePoints = new List<CorePoint>();
-            List<Point> neighborhood = new List<Point>();
-            int neighborCount = 0;
-            for (int i = 0; i < size; i++)
-            {
-                Console.WriteLine("Location: " + i);
-                int count = 1;
-                neighborhood.Clear();
-                for (int j = 0; j < size; j++)
-                {
-                    double dist = GPSLocation.Distance(gpsLocations[i], gpsLocations[j]);
-                    if (!gpsLocations[i].Equals(gpsLocations[j]) && dist < radius)
-                    {
-                        neighborhood.Add(new Point(gpsLocations[j]));
-                        neighborCount++;
-                        count++;
-                    }
-                }
-                if (count>=minimumPoints)
-                {
-                    CorePoint cp = new CorePoint(gpsLocations[i], new List<Point>(neighborhood));
-                    corePoints.Add(cp);
-                }
-            }
-            return findClusters(corePoints);
-        }
+            List<List<Point>> clusters = new List<List<Point>>();
 
-        private static List<List<CorePoint>> findClusters(List<CorePoint> corePoints)
-        {
-            List<List<CorePoint>> clusters = new List<List<CorePoint>>();
-            List<CorePoint> tmp = new List<CorePoint>();
-            List<CorePoint> corePointsCopy = new List<CorePoint>(corePoints);
-            foreach (var cp1 in corePoints)
+            List<Point> points = new List<Point>(); 
+            foreach (var loc in gpsLocations)
+                points.Add(new Point(loc));
+
+            List<Point> neighbours = new List<Point>();
+            int count = 0;
+            foreach (var point in points.Where(x => !x.Visited))
             {
-                if (corePointsCopy.Contains(cp1))
+                point.Visited = true;
+                Console.WriteLine(point.Location.Latitude + "," + point.Location.Longitude + " visited and is no. " + count + ".");
+                count++;
+                neighbours = regionQuery(points, point, radius).Select(x => x).ToList();
+                if (neighbours.Count < minimumPoints)
                 {
-                    tmp.Add(cp1);                
-                    foreach (var cp2 in corePoints)
-                    {
-                        if (!cp1.Equals(cp2) && cp2.Neighborhood.Contains(cp1))
-                        {
-                            tmp.Add(cp2);
-                            corePointsCopy.Remove(cp2);
-                        }
-                    }
-                    clusters.Add(new List<CorePoint>(tmp));
+                    point.Noise = true;
                 }
-                tmp.Clear();
-                corePointsCopy.Clear();
+                else
+                    clusters.Add(expandCluster(point, neighbours, clusters, minimumPoints, radius));
             }
             return clusters;
+        }
+
+        private static List<Point> expandCluster(Point point, List<Point> neighbours, List<List<Point>> clusters, int minimumpoints, double radius)
+        {
+            List<Point> cluster = new List<Point>();
+            cluster.Add(point);
+            List<Point> tmpNeighbours = new List<Point>();
+            foreach (var p in neighbours)
+            {
+                if (!p.Visited)
+                {
+                    p.Visited = true;
+                    List<Point> n = regionQuery(neighbours, p, radius).Select(x => x).ToList();
+                    if (n.Count >= radius)
+                    {
+                        foreach (var item in n)
+                            tmpNeighbours.Add(item);
+                    }
+                }
+                if (!hasPoint(clusters, p))
+                    cluster.Add(p);
+            }
+            foreach (var item in tmpNeighbours)
+                neighbours.Add(item);
+
+            return cluster;
+        }
+
+        private static bool hasPoint(List<List<Point>> clusters, Point p)
+        {
+            foreach (var c in clusters)
+                {
+                    if (c.Contains(p))
+                        return true;
+                }
+            return false;
+        }
+
+        private static IEnumerable<Point> regionQuery(List<Point> points, Point point, double radius)
+        {
+            return points.Where(p => p.Location.DistanceTo(point.Location) < radius);
         }
     }
 }
