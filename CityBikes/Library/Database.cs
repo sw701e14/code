@@ -41,9 +41,23 @@ namespace Library
             connection.Open();
 
             DatabaseSession session = new DatabaseSession(this);
-            operation(session);
+            Exception error = null;
 
-            connection.Close();
+            try
+            {
+                operation(session);
+            }
+            catch (Exception ex)
+            {
+                error = ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            if (error != null)
+                throw error;
         }
 
         public class DatabaseSession
