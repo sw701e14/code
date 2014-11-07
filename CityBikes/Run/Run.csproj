@@ -51,6 +51,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DatabaseImport\DatabaseImport.csproj">
+      <Project>{9848ecda-9cb8-47c3-874b-82b070a5272c}</Project>
+      <Name>DatabaseImport</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DeadDog\DeadDog.csproj">
       <Project>{675ab5e0-4637-4e6c-8d38-aa7bb135b5ce}</Project>
       <Name>DeadDog</Name>
