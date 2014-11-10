@@ -47,8 +47,10 @@ namespace DatabaseImport
         {
             string apialexander = "AIzaSyDIy0olG2SFd75gMbdshoEc61wZyzlGLOg";
             string apimikael = "AIzaSyBLIB1DsgmDpNPuhUaFKSMO-SEt2gLA9Vk";
+            string apistefan = "AIzaSyCRqTjo_VNze5PlFoPtLHzTM_4MfPIZR7w";
+            string apibruno = "AIzaSyCsiJFXbak8ywb8p3GkoJ8Bji2DxgmH78g";
 
-            string url = "https://maps.googleapis.com/maps/api/directions/xml?origin={0}&destination={1}&sensor=false&key="+apialexander +"&avoid=highways&mode=bicycling&language=da";
+            string url = "https://maps.googleapis.com/maps/api/directions/xml?origin={0}&destination={1}&sensor=false&key="+apibruno +"&avoid=highways&mode=bicycling&language=da";
 
             string enc = System.Web.HttpUtility.UrlEncode(from);
 

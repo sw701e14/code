@@ -15,6 +15,7 @@ namespace Run
     {
         static void Main(string[] args)
         {
+            generateGPSDataTest();
             Menu menu = new Menu("Select an option");
 
             menu.Add("Load data", loadData);
@@ -133,23 +134,24 @@ namespace Run
 
         static void generateGPSDataTest()
         {
-            string[] bycykelstations = { "karolinelund aalborg", "strandvejen aalborg", "havnefronten aalborg", "vestbyens station aalborg", 
-                                           "utzon centret aalborg", "nytorv aalborg", "algade aalborg", "gammeltorv aalborg", 
-                                           "aalborg zoo alborg", "fibigerstræde aalborg", "kjellerups torv aalborg", "friis aalborg", 
-                                           "aalborg hallen aalborg", "aalborg banegård", "kunsten aalborg", "haraldslund aalborg", 
+            string[] bycykelstations = { "karolinelund 9000 aalborg", "strandvejen 9000 aalborg", "havnefronten 9000 aalborg", "vestbyens station 9000 aalborg", 
+                                           "Utzon Center Slotspladsen 4 9000 Aalborg", "nytorv 9000 aalborg", "algade 9000 aalborg", "gammeltorv 9000 aalborg", 
+                                           "aalborg zoo 9000 aalborg", "fibigerstræde 9000 aalborg", "kjellerups torv 9000 aalborg", "friis 9000 aalborg", 
+                                           "aalborg hallen 9000 aalborg", "aalborg banegård 9000 aalborg", "kunsten 9000 aalborg", "haraldslund 9000 aalborg", 
                                            "nørresundby torv 9400 nørresundby", "vestergade 9400 nørresundby" };
 
-            string[] addresses = { "Borgmester Jørgensensvej 5 aalborg", "Selma Lagerlöfsvej 300 aalborg", "sønderbro 25 aalborg", 
-                                     "langesgade 3 aalborg", "kayerødsgade 10 aalborg", "toldstrupsgade 14 aalborg", "danmarksgade 30 aalborg",
-                                     "christiansgade 44 aalborg", "sankelmarksgade 33 aalborg", "vesterbro 30 aalborg", "prinsensgade 4 aalborg" };
+            string[] addresses = { "Borgmester Jørgensensvej 5 9000 aalborg", "Selma Lagerlöfsvej 300 9220 aalborg", "sønderbro 25 9000 aalborg", 
+                                     "langesgade 3 9000 aalborg", "kayerødsgade 10 9000 aalborg", "toldstrupsgade 14 9000 aalborg", "danmarksgade 30 9000 aalborg",
+                                     "christiansgade 44 9000 aalborg", "sankelmarksgade 33 9000 aalborg", "vesterbro 30 9000 aalborg", "prinsensgade 4 9000 aalborg" };
 
             string[] destinations = bycykelstations.Concat(addresses).ToArray();
 
-            List<gps_data> points = GenerateGPSData.GenerateBikeRoutes(1, destinations, new DateTime(2014, 1, 1, 8, 0, 0), destinations.Length - 1).ToList();
+            List<gps_data> points = GenerateGPSData.GenerateBikeRoutes(100, destinations, new DateTime(2014, 1, 1, 8, 0, 0), 20).ToList();
 
             SQLExport.Export(points, "testdata2", false);
 
             GPSPointMapPlotter.SaveMapAsHtml(new Database(), points.AsQueryable());
+            Console.ReadKey();
         }
     }
 }
