@@ -273,6 +273,91 @@ namespace Library
             }
 
             /// <summary>
+            /// Converts the row into a <see cref="Tuple"/> where each element corresponds to a column.
+            /// </summary>
+            /// <typeparam name="T1">The type of the first column.</typeparam>
+            /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
+            public Tuple<T1> ToTuple<T1>()
+            {
+                return Tuple.Create(GetValue<T1>(0));
+            }
+            /// <summary>
+            /// Converts the row into a <see cref="Tuple"/> where each element corresponds to a column.
+            /// </summary>
+            /// <typeparam name="T1">The type of the first column.</typeparam>
+            /// <typeparam name="T2">The type of the second column.</typeparam>
+            /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
+            public Tuple<T1, T2> ToTuple<T1, T2>()
+            {
+                return Tuple.Create(GetValue<T1>(0), GetValue<T2>(1));
+            }
+            /// <summary>
+            /// Converts the row into a <see cref="Tuple"/> where each element corresponds to a column.
+            /// </summary>
+            /// <typeparam name="T1">The type of the first column.</typeparam>
+            /// <typeparam name="T2">The type of the second column.</typeparam>
+            /// <typeparam name="T3">The type of the third column.</typeparam>
+            /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
+            public Tuple<T1, T2, T3> ToTuple<T1, T2, T3>()
+            {
+                return Tuple.Create(GetValue<T1>(0), GetValue<T2>(1), GetValue<T3>(2));
+            }
+            /// <summary>
+            /// Converts the row into a <see cref="Tuple"/> where each element corresponds to a column.
+            /// </summary>
+            /// <typeparam name="T1">The type of the first column.</typeparam>
+            /// <typeparam name="T2">The type of the second column.</typeparam>
+            /// <typeparam name="T3">The type of the third column.</typeparam>
+            /// <typeparam name="T4">The type of the fourth column.</typeparam>
+            /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
+            public Tuple<T1, T2, T3, T4> ToTuple<T1, T2, T3, T4>()
+            {
+                return Tuple.Create(GetValue<T1>(0), GetValue<T2>(1), GetValue<T3>(2), GetValue<T4>(3));
+            }
+            /// <summary>
+            /// Converts the row into a <see cref="Tuple"/> where each element corresponds to a column.
+            /// </summary>
+            /// <typeparam name="T1">The type of the first column.</typeparam>
+            /// <typeparam name="T2">The type of the second column.</typeparam>
+            /// <typeparam name="T3">The type of the third column.</typeparam>
+            /// <typeparam name="T4">The type of the fourth column.</typeparam>
+            /// <typeparam name="T5">The type of the fifth column.</typeparam>
+            /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
+            public Tuple<T1, T2, T3, T4, T5> ToTuple<T1, T2, T3, T4, T5>()
+            {
+                return Tuple.Create(GetValue<T1>(0), GetValue<T2>(1), GetValue<T3>(2), GetValue<T4>(3), GetValue<T5>(4));
+            }
+            /// <summary>
+            /// Converts the row into a <see cref="Tuple"/> where each element corresponds to a column.
+            /// </summary>
+            /// <typeparam name="T1">The type of the first column.</typeparam>
+            /// <typeparam name="T2">The type of the second column.</typeparam>
+            /// <typeparam name="T3">The type of the third column.</typeparam>
+            /// <typeparam name="T4">The type of the fourth column.</typeparam>
+            /// <typeparam name="T5">The type of the fifth column.</typeparam>
+            /// <typeparam name="T6">The type of the sixth column.</typeparam>
+            /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
+            public Tuple<T1, T2, T3, T4, T5, T6> ToTuple<T1, T2, T3, T4, T5, T6>()
+            {
+                return Tuple.Create(GetValue<T1>(0), GetValue<T2>(1), GetValue<T3>(2), GetValue<T4>(3), GetValue<T5>(4), GetValue<T6>(5));
+            }
+            /// <summary>
+            /// Converts the row into a <see cref="Tuple"/> where each element corresponds to a column.
+            /// </summary>
+            /// <typeparam name="T1">The type of the first column.</typeparam>
+            /// <typeparam name="T2">The type of the second column.</typeparam>
+            /// <typeparam name="T3">The type of the third column.</typeparam>
+            /// <typeparam name="T4">The type of the fourth column.</typeparam>
+            /// <typeparam name="T5">The type of the fifth column.</typeparam>
+            /// <typeparam name="T6">The type of the sixth column.</typeparam>
+            /// <typeparam name="T7">The type of the seventh column.</typeparam>
+            /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
+            public Tuple<T1, T2, T3, T4, T5, T6, T7> ToTuple<T1, T2, T3, T4, T5, T6, T7>()
+            {
+                return Tuple.Create(GetValue<T1>(0), GetValue<T2>(1), GetValue<T3>(2), GetValue<T4>(3), GetValue<T5>(4), GetValue<T6>(5), GetValue<T7>(6));
+            }
+
+            /// <summary>
             /// Gets the data type of the specified column.
             /// </summary>
             /// <param name="column">The zero-based column index.</param>
