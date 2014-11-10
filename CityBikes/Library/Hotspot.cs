@@ -34,7 +34,7 @@ namespace Library
         /// </summary>
         /// <param name="context">The database context.</param>
         /// <returns>A list of <typeparamref name="GPSLocation[]"/>.</returns>
-        public static List<GPSLocation[]> LoadFromDatabase(this Database context)
+        public static List<GPSLocation[]> LoadHotSpotsFromDatabase(this Database context)
         {
             List<GPSLocation[]> hotspots = new List<GPSLocation[]>();
 
