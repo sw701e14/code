@@ -13,7 +13,7 @@ namespace Library
         /// Inserts new gps_data into database, depending on whether the bike has moved or not
         /// </summary>
         /// <param name="newLocation">The updated location to be inserted</param>
-        public static void InsertLocation(gps_data newLocation)
+        public static void InsertLocation(Database context, gps_data newLocation)
         {
             if (newLocation == null)
             {
@@ -25,9 +25,7 @@ namespace Library
                 throw new ArgumentException("newLocation must not contain null values.", "Please specify a argument without null values.");
             }
 
-            Database db = new Database();
-
-            gps_data latestLocation = db.gps_data
+            gps_data latestLocation = context.gps_data
                 .Where(x => x.bikeId == newLocation.bikeId)
                 .OrderByDescending(x => x.queried)
                 .FirstOrDefault();
@@ -35,9 +33,9 @@ namespace Library
             if (latestLocation != null && gps_data.WithinAccuracy(newLocation, latestLocation))
                 latestLocation.hasNotMoved = true;
             else
-                db.gps_data.AddObject(newLocation);
+                context.gps_data.AddObject(newLocation);
 
-            db.SaveChanges();
+            context.SaveChanges();
         }
     }
 }
