@@ -45,7 +45,7 @@ namespace Library
                         }
                         else //default initial??
                         {
-                            oldIndex = 0;
+                            oldIndex = 0; // find closest cluster
                         }
                     }
                     else
