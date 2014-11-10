@@ -17,7 +17,7 @@ namespace LibraryTests
             bool actual = false;
             try
             {
-                Library.BikeUpdateLocation.InsertLocation(null);
+                Library.BikeUpdateLocation.InsertLocation(database, null);
             }
             catch (ArgumentNullException)
             {
@@ -39,7 +39,7 @@ namespace LibraryTests
             Library.GeneratedDatabaseModel.gps_data expected = new Library.GeneratedDatabaseModel.gps_data(DateTime.Now, rndNumber, rndNumber, rndNumber, rndNumber);
             expected.hasNotMoved = false;
             
-            Library.BikeUpdateLocation.InsertLocation(expected);
+            Library.BikeUpdateLocation.InsertLocation(database, expected);
 
             Library.GeneratedDatabaseModel.gps_data actual = database.gps_data.Where(x => x.bikeId == rndNumber && x.accuracy == (byte)rndNumber && x.latitude == rndNumber && x.longitude == rndNumber).FirstOrDefault();
 
@@ -60,8 +60,8 @@ namespace LibraryTests
             Library.GeneratedDatabaseModel.gps_data expected = new Library.GeneratedDatabaseModel.gps_data(DateTime.Now, rndNumber, rndNumber, rndNumber, rndNumber);
             expected.hasNotMoved = false;
 
-            Library.BikeUpdateLocation.InsertLocation(expected);
-            Library.BikeUpdateLocation.InsertLocation(expected);
+            Library.BikeUpdateLocation.InsertLocation(database, expected);
+            Library.BikeUpdateLocation.InsertLocation(database, expected);
 
             Library.GeneratedDatabaseModel.gps_data actual = database.gps_data.Where(x => x.bikeId == rndNumber && x.accuracy == (byte)rndNumber && x.latitude == rndNumber && x.longitude == rndNumber).FirstOrDefault();
 
