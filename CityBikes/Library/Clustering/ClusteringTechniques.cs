@@ -16,11 +16,11 @@ namespace Library.Clustering
         /// <param name="minimumPoints">The minimum amount of neighbour points in its vicinity before it can be a core point.</param>
         /// <param name="radius">The radius for a point to be a core point.</param>
         /// <returns>Returns a list of clusters.</returns>
-        public static List<List<Point>> DBSCAN(GPSLocation[] gpsLocations, int minimumPoints, double radius)
+        public static List<GPSLocation[]> DBSCAN(GPSLocation[] gpsLocations, int minimumPoints, double radius)
         {
             List<List<Point>> clusters = new List<List<Point>>();
 
-            List<Point> points = new List<Point>(); 
+            List<Point> points = new List<Point>();
             foreach (var loc in gpsLocations)
                 points.Add(new Point(loc));
 
@@ -39,7 +39,20 @@ namespace Library.Clustering
                 else
                     clusters.Add(expandCluster(point, neighbours, clusters, minimumPoints, radius));
             }
-            return clusters;
+
+            return ConvertToGpsLocation(clusters);
+        }
+
+        private static List<GPSLocation[]> ConvertToGpsLocation(List<List<Point>> clusters)
+        {
+            List<GPSLocation[]> locationClusters = new List<GPSLocation[]>();
+
+            foreach (List<Point> item in clusters)
+            {
+                locationClusters.Add(item.Select(x => x.Location).ToArray());
+            }
+
+            return locationClusters;
         }
 
         private static List<Point> expandCluster(Point point, List<Point> neighbours, List<List<Point>> clusters, int minimumpoints, double radius)
@@ -71,10 +84,10 @@ namespace Library.Clustering
         private static bool hasPoint(List<List<Point>> clusters, Point p)
         {
             foreach (var c in clusters)
-                {
-                    if (c.Contains(p))
-                        return true;
-                }
+            {
+                if (c.Contains(p))
+                    return true;
+            }
             return false;
         }
 
