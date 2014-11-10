@@ -10,6 +10,7 @@ namespace DatabaseImport
 {
     public static class DatabaseExport
     {
+        private const int INTERVAL = 5;
         /// <summary>
         /// Exports the specified points directly to the database.
         /// </summary>
@@ -19,7 +20,7 @@ namespace DatabaseImport
         {
             List<long> bikes = context.bikes.Select(x => x.id).ToList();
 
-            foreach (var p in ConvertToIntervalRoute(points.First().queried,5, points.ToList(), 0, 1))
+            foreach (var p in ConvertToIntervalRoute(points.First().queried,INTERVAL, points.ToList(), 0, 1))
             {
                 if(!bikes.Contains(p.bikeId))
                 {
