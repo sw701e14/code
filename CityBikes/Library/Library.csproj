@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AvailableBikes.cs" />
+    <Compile Include="Bike.cs" />
     <Compile Include="BikesNearby.cs" />
     <Compile Include="BikeStandstill.cs" />
     <Compile Include="AllBikesLocation.cs" />
