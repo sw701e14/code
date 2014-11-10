@@ -7,6 +7,8 @@ using Library;
 using Library.GeneratedDatabaseModel;
 using Library.Clustering;
 using DatabaseImport;
+using HtmlAgilityPack;
+using System.IO;
 
 namespace Run
 {
@@ -14,7 +16,7 @@ namespace Run
     {
         static void Main(string[] args)
         {
-            //Database context = new Database();
+            Console.ReadKey(true);
             //List<GPSLocation> data = new List<GPSLocation>();
             
             //foreach (var item in from location in context.gps_data select location)
