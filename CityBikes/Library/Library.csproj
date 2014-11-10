@@ -36,6 +36,12 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\gmaps-api-net.0.12.113\lib\net\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -55,6 +61,7 @@
     <Compile Include="BikeStandstill.cs" />
     <Compile Include="AllBikesLocation.cs" />
     <Compile Include="Clustering\ClusteringTechniques.cs" />
+    <Compile Include="BikeUpdateLocation.cs" />
     <Compile Include="Clustering\Point.cs" />
     <Compile Include="ConvexHull.cs" />
     <Compile Include="GeneratedDatabaseModel\GPSLocation.cs" />
