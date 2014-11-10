@@ -15,11 +15,11 @@ namespace Run
     {
         static void Main(string[] args)
         {
-            generateGPSDataTest();
             Menu menu = new Menu("Select an option");
 
             menu.Add("Load data", loadData);
             menu.Add("Clear data", clearData);
+            menu.Add("Generate Map", genMap);
 
             menu.SetCancel("Exit");
 
@@ -42,6 +42,7 @@ namespace Run
 
             menu.Add("Load from file", loadFromFile);
             menu.Add("Load from Google Directions", loadFromGoogle);
+            menu.Add("Generate random test data", generateGPSDataTest);
 
             var points = menu.Show(true).ToArray();
 
@@ -132,7 +133,7 @@ namespace Run
                         yield return t;
         }
 
-        static void generateGPSDataTest()
+        static IEnumerable<gps_data> generateGPSDataTest()
         {
             string[] bycykelstations = { "karolinelund 9000 aalborg", "strandvejen 9000 aalborg", "havnefronten 9000 aalborg", "vestbyens station 9000 aalborg", 
                                            "Utzon Center Slotspladsen 4 9000 Aalborg", "nytorv 9000 aalborg", "algade 9000 aalborg", "gammeltorv 9000 aalborg", 
@@ -146,12 +147,13 @@ namespace Run
 
             string[] destinations = bycykelstations.Concat(addresses).ToArray();
 
-            List<gps_data> points = GenerateGPSData.GenerateBikeRoutes(100, destinations, new DateTime(2014, 1, 1, 8, 0, 0), 20).ToList();
+            return GenerateGPSData.GenerateBikeRoutes(1, destinations, new DateTime(2014, 1, 1, 8, 0, 0), 20).ToList();
+        }
 
-            SQLExport.Export(points, "testdata2", false);
-
-            GPSPointMapPlotter.SaveMapAsHtml(new Database(), points.AsQueryable());
-            Console.ReadKey();
+        static void genMap()
+        {
+            Database db = new Database();
+            GPSPointMapPlotter.SaveMapAsHtml(db);
         }
     }
 }
