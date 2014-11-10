@@ -74,6 +74,40 @@ namespace Library
         }
 
         /// <summary>
+        /// Runs a database session and retrieves a result.
+        /// </summary>
+        /// <typeparam name="T">The type of the result returned by <paramref name="operation"/>.</typeparam>
+        /// <param name="operation">The operation that should be performed on the database.</param>
+        /// <returns>The result of <paramref name="operation"/>.</returns>
+        public T RunSession<T>(Func<DatabaseSession, T> operation)
+        {
+            connection.Open();
+
+            DatabaseSession session = new DatabaseSession(this);
+            Exception error = null;
+
+            T result = default(T);
+
+            try
+            {
+                result = operation(session);
+            }
+            catch (Exception ex)
+            {
+                error = ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            if (error != null)
+                throw error;
+            else
+                return result;
+        }
+
+        /// <summary>
         /// Represents a single connection to a database, exposing methods for performing queries on the database.
         /// </summary>
         public class DatabaseSession
