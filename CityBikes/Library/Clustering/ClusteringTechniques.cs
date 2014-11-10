@@ -16,9 +16,9 @@ namespace Library.Clustering
         /// <param name="minimumPoints">The minimum amount of neighbour points in its vicinity before it can be a core point.</param>
         /// <param name="radius">The radius for a point to be a core point.</param>
         /// <returns>Returns a list of clusters.</returns>
-        public static List<List<Point>> DBSCAN(GPSLocation[] gpsLocations, int minimumPoints, double radius)
+        public static List<GPSLocation[]> DBSCAN(GPSLocation[] gpsLocations, int minimumPoints, double radius)
         {
-            List<List<Point>> clusters = new List<List<Point>>();
+            List<GPSLocation[]> clusters = new List<GPSLocation[]>();
 
             List<Point> points = new List<Point>(); 
             foreach (var loc in gpsLocations)
@@ -42,10 +42,10 @@ namespace Library.Clustering
             return clusters;
         }
 
-        private static List<Point> expandCluster(Point point, List<Point> neighbours, List<List<Point>> clusters, int minimumpoints, double radius)
+        private static GPSLocation[] expandCluster(Point point, List<Point> neighbours, List<GPSLocation[]> clusters, int minimumpoints, double radius)
         {
-            List<Point> cluster = new List<Point>();
-            cluster.Add(point);
+            List<GPSLocation> cluster = new List<GPSLocation>();
+            cluster.Add(point.Location);
             List<Point> tmpNeighbours = new List<Point>();
             foreach (var p in neighbours)
             {
@@ -60,19 +60,19 @@ namespace Library.Clustering
                     }
                 }
                 if (!hasPoint(clusters, p))
-                    cluster.Add(p);
+                    cluster.Add(p.Location);
             }
             foreach (var item in tmpNeighbours)
                 neighbours.Add(item);
 
-            return cluster;
+            return cluster.ToArray();
         }
 
-        private static bool hasPoint(List<List<Point>> clusters, Point p)
+        private static bool hasPoint(List<GPSLocation[]> clusters, Point p)
         {
             foreach (var c in clusters)
                 {
-                    if (c.Contains(p))
+                    if (c.Contains(p.Location))
                         return true;
                 }
             return false;
