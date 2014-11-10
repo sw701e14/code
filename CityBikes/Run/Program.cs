@@ -16,6 +16,8 @@ namespace Run
     {
         static void Main(string[] args)
         {
+            TestClusters();
+
             Console.ReadKey(true);
             //List<GPSLocation> data = new List<GPSLocation>();
             
@@ -32,6 +34,29 @@ namespace Run
             //    count++;
             //}            
             //Console.ReadKey();
+        }
+
+        private static void TestClusters()
+        {
+            Database b = new Database();
+
+            var locations = (from gps in b.gps_data select gps).ToArray();
+
+            GPSLocation[] gpslocations = locations.Take(1000).Select(x => x.Location).ToArray();
+
+            var clusters = ClusteringTechniques.DBSCAN(gpslocations, 10, 50);
+
+
+            List<GPSLocation[]> convexClusters = new List<GPSLocation[]>();
+            foreach (var cluster in clusters)
+            {
+                convexClusters.Add(ConvexHull.GrahamScan(cluster));
+            }
+
+            foreach (var item in convexClusters)
+            {
+                Hotspot.SaveToDatabase(b, item);
+            }
         }
     }
 }
