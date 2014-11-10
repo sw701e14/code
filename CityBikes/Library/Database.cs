@@ -223,6 +223,8 @@ namespace Library
             /// <returns>The data at <paramref name="column"/> as type <typeparamref name="T"/>.</returns>
             public T GetValue<T>(int column)
             {
+                if (typeof(T) == typeof(Bike))
+                    return (T)(object)new Bike(reader.GetFieldValue<uint>(column));
                 return reader.GetFieldValue<T>(column);
             }
             /// <summary>
