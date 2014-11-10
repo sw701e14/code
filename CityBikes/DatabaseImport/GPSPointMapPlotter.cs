@@ -8,7 +8,7 @@ using System.IO;
 using HtmlAgilityPack;
 
 
-namespace Library
+namespace DatabaseImport
 {
     /// <summary>
     /// Provides methods that creates a Google Map with plotted in GPS locations.
@@ -174,7 +174,7 @@ namespace Library
 
             result = result + "var completeLine" + bikeID + "=new google.maps.Polyline({" + System.Environment.NewLine;
             result = result + "path:myLine" + bikeID + "," + System.Environment.NewLine;
-            result = result + "strokeColor:\"#" + calculateColor(bikeID, queried) + "\"," + System.Environment.NewLine;
+            result = result + "strokeColor:" + calculateColor(bikeID, queried) + "," + System.Environment.NewLine;
             result = result + "strokeOpacity:0.8," + System.Environment.NewLine;
             result = result + "strokeWeight:2});" + System.Environment.NewLine;
             result = result + "completeLine" + bikeID + ".setMap(map);" + System.Environment.NewLine;
@@ -184,16 +184,53 @@ namespace Library
 
         private static string calculateColor(long bikeID, DateTime queriedInSeconds)
         {
-            double maxHexValue = 16777215;
-            int colorInDouble = (int) Math.Abs(((queriedInSeconds.Year + 1) *
-                                                (queriedInSeconds.Month + 1) *
-                                                (queriedInSeconds.DayOfYear + 1) * 
-                                                (queriedInSeconds.Day + 1) *
-                                                (queriedInSeconds.Hour + 1) *
-                                                (queriedInSeconds.Minute + 1) *
-                                                (queriedInSeconds.Second + 1)) % maxHexValue);
 
-            string hexValue = colorInDouble.ToString("X");
+            decimal randomDecimal = ((queriedInSeconds.Year + 1) *
+                                    (queriedInSeconds.Month + 1) *
+                                    (queriedInSeconds.DayOfYear + 1) *
+                                    (queriedInSeconds.Day + 1) *
+                                    (queriedInSeconds.Hour + 1) *
+                                    (queriedInSeconds.Minute + 1) *
+                                    (queriedInSeconds.Second + 1));
+
+            double randomDouble = (double)randomDecimal;
+
+            var temp = Math.Sqrt(randomDouble) % 8;
+
+            double randomNumber = Math.Floor((double)temp);
+
+            int colorInDouble = (int)Math.Abs(randomNumber);
+            
+            string hexValue = "'#000000'";
+
+
+            switch (colorInDouble)
+            {
+                case 0://Black
+                    hexValue = "'#000000'";
+                    break;
+                case 1://Blue
+                    hexValue = "'#0000FF'";
+                    break;
+                case 2://Teal
+                    hexValue = "'#00FFFF'";
+                    break;
+                case 3://Green
+                    hexValue = "'#40FF00'";
+                    break;
+                case 4://Red
+                    hexValue = "'#FF0000'";
+                    break;
+                case 5://Purple
+                    hexValue = "'#FF00FF'";
+                    break;
+                case 6://Orange
+                    hexValue = "'#FF8000'";
+                    break;
+                default://Yellow
+                    hexValue = "'#FFFF00'";
+                    break;
+            }
 
             return hexValue;
         }
