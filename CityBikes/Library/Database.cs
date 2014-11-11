@@ -259,6 +259,10 @@ namespace Library
             {
                 if (typeof(T) == typeof(Bike))
                     return (T)(object)new Bike(reader.GetFieldValue<uint>(column));
+
+                if (reader.GetValue(column).GetType() == typeof(DBNull))
+                    return default(T);
+
                 return reader.GetFieldValue<T>(column);
             }
             /// <summary>
