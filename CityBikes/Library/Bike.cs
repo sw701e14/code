@@ -8,16 +8,21 @@ namespace Library
 {
     public class Bike
     {
-        private long id;
+        private uint id;
 
-        public Bike(long id)
+        public Bike(uint id)
         {
             this.id = id;
         }
 
-        public long Id
+        public uint Id
         {
             get { return id; }
+        }
+
+        public override int GetHashCode()
+        {
+            return (int)id;
         }
     }
 }
