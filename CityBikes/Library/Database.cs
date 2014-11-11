@@ -277,16 +277,6 @@ namespace Library
 
                 return reader.GetFieldValue<T>(column);
             }
-            /// <summary>
-            /// Gets the value of the specified columnname as type <typeparamref name="T"/>.
-            /// </summary>
-            /// <typeparam name="T">The type of the element that is retrieved from the database.</typeparam>
-            /// <param name="column">The name of the column.</param>
-            /// <returns>The data at <paramref name="column"/> as type <typeparamref name="T"/>.</returns>
-            public T GetValue<T>(string column)
-            {
-                return GetValue<T>(column);
-            }
 
             /// <summary>
             /// Converts the row into a <see cref="Tuple"/> where each element corresponds to a column.
@@ -386,15 +376,6 @@ namespace Library
             /// <param name="column">The zero-based column index.</param>
             /// <returns>The data type of the specified column</returns>
             public Type GetType(int column)
-            {
-                return reader.GetFieldType(column);
-            }
-            /// <summary>
-            /// Gets the data type of the specified columnname.
-            /// </summary>
-            /// <param name="column">The name of the column.</param>
-            /// <returns>The data type of the specified column</returns>
-            public Type GetType(string column)
             {
                 return reader.GetFieldType(column);
             }
