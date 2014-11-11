@@ -154,6 +154,18 @@ namespace Library
 
                 return count;
             }
+
+            public int Execute(MySqlCommand command)
+            {
+                if (command == null)
+                    throw new ArgumentNullException("command");
+
+                command.Connection = database.connection;
+                int count = command.ExecuteNonQuery();
+                command.Connection = null;
+
+                return count;
+            }
         }
 
         /// <summary>
@@ -267,23 +279,34 @@ namespace Library
                 object item1 = data[column + tupleIndexShift];
 
                 if (typeof(T) == typeof(Bike))
-                    return (T)(object)new Bike((uint)item1);
+                    return (T)(object)GetBike(column);
 
-                if (typeof(T) == typeof(GPSLocation) || typeof(T) == typeof(GPSLocation?))
-                {
-                    object item2 = data[column + tupleIndexShift + 1];
-                    tupleIndexShift++;
-                    if (item1 is DBNull || item2 is DBNull)
-                        return default(T);
-                    else
-                        return (T)(object)new GPSLocation((decimal)item1, (decimal)item2);
-                }
+                else if (typeof(T) == typeof(GPSLocation))
+                    return (T)(object)GetGPSLocation(column);
 
-                if (item1 is DBNull)
+                else if (item1 is DBNull)
                     return default(T);
 
                 return (T)item1;
             }
+
+
+            public Bike GetBike(int column = 0)
+            {
+                object item1 = data[column + tupleIndexShift];
+                return new Bike((uint)item1);
+            }
+
+            public GPSLocation GetGPSLocation(int column = 0)
+            {
+                object item1 = data[column + tupleIndexShift];
+                object item2 = data[column + tupleIndexShift + 1];
+
+                tupleIndexShift++;
+
+                return new GPSLocation((decimal)item1, (decimal)item2);
+            }
+
 
             /// <summary>
             /// Converts the row into a <see cref="Tuple"/> where each element corresponds to a column.
