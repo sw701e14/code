@@ -27,8 +27,20 @@ namespace DatabaseImport
                     context.bikes.AddObject(new bike() { id = p.bikeId });
                     bikes.Add(p.bikeId);
                 }
-                BikeUpdateLocation.InsertLocation(context, p);
+
+                gps_data movedPoint = MoveRandom(p);
+                BikeUpdateLocation.InsertLocation(context, movedPoint);
             }
+        }
+
+        public static gps_data MoveRandom(gps_data point)
+        {
+            Random r = new Random();
+
+            double angle = r.Next(360);
+            double distance = r.Next(20);
+
+            return gps_data.Move(point, angle, distance/1000);
         }
 
         /// <summary>
