@@ -260,9 +260,9 @@ namespace Library
             /// Gets the value of the specified column as type <typeparamref name="T"/>.
             /// </summary>
             /// <typeparam name="T">The type of the element that is retrieved from the database.</typeparam>
-            /// <param name="column">The zero-based column index.</param>
+            /// <param name="column">The zero-based column index where data-consumption should start.</param>
             /// <returns>The data at <paramref name="column"/> as type <typeparamref name="T"/>.</returns>
-            public T GetValue<T>(int column)
+            public T GetValue<T>(int column = 0)
             {
                 object item1 = data[column + tupleIndexShift];
 
@@ -289,10 +289,11 @@ namespace Library
             /// Converts the row into a <see cref="Tuple"/> where each element corresponds to a column.
             /// </summary>
             /// <typeparam name="T1">The type of the first column.</typeparam>
+            /// <param name="column">The zero-based column index where data-consumption should start.</param>
             /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
-            public Tuple<T1> ToTuple<T1>()
+            public Tuple<T1> ToTuple<T1>(int column = 0)
             {
-                tupleIndexShift = 0;
+                tupleIndexShift = column;
                 return Tuple.Create(GetValue<T1>(0));
             }
             /// <summary>
@@ -300,10 +301,11 @@ namespace Library
             /// </summary>
             /// <typeparam name="T1">The type of the first column.</typeparam>
             /// <typeparam name="T2">The type of the second column.</typeparam>
+            /// <param name="column">The zero-based column index where data-consumption should start.</param>
             /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
-            public Tuple<T1, T2> ToTuple<T1, T2>()
+            public Tuple<T1, T2> ToTuple<T1, T2>(int column = 0)
             {
-                tupleIndexShift = 0;
+                tupleIndexShift = column;
                 return Tuple.Create(GetValue<T1>(0), GetValue<T2>(1));
             }
             /// <summary>
@@ -312,10 +314,11 @@ namespace Library
             /// <typeparam name="T1">The type of the first column.</typeparam>
             /// <typeparam name="T2">The type of the second column.</typeparam>
             /// <typeparam name="T3">The type of the third column.</typeparam>
+            /// <param name="column">The zero-based column index where data-consumption should start.</param>
             /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
-            public Tuple<T1, T2, T3> ToTuple<T1, T2, T3>()
+            public Tuple<T1, T2, T3> ToTuple<T1, T2, T3>(int column = 0)
             {
-                tupleIndexShift = 0;
+                tupleIndexShift = column;
                 return Tuple.Create(GetValue<T1>(0), GetValue<T2>(1), GetValue<T3>(2));
             }
             /// <summary>
@@ -325,10 +328,11 @@ namespace Library
             /// <typeparam name="T2">The type of the second column.</typeparam>
             /// <typeparam name="T3">The type of the third column.</typeparam>
             /// <typeparam name="T4">The type of the fourth column.</typeparam>
+            /// <param name="column">The zero-based column index where data-consumption should start.</param>
             /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
-            public Tuple<T1, T2, T3, T4> ToTuple<T1, T2, T3, T4>()
+            public Tuple<T1, T2, T3, T4> ToTuple<T1, T2, T3, T4>(int column = 0)
             {
-                tupleIndexShift = 0;
+                tupleIndexShift = column;
                 return Tuple.Create(GetValue<T1>(0), GetValue<T2>(1), GetValue<T3>(2), GetValue<T4>(3));
             }
             /// <summary>
@@ -339,10 +343,11 @@ namespace Library
             /// <typeparam name="T3">The type of the third column.</typeparam>
             /// <typeparam name="T4">The type of the fourth column.</typeparam>
             /// <typeparam name="T5">The type of the fifth column.</typeparam>
+            /// <param name="column">The zero-based column index where data-consumption should start.</param>
             /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
-            public Tuple<T1, T2, T3, T4, T5> ToTuple<T1, T2, T3, T4, T5>()
+            public Tuple<T1, T2, T3, T4, T5> ToTuple<T1, T2, T3, T4, T5>(int column = 0)
             {
-                tupleIndexShift = 0;
+                tupleIndexShift = column;
                 return Tuple.Create(GetValue<T1>(0), GetValue<T2>(1), GetValue<T3>(2), GetValue<T4>(3), GetValue<T5>(4));
             }
             /// <summary>
@@ -354,10 +359,11 @@ namespace Library
             /// <typeparam name="T4">The type of the fourth column.</typeparam>
             /// <typeparam name="T5">The type of the fifth column.</typeparam>
             /// <typeparam name="T6">The type of the sixth column.</typeparam>
+            /// <param name="column">The zero-based column index where data-consumption should start.</param>
             /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
-            public Tuple<T1, T2, T3, T4, T5, T6> ToTuple<T1, T2, T3, T4, T5, T6>()
+            public Tuple<T1, T2, T3, T4, T5, T6> ToTuple<T1, T2, T3, T4, T5, T6>(int column = 0)
             {
-                tupleIndexShift = 0;
+                tupleIndexShift = column;
                 return Tuple.Create(GetValue<T1>(0), GetValue<T2>(1), GetValue<T3>(2), GetValue<T4>(3), GetValue<T5>(4), GetValue<T6>(5));
             }
             /// <summary>
@@ -370,10 +376,11 @@ namespace Library
             /// <typeparam name="T5">The type of the fifth column.</typeparam>
             /// <typeparam name="T6">The type of the sixth column.</typeparam>
             /// <typeparam name="T7">The type of the seventh column.</typeparam>
+            /// <param name="column">The zero-based column index where data-consumption should start.</param>
             /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
-            public Tuple<T1, T2, T3, T4, T5, T6, T7> ToTuple<T1, T2, T3, T4, T5, T6, T7>()
+            public Tuple<T1, T2, T3, T4, T5, T6, T7> ToTuple<T1, T2, T3, T4, T5, T6, T7>(int column = 0)
             {
-                tupleIndexShift = 0;
+                tupleIndexShift = column;
                 return Tuple.Create(GetValue<T1>(0), GetValue<T2>(1), GetValue<T3>(2), GetValue<T4>(3), GetValue<T5>(4), GetValue<T6>(5), GetValue<T7>(6));
             }
 
