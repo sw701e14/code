@@ -5,14 +5,13 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
-using Library.GeneratedDatabaseModel;
 
 namespace Library
 {
     /// <summary>
-    /// Saving and loading of hotspots to/from database.
+    /// Represents a hotspot in the system and provides methods for saving/loading hotspots to/from the database.
     /// </summary>
-    public static class Hotspot
+    public class Hotspot
     {
         /// <summary>
         /// Takes the resulting <typeparamref name="GPSLocation[]"/> from
