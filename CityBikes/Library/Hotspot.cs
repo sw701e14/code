@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace Library
     {
         private GPSLocation[] dataPoints;
 
-        private Hotspot(GPSLocation[] dataPoints)
+        public Hotspot(GPSLocation[] dataPoints)
         {
             if (dataPoints == null)
                 throw new ArgumentNullException("dataPoints");
@@ -31,30 +32,22 @@ namespace Library
         /// Takes the resulting <typeparamref name="GPSLocation[]"/> from
         /// <typeparamref name="ConvexHull"/> and saves it to database.
         /// </summary>
-        /// <param name="context">The database context.</param>
-        /// <param name="convexHull">The convex hull.</param>
-        public static void SaveToDatabase(this Database context, GPSLocation[] convexHull)
+        /// <param name="session">The database context.</param>
+        /// <param name="data">The convex hull.</param>
+        public static Hotspot CreateInDatabase(Database.DatabaseSession session, GPSLocation[] data, bool applyConvexHull)
         {
-            hotspot hotspot = new hotspot();
-            hotspot.convex_hull = serialize(convexHull);
+            if (applyConvexHull)
+                data = ConvexHull.GrahamScan(data);
 
-            context.hotspots.AddObject(hotspot);
-            context.SaveChanges();
-        }
+            Hotspot hotspot = new Hotspot(data);
+            byte[] buffer = serialize(data);
 
-        /// <summary>
-        /// Loads all hotspots from database.
-        /// </summary>
-        /// <param name="context">The database context.</param>
-        /// <returns>A list of <typeparamref name="GPSLocation[]"/>.</returns>
-        public static List<GPSLocation[]> LoadFromDatabase(this Database context)
-        {
-            List<GPSLocation[]> hotspots = new List<GPSLocation[]>();
+            MySqlCommand cmd = new MySqlCommand("INSERT INTO hotspots (convex_hull) VALUES(@data)");
+            cmd.Parameters.Add("@data", MySqlDbType.Blob).Value = buffer;
 
-            foreach (hotspot hotspot in context.hotspots)
-                hotspots.Add(deserialize(hotspot.convex_hull));
+            session.Execute(cmd);
 
-            return hotspots;
+            return hotspot;
         }
 
         private static byte[] serialize(GPSLocation[] convexHull)
@@ -68,18 +61,6 @@ namespace Library
             stream.Close();
 
             return blob;
-        }
-
-        private static GPSLocation[] deserialize(byte[] blob)
-        {
-            MemoryStream stream = new MemoryStream(blob);
-            BinaryFormatter formatter = new BinaryFormatter();
-
-            GPSLocation[] convex_hull = (GPSLocation[])formatter.Deserialize(stream);
-
-            stream.Close();
-
-            return convex_hull;
         }
     }
 }

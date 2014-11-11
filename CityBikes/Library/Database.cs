@@ -1,7 +1,9 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -276,25 +278,27 @@ namespace Library
             /// <returns>The data at <paramref name="column"/> as type <typeparamref name="T"/>.</returns>
             public T GetValue<T>(int column = 0)
             {
-                object item1 = data[column + tupleIndexShift];
-
                 if (typeof(T) == typeof(Bike))
                     return (T)(object)GetBike(column);
 
                 else if (typeof(T) == typeof(GPSLocation))
                     return (T)(object)GetGPSLocation(column);
 
-                else if (item1 is DBNull)
-                    return default(T);
+                else
+                {
+                    object item = data[column + tupleIndexShift];
 
-                return (T)item1;
+                    if (item is DBNull)
+                        return default(T);
+
+                    return (T)item;
+                }
             }
-
 
             public Bike GetBike(int column = 0)
             {
-                object item1 = data[column + tupleIndexShift];
-                return new Bike((uint)item1);
+                object item = data[column + tupleIndexShift];
+                return new Bike((uint)item);
             }
 
             public GPSLocation GetGPSLocation(int column = 0)
@@ -307,6 +311,20 @@ namespace Library
                 return new GPSLocation((decimal)item1, (decimal)item2);
             }
 
+            public Hotspot GetHotspot(int column = 0)
+            {
+                object item = data[column + tupleIndexShift];
+
+                MemoryStream stream = new MemoryStream((byte[])item);
+                BinaryFormatter formatter = new BinaryFormatter();
+
+                GPSLocation[] points = (GPSLocation[])formatter.Deserialize(stream);
+
+                stream.Close();
+                stream.Dispose();
+
+                return new Hotspot(points);
+            }
 
             /// <summary>
             /// Converts the row into a <see cref="Tuple"/> where each element corresponds to a column.
