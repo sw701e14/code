@@ -28,7 +28,7 @@ ORDER BY queried desc", id);
         /// <summary>
         /// Gets the latest location of all bikes
         /// </summary>
-        /// <param name="session">A database context from which data should be retrieved.</param>
+        /// <param name="session">A <see cref="Database.DatabaseSession"/> from which data should be retrieved.</param>
         /// <returns>An array of Tuples containing a Bike and its location </returns>
         public static Tuple<Bike, GPSLocation>[] GetBikeLocations(this Database.DatabaseSession session)
         {
