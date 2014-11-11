@@ -13,6 +13,20 @@ namespace Library
     /// </summary>
     public class Hotspot
     {
+        private GPSLocation[] dataPoints;
+
+        private Hotspot(GPSLocation[] dataPoints)
+        {
+            if (dataPoints == null)
+                throw new ArgumentNullException("dataPoints");
+
+            if (dataPoints.Length == 0)
+                throw new ArgumentException("A hotspot must have at least one point.", "dataPoints");
+
+            this.dataPoints = new GPSLocation[dataPoints.Length];
+            dataPoints.CopyTo(this.dataPoints, 0);
+        }
+
         /// <summary>
         /// Takes the resulting <typeparamref name="GPSLocation[]"/> from
         /// <typeparamref name="ConvexHull"/> and saves it to database.
