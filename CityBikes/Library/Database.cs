@@ -243,6 +243,7 @@ namespace Library
         public class Row
         {
             private MySqlDataReader reader;
+            private int tupleIndexShift = 0;
 
             internal Row(MySqlDataReader reader)
             {
@@ -257,10 +258,21 @@ namespace Library
             /// <returns>The data at <paramref name="column"/> as type <typeparamref name="T"/>.</returns>
             public T GetValue<T>(int column)
             {
+                object item = reader.GetValue(column + tupleIndexShift);
                 if (typeof(T) == typeof(Bike))
-                    return (T)(object)new Bike(reader.GetFieldValue<uint>(column));
+                    return (T)(object)new Bike((uint)item);
 
-                if (reader.GetValue(column).GetType() == typeof(DBNull))
+                if (typeof(T) == typeof(GPSLocation) || typeof(T) == typeof(GPSLocation?))
+                {
+                    object item2 = reader.GetValue(column + tupleIndexShift + 1);
+                    tupleIndexShift++;
+                    if (item is DBNull || item2 is DBNull)
+                        return default(T);
+                    else
+                        return (T)(object)new GPSLocation((decimal)item, (decimal)item2);
+                }
+
+                if (item is DBNull)
                     return default(T);
 
                 return reader.GetFieldValue<T>(column);
@@ -283,6 +295,7 @@ namespace Library
             /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
             public Tuple<T1> ToTuple<T1>()
             {
+                tupleIndexShift = 0;
                 return Tuple.Create(GetValue<T1>(0));
             }
             /// <summary>
@@ -293,6 +306,7 @@ namespace Library
             /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
             public Tuple<T1, T2> ToTuple<T1, T2>()
             {
+                tupleIndexShift = 0;
                 return Tuple.Create(GetValue<T1>(0), GetValue<T2>(1));
             }
             /// <summary>
@@ -304,6 +318,7 @@ namespace Library
             /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
             public Tuple<T1, T2, T3> ToTuple<T1, T2, T3>()
             {
+                tupleIndexShift = 0;
                 return Tuple.Create(GetValue<T1>(0), GetValue<T2>(1), GetValue<T3>(2));
             }
             /// <summary>
@@ -316,6 +331,7 @@ namespace Library
             /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
             public Tuple<T1, T2, T3, T4> ToTuple<T1, T2, T3, T4>()
             {
+                tupleIndexShift = 0;
                 return Tuple.Create(GetValue<T1>(0), GetValue<T2>(1), GetValue<T3>(2), GetValue<T4>(3));
             }
             /// <summary>
@@ -329,6 +345,7 @@ namespace Library
             /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
             public Tuple<T1, T2, T3, T4, T5> ToTuple<T1, T2, T3, T4, T5>()
             {
+                tupleIndexShift = 0;
                 return Tuple.Create(GetValue<T1>(0), GetValue<T2>(1), GetValue<T3>(2), GetValue<T4>(3), GetValue<T5>(4));
             }
             /// <summary>
@@ -343,6 +360,7 @@ namespace Library
             /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
             public Tuple<T1, T2, T3, T4, T5, T6> ToTuple<T1, T2, T3, T4, T5, T6>()
             {
+                tupleIndexShift = 0;
                 return Tuple.Create(GetValue<T1>(0), GetValue<T2>(1), GetValue<T3>(2), GetValue<T4>(3), GetValue<T5>(4), GetValue<T6>(5));
             }
             /// <summary>
@@ -358,6 +376,7 @@ namespace Library
             /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
             public Tuple<T1, T2, T3, T4, T5, T6, T7> ToTuple<T1, T2, T3, T4, T5, T6, T7>()
             {
+                tupleIndexShift = 0;
                 return Tuple.Create(GetValue<T1>(0), GetValue<T2>(1), GetValue<T3>(2), GetValue<T4>(3), GetValue<T5>(4), GetValue<T6>(5), GetValue<T7>(6));
             }
 
