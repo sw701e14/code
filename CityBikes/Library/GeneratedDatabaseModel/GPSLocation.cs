@@ -97,6 +97,7 @@ namespace Library.GeneratedDatabaseModel
             return RADIUS_OF_EARTH_IN_KM * c * 1000; //Converting to meters by multiplying with 1000
         }
 
+
         private static double degreeToRadians(decimal value)
         {
             return (Math.PI * (double)value) / 180.0;

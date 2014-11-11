@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Library.GeneratedDatabaseModel
 {
     public partial class gps_data
@@ -69,6 +70,24 @@ namespace Library.GeneratedDatabaseModel
         {
             double dist = GPSLocation.Distance(d1.Location, d2.Location) * 1000;
             return d1.accuracy + d2.accuracy >= dist;
+        }
+
+        /// <summary>
+        /// Moves the point the specified distance at the specified angled
+        /// </summary>
+        /// <param name="data">The gps_data to move</param>
+        /// <param name="angle">Angle clockwise from north</param>
+        /// <param name="distance">The distance in km</param>
+        /// <returns></returns>
+        public static gps_data Move(gps_data data, double angle, double distance)
+        {
+            int R = 6371; // earth radius in km
+            double δ = distance / R;
+
+            double newLatitude = Math.Asin(Math.Sin((double)data.latitude) * Math.Cos(δ) + Math.Cos(angle) * Math.Sin(δ) * Math.Cos(angle));
+            double newLongitude = (double)data.longitude + Math.Atan2(Math.Sin(angle) * Math.Sin(δ) * Math.Cos((double)data.latitude), Math.Cos(δ) - Math.Sin((double)data.latitude) * Math.Sin(newLatitude));
+
+            return new gps_data(data.queried, (decimal)newLatitude, (decimal)newLongitude, data.accuracy,(int)data.bikeId);
         }
     }
 }
