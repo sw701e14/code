@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Library.GeneratedDatabaseModel
+namespace Library
 {
     [Serializable]
     public struct GPSLocation : IEquatable<GPSLocation>
