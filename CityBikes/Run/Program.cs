@@ -12,6 +12,10 @@ namespace Run
     {
         static void Main(string[] args)
         {
+            BuildMarkov bm = new BuildMarkov();
+            Database database= new  Database();
+            MarkovChain mc = bm.Build(database);
+
         }
     }
 }
