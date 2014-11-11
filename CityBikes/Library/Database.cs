@@ -199,7 +199,12 @@ namespace Library
 
                 public Row Current
                 {
-                    get { return row; }
+                    get
+                    {
+                        if (row == null)
+                            row = new Row(reader);
+                        return row;
+                    }
                 }
 
                 public void Dispose()
@@ -220,10 +225,9 @@ namespace Library
                 public bool MoveNext()
                 {
                     if (reader == null)
-                    {
                         reader = command.ExecuteReader();
-                        row = new Row(reader);
-                    }
+
+                    row = null;
 
                     return reader.Read();
                 }
@@ -242,12 +246,14 @@ namespace Library
         /// </summary>
         public class Row
         {
-            private MySqlDataReader reader;
+            private object[] data;
             private int tupleIndexShift = 0;
 
             internal Row(MySqlDataReader reader)
             {
-                this.reader = reader;
+                this.data = new object[reader.FieldCount];
+                for (int i = 0; i < data.Length; i++)
+                    data[i] = reader.GetValue(i);
             }
 
             /// <summary>
@@ -258,24 +264,25 @@ namespace Library
             /// <returns>The data at <paramref name="column"/> as type <typeparamref name="T"/>.</returns>
             public T GetValue<T>(int column)
             {
-                object item = reader.GetValue(column + tupleIndexShift);
+                object item1 = data[column + tupleIndexShift];
+
                 if (typeof(T) == typeof(Bike))
-                    return (T)(object)new Bike((uint)item);
+                    return (T)(object)new Bike((uint)item1);
 
                 if (typeof(T) == typeof(GPSLocation) || typeof(T) == typeof(GPSLocation?))
                 {
-                    object item2 = reader.GetValue(column + tupleIndexShift + 1);
+                    object item2 = data[column + tupleIndexShift + 1];
                     tupleIndexShift++;
-                    if (item is DBNull || item2 is DBNull)
+                    if (item1 is DBNull || item2 is DBNull)
                         return default(T);
                     else
-                        return (T)(object)new GPSLocation((decimal)item, (decimal)item2);
+                        return (T)(object)new GPSLocation((decimal)item1, (decimal)item2);
                 }
 
-                if (item is DBNull)
+                if (item1 is DBNull)
                     return default(T);
 
-                return reader.GetFieldValue<T>(column);
+                return (T)item1;
             }
 
             /// <summary>
@@ -377,7 +384,7 @@ namespace Library
             /// <returns>The data type of the specified column</returns>
             public Type GetType(int column)
             {
-                return reader.GetFieldType(column);
+                return data[column].GetType();
             }
         }
     }
