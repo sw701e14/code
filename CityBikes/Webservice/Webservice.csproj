@@ -153,6 +153,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AvailableBikes\BikeResource.cs" />
+    <Compile Include="Models\AvailableBikes\ListAvailableBikes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -184,9 +186,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Library\Library.csproj">
       <Project>{0b5c6a5b-dcbf-4f1c-a80e-50c3877bffe5}</Project>

@@ -488,9 +488,9 @@
         </member>
         <member name="M:Webservice.Controllers.BikeController.getAll">
             <summary>
-            Get all available bike locations.
+            Get all available bikes' locations.
             </summary>
-            <returns>The bike locations.</returns>
+            <returns>The bikes' locations.</returns>
         </member>
     </members>
 </doc>
