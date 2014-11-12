@@ -11,15 +11,15 @@ using Webservice.Models.AvailableBikes;
 namespace Webservice.Controllers
 {
     /// <summary>
-    /// Publicly available methods for getting bike locations and predictions.
+    /// Publicly available methods for getting available bikes' locations.
     /// </summary>
     [RoutePrefix("availablebike")]
-    public class BikeController : ApiController
+    public class AvailableBikeController : ApiController
     {
         /// <summary>
-        /// Get all available bikes' locations.
+        /// Get list of available bikes.
         /// </summary>
-        /// <returns>The bikes' locations.</returns>
+        /// <returns>The bikes.</returns>
         [Route("")]
         [HttpGet]
         public ListAvailableBikes getAll()
@@ -38,9 +38,14 @@ namespace Webservice.Controllers
             return bikeResources;
         }
 
+        /// <summary>
+        /// Get available bike.
+        /// </summary>
+        /// <param name="bikeId">The bikeId.</param>
+        /// <returns>The bike.</returns>
         [Route("{bikeId}")]
         [HttpGet]
-        public Webservice.Models.AvailableBikes.BikeResource get(long bikeId)
+        public BikeResource get(long bikeId)
         {
             Database context = new Database();
 
