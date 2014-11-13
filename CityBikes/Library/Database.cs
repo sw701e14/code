@@ -2,10 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Library
 {
@@ -155,6 +152,26 @@ namespace Library
                 cmd.Dispose();
 
                 return count;
+            }
+
+            public Hotspot CreateHotspot(GPSLocation[] data, bool applyConvexHull)
+            {
+                if (applyConvexHull)
+                    data = ConvexHull.GrahamScan(data);
+
+                MySqlCommand cmd = new MySqlCommand("INSERT INTO hotspots (convex_hull) VALUES(@data)");
+                Hotspot hotspot = new Hotspot(data);
+
+                BinaryFormatter formatter = new BinaryFormatter();
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    formatter.Serialize(ms, data);
+                    cmd.Parameters.Add("@data", MySqlDbType.Blob).Value = ms.ToArray();
+                }
+
+                Execute(cmd);
+
+                return hotspot;
             }
 
             public int Execute(MySqlCommand command)
