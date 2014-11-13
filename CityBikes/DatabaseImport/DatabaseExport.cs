@@ -33,11 +33,11 @@ namespace DatabaseImport
             }
         }
 
+
+        static Random r = new Random();
         public static gps_data MoveRandom(gps_data point)
         {
-            Random r = new Random();
-
-            double angle = r.Next(360);
+            double angle = r.NextDouble() * 2 * Math.PI;
             double distance = r.Next(20);
 
             return gps_data.Move(point, angle, distance/1000);
