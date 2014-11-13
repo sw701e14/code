@@ -50,11 +50,41 @@ namespace Library
             }
         }
 
-		public bool Equals(GPSLocation other)
+        public override string ToString()
+        {
+            return string.Format("(Lat: {0}, Long: {1})", latitude, longitude);
+        }
+
+        public override int GetHashCode()
+        {
+            return latitude.GetHashCode() ^ longitude.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is GPSLocation))
+                return false;
+            else
+                return Equals((GPSLocation)obj);
+        }
+        public bool Equals(GPSLocation other)
         {
             return latitude == other.Latitude && longitude == other.Longitude;
         }
 
+        public static bool operator ==(GPSLocation g1, GPSLocation g2)
+        {
+            return g1.Equals(g2);
+        }
+        public static bool operator !=(GPSLocation g1, GPSLocation g2)
+        {
+            return !g1.Equals(g2);
+        }
+
+        public static GPSLocation operator +(GPSLocation g1, GPSLocation g2)
+        {
+            return new GPSLocation(g1.latitude + g2.latitude, g1.longitude + g2.longitude);
+        }
         public static GPSLocation operator -(GPSLocation g1, GPSLocation g2)
         {
             return new GPSLocation(g1.latitude - g2.latitude, g1.longitude - g2.longitude);
@@ -69,11 +99,6 @@ namespace Library
         public double DistanceTo(GPSLocation location)
         {
             return Distance(this, location);
-        }
-
-        public override string ToString()
-        {
-            return string.Format("(Lat: {0}, Long: {1})", latitude, longitude);
         }
         /// <summary>
         /// Calculates the distance (in meters) between two <see cref="GPSLocation"/>s.
