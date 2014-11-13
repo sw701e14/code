@@ -16,7 +16,8 @@ namespace Library
     {
         private GPSLocation[] dataPoints;
 
-        public Hotspot(GPSLocation[] dataPoints)
+        // Hotspots cannot be created directly - they can only be saved to/read from the database.
+        internal Hotspot(GPSLocation[] dataPoints)
         {
             if (dataPoints == null)
                 throw new ArgumentNullException("dataPoints");
