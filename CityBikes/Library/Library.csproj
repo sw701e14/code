@@ -51,7 +51,6 @@
     <Compile Include="BikesNearby.cs" />
     <Compile Include="BikeStandstill.cs" />
     <Compile Include="AllBikesLocation.cs" />
-    <Compile Include="ConvexHull.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="GPSLocation.cs" />
     <Compile Include="Heatmap.cs" />

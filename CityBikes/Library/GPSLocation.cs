@@ -91,7 +91,29 @@ namespace Library
         }
 
         /// <summary>
-        /// Calculates the distance (in meters) between this <see cref="GPSLocation"/> and another.
+        /// Computes the polar angle between this <see cref="GPSLocation"/> and another.
+        /// See <see cref="GetPolarAngle"/> for more.
+        /// </summary>
+        /// <param name="location">The location to include in the calculation.</param>
+        /// <returns>The polar angle between the two locations.</returns>
+        public double PolarAngleTo(GPSLocation location)
+        {
+            return GetPolarAngle(this, location);
+        }
+        /// <summary>
+        /// Computes the polar angle between two locations.
+        /// </summary>
+        /// <param name="gps1">The origin.</param>
+        /// <param name="gps2">The point.</param>
+        /// <returns>The polar angle between <paramref name="gps1"/> and <paramref name="gps2"/>.</returns>
+        public static double GetPolarAngle(GPSLocation gps1, GPSLocation gps2)
+        {
+            return Math.Atan2((double)(gps2.latitude - gps1.latitude), (double)(gps2.longitude - gps1.longitude));
+
+        }
+
+        /// <summary>
+        /// Computes the distance (in meters) between this <see cref="GPSLocation"/> and another.
         /// See <see cref="GetDistance"/> for more.
         /// </summary>
         /// <param name="location">The location to include in the calculation.</param>
@@ -101,7 +123,7 @@ namespace Library
             return GetDistance(this, location);
         }
         /// <summary>
-        /// Calculates the distance (in meters) between two <see cref="GPSLocation"/>s.
+        /// Computes the distance (in meters) between two <see cref="GPSLocation"/>s.
         /// </summary>
         /// <param name="gps1">The first location to use in the calculation.</param>
         /// <param name="gps2">The second location to use in the calculation.</param>
@@ -125,6 +147,53 @@ namespace Library
         private static double degreeToRadians(decimal value)
         {
             return (Math.PI * (double)value) / 180.0;
+        }
+
+        /// <summary>
+        /// Performs a grahamscan on the specified array of gpslocations
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns>The set of the points that make up the convex hull</returns>
+        /// <remarks>
+        /// The method is implmented as a Graham Scan, as defined in:
+        /// Introduction to algorithms
+        /// by Cormen, Thomas H and Leiserson, Charles E and Rivest, Ronald L and Stein, Clifford and others
+        /// published by MIT press Cambridge
+        /// </remarks>
+        public static GPSLocation[] GetConvexHull(IEnumerable<GPSLocation> data)
+        {
+            GPSLocation p0 = data.Aggregate((minItem, nextItem) => minItem.Longitude < nextItem.Longitude ? minItem : nextItem);
+            GPSLocation[] remaining = data.Where(x => !x.Equals(p0)).Distinct().OrderBy(x => p0.PolarAngleTo(x)).ToArray();
+
+            Stack<GPSLocation> stack = new Stack<GPSLocation>();
+            stack.Push(p0);
+            stack.Push(remaining[0]);
+            stack.Push(remaining[1]);
+
+            for (int i = 2; i < remaining.Length; i++)
+            {
+                while (!isLeftTurn(stack.ElementAt(1), stack.ElementAt(0), remaining[i]))
+                    stack.Pop();
+
+                stack.Push(remaining[i]);
+            }
+
+            return stack.ToArray();
+        }
+
+        /// <summary>
+        /// Determines whether the turn from the origin through p1 to p2 is a left turn 
+        /// </summary>
+        /// <param name="p1">The p1.</param>
+        /// <param name="p2">The p2.</param>
+        /// <param name="origin">The origin.</param>
+        /// <returns></returns>
+        private static bool isLeftTurn(GPSLocation p1, GPSLocation p2, GPSLocation origin)
+        {
+            GPSLocation g = p1 - origin;
+            GPSLocation g2 = p2 - origin;
+
+            return 0 > g.Latitude * g2.Longitude - g2.Latitude * g.Longitude;
         }
     }
 }

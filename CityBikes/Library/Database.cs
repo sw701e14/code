@@ -157,7 +157,7 @@ namespace Library
             public Hotspot CreateHotspot(GPSLocation[] data, bool applyConvexHull)
             {
                 if (applyConvexHull)
-                    data = ConvexHull.GrahamScan(data);
+                    data = GPSLocation.GetConvexHull(data);
 
                 MySqlCommand cmd = new MySqlCommand("INSERT INTO hotspots (convex_hull) VALUES(@data)");
                 Hotspot hotspot = new Hotspot(data);
