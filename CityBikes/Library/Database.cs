@@ -174,7 +174,7 @@ namespace Library
                 return hotspot;
             }
 
-            public int Execute(MySqlCommand command)
+            internal int Execute(MySqlCommand command)
             {
                 if (command == null)
                     throw new ArgumentNullException("command");
