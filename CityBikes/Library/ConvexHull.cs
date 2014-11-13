@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Library.GeneratedDatabaseModel;
 
 namespace Library
 {
@@ -13,10 +12,6 @@ namespace Library
     /// published by MIT press Cambridge
     public static class ConvexHull
     {
-        
-
-
-
         /// <summary>
         /// Performs a grahamscan on the specified array of gpslocations
         /// </summary>
@@ -25,7 +20,7 @@ namespace Library
         public static GPSLocation[] GrahamScan(IEnumerable<GPSLocation> data)
         {
             GPSLocation p0 = data.Aggregate((minItem, nextItem) => minItem.Longitude < nextItem.Longitude ? minItem : nextItem);
-            GPSLocation[] remaining = data.Where(x => !x.Equals(p0)).OrderBy(x => computePolarAngle(p0, x)).ToArray();
+            GPSLocation[] remaining = data.Where(x => !x.Equals(p0)).Distinct().OrderBy(x => computePolarAngle(p0, x)).ToArray();
 
             Stack<GPSLocation> stack = new Stack<GPSLocation>();
             stack.Push(p0);
