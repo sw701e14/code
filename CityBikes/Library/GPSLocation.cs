@@ -92,27 +92,27 @@ namespace Library
 
         /// <summary>
         /// Calculates the distance (in meters) between this <see cref="GPSLocation"/> and another.
-        /// See <see cref="Distance"/> for more.
+        /// See <see cref="GetDistance"/> for more.
         /// </summary>
         /// <param name="location">The location to include in the calculation.</param>
         /// <returns>The distance (in meters) between the two locations.</returns>
         public double DistanceTo(GPSLocation location)
         {
-            return Distance(this, location);
+            return GetDistance(this, location);
         }
         /// <summary>
         /// Calculates the distance (in meters) between two <see cref="GPSLocation"/>s.
         /// </summary>
-        /// <param name="loc1">The first location to use in the calculation.</param>
-        /// <param name="loc2">The second location to use in the calculation.</param>
+        /// <param name="gps1">The first location to use in the calculation.</param>
+        /// <param name="gps2">The second location to use in the calculation.</param>
         /// <returns>The distance (in meters) between the two locations.</returns>
         /// <remarks>Implemented using the description at http://www.movable-type.co.uk/scripts/latlong.html</remarks>
-        public static double Distance(GPSLocation loc1, GPSLocation loc2)
+        public static double GetDistance(GPSLocation gps1, GPSLocation gps2)
         {
-            var φ1 = degreeToRadians(loc1.latitude);
-            var φ2 = degreeToRadians(loc2.latitude);
-            var Δφ = degreeToRadians(loc2.latitude - loc1.latitude);
-            var Δλ = degreeToRadians(loc2.longitude - loc1.longitude);
+            var φ1 = degreeToRadians(gps1.latitude);
+            var φ2 = degreeToRadians(gps2.latitude);
+            var Δφ = degreeToRadians(gps2.latitude - gps1.latitude);
+            var Δλ = degreeToRadians(gps2.longitude - gps1.longitude);
 
             var a = Math.Sin(Δφ / 2) * Math.Sin(Δφ / 2) +
                     Math.Cos(φ1) * Math.Cos(φ2) *
