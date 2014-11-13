@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Library
 {
-    public class Bike
+    public class Bike : IEquatable<Bike>
     {
         private uint id;
 
@@ -18,6 +18,27 @@ namespace Library
         public uint Id
         {
             get { return id; }
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Bike))
+                return false;
+            else
+                return Equals((Bike)obj);
+        }
+        public bool Equals(Bike other)
+        {
+            return this.id.Equals(other.id);
+        }
+
+        public static bool operator ==(Bike b1, Bike b2)
+        {
+            return b1.Equals(b2);
+        }
+        public static bool operator !=(Bike b1, Bike b2)
+        {
+            return !b1.Equals(b2);
         }
 
         public override int GetHashCode()
