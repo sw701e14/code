@@ -284,6 +284,9 @@ namespace Library
                 else if (typeof(T) == typeof(GPSLocation))
                     return (T)(object)GetGPSLocation(column);
 
+                else if (typeof(T) == typeof(Hotspot))
+                    return (T)(object)GetHotspot(column);
+
                 else
                 {
                     object item = data[column + tupleIndexShift];
