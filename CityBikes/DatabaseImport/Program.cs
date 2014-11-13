@@ -8,6 +8,7 @@ using DeadDog.Console;
 using System.IO;
 using Library.GeneratedDatabaseModel;
 using Library;
+using System.Diagnostics;
 
 namespace Run
 {
@@ -147,13 +148,14 @@ namespace Run
 
             string[] destinations = bycykelstations.Concat(addresses).ToArray();
 
-            return GenerateGPSData.GenerateBikeRoutes(1, destinations, new DateTime(2014, 1, 1, 8, 0, 0), 20).ToList();
+            return GenerateGPSData.GenerateBikeRoutes(1, destinations, new DateTime(2014, 1, 1, 8, 0, 0), 5);
         }
 
         static void genMap()
         {
             Database db = new Database();
             GPSPointMapPlotter.SaveMapAsHtml(db);
+            Process.Start("map.html");
         }
     }
 }
