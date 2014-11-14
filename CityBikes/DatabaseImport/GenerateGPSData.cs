@@ -38,7 +38,7 @@ namespace DatabaseImport
             Debug.WriteLine("Bike: {0}", id);
             for (int i = 0; i < iterations; i++)
             {
-                Thread.Sleep(500); // max 2 requests pr second in the Google directions API
+                Thread.Sleep(200); // max 2 requests pr second in the Google directions API
                 Console.WriteLine("Iteration {0}", i);
 
                 var route = GoogleDirectionsParser.GetData(startPoint, destination, startTime, id).ToList();
