@@ -45,5 +45,10 @@ namespace Library
         {
             return (int)id;
         }
+
+        public GPSData LatestGPSData(Database.DatabaseSession session)
+        {
+            return session.ExecuteRead("SELECT * FROM citybike_test.gps_data WHERE bikeId = {0} ORDER BY queried DESC", id).First().GetGPSData();
+        }
     }
 }
