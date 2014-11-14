@@ -33,6 +33,18 @@ namespace Library
                 return accuracy.Value;
         }
 
+        /// <summary>
+        /// Determines if two <see cref="GPSData"/> points are equal, with respect to each of their accuracies.
+        /// </summary>
+        /// <param name="d1">The first data-point.</param>
+        /// <param name="d2">The second data-point.</param>
+        /// <returns><c>true</c> if the two points are within range of their respective accuracies; otherwise <c>false</c>.</returns>
+        public static bool WithinAccuracy(GPSData d1, GPSData d2)
+        {
+            double dist = GPSLocation.GetDistance(d1.Location, d2.Location) * 1000;
+            return d1.accuracy + d2.accuracy >= dist;
+        }
+
         public Bike Bike
         {
             get { return bike; }
