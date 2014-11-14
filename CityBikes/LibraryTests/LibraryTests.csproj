@@ -55,6 +55,7 @@
     <Compile Include="ConvexHullTests.cs" />
     <Compile Include="PrivateTesting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="BikeUpdateLocationTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Library\Library.csproj">
