@@ -1,4 +1,4 @@
-﻿using Library.GeneratedDatabaseModel;
+﻿using Library;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,41 +9,41 @@ using System.Xml.Linq;
 namespace DatabaseImport
 {
     /// <summary>
-    /// Exposes methods for retrieving <see cref="gps_data"/>s from a Google Directions route.
+    /// Exposes methods for retrieving <see cref="GPSData"/>s from a Google Directions route.
     /// </summary>
     public class GoogleDirectionsParser
     {
         private DateTime nextDate;
-        private int bikeId;
+        private Bike bike;
 
-        private GoogleDirectionsParser(DateTime startTime, int bikeId)
+        private GoogleDirectionsParser(DateTime startTime, Bike bike)
         {
             this.nextDate = startTime;
-            this.bikeId = bikeId;
+            this.bike = bike;
         }
 
         /// <summary>
-        /// Queries Google Directions with a URL and generates a set of <see cref="gps_data"/>s representing the generated route.
+        /// Queries Google Directions with a URL and generates a set of <see cref="GPSData"/>s representing the generated route.
         /// </summary>
         /// <param name="url">The URL from which Google Directions should generate a route.</param>
-        /// <param name="startTime">The time associated with the first <see cref="gps_data"/> in the result.</param>
+        /// <param name="startTime">The time associated with the first <see cref="GPSData"/> in the result.</param>
         /// <param name="bikeId">The bike identifier.</param>
-        /// <returns>A collection of <see cref="gps_data"/>s representing the generated route.</returns>
-        public static IEnumerable<gps_data> GetData(string url, DateTime startTime, int bikeId)
+        /// <returns>A collection of <see cref="GPSData"/>s representing the generated route.</returns>
+        public static IEnumerable<GPSData> GetData(string url, DateTime startTime, Bike bike)
         {
-            var parser = new GoogleDirectionsParser(startTime, bikeId);
+            var parser = new GoogleDirectionsParser(startTime, bike);
             return parser.loadPoints(url);
         }
 
         /// <summary>
-        /// Queries Google Directions with a from and a to string and generates a set of <see cref="gps_data"/>s representing the generated route.
+        /// Queries Google Directions with a from and a to string and generates a set of <see cref="GPSData"/>s representing the generated route.
         /// </summary>
         /// <param name="from">The location where the route should start (an address).</param>
         /// <param name="to">The location where the route should end (an address).</param>
-        /// <param name="startTime">The time associated with the first <see cref="gps_data"/> in the result.</param>
+        /// <param name="startTime">The time associated with the first <see cref="GPSData"/> in the result.</param>
         /// <param name="bikeId">The bike identifier.</param>
-        /// <returns>A collection of <see cref="gps_data"/>s representing the generated route.</returns>
-        public static IEnumerable<gps_data> GetData(string from, string to, DateTime startTime, int bikeId)
+        /// <returns>A collection of <see cref="GPSData"/>s representing the generated route.</returns>
+        public static IEnumerable<GPSData> GetData(string from, string to, DateTime startTime, Bike bike)
         {
             string url = "https://maps.googleapis.com/maps/api/directions/xml?origin={0}&destination={1}&sensor=false&key=AIzaSyBLIB1DsgmDpNPuhUaFKSMO-SEt2gLA9Vk&avoid=highways&mode=bicycling&language=da";
 
@@ -53,10 +53,10 @@ namespace DatabaseImport
                 System.Web.HttpUtility.UrlEncode(from),
                 System.Web.HttpUtility.UrlEncode(to));
 
-            return GetData(url, startTime, bikeId);
+            return GetData(url, startTime, bike);
         }
 
-        private IEnumerable<gps_data> loadPoints(string url)
+        private IEnumerable<GPSData> loadPoints(string url)
         {
             Uri requestUrl = new Uri(url);
             Stream responseStream = null;
@@ -81,13 +81,14 @@ namespace DatabaseImport
             yield return parseLocationData(xmlDoc.Descendants("step").Last(), true);
         }
 
-        private gps_data parseLocationData(XElement element, bool last)
+        private GPSData parseLocationData(XElement element, bool last)
         {
             var location = last ? element.Element("end_location") : element.Element("start_location");
             double lat = double.Parse(location.Element("lat").Value, System.Globalization.CultureInfo.InvariantCulture);
             double lng = double.Parse(location.Element("lng").Value, System.Globalization.CultureInfo.InvariantCulture);
 
-            var point = new gps_data(nextDate, (decimal)lat, (decimal)lng, null, bikeId);
+            var gpsloc = new GPSLocation((decimal)lat, (decimal)lng);
+            var point = new GPSData(bike, gpsloc, null, nextDate, false);
 
             int durationSeconds = int.Parse(element.Element("duration").Element("value").Value);
             nextDate = nextDate.AddSeconds(durationSeconds);
