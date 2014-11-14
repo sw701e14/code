@@ -54,7 +54,7 @@ namespace DatabaseImport
         /// <returns></returns>
         private static IEnumerable<gps_data> ConvertToIntervalRoute(DateTime nextTime, int interval, List<gps_data> route, int lastPoint, int nextPoint)
         {
-            if (nextPoint < route.Count())
+            if (nextPoint < route.Count)
             {
                 if (route[nextPoint].queried > nextTime)
                 {
