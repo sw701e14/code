@@ -52,6 +52,7 @@
     <Compile Include="BikeStandstill.cs" />
     <Compile Include="AllBikesLocation.cs" />
     <Compile Include="Database.cs" />
+    <Compile Include="GPSData.cs" />
     <Compile Include="GPSLocation.cs" />
     <Compile Include="Heatmap.cs" />
     <Compile Include="HeatmapImagegenerator.cs">
