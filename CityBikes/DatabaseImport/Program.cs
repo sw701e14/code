@@ -21,6 +21,7 @@ namespace Run
             menu.Add("Load data", loadData);
             menu.Add("Clear data", clearData);
             menu.Add("Generate Map", genMap);
+            menu.Add("Hotspots on a map", hotspotMap);
 
             menu.SetCancel("Exit");
 
@@ -156,6 +157,21 @@ namespace Run
             Database db = new Database();
             GPSPointMapPlotter.SaveMapAsHtml(db);
             Process.Start("map.html");
+        }
+
+        static void hotspotMap()
+        {
+            Database db = new Database();
+            var h = Hotspot.LoadFromDatabase(db);
+            List<gps_data> l = new List<gps_data>();
+
+            foreach (var item in h)
+            {
+
+                l.AddRange(item.Select(x => new gps_data(DateTime.Now, x.Latitude, x.Longitude, 1, 1)));
+            }
+
+            GPSPointMapPlotter.SaveMapAsHtml(db,l);
         }
     }
 }

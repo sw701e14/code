@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false">
+</script>
+<script>
+var map;
+var myCenter=new google.maps.LatLng(57.0338295,9.9277601);
+function initialize(){
+var mapProp = {
+center:myCenter,
+zoom:12,
+mapTypeId:google.maps.MapTypeId.ROADMAP};
+map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+addMarker(new google.maps.LatLng(0.48734213,9.93850306),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.48471757,9.94210156),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.48463487,9.94221370),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.48467748,9.94215464),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.48479956,9.94198703),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.48608040,9.94023066),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.48830992,9.93717364),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.47883564,9.95995789),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.47891417,9.95988420),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.47899327,9.95981059),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.47907274,9.95973788),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.48330318,9.95589353),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.48353962,9.95568038),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.48401566,9.95525163),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.46364629,9.99199820),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.46364516,9.99199882),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.46306330,9.99204122),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.46304832,9.99202535),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.46310971,9.99197292),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.46496236,9.99042776),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.46636011,9.98926639),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.46690944,9.98881025),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.49181318,9.91456286),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.49188324,9.91397281),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.49244723,9.91037982),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.49246392,9.91034318),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.49361577,9.90786396),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.49365016,9.90779200),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.49368387,9.90772456),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.48939248,9.93491787),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.48937165,9.93508719),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.48845624,9.93697623),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.48837258,9.93708776),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.48952158,9.93382349),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.47413375,9.96423190),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.47401300,9.96433934),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.47428887,9.96408722),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.47626675,9.96229004),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.47681920,9.96179063),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.47109342,9.98727691),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.47100282,9.98729196),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.46866226,9.98764752),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.46843601,9.98767943),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.47139553,9.98670900),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.48445796,9.94690117),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.48444749,9.94680409),'1','14-11-2014 11:05:58');
+addMarker(new google.maps.LatLng(0.48433335,9.94544304),'1','14-11-2014 11:05:58');
+var myLine1=[new google.maps.LatLng(0.48734213,9.93850306),new google.maps.LatLng(0.48471757,9.94210156),new google.maps.LatLng(0.48463487,9.94221370),new google.maps.LatLng(0.48467748,9.94215464),new google.maps.LatLng(0.48479956,9.94198703),new google.maps.LatLng(0.48608040,9.94023066),new google.maps.LatLng(0.48830992,9.93717364),new google.maps.LatLng(0.47883564,9.95995789),new google.maps.LatLng(0.47891417,9.95988420),new google.maps.LatLng(0.47899327,9.95981059),new google.maps.LatLng(0.47907274,9.95973788),new google.maps.LatLng(0.48330318,9.95589353),new google.maps.LatLng(0.48353962,9.95568038),new google.maps.LatLng(0.48401566,9.95525163),new google.maps.LatLng(0.46364629,9.99199820),new google.maps.LatLng(0.46364516,9.99199882),new google.maps.LatLng(0.46306330,9.99204122),new google.maps.LatLng(0.46304832,9.99202535),new google.maps.LatLng(0.46310971,9.99197292),new google.maps.LatLng(0.46496236,9.99042776),new google.maps.LatLng(0.46636011,9.98926639),new google.maps.LatLng(0.46690944,9.98881025),new google.maps.LatLng(0.49181318,9.91456286),new google.maps.LatLng(0.49188324,9.91397281),new google.maps.LatLng(0.49244723,9.91037982),new google.maps.LatLng(0.49246392,9.91034318),new google.maps.LatLng(0.49361577,9.90786396),new google.maps.LatLng(0.49365016,9.90779200),new google.maps.LatLng(0.49368387,9.90772456),new google.maps.LatLng(0.48939248,9.93491787),new google.maps.LatLng(0.48937165,9.93508719),new google.maps.LatLng(0.48845624,9.93697623),new google.maps.LatLng(0.48837258,9.93708776),new google.maps.LatLng(0.48952158,9.93382349),new google.maps.LatLng(0.47413375,9.96423190),new google.maps.LatLng(0.47401300,9.96433934),new google.maps.LatLng(0.47428887,9.96408722),new google.maps.LatLng(0.47626675,9.96229004),new google.maps.LatLng(0.47681920,9.96179063),new google.maps.LatLng(0.47109342,9.98727691),new google.maps.LatLng(0.47100282,9.98729196),new google.maps.LatLng(0.46866226,9.98764752),new google.maps.LatLng(0.46843601,9.98767943),new google.maps.LatLng(0.47139553,9.98670900),new google.maps.LatLng(0.48445796,9.94690117),new google.maps.LatLng(0.48444749,9.94680409),new google.maps.LatLng(0.48433335,9.94544304),]
+var completeLine1=new google.maps.Polyline({
+path:myLine1,
+strokeColor:'#FF0000',
+strokeOpacity:0.8,
+strokeWeight:2});
+completeLine1.setMap(map);
+}
+function addMarker(location,bikeID, date) {
+var marker = new google.maps.Marker({
+position: location,
+map: map,
+icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'});
+var infowindow = new google.maps.InfoWindow({
+content: 'BikeID: ' + bikeID + '<br>Date: ' + date+ '<br>Latitude: ' + location.lat() + '<br>Longitude: ' + location.lng()});
+google.maps.event.addListener(marker, 'click', function() {
+infowindow.open(map,marker);});}
+google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+</head>
+<body>
+<div id="googleMap" style="width:600px;height:600px;"></div>
+</body>
+</html>

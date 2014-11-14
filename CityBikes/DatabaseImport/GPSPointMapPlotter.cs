@@ -46,7 +46,7 @@ namespace DatabaseImport
         /// </summary>
         /// <param name="context">The database context.</param>
         /// <param name="selectedGPSPoints">The selected GPS data.</param>
-        public static void SaveMapAsHtml(this Database context, IQueryable<gps_data> selectedGPSPoints)
+        public static void SaveMapAsHtml(this Database context, IEnumerable<gps_data> selectedGPSPoints)
         {
             if (context == null || selectedGPSPoints == null)
                 throw new ArgumentNullException();
@@ -111,7 +111,7 @@ namespace DatabaseImport
             return result;
         }
 
-        private static string writeHTMLPointsAndLines(IQueryable<gps_data> locationList)
+        private static string writeHTMLPointsAndLines(IEnumerable<gps_data> locationList)
         {
             string result = "";
             gps_data previousData = null;
