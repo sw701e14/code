@@ -84,8 +84,14 @@ namespace Library.GeneratedDatabaseModel
             int R = 6371; // earth radius in km
             double δ = distance / R;
 
-            double newLatitude = Math.Asin(Math.Sin((double)data.latitude) * Math.Cos(δ) + Math.Cos(angle) * Math.Sin(δ) * Math.Cos(angle));
-            double newLongitude = (double)data.longitude + Math.Atan2(Math.Sin(angle) * Math.Sin(δ) * Math.Cos((double)data.latitude), Math.Cos(δ) - Math.Sin((double)data.latitude) * Math.Sin(newLatitude));
+            double oldLatitide = (Math.PI * (double)data.latitude) / 180;
+            double oldLongitude = (Math.PI * (double)data.longitude) / 180;
+
+            double newLatitude = Math.Asin(Math.Sin((double)oldLatitide) * Math.Cos(δ) + Math.Cos(angle) * Math.Sin(δ) * Math.Cos(angle));
+            double newLongitude = (double)oldLongitude+ Math.Atan2(Math.Sin(angle) * Math.Sin(δ) * Math.Cos((double)oldLatitide), Math.Cos(δ) - Math.Sin((double)oldLatitide) * Math.Sin(newLatitude));
+
+            newLatitude = (180 * newLatitude) / Math.PI;
+            newLongitude = (180 * newLongitude) / Math.PI;
 
             return new gps_data(data.queried, (decimal)newLatitude, (decimal)newLongitude, data.accuracy,(int)data.bikeId);
         }
