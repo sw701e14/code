@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Library
 {
-    public class Bike : IEquatable<Bike>
+    public struct Bike : IEquatable<Bike>
     {
         private uint id;
 
