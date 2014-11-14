@@ -301,6 +301,9 @@ namespace Library
                 else if (typeof(T) == typeof(GPSLocation))
                     return (T)(object)GetGPSLocation(column);
 
+                else if (typeof(T) == typeof(GPSData))
+                    return (T)(object)GetGPSData(column);
+
                 else if (typeof(T) == typeof(Hotspot))
                     return (T)(object)GetHotspot(column);
 
@@ -329,6 +332,18 @@ namespace Library
                 tupleIndexShift++;
 
                 return new GPSLocation((decimal)item1, (decimal)item2);
+            }
+
+            public GPSData GetGPSData(int column = 0)
+            {
+                Bike bike = GetBike(column);
+                GPSLocation location = GetGPSLocation(column + 1);
+                byte acc = GetValue<byte>(column + 2);
+                DateTime query = GetValue<DateTime>(column + 3);
+                bool notMoved = GetValue<bool>(column + 4);
+
+                tupleIndexShift += 4;
+                return new GPSData(bike, location, acc, query, notMoved);
             }
 
             public Hotspot GetHotspot(int column = 0)
