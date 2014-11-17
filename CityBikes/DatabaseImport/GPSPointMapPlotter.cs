@@ -14,15 +14,21 @@ namespace DatabaseImport
     /// Provides methods that creates a Google Map with plotted in GPS locations.
     /// Maps are saved to working directory (default: /run/Debug/)
     /// </summary>
-    public static class GPSPointMapPlotter
+    public class GPSPointMapPlotter
     {
         //Setup for Google Maps API
         private const string API_KEY = "AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM";
-        private const string CENTER_LATITUDE = "57.0338295";
-        private const string CENTER_LONGITUDE = "9.9277601";
+        private const GPSLocation CENTER = new GPSLocation(57.0338295m, 9.9277601m);
         private const string ZOOM = "12";
         private const string MAP_WIDTH = "600";
         private const string MAP_HEIGHT = "600";
+
+        private StringBuilder sb;
+
+        private GPSPointMapPlotter()
+        {
+            this.sb = new StringBuilder();
+        }
 
         /// <summary>
         /// Plots ALL <see cref="GPSData"/> from database to a Google Map and connects same-bike-id-points with lines.
@@ -48,69 +54,68 @@ namespace DatabaseImport
         public static void SaveMapAsHtml(IEnumerable<GPSData> selectedGPSPoints)
         {
             if (selectedGPSPoints == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("selectedGPSPoints");
 
-            HtmlDocument htmlDocument = new HtmlDocument();
-
-            htmlDocument.LoadHtml(writeHTMLStart() +
-                                   writeHTMLSource(API_KEY) +
-                                   writeHTMLMapCenter(CENTER_LATITUDE, CENTER_LONGITUDE) +
-                                   writeHTMLMapSetting(ZOOM) +
-                                   writeHTMLPointsAndLines(selectedGPSPoints) +
-                                   writeHTMLAddMarkerMethod() +
-                                   writeHTMLDisplayMap(MAP_WIDTH, MAP_HEIGHT));
-
-            htmlDocument.Save(Path.GetFullPath(".") + "\\map.html");
+            GPSPointMapPlotter plotter = new GPSPointMapPlotter();
+            plotter.generateHTML(selectedGPSPoints.ToArray());
+            File.WriteAllText("map.html", plotter.sb.ToString());
         }
 
-        private static string writeHTMLStart()
+        private void appendLocation(GPSLocation location)
         {
-            string result = "";
-
-            result = result + "<!DOCTYPE html>" + System.Environment.NewLine;
-            result = result + "<html>" + System.Environment.NewLine;
-            result = result + "<head>" + System.Environment.NewLine;
-
-            return result;
+            sb.AppendFormat("{0}, {1}",
+                location.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                location.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture));
         }
 
-        private static string writeHTMLSource(string apiKey)
+        private string formatLocation(GPSLocation location)
         {
-            string result = "";
-
-            result = result + "<script" + System.Environment.NewLine;
-            result = result + "src=\"http://maps.googleapis.com/maps/api/js?key=" + apiKey + "&sensor=false\">" + System.Environment.NewLine;
-            result = result + "</script>" + System.Environment.NewLine;
-
-            return result;
+            return string.Format("{0}, {1}",
+                location.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                location.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture));
         }
-
-        private static string writeHTMLMapCenter(string centerLatitude, string centerLongtitude)
+        
+        private void generateHTML(GPSData[] data)
         {
-            string result = "";
+            sb.AppendLine("<!DOCTYPE html>");
+            sb.AppendLine("<html>");
+            sb.AppendLine("<head>");
 
-            result = result + "<script>" + System.Environment.NewLine;
-            result = result + "var map;" + System.Environment.NewLine;
-            result = result + "var myCenter=new google.maps.LatLng(" + centerLatitude + "," + centerLongtitude + ");" + System.Environment.NewLine;
+            sb.AppendLine("<script src=\"http://maps.googleapis.com/maps/api/js?key=" + API_KEY + "&sensor=false\"></script>");
 
-            return result;
+            sb.AppendLine("<script>");
+            sb.AppendLine("var map;");
+            sb.AppendLine("var myCenter=new google.maps.LatLng(" + formatLocation(CENTER) + ");");
+
+            sb.AppendLine("function initialize(){");
+            sb.AppendLine("var mapProp = {");
+            sb.AppendLine("center:myCenter,");
+            sb.AppendLine("zoom:" + ZOOM + ",");
+            sb.AppendLine("mapTypeId:google.maps.MapTypeId.ROADMAP};");
+            sb.AppendLine("map = new google.maps.Map(document.getElementById(\"googleMap\"),mapProp);");
+
+            writeHTMLPointsAndLines(data);
+
+            sb.AppendLine("function addMarker(location,bikeID, date) {");
+            sb.AppendLine("var marker = new google.maps.Marker({");
+            sb.AppendLine("position: location,");
+            sb.AppendLine("map: map,");
+            sb.AppendLine("icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'});");
+            sb.AppendLine("var infowindow = new google.maps.InfoWindow({");
+            sb.AppendLine("content: 'BikeID: ' + bikeID + '<br>Date: ' + date+ '<br>Latitude: ' + location.lat() + '<br>Longitude: ' + location.lng()" + "});");
+            sb.AppendLine("google.maps.event.addListener(marker, 'click', function() {");
+            sb.AppendLine("infowindow.open(map,marker);" + "});}");
+
+            sb.AppendLine("google.maps.event.addDomListener(window, 'load', initialize);");
+            sb.AppendLine("</script>");
+            sb.AppendLine("</head>");
+            sb.AppendLine("<body>");
+            sb.AppendLine("<div id=\"googleMap\" style=\"width:" + MAP_WIDTH + "px;height:" + MAP_HEIGHT + "px;\"></div>");
+            sb.AppendLine("</body>");
+            sb.AppendLine("</html>");
         }
 
-        private static string writeHTMLMapSetting(string zoom)
-        {
-            string result = "";
-
-            result = result + "function initialize(){" + System.Environment.NewLine;
-            result = result + "var mapProp = {" + System.Environment.NewLine;
-            result = result + "center:myCenter," + System.Environment.NewLine;
-            result = result + "zoom:" + zoom + "," + System.Environment.NewLine;
-            result = result + "mapTypeId:google.maps.MapTypeId.ROADMAP};" + System.Environment.NewLine;
-            result = result + "map = new google.maps.Map(document.getElementById(\"googleMap\"),mapProp);" + System.Environment.NewLine;
-
-            return result;
-        }
-
-        private static string writeHTMLPointsAndLines(IEnumerable<GPSData> locationList)
+        private string writeHTMLPointsAndLines(IEnumerable<GPSData> locationList)
         {
             string result = "";
             GPSData? previousData = null;
@@ -165,7 +170,7 @@ namespace DatabaseImport
             return result;
         }
 
-        private static string writeHTMLLine(string lineDataAsString, long bikeID, DateTime queried)
+        private string writeHTMLLine(string lineDataAsString, long bikeID, DateTime queried)
         {
             string result = "";
 
@@ -232,38 +237,6 @@ namespace DatabaseImport
             }
 
             return hexValue;
-        }
-
-        private static string writeHTMLAddMarkerMethod()
-        {
-            string result = "";
-
-            result = result + "function addMarker(location,bikeID, date) {" + System.Environment.NewLine;
-            result = result + "var marker = new google.maps.Marker({" + System.Environment.NewLine;
-            result = result + "position: location," + System.Environment.NewLine;
-            result = result + "map: map," + System.Environment.NewLine;
-            result = result + "icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'});" + System.Environment.NewLine;
-            result = result + "var infowindow = new google.maps.InfoWindow({" + System.Environment.NewLine;
-            result = result + "content: 'BikeID: ' + bikeID + '<br>Date: ' + date+ '<br>Latitude: ' + location.lat() + '<br>Longitude: ' + location.lng()" + "});" + System.Environment.NewLine;
-            result = result + "google.maps.event.addListener(marker, 'click', function() {" + System.Environment.NewLine;
-            result = result + "infowindow.open(map,marker);" + "});}" + System.Environment.NewLine;
-
-            return result;
-        }
-
-        private static string writeHTMLDisplayMap(string sizeWidth, string sizeHeight)
-        {
-            string result = "";
-
-            result = result + "google.maps.event.addDomListener(window, 'load', initialize);" + System.Environment.NewLine;
-            result = result + "</script>" + System.Environment.NewLine;
-            result = result + "</head>" + System.Environment.NewLine;
-            result = result + "<body>" + System.Environment.NewLine;
-            result = result + "<div id=\"googleMap\" style=\"width:" + sizeWidth + "px;height:" + sizeHeight + "px;\"></div>" + System.Environment.NewLine;
-            result = result + "</body>" + System.Environment.NewLine;
-            result = result + "</html>";
-
-            return result;
         }
     }
 }
