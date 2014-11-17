@@ -18,7 +18,7 @@ namespace DatabaseImport
     {
         //Setup for Google Maps API
         private const string API_KEY = "AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM";
-        private const GPSLocation CENTER = new GPSLocation(57.0338295m, 9.9277601m);
+        private static readonly GPSLocation CENTER = new GPSLocation(57.0338295m, 9.9277601m);
         private const string ZOOM = "12";
         private const string MAP_WIDTH = "600";
         private const string MAP_HEIGHT = "600";
