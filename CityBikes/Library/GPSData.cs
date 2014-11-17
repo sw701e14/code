@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Library
 {
-    public struct GPSData
+    public struct GPSData : IEquatable<GPSData>
     {
         private static Random rnd = new Random();
 
@@ -64,6 +64,23 @@ namespace Library
         public bool HasNotMoved
         {
             get { return hasNotMoved; }
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is GPSData))
+                return false;
+            else
+                return Equals((GPSData)obj);
+        }
+        public bool Equals(GPSData other)
+        {
+            return
+                bike.Equals(other.bike) &&
+                location.Equals(other.location) &&
+                accuracy.Equals(other.accuracy) &&
+                queryTime.Equals(other.queryTime) &&
+                hasNotMoved.Equals(other.hasNotMoved);
         }
     }
 }
