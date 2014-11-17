@@ -115,7 +115,7 @@ namespace DatabaseImport
             sb.AppendLine("</html>");
         }
 
-        private string writeHTMLPointsAndLines(IEnumerable<GPSData> locationList)
+        private void writeHTMLPointsAndLines(IEnumerable<GPSData> locationList)
         {
             string result = "";
             GPSData? previousData = null;
@@ -133,15 +133,14 @@ namespace DatabaseImport
                         {
                             lineString = "var myLine" + bikeLocation.Bike.Id + "=[";
                         }
-                        lineString = lineString + "new google.maps.LatLng(" + formatLocation(bikeLocation.Location) + "),";
                     }
                     else
                     {
                         //Writes method and settings for creating lines for this bikeID.
                         result = result + writeHTMLLine(lineString, bikeLocation.Bike.Id - 1, bikeLocation.QueryTime);
                         lineString = "var myLine" + bikeLocation.Bike.Id + "=[";
-                        lineString = lineString + "new google.maps.LatLng(" + formatLocation(bikeLocation.Location) + "),";
                     }
+                    lineString = lineString + "new google.maps.LatLng(" + formatLocation(bikeLocation.Location) + "),";
                 }
                 else
                 {
@@ -165,9 +164,7 @@ namespace DatabaseImport
                 previousData = bikeLocation;
             }
 
-            result = result + "}" + System.Environment.NewLine;
-
-            return result;
+            sb.AppendLine(result + "}");
         }
 
         private string writeHTMLLine(string lineDataAsString, long bikeID, DateTime queried)
