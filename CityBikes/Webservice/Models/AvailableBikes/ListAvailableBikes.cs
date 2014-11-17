@@ -20,7 +20,7 @@ namespace Webservice.Models.AvailableBikes
     public class bike
     {
         public long id { get; set; }
-        public string url { get; set; }
+        public string href { get; set; }
 
         public bike() { }
     }

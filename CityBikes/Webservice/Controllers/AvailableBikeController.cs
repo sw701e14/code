@@ -31,7 +31,7 @@ namespace Webservice.Controllers
             foreach (Tuple<long, GPSLocation> item in AvailableBikes.GetAvailableBikes(context))
             {
                 bikeCount++;
-                bikeResources.bikes.Add(new Webservice.Models.AvailableBikes.bike() { id = item.Item1, url = item.Item1.ToString() } );
+                bikeResources.bikes.Add(new Webservice.Models.AvailableBikes.bike() { id = item.Item1, href = item.Item1.ToString() } );
             }
             bikeResources.count = bikeCount;
 
