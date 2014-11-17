@@ -25,7 +25,7 @@ namespace DatabaseImport
         private const string MAP_HEIGHT = "600";
 
         /// <summary>
-        /// Plots ALL gps_data from database to a Google Map and connects same-bike-id-points with lines.
+        /// Plots ALL <see cref="GPSData"/> from database to a Google Map and connects same-bike-id-points with lines.
         /// Saves the map as a HTML-file in working directory.
         /// </summary>
         /// <param name="context">The database context.</param>
@@ -34,19 +34,19 @@ namespace DatabaseImport
             if (context == null)
                 throw new ArgumentNullException();
 
-            IQueryable<gps_data> locationList = from locations in context.gps_data
+            IQueryable<GPSData> locationList = from locations in context.GPSData
                                                 select locations;
 
             SaveMapAsHtml(context, locationList);
         }
 
         /// <summary>
-        /// Plots the given gps_data to a Google Map and connects same-bike-id-points with lines.
+        /// Plots the given <see cref="GPSData"/> to a Google Map and connects same-bike-id-points with lines.
         /// Saves the map as a HTML-file in working directory.
         /// </summary>
         /// <param name="context">The database context.</param>
         /// <param name="selectedGPSPoints">The selected GPS data.</param>
-        public static void SaveMapAsHtml(this Database context, IQueryable<gps_data> selectedGPSPoints)
+        public static void SaveMapAsHtml(this Database context, IQueryable<GPSData> selectedGPSPoints)
         {
             if (context == null || selectedGPSPoints == null)
                 throw new ArgumentNullException();
@@ -111,14 +111,14 @@ namespace DatabaseImport
             return result;
         }
 
-        private static string writeHTMLPointsAndLines(IQueryable<gps_data> locationList)
+        private static string writeHTMLPointsAndLines(IQueryable<GPSData> locationList)
         {
             string result = "";
-            gps_data previousData = null;
+            GPSData previousData = null;
             string lineString = "";
-            gps_data lastInList = locationList.AsEnumerable().Last();
+            GPSData lastInList = locationList.AsEnumerable().Last();
 
-            foreach (gps_data bikeLocation in locationList)
+            foreach (GPSData bikeLocation in locationList)
             {
                 if (!(previousData == null))
                 {
