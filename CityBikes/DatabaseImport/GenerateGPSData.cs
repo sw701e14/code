@@ -10,11 +10,11 @@ namespace DatabaseImport
     public static class GenerateGPSData
     {
         /// <summary>
-        /// The max time a bike can stand still in the generated data
+        /// The max time (in minutes) a bike can stand still in the generated data
         /// </summary>
         public const int MAXSTANDSTILLTIME = 120;
         /// <summary>
-        /// The timeinterval between points
+        /// The timeinterval (in minutes) between points
         /// </summary>
         public const int POINTINTERVAL = 5;
 
@@ -52,7 +52,7 @@ namespace DatabaseImport
                 GPSData lastpoint = route.Last();
 
                 Debug.WriteLine(route.Count() + " points generated");
-                Debug.WriteLine("Start: {0}\nEnd: {1}\nStartTime: {2}\nEndTime: {3}", startPoint, destination, startTime, lastpoint.queried);
+                Debug.WriteLine("Start: {0}\nEnd: {1}\nStartTime: {2}\nEndTime: {3}", startPoint, destination, startTime, lastpoint.QueryTime);
 
                 startPoint = destination;
                 destination = nextDestination(destinations, startPoint);
@@ -63,7 +63,7 @@ namespace DatabaseImport
 
                 foreach (var item in generateBikeStandStill(startTime, POINTINTERVAL))
                 {
-                    yield return new GPSData(item, lastpoint.latitude, lastpoint.longitude, null, bike);
+                    yield return new GPSData(bike, lastpoint.Location, null, item, false);
                     startTime = item;
                 }
 
@@ -124,10 +124,10 @@ namespace DatabaseImport
         {
             if (nextPoint < route.Count())
             {
-                if (route[nextPoint].queried > nextTime)
+                if (route[nextPoint].QueryTime > nextTime)
                 {
                     var point = GenerateBetweenPoint(route, lastPoint, nextPoint, nextTime);
-                    yield return new GPSData(nextTime, (decimal)point.Item1, (decimal)point.Item2, null, (int)route.First().Bike);
+                    yield return new GPSData(route.First().Bike, point, null, nextTime, false);
 
                     foreach (var item in GenerateRealPoints(nextTime.AddMinutes(interval), interval, route, lastPoint, nextPoint))
                         yield return item;
@@ -179,8 +179,6 @@ namespace DatabaseImport
 
             var g = (time - route[lastPoint].QueryTime);
             double pointtime = g.TotalSeconds;
-
-            double latitude, longitude;
 
             if (pointtime != 0)
                 return lp.Location + (np.Location - lp.Location) * (decimal)(pointtime / triptime);
