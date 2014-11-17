@@ -133,14 +133,14 @@ namespace DatabaseImport
                         {
                             lineString = "var myLine" + bikeLocation.Bike.Id + "=[";
                         }
-                        lineString = lineString + "new google.maps.LatLng(" + bikeLocation.Location.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "," + bikeLocation.Location.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "),";
+                        lineString = lineString + "new google.maps.LatLng(" + formatLocation(bikeLocation.Location) + "),";
                     }
                     else
                     {
                         //Writes method and settings for creating lines for this bikeID.
                         result = result + writeHTMLLine(lineString, bikeLocation.Bike.Id - 1, bikeLocation.QueryTime);
                         lineString = "var myLine" + bikeLocation.Bike.Id + "=[";
-                        lineString = lineString + "new google.maps.LatLng(" + bikeLocation.Location.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "," + bikeLocation.Location.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "),";
+                        lineString = lineString + "new google.maps.LatLng(" + formatLocation(bikeLocation.Location) + "),";
                     }
                 }
                 else
@@ -150,11 +150,11 @@ namespace DatabaseImport
                     {
                         lineString = "var myLine" + bikeLocation.Bike.Id + "=[";
                     }
-                    lineString = lineString + "new google.maps.LatLng(" + bikeLocation.Location.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "," + bikeLocation.Location.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "),";
+                    lineString = lineString + "new google.maps.LatLng(" + formatLocation(bikeLocation.Location) + "),";
                 }
 
                 //Writes all markers.
-                result = result + "addMarker(new google.maps.LatLng(" + bikeLocation.Location.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "," + bikeLocation.Location.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "),'" + bikeLocation.Bike.Id + "','" + bikeLocation.QueryTime.ToString() + "');" + System.Environment.NewLine;
+                result = result + "addMarker(new google.maps.LatLng(" + formatLocation(bikeLocation.Location) + "),'" + bikeLocation.Bike.Id + "','" + bikeLocation.QueryTime.ToString() + "');" + System.Environment.NewLine;
 
                 if (bikeLocation.Equals(lastInList))
                 {
