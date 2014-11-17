@@ -481,18 +481,18 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
-        <member name="T:Webservice.Controllers.AvailableBikeController">
+        <member name="T:Webservice.Controllers.AvailableBikesController">
             <summary>
             Publicly available methods for getting available bikes' locations.
             </summary>
         </member>
-        <member name="M:Webservice.Controllers.AvailableBikeController.getAll">
+        <member name="M:Webservice.Controllers.AvailableBikesController.getAll">
             <summary>
             Get list of available bikes.
             </summary>
             <returns>The bikes.</returns>
         </member>
-        <member name="M:Webservice.Controllers.AvailableBikeController.get(System.Int64)">
+        <member name="M:Webservice.Controllers.AvailableBikesController.get(System.Int64)">
             <summary>
             Get available bike.
             </summary>
