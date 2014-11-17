@@ -161,41 +161,31 @@ namespace DatabaseImport
 
 
         /// <summary>
-        /// Generates the a point between the two points at 
+        /// Calculates a point between two points, given a timestamp.
         /// </summary>
         /// <param name="route">The route.</param>
         /// <param name="lastPoint">The last point.</param>
         /// <param name="nextPoint">The next point.</param>
         /// <param name="time">The time.</param>
         /// <returns></returns>
-        private static Tuple<double, double> GenerateBetweenPoint(List<GPSData> route, int lastPoint, int nextPoint, DateTime time)
+        private static GPSLocation GenerateBetweenPoint(List<GPSData> route, int lastPoint, int nextPoint, DateTime time)
         {
             GPSData np = route[nextPoint];
             GPSData lp = route[lastPoint];
 
-            var diff = (np.queried - lp.queried);
+            var diff = (np.QueryTime - lp.QueryTime);
 
             double triptime = diff.TotalSeconds;
 
-            var g = (time - route[lastPoint].queried);
+            var g = (time - route[lastPoint].QueryTime);
             double pointtime = g.TotalSeconds;
 
             double latitude, longitude;
 
             if (pointtime != 0)
-            {
-                double part = pointtime / triptime;
-
-                latitude = (double)(np.latitude - lp.latitude) * part;
-                longitude = (double)(np.longitude - lp.longitude) * part;
-            }
+                return lp.Location + (np.Location - lp.Location) * (decimal)(pointtime / triptime);
             else
-            {
-                latitude = 0;
-                longitude = 0;
-            }
-
-            return new Tuple<double, double>((double)lp.latitude + latitude, (double)lp.longitude + longitude);
+                return new GPSLocation(0, 0);
         }
 
 
