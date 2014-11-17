@@ -98,23 +98,29 @@ namespace Library
             return hotspots.IndexOf(hotspot) * 2 + 1;
         }
 
-        private bool IsInConvexHull(GPSLocation[] poly, gps_data point)
+        /// <summary>
+        /// Determines whether testpoint is in the hotspot defined by the specified polygon.
+        /// </summary>
+        /// <param name="polygon">The polygon.</param>
+        /// <param name="testPoint">The test point.</param>
+        /// <returns>true if testPoint is in the hotspot</returns>
+        private bool IsInConvexHull(GPSLocation[] polygon, gps_data testPoint)
         {
-            // Inspired by http://stackoverflow.com/a/4243079
-            var coef = poly.Skip(1).Select((p, i) =>
-                                            (point.longitude - poly[i].Latitude) * (p.Longitude - poly[i].Longitude)
-                                          - (point.longitude - poly[i].Longitude) * (p.Latitude - poly[i].Latitude))
-                                    .ToList();
-
-            if (coef.Any(p => p == 0))
-                return true;
-
-            for (int i = 1; i < coef.Count(); i++)
+            //inspired by http://stackoverflow.com/a/14998816
+            bool result = false;
+            int j = polygon.Count() - 1;
+            for (int i = 0; i < polygon.Count(); i++)
             {
-                if (coef[i] * coef[i - 1] < 0)
-                    return false;
+                if (polygon[i].Latitude < testPoint.latitude && polygon[j].Latitude >= testPoint.latitude || polygon[j].Latitude < testPoint.latitude && polygon[i].Latitude >= testPoint.latitude)
+                {
+                    if (polygon[i].Longitude + (testPoint.latitude - polygon[i].Latitude) / (polygon[j].Latitude - polygon[i].Latitude) * (polygon[j].Longitude - polygon[i].Longitude) < testPoint.longitude)
+                    {
+                        result = !result;
+                    }
+                }
+                j = i;
             }
-            return true;
-        }   
+            return result;
+        }
     }
 }
