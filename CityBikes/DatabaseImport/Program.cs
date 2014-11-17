@@ -54,17 +54,6 @@ namespace Run
             insertIn.SetCancel("Do nothing!");
 
             insertIn.Add("Insert into database", () => insertInDB(points));
-            insertIn.Add("Write to file", () =>
-            {
-                string filename = "Filename (.sql is appended automatically): ".GetString() + ".sql";
-
-                if (File.Exists(filename))
-                    File.Delete(filename);
-
-                foreach (var p in points)
-                    if (p != null)
-                        SQLExport.Export(p, filename, true);
-            });
 
             insertIn.Show();
         }
