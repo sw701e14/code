@@ -9,15 +9,22 @@ using Webservice.Models.Root;
 
 namespace Webservice.Controllers
 {
+    /// <summary>
+    /// API overview
+    /// </summary>
     [RoutePrefix("")]
     public class RootController : ApiController
     {
-        public const int API_VERSION = 1;
+        private const int API_VERSION = 1;
 
+        /// <summary>
+        /// The API overview.
+        /// </summary>
+        /// <returns>API version and list of resources.</returns>
         [Route("")]
         [HttpGet]
         [ResponseType(typeof(RootResource))]
-        public HttpResponseMessage getResources()
+        public HttpResponseMessage getRoot()
         {
             List<RootResource.Resource> resources = new List<RootResource.Resource>();
             resources.Add(new RootResource.Resource() { href = "availablebikes" });

@@ -499,5 +499,16 @@
             <param name="bikeId">The bikeId.</param>
             <returns>The bike.</returns>
         </member>
+        <member name="T:Webservice.Controllers.RootController">
+            <summary>
+            API overview
+            </summary>
+        </member>
+        <member name="M:Webservice.Controllers.RootController.getRoot">
+            <summary>
+            The API overview.
+            </summary>
+            <returns>API version and list of resources.</returns>
+        </member>
     </members>
 </doc>
