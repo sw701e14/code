@@ -40,7 +40,10 @@ namespace Library
                     {
                         if (hotspots.Any(x => IsInConvexHull(x, gps_data))) // destination is hotspot
                         {
-                            GPSLocation[] h = hotspots.First(x => IsInConvexHull(x, gps_data));
+                            var v = hotspots.Where(x => IsInConvexHull(x, gps_data));
+                            if (v.Count() > 1)
+                                throw new InvalidOperationException("a point should not be able to be in more than one hotspot at a time");
+                            GPSLocation[] h = v.First();
                             oldIndex = getHotspotIndex(h, hotspots);
                         }
                         else //default initial??
@@ -53,7 +56,10 @@ namespace Library
 
                         if (hotspots.Any(x => IsInConvexHull(x, gps_data))) // destination is hotspot
                         {
-                            GPSLocation[] h = hotspots.First(x => IsInConvexHull(x, gps_data));
+                            var v = hotspots.Where(x => IsInConvexHull(x, gps_data));
+                            if (v.Count() > 1)
+                                throw new InvalidOperationException("a point should not be able to be in more than one hotspot at a time");
+                            GPSLocation[] h = v.First();
                             int destinationIndex = getHotspotIndex(h, hotspots);
                             mc[oldIndex, destinationIndex] += 1;
                             oldIndex = destinationIndex;
