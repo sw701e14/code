@@ -11,25 +11,6 @@ namespace LibraryTests
         Database database = new Database();
         int rndNumber = 50;
 
-        [TestMethod]
-        public void NullParameter()
-        {
-            bool expected = true;
-            bool actual = false;
-            try
-            {
-                Library.BikeUpdateLocation.InsertLocation(null);
-            }
-            catch (ArgumentNullException)
-            {
-                actual = true;
-            }
-
-            Assert.AreEqual(expected, actual);
-        }
-
-
-
         /// <summary>
         /// Make sure the expected <see cref="GPSData"/> is not already in database, else the test will fail.
         /// </summary>
