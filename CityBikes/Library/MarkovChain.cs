@@ -9,7 +9,6 @@ namespace Library
     public class MarkovChain
     {
         private double[,] markovChain;
-        private double[] initialState;
 
         public double this[int i, int j]
         {
@@ -17,10 +16,9 @@ namespace Library
             set { markovChain[i, j] = value; }
         }
 
-        public MarkovChain(int size, double[] initialState)
+        public MarkovChain(int size)
         {
             markovChain = new double[size,size];
-            this.initialState = initialState;
         }
     }
 }

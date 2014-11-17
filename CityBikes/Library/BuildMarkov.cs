@@ -29,7 +29,7 @@ namespace Library
                          select bike;
 
 
-            MarkovChain mc = new MarkovChain(hotspots.Count() * 2, null);
+            MarkovChain mc = new MarkovChain(hotspots.Count() * 2);
 
             int oldIndex;
 
