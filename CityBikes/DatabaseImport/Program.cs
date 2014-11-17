@@ -28,7 +28,7 @@ namespace Run
         static void clearData()
         {
             using (Database database = new Database())
-                database.ExecuteStoreCommand("TRUNCATE TABLE gps_data");
+                database.RunSession(session => session.Execute("TRUNCATE TABLE gps_data"));
         }
 
         static void loadData()
