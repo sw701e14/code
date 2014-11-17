@@ -1,16 +1,12 @@
-﻿using System;
+﻿using Library;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using Library.GeneratedDatabaseModel;
 
 namespace DatabaseImport
 {
-
-
     public static class GenerateGPSData
     {
         /// <summary>
@@ -30,9 +26,9 @@ namespace DatabaseImport
         /// <param name="startTime">The start time.</param>
         /// <param name="iterations">The iterations.</param>
         /// <returns></returns>
-        public static IEnumerable<gps_data> GenerateBikeRoute(int id, string[] destinations, DateTime startTime, int iterations)
+        public static IEnumerable<GPSData> GenerateBikeRoute(int id, string[] destinations, DateTime startTime, int iterations)
         {
-            List<gps_data> result = new List<gps_data>();
+            List<GPSData> result = new List<GPSData>();
 
             string startPoint = nextDestination(destinations, "");
             string destination = nextDestination(destinations, startPoint);
@@ -53,7 +49,7 @@ namespace DatabaseImport
                     yield return point;
                 }
 
-                gps_data lastpoint = route.Last();
+                GPSData lastpoint = route.Last();
 
                 Debug.WriteLine(route.Count() + " points generated");
                 Debug.WriteLine("Start: {0}\nEnd: {1}\nStartTime: {2}\nEndTime: {3}", startPoint, destination, startTime, lastpoint.queried);
@@ -67,7 +63,7 @@ namespace DatabaseImport
 
                 foreach (var item in generateBikeStandStill(startTime, POINTINTERVAL))
                 {
-                    yield return new gps_data(item, lastpoint.latitude, lastpoint.longitude, null, id);
+                    yield return new GPSData(item, lastpoint.latitude, lastpoint.longitude, null, id);
                     startTime = item;
                 }
 
@@ -84,7 +80,7 @@ namespace DatabaseImport
         /// <param name="startTime">The start time.</param>
         /// <param name="iterations">The number iterations.</param>
         /// <returns></returns>
-        public static IEnumerable<gps_data> GenerateBikeRoutes(int bikes, string[] destinations, DateTime startTime, int iterations)
+        public static IEnumerable<GPSData> GenerateBikeRoutes(int bikes, string[] destinations, DateTime startTime, int iterations)
         {
             for (int i = 0; i < bikes; i++)
             {
@@ -94,7 +90,6 @@ namespace DatabaseImport
                     yield return item;
                 }
             }
-
         }
 
         /// <summary>
@@ -104,9 +99,9 @@ namespace DatabaseImport
         /// <param name="interval">The interval.</param>
         /// <param name="route">The route.</param>
         /// <returns></returns>
-        public static IEnumerable<gps_data> GenerateRealRoute(DateTime nextTime, int interval, IEnumerable<gps_data> route)
+        public static IEnumerable<GPSData> GenerateRealRoute(DateTime nextTime, int interval, IEnumerable<GPSData> route)
         {
-            List<gps_data> point = route.ToList();
+            List<GPSData> point = route.ToList();
 
             yield return route.First();
 
@@ -125,14 +120,14 @@ namespace DatabaseImport
         /// <param name="lastPoint">The index of the last point.</param>
         /// <param name="nextPoint">The index of the next point.</param>
         /// <returns></returns>
-        private static IEnumerable<gps_data> GenerateRealPoints(DateTime nextTime, int interval, List<gps_data> route, int lastPoint, int nextPoint)
+        private static IEnumerable<GPSData> GenerateRealPoints(DateTime nextTime, int interval, List<GPSData> route, int lastPoint, int nextPoint)
         {
             if (nextPoint < route.Count())
             {
                 if (route[nextPoint].queried > nextTime)
                 {
                     var point = GenerateBetweenPoint(route, lastPoint, nextPoint, nextTime);
-                    yield return new gps_data(nextTime, (decimal)point.Item1, (decimal)point.Item2, null, (int)route.First().bikeId);
+                    yield return new GPSData(nextTime, (decimal)point.Item1, (decimal)point.Item2, null, (int)route.First().bikeId);
 
                     foreach (var item in GenerateRealPoints(nextTime.AddMinutes(interval), interval, route, lastPoint, nextPoint))
                         yield return item;
@@ -173,10 +168,10 @@ namespace DatabaseImport
         /// <param name="nextPoint">The next point.</param>
         /// <param name="time">The time.</param>
         /// <returns></returns>
-        private static Tuple<double, double> GenerateBetweenPoint(List<gps_data> route, int lastPoint, int nextPoint, DateTime time)
+        private static Tuple<double, double> GenerateBetweenPoint(List<GPSData> route, int lastPoint, int nextPoint, DateTime time)
         {
-            gps_data np = route[nextPoint];
-            gps_data lp = route[lastPoint];
+            GPSData np = route[nextPoint];
+            GPSData lp = route[lastPoint];
 
             var diff = (np.queried - lp.queried);
 
