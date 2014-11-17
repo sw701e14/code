@@ -35,7 +35,7 @@ namespace DatabaseImport
         /// Saves the map as a HTML-file in working directory.
         /// </summary>
         /// <param name="session">The <see cref="Database.DatabaseSession"/> used to load gps data.</param>
-        public static void SaveMapAsHtml(this Database.DatabaseSession session)
+        public static void SaveMapAsHtml(Database.DatabaseSession session)
         {
             if (session == null)
                 throw new ArgumentNullException();
