@@ -90,6 +90,15 @@ namespace Library
             return new GPSLocation(g1.latitude - g2.latitude, g1.longitude - g2.longitude);
         }
 
+        public static GPSLocation operator *(GPSLocation location, decimal scalar)
+        {
+            return new GPSLocation(location.latitude * scalar, location.longitude * scalar);
+        }
+        public static GPSLocation operator /(GPSLocation location, decimal scalar)
+        {
+            return new GPSLocation(location.latitude / scalar, location.longitude / scalar);
+        }
+
         /// <summary>
         /// Computes the polar angle between this <see cref="GPSLocation"/> and another.
         /// See <see cref="GetPolarAngle"/> for more.
