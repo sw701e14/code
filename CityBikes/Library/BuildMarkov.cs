@@ -12,12 +12,14 @@ namespace Library
     {
         private List<GPSLocation[]> hotspots;
 
-        public List<GPSLocation[]> Hotspots
-        {
-            get { return hotspots; }
-            set { hotspots = value; }
-        }
-
+        /// <summary>
+        /// Builds markov chains from the data in the database specified
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>A MarkovChain object with the resulting markov chain</returns>
+        /// <exception cref="System.InvalidOperationException">
+        /// a point should not be able to be in more than one hotspot at a time
+        /// </exception>
         public MarkovChain Build(Database context)
         {
             hotspots = context.LoadHotSpotsFromDatabase();
@@ -84,15 +86,28 @@ namespace Library
 
                 }
             }
-
+            mc.CreateChain();
             return mc;
+
         }
 
+        /// <summary>
+        /// Gets the index of the indice that represents being in the hotspot.
+        /// </summary>
+        /// <param name="hotspot">The hotspot.</param>
+        /// <param name="hotspots">The hotspots.</param>
+        /// <returns></returns>
         private int getHotspotIndex(GPSLocation[] hotspot, List<GPSLocation[]> hotspots)
         {
             return hotspots.IndexOf(hotspot) * 2;
         }
 
+        /// <summary>
+        /// Gets the index of the indice that represents that a hot spot has been left.
+        /// </summary>
+        /// <param name="hotspot">The hotspot.</param>
+        /// <param name="hotspots">The hotspots.</param>
+        /// <returns>The index of the indice that represents that a hot spot has been left.</returns>
         private int getHotSpotLeftIndex(GPSLocation[] hotspot, List<GPSLocation[]> hotspots)
         {
             return hotspots.IndexOf(hotspot) * 2 + 1;
