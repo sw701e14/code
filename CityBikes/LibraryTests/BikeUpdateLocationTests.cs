@@ -17,19 +17,17 @@ namespace LibraryTests
         [TestMethod]
         public void addNewLocation()
         {
+            var bike = new Bike((uint)rndNumber);
+            GPSData expected = new GPSData(bike, new GPSLocation(rndNumber, rndNumber), (byte)rndNumber, DateTime.Now, false);
 
-            GPSData expected = new GPSData(DateTime.Now, rndNumber, rndNumber, rndNumber, rndNumber);
-            expected.hasNotMoved = false;
-            
-            Library.BikeUpdateLocation.InsertLocation(expected);
+            database.RunSession(session => BikeUpdateLocation.InsertLocation(session, expected));
 
-            GPSData actual = database.GPSData.Where(x => x.bikeId == rndNumber && x.accuracy == (byte)rndNumber && x.latitude == rndNumber && x.longitude == rndNumber).FirstOrDefault();
+            GPSData actual = database.RunSession(session => bike.LatestGPSData(session));
 
-            Assert.AreEqual(expected.bikeId, actual.bikeId);
-            Assert.AreEqual(expected.accuracy, actual.accuracy);
-            Assert.AreEqual(expected.latitude, actual.latitude);
-            Assert.AreEqual(expected.longitude, actual.longitude);
-            Assert.AreEqual(expected.hasNotMoved, actual.hasNotMoved);
+            Assert.AreEqual(expected.Bike, actual.Bike);
+            Assert.AreEqual(expected.Accuracy, actual.Accuracy);
+            Assert.AreEqual(expected.Location, actual.Location);
+            Assert.AreEqual(expected.HasNotMoved, actual.HasNotMoved);
 
         }
 
@@ -39,19 +37,21 @@ namespace LibraryTests
         [TestMethod]
         public void updateLatestLocation()
         {
-            GPSData expected = new GPSData(DateTime.Now, rndNumber, rndNumber, rndNumber, rndNumber);
-            expected.hasNotMoved = false;
+            var bike = new Bike((uint)rndNumber);
+            GPSData expected = new GPSData(bike, new GPSLocation(rndNumber, rndNumber), (byte)rndNumber, DateTime.Now, false);
 
-            Library.BikeUpdateLocation.InsertLocation(expected);
-            Library.BikeUpdateLocation.InsertLocation(expected);
+            database.RunSession(session =>
+            {
+                BikeUpdateLocation.InsertLocation(session, expected);
+                BikeUpdateLocation.InsertLocation(session, expected);
+            });
 
-            GPSData actual = database.GPSData.Where(x => x.bikeId == rndNumber && x.accuracy == (byte)rndNumber && x.latitude == rndNumber && x.longitude == rndNumber).FirstOrDefault();
+            GPSData actual = database.RunSession(session => bike.LatestGPSData(session));
 
-            Assert.AreEqual(expected.bikeId, actual.bikeId);
-            Assert.AreEqual(expected.accuracy, actual.accuracy);
-            Assert.AreEqual(expected.latitude, actual.latitude);
-            Assert.AreEqual(expected.longitude, actual.longitude);
-            Assert.AreEqual(true, actual.hasNotMoved);
+            Assert.AreEqual(expected.Bike, actual.Bike);
+            Assert.AreEqual(expected.Accuracy, actual.Accuracy);
+            Assert.AreEqual(expected.Location, actual.Location);
+            Assert.AreEqual(true, actual.HasNotMoved);
         }
     }
 }
