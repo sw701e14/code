@@ -35,7 +35,7 @@ namespace Run
             if (!hasFiles())
                 return;
 
-            Menu<IEnumerable<GPSData>> menu = new Menu<IEnumerable<GPSData>>("Load data!");
+            Menu<GPSData[]> menu = new Menu<GPSData[]>("Load data!");
             menu.SetCancel("Done");
 
             menu.Add("Load from file", loadFromFile);
@@ -71,9 +71,9 @@ namespace Run
             return true;
         }
 
-        static IEnumerable<GPSData> loadFromFile()
+        static GPSData[] loadFromFile()
         {
-            Menu<IEnumerable<GPSData>> menu = new Menu<IEnumerable<GPSData>>("Select a file:");
+            Menu<GPSData[]> menu = new Menu<GPSData[]>("Select a file:");
             menu.SetCancel("Cancel");
 
             foreach (var f in Directory.EnumerateFiles(".", "*.txt"))
@@ -81,20 +81,20 @@ namespace Run
 
             return menu.Show();
         }
-        static IEnumerable<GPSData> loadFromFile(string path)
+        static GPSData[] loadFromFile(string path)
         {
             uint id = (uint)"Specify bike ID: ".GetInt32(x => x >= 0);
             return CSVParser.GetData(path, new Bike(id));
         }
 
-        static IEnumerable<GPSData> loadFromGoogle()
+        static GPSData[] loadFromGoogle()
         {
             string from = "From: ".GetString(x => x.Trim().Length > 0);
             string to = "To: ".GetString(x => x.Trim().Length > 0);
             DateTime start = "Start time: ".GetDateTime();
             uint id = (uint)"Specify bike ID: ".GetInt32(x => x >= 0);
 
-            return GoogleDirectionsParser.GetData(from, to, start, new Bike(id));
+            return GoogleDirectionsParser.GetData(from, to, start, new Bike(id)).ToArray();
         }
 
         static void insertInDB(IEnumerable<GPSData> points)
