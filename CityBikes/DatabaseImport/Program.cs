@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using DatabaseImport;
 using DeadDog.Console;
 using System.IO;
-using Library.GeneratedDatabaseModel;
 using Library;
 
 namespace Run
@@ -37,7 +36,7 @@ namespace Run
             if (!hasFiles())
                 return;
 
-            Menu<IEnumerable<gps_data>> menu = new Menu<IEnumerable<gps_data>>("Load data!");
+            Menu<IEnumerable<GPSData>> menu = new Menu<IEnumerable<GPSData>>("Load data!");
             menu.SetCancel("Done");
 
             menu.Add("Load from file", loadFromFile);
@@ -92,7 +91,7 @@ namespace Run
             return true;
         }
 
-        static IEnumerable<gps_data> loadFromFile()
+        static IEnumerable<GPSData> loadFromFile()
         {
             Menu<IEnumerable<gps_data>> menu = new Menu<IEnumerable<gps_data>>("Select a file:");
             menu.SetCancel("Cancel");
@@ -102,13 +101,13 @@ namespace Run
 
             return menu.Show();
         }
-        static IEnumerable<gps_data> loadFromFile(string path)
+        static IEnumerable<GPSData> loadFromFile(string path)
         {
             int id = "Specify bike ID: ".GetInt32(x => x > 0);
             return CSVParser.GetData(path, id);
         }
 
-        static IEnumerable<gps_data> loadFromGoogle()
+        static IEnumerable<GPSData> loadFromGoogle()
         {
             string from = "From: ".GetString(x => x.Trim().Length > 0);
             string to = "To: ".GetString(x => x.Trim().Length > 0);
@@ -118,7 +117,7 @@ namespace Run
             return GoogleDirectionsParser.GetData(from, to, start, id);
         }
 
-        static void insertInDB(IEnumerable<IEnumerable<gps_data>> points)
+        static void insertInDB(IEnumerable<IEnumerable<GPSData>> points)
         {
             using (var database = new Database())
                 DatabaseExport.Export(database, points.Concatenate());
