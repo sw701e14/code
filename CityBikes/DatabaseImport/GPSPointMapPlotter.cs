@@ -28,16 +28,15 @@ namespace DatabaseImport
         /// Plots ALL <see cref="GPSData"/> from database to a Google Map and connects same-bike-id-points with lines.
         /// Saves the map as a HTML-file in working directory.
         /// </summary>
-        /// <param name="context">The database context.</param>
-        public static void SaveMapAsHtml(this Database context)
+        /// <param name="session">The <see cref="Database.DatabaseSession"/> used to load gps data.</param>
+        public static void SaveMapAsHtml(this Database.DatabaseSession session)
         {
-            if (context == null)
+            if (session == null)
                 throw new ArgumentNullException();
 
-            IQueryable<GPSData> locationList = from locations in context.GPSData
-                                                select locations;
+            GPSData[] data = session.ExecuteRead("SElECT * FROM citybikes_test.gps_data").Select(r => r.GetGPSData()).ToArray();
 
-            SaveMapAsHtml(context, locationList);
+            SaveMapAsHtml(data);
         }
 
         /// <summary>
@@ -46,12 +45,12 @@ namespace DatabaseImport
         /// </summary>
         /// <param name="context">The database context.</param>
         /// <param name="selectedGPSPoints">The selected GPS data.</param>
-        public static void SaveMapAsHtml(this Database context, IQueryable<GPSData> selectedGPSPoints)
+        public static void SaveMapAsHtml(IEnumerable<GPSData> selectedGPSPoints)
         {
-            if (context == null || selectedGPSPoints == null)
+            if (selectedGPSPoints == null)
                 throw new ArgumentNullException();
 
-            HtmlDocument htmlDocument = new HtmlDocument();   
+            HtmlDocument htmlDocument = new HtmlDocument();
 
             htmlDocument.LoadHtml(writeHTMLStart() +
                                    writeHTMLSource(API_KEY) +
@@ -111,51 +110,51 @@ namespace DatabaseImport
             return result;
         }
 
-        private static string writeHTMLPointsAndLines(IQueryable<GPSData> locationList)
+        private static string writeHTMLPointsAndLines(IEnumerable<GPSData> locationList)
         {
             string result = "";
-            GPSData previousData = null;
+            GPSData? previousData = null;
             string lineString = "";
             GPSData lastInList = locationList.AsEnumerable().Last();
 
             foreach (GPSData bikeLocation in locationList)
             {
-                if (!(previousData == null))
+                if (previousData.HasValue)
                 {
-                    if (previousData.bikeId == bikeLocation.bikeId)
+                    if (previousData.Value.Bike == bikeLocation.Bike)
                     {
                         //Writes line variable (eg. var myLine1) and add connection points for the line.
-                        if (!(lineString.StartsWith("var myLine" + bikeLocation.bikeId + "=[")))
+                        if (!(lineString.StartsWith("var myLine" + bikeLocation.Bike.Id + "=[")))
                         {
-                            lineString = "var myLine" + bikeLocation.bikeId + "=[";
+                            lineString = "var myLine" + bikeLocation.Bike.Id + "=[";
                         }
-                        lineString = lineString + "new google.maps.LatLng(" + bikeLocation.latitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "," + bikeLocation.longitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "),";
+                        lineString = lineString + "new google.maps.LatLng(" + bikeLocation.Location.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "," + bikeLocation.Location.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "),";
                     }
                     else
                     {
                         //Writes method and settings for creating lines for this bikeID.
-                        result = result + writeHTMLLine(lineString, bikeLocation.bikeId - 1, bikeLocation.queried);
-                        lineString = "var myLine" + bikeLocation.bikeId + "=[";
-                        lineString = lineString + "new google.maps.LatLng(" + bikeLocation.latitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "," + bikeLocation.longitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "),";
+                        result = result + writeHTMLLine(lineString, bikeLocation.Bike.Id - 1, bikeLocation.QueryTime);
+                        lineString = "var myLine" + bikeLocation.Bike.Id + "=[";
+                        lineString = lineString + "new google.maps.LatLng(" + bikeLocation.Location.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "," + bikeLocation.Location.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "),";
                     }
                 }
                 else
                 {
                     //Writes line variable (eg. var myLine1) and add connection points for the first line.
-                    if (!(lineString.StartsWith("var myLine" + bikeLocation.bikeId + "=[")))
+                    if (!(lineString.StartsWith("var myLine" + bikeLocation.Bike.Id + "=[")))
                     {
-                        lineString = "var myLine" + bikeLocation.bikeId + "=[";
+                        lineString = "var myLine" + bikeLocation.Bike.Id + "=[";
                     }
-                    lineString = lineString + "new google.maps.LatLng(" + bikeLocation.latitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "," + bikeLocation.longitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "),";
+                    lineString = lineString + "new google.maps.LatLng(" + bikeLocation.Location.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "," + bikeLocation.Location.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "),";
                 }
 
                 //Writes all markers.
-                result = result + "addMarker(new google.maps.LatLng(" + bikeLocation.latitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "," + bikeLocation.longitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "),'" + bikeLocation.bikeId + "','" + bikeLocation.queried.ToString() + "');" + System.Environment.NewLine;
+                result = result + "addMarker(new google.maps.LatLng(" + bikeLocation.Location.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "," + bikeLocation.Location.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "),'" + bikeLocation.Bike.Id + "','" + bikeLocation.QueryTime.ToString() + "');" + System.Environment.NewLine;
 
-                if (bikeLocation == lastInList)
+                if (bikeLocation.Equals(lastInList))
                 {
                     //Writes method and settings for creating lines for the last bikeID.
-                    result = result + writeHTMLLine(lineString, bikeLocation.bikeId, bikeLocation.queried);
+                    result = result + writeHTMLLine(lineString, bikeLocation.Bike.Id, bikeLocation.QueryTime);
                 }
 
                 previousData = bikeLocation;
@@ -200,7 +199,7 @@ namespace DatabaseImport
             double randomNumber = Math.Floor((double)temp);
 
             int colorInDouble = (int)Math.Abs(randomNumber);
-            
+
             string hexValue = "'#000000'";
 
 
