@@ -41,20 +41,12 @@ namespace Run
             menu.Add("Load from file", loadFromFile);
             menu.Add("Load from Google Directions", loadFromGoogle);
 
-            var points = menu.Show(true).ToArray();
-
-            if (points == null || points.Count() == 0)
-                return;
-
-            if (points.All(x => x == null))
-                return;
-
-            Menu insertIn = new Menu("Insert into");
-            insertIn.SetCancel("Do nothing!");
-
-            insertIn.Add("Insert into database", () => insertInDB(points));
-
-            insertIn.Show();
+            foreach (var set in menu.Show(true))
+            {
+                if (set != null)
+                    using (Database database = new Database())
+                        database.RunSession(session => DatabaseExport.Export(session, set));
+            }
         }
 
         static bool hasFiles()
@@ -81,7 +73,7 @@ namespace Run
 
         static IEnumerable<GPSData> loadFromFile()
         {
-            Menu<IEnumerable<gps_data>> menu = new Menu<IEnumerable<gps_data>>("Select a file:");
+            Menu<IEnumerable<GPSData>> menu = new Menu<IEnumerable<GPSData>>("Select a file:");
             menu.SetCancel("Cancel");
 
             foreach (var f in Directory.EnumerateFiles(".", "*.txt"))
@@ -91,8 +83,8 @@ namespace Run
         }
         static IEnumerable<GPSData> loadFromFile(string path)
         {
-            int id = "Specify bike ID: ".GetInt32(x => x > 0);
-            return CSVParser.GetData(path, id);
+            uint id = (uint)"Specify bike ID: ".GetInt32(x => x >= 0);
+            return CSVParser.GetData(path, new Bike(id));
         }
 
         static IEnumerable<GPSData> loadFromGoogle()
@@ -100,23 +92,15 @@ namespace Run
             string from = "From: ".GetString(x => x.Trim().Length > 0);
             string to = "To: ".GetString(x => x.Trim().Length > 0);
             DateTime start = "Start time: ".GetDateTime();
-            int id = "Specify bike ID: ".GetInt32(x => x > 0);
+            uint id = (uint)"Specify bike ID: ".GetInt32(x => x >= 0);
 
-            return GoogleDirectionsParser.GetData(from, to, start, id);
+            return GoogleDirectionsParser.GetData(from, to, start, new Bike(id));
         }
 
-        static void insertInDB(IEnumerable<IEnumerable<GPSData>> points)
+        static void insertInDB(IEnumerable<GPSData> points)
         {
             using (var database = new Database())
-                DatabaseExport.Export(database, points.Concatenate());
-        }
-
-        static IEnumerable<T> Concatenate<T>(this IEnumerable<IEnumerable<T>> collection)
-        {
-            foreach (var c in collection)
-                if (c != null)
-                    foreach (var t in c)
-                        yield return t;
+                database.RunSession(session => DatabaseExport.Export(session, points));
         }
     }
 }
