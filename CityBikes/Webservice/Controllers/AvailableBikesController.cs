@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Library;
-using Library.GeneratedDatabaseModel;
 using Webservice.Models.AvailableBikes;
 
 namespace Webservice.Controllers
@@ -30,10 +29,10 @@ namespace Webservice.Controllers
 
             ListAvailableBikes bikeResources = new ListAvailableBikes();
             int bikeCount = 0;
-            foreach (Tuple<long, GPSLocation> item in AvailableBikes.GetAvailableBikes(context))
+            foreach (Tuple<Bike, GPSLocation> item in context.RunSession(session => session.GetAvailableBikes()))
             {
                 bikeCount++;
-                bikeResources.bikes.Add(new Webservice.Models.AvailableBikes.bike() { id = item.Item1, href = item.Item1.ToString() } );
+                bikeResources.bikes.Add(new Webservice.Models.AvailableBikes.bike() { id = item.Item1.Id, href = item.Item1.ToString() } );
             }
             bikeResources.count = bikeCount;
 
@@ -50,13 +49,13 @@ namespace Webservice.Controllers
         public HttpResponseMessage get(long bikeId)
         {
             Database context = new Database();
+            var bikeLocation = context.RunSession(session => session.GetAvailableBikes()).Where(x => x.Item1.Id == bikeId).FirstOrDefault();
 
-            Tuple<long, GPSLocation> bikeLocation = AvailableBikes.GetAvailableBikes(context).Where(x => x.Item1 == bikeId).FirstOrDefault();
 
             if (bikeLocation == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
-            BikeResource bikeResource = new BikeResource() { id = bikeLocation.Item1, latitude = bikeLocation.Item2.Latitude, longitude = bikeLocation.Item2.Longitude };
+            BikeResource bikeResource = new BikeResource() { bike = bikeLocation.Item1, latitude = bikeLocation.Item2.Latitude, longitude = bikeLocation.Item2.Longitude };
 
             return Request.CreateResponse(HttpStatusCode.OK, bikeResource);
         }
