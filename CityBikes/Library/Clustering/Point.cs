@@ -13,7 +13,6 @@ namespace Library.Clustering
         {
             this.location = gpsLocation;
             this.visited = false;
-            this.noise = false;
         }
 
         private GPSLocation location;
@@ -35,15 +34,5 @@ namespace Library.Clustering
             get { return visited; }
             set { visited = value; }
         }
-
-        private bool noise;
-
-        public bool Noise
-        {
-            get { return noise; }
-            set { noise = value; }
-        }
-        
-        
     }
 }

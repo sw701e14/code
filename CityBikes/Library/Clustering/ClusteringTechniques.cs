@@ -32,11 +32,7 @@ namespace Library.Clustering
                 Console.WriteLine(point.Location.Latitude + "," + point.Location.Longitude + " visited and is no. " + count + ".");
                 count++;
                 neighbours = findNeighbours(points, point, radius).Select(x => x).ToList();
-                if (neighbours.Count < minimumPoints)
-                {
-                    point.Noise = true;
-                }
-                else
+                if (neighbours.Count >= minimumPoints)
                     clusters.Add(expandCluster(point, neighbours, clusters, minimumPoints, radius));
             }
             return clusters;
