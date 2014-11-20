@@ -132,7 +132,7 @@ namespace DatabaseImport
                 if (route[nextPoint].queried > nextTime)
                 {
                     var point = GenerateBetweenPoint(route, lastPoint, nextPoint, nextTime);
-                    yield return new gps_data(nextTime, (decimal)point.Item1, (decimal)point.Item2, null, (int)route.First().bikeId);
+                    yield return new gps_data(nextTime, Convert.ToDecimal(point.Item1), Convert.ToDecimal(point.Item2), null, (int)route.First().bikeId);
 
                     foreach (var item in GenerateRealPoints(nextTime.AddMinutes(interval), interval, route, lastPoint, nextPoint))
                         yield return item;
