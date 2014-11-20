@@ -42,7 +42,6 @@ namespace Library.Clustering
             foreach (var point in D.Where(x => !x.Visited))
             {
                 point.Visited = true;
-                Console.WriteLine(point.Location.Latitude + "," + point.Location.Longitude + " visited and is no. " + count + ".");
                 count++;
                 neighbours = findNeighbours(D, point, radius).Select(x => x).ToList();
                 if (neighbours.Count >= minimumPoints)
