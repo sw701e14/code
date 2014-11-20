@@ -92,5 +92,34 @@ namespace Library.Clustering
                 this.points = new List<Point>(points);
             }
         }
+
+        private class Point : IEquatable<Point>
+        {
+            public Point(GPSLocation gpsLocation)
+            {
+                this.location = gpsLocation;
+                this.visited = false;
+            }
+
+            private GPSLocation location;
+
+            public GPSLocation Location
+            {
+                get { return location; }
+            }
+
+            public bool Equals(Point other)
+            {
+                return location.Equals(other.location);
+            }
+
+            private bool visited;
+
+            public bool Visited
+            {
+                get { return visited; }
+                set { visited = value; }
+            }
+        }
     }
 }
