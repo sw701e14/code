@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Library;
-using Library.GeneratedDatabaseModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Library.Tests
 {
@@ -22,7 +21,7 @@ namespace Library.Tests
         [TestMethod()]
         public void GrahamScanTest()
         {
-            GPSLocation[] actual = ConvexHull.GrahamScan(locations);
+            GPSLocation[] actual = GPSLocation.GetConvexHull(locations);
 
             GPSLocation[] expected = new GPSLocation[] { new GPSLocation(1, 1), new GPSLocation(1, 10), new GPSLocation(15, 5), new GPSLocation(10, 1) ,new GPSLocation(5,15)};
 

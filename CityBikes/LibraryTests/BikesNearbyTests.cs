@@ -4,51 +4,60 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Library;
-using Library.GeneratedDatabaseModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DatabaseImportTest;
 namespace Library.Tests
 {
-    [TestClass()]
+    [TestClass]
     public class BikesNearbyTests
     {
-        Database context = new Database();
+        private static Database database;
+
+        [TestInitialize()]
+        public void Initialize()
+        {
+            database = new Database();
+        }
+
+        [TestCleanup()]
+        public void Cleanup()
+        {
+            database.Dispose();
+            database = null;
+        }
 
         //Requires test_data.sql in the database
-        [TestMethod()]
+        [TestMethod]
         public void GetBikeLocationTest()
         {
-            GPSLocation loc = AllBikesLocation.GetBikeLocation(context, 65530);
+            GPSLocation loc = database.RunSession(s => s.GetBikeLocation(65530));
 
             GPSLocation expected = new GPSLocation(4.12345678m, -4.12345678m);
             Assert.AreEqual(expected, loc);
         }
 
         //Requires test_data.sql in the database
-        [TestMethod()]
+        [TestMethod]
         public void GetBikeLocationsTest()
         {
-            var locations = AllBikesLocation.GetBikeLocations(context).ToArray();
+            var locations = database.RunSession(s => s.GetBikeLocations()).ToList();
 
-            List<Tuple<long, GPSLocation>> bikesExpected = new List<Tuple<long, GPSLocation>>() {
-                Tuple.Create(65530L,new GPSLocation (4.12345678m,-4.12345678m)),
-                Tuple.Create(65531L,new GPSLocation (2.12345678m,-2.12345678m)),
-                Tuple.Create(65532L,new GPSLocation (6.12345678m,-13.12345678m)),
-                Tuple.Create(65533L,new GPSLocation (8.12345678m,-2.12345678m)),
-                Tuple.Create(65534L,new GPSLocation (2.12345678m,-10.12345678m)),
-                Tuple.Create(65535L,new GPSLocation (5.12345678m,-1.12345678m))
+            List<Tuple<Bike, GPSLocation>> bikesExpected = new List<Tuple<Bike, GPSLocation>>() {
+                Tuple.Create(new Bike(65530),new GPSLocation (4.12345678m,-4.12345678m)),
+                Tuple.Create(new Bike(65531),new GPSLocation (2.12345678m,-2.12345678m)),
+                Tuple.Create(new Bike(65532),new GPSLocation (6.12345678m,-13.12345678m)),
+                Tuple.Create(new Bike(65533),new GPSLocation (8.12345678m,-2.12345678m)),
+                Tuple.Create(new Bike(65534),new GPSLocation (2.12345678m,-10.12345678m)),
+                Tuple.Create(new Bike(65535),new GPSLocation (5.12345678m,-1.12345678m))
             };
 
-
-
-            if (locations.Count() != bikesExpected.Count)
-                Assert.Fail();
+            if (locations.Count != bikesExpected.Count)
+                Assert.Fail("Number of bikes in query differs from expected.");
 
             foreach (var item in bikesExpected)
             {
                 if (!locations.Contains(item))
                 {
-                    Assert.Fail("{0} is not in the resulting list");
+                    Assert.Fail("{0} is not in the resulting list", item);
                 }
             }
 
