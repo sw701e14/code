@@ -20,7 +20,7 @@ namespace Library.Clustering
         {
             List<GPSLocation[]> clusters = new List<GPSLocation[]>();
 
-            List<Point> points = new List<Point>(); 
+            List<Point> points = new List<Point>();
             foreach (var loc in gpsLocations)
                 points.Add(new Point(loc));
 
@@ -67,16 +67,30 @@ namespace Library.Clustering
         private static bool hasPoint(List<GPSLocation[]> clusters, Point p)
         {
             foreach (var c in clusters)
-                {
-                    if (c.Contains(p.Location))
-                        return true;
-                }
+            {
+                if (c.Contains(p.Location))
+                    return true;
+            }
             return false;
         }
 
         private static IEnumerable<Point> findNeighbours(List<Point> points, Point point, double radius)
         {
             return points.Where(p => p.Location.DistanceTo(point.Location) < radius);
+        }
+
+        private class Cluster
+        {
+            private List<Point> points;
+
+            public Cluster()
+                : this(new Point[0])
+            {
+            }
+            public Cluster(IEnumerable<Point> points)
+            {
+                this.points = new List<Point>(points);
+            }
         }
     }
 }
