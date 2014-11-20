@@ -60,7 +60,7 @@
     <Compile Include="BikesNearby.cs" />
     <Compile Include="BikeStandstill.cs" />
     <Compile Include="AllBikesLocation.cs" />
-    <Compile Include="Clustering\ClusteringTechniques.cs" />
+    <Compile Include="ClusteringTechniques.cs" />
     <Compile Include="BikeUpdateLocation.cs" />
     <Compile Include="ConvexHull.cs" />
     <Compile Include="GeneratedDatabaseModel\GPSLocation.cs" />

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Library.GeneratedDatabaseModel;
 
-namespace Library.Clustering
+namespace Library
 {
     public class ClusteringTechniques
     {
