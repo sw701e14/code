@@ -7,16 +7,28 @@ using Library.GeneratedDatabaseModel;
 
 namespace Library.Clustering
 {
-    public static class ClusteringTechniques
+    public class ClusteringTechniques
     {
+        private List<Point> D;
+
+        private ClusteringTechniques(IEnumerable<GPSLocation> data)
+        {
+            this.D = new List<Point>();
+        }
+
         /// <summary>
         /// Finds all clusters from the given locations.
         /// </summary>
-        /// <param name="gpsLocations">An array of all locations.</param>
+        /// <param name="gpsLocations">A collection of all locations.</param>
         /// <param name="minimumPoints">The minimum amount of neighbour points in its vicinity before it can be a core point.</param>
         /// <param name="radius">The radius for a point to be a core point.</param>
         /// <returns>Returns a list of clusters.</returns>
-        public static List<GPSLocation[]> DBSCAN(GPSLocation[] gpsLocations, int minimumPoints, double radius)
+        public static GPSLocation[][] FindClusters(IEnumerable<GPSLocation> gpsLocations, int minimumPoints, double radius)
+        {
+            throw new NotImplementedException();
+        }
+
+        private List<GPSLocation[]> DBSCAN(GPSLocation[] gpsLocations, int minimumPoints, double radius)
         {
             List<GPSLocation[]> clusters = new List<GPSLocation[]>();
 
@@ -38,7 +50,7 @@ namespace Library.Clustering
             return clusters;
         }
 
-        private static GPSLocation[] expandCluster(Point point, List<Point> neighbours, List<GPSLocation[]> clusters, int minimumpoints, double radius)
+        private GPSLocation[] expandCluster(Point point, List<Point> neighbours, List<GPSLocation[]> clusters, int minimumpoints, double radius)
         {
             List<GPSLocation> cluster = new List<GPSLocation>();
             cluster.Add(point.Location);
