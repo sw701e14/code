@@ -91,20 +91,6 @@ namespace Library.Clustering
             return points.Where(p => p.Location.DistanceTo(point.Location) < radius);
         }
 
-        private class Cluster
-        {
-            private List<Point> points;
-
-            public Cluster()
-                : this(new Point[0])
-            {
-            }
-            public Cluster(IEnumerable<Point> points)
-            {
-                this.points = new List<Point>(points);
-            }
-        }
-
         private class Point : IEquatable<Point>
         {
             public Point(GPSLocation gpsLocation)
