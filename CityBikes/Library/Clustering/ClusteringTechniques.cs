@@ -14,6 +14,9 @@ namespace Library.Clustering
         private ClusteringTechniques(IEnumerable<GPSLocation> data)
         {
             this.D = new List<Point>();
+
+            foreach (var l in data)
+                this.D.Add(new Point(l));
         }
 
         /// <summary>
@@ -25,25 +28,23 @@ namespace Library.Clustering
         /// <returns>Returns a list of clusters.</returns>
         public static GPSLocation[][] FindClusters(IEnumerable<GPSLocation> gpsLocations, int minimumPoints, double radius)
         {
+            ClusteringTechniques ct = new ClusteringTechniques(gpsLocations);
+            
             throw new NotImplementedException();
         }
 
-        private List<GPSLocation[]> DBSCAN(GPSLocation[] gpsLocations, int minimumPoints, double radius)
+        private List<GPSLocation[]> DBSCAN(int minimumPoints, double radius)
         {
             List<GPSLocation[]> clusters = new List<GPSLocation[]>();
 
-            List<Point> points = new List<Point>();
-            foreach (var loc in gpsLocations)
-                points.Add(new Point(loc));
-
             List<Point> neighbours = new List<Point>();
             int count = 0;
-            foreach (var point in points.Where(x => !x.Visited))
+            foreach (var point in D.Where(x => !x.Visited))
             {
                 point.Visited = true;
                 Console.WriteLine(point.Location.Latitude + "," + point.Location.Longitude + " visited and is no. " + count + ".");
                 count++;
-                neighbours = findNeighbours(points, point, radius).Select(x => x).ToList();
+                neighbours = findNeighbours(D, point, radius).Select(x => x).ToList();
                 if (neighbours.Count >= minimumPoints)
                     clusters.Add(expandCluster(point, neighbours, clusters, minimumPoints, radius));
             }
