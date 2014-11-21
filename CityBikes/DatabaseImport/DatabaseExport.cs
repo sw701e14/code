@@ -1,10 +1,9 @@
-﻿using Library.GeneratedDatabaseModel;
+﻿using Library;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Library;
 
 namespace DatabaseImport
 {
@@ -16,31 +15,34 @@ namespace DatabaseImport
         /// </summary>
         /// <param name="context">The database to which the point should be exported.</param>
         /// <param name="points">The points that should be exported.</param>
-        public static void Export(Database context, IEnumerable<gps_data> points)
+        public static void Export(Database.DatabaseSession session, IEnumerable<GPSData> points)
         {
-            List<long> bikes = context.bikes.Select(x => x.id).ToList();
+            var pArr = points.ToArray();
 
-            foreach (var p in ConvertToIntervalRoute(points.First().queried,INTERVAL, points.ToList(), 0, 1))
+            List<Bike> oldbikes = session.ExecuteRead("SELECT * FROM citybike_test.bikes").Select(row => row.GetBike()).ToList();
+            List<Bike> newbikes = new List<Bike>();
+
+            foreach (var p in pArr)
             {
-                if(!bikes.Contains(p.bikeId))
+                if (!oldbikes.Contains(p.Bike))
                 {
-                    context.bikes.AddObject(new bike() { id = p.bikeId });
-                    bikes.Add(p.bikeId);
+                    newbikes.Add(p.Bike);
+                    oldbikes.Add(p.Bike);
                 }
 
-                gps_data movedPoint = MoveRandom(p);
-                BikeUpdateLocation.InsertLocation(context, movedPoint);
+                GPSData movedPoint = MoveRandom(p);
+                BikeUpdateLocation.InsertLocation(session, movedPoint);
             }
         }
 
 
         static Random r = new Random();
-        public static gps_data MoveRandom(gps_data point)
+        public static GPSData MoveRandom(GPSData point)
         {
             double angle = r.NextDouble() * 2 * Math.PI;
             double distance = r.Next(20);
 
-            return gps_data.Move(point, angle, distance/1000);
+            return new GPSData(point.Bike, GPSLocation.Move(point.Location, angle, distance / 1000), point.Accuracy, point.QueryTime, point.HasNotMoved);
         }
 
         /// <summary>
@@ -52,14 +54,14 @@ namespace DatabaseImport
         /// <param name="lastPoint">The index of the last point.</param>
         /// <param name="nextPoint">The index of the next point.</param>
         /// <returns></returns>
-        private static IEnumerable<gps_data> ConvertToIntervalRoute(DateTime nextTime, int interval, List<gps_data> route, int lastPoint, int nextPoint)
+        private static IEnumerable<GPSData> ConvertToIntervalRoute(DateTime nextTime, int interval, List<GPSData> route, int lastPoint, int nextPoint)
         {
             if (nextPoint < route.Count)
             {
-                if (route[nextPoint].queried > nextTime)
+                if (route[nextPoint].QueryTime > nextTime)
                 {
                     var point = GenerateBetweenPoint(route, lastPoint, nextPoint, nextTime);
-                    yield return new gps_data(nextTime, (decimal)point.Item1, (decimal)point.Item2, null, (int)route.First().bikeId);
+                    yield return new GPSData(route.First().Bike, point, null, nextTime, false);
 
                     foreach (var item in ConvertToIntervalRoute(nextTime.AddMinutes(interval), interval, route, lastPoint, nextPoint))
                         yield return item;
@@ -72,42 +74,22 @@ namespace DatabaseImport
             }
         }
 
-        /// <summary>
-        /// Generates the a point between the two points at 
-        /// </summary>
-        /// <param name="route">The route.</param>
-        /// <param name="lastPoint">The last point.</param>
-        /// <param name="nextPoint">The next point.</param>
-        /// <param name="time">The time.</param>
-        /// <returns></returns>
-        private static Tuple<double, double> GenerateBetweenPoint(List<gps_data> route, int lastPoint, int nextPoint, DateTime time)
+        private static GPSLocation GenerateBetweenPoint(List<GPSData> route, int lastPoint, int nextPoint, DateTime time)
         {
-            gps_data np = route[nextPoint];
-            gps_data lp = route[lastPoint];
+            GPSData np = route[nextPoint];
+            GPSData lp = route[lastPoint];
 
-            var diff = (np.queried - lp.queried);
+            var diff = (np.QueryTime - lp.QueryTime);
 
             double triptime = diff.TotalSeconds;
 
-            var g = (time - route[lastPoint].queried);
+            var g = (time - route[lastPoint].QueryTime);
             double pointtime = g.TotalSeconds;
 
-            double latitude, longitude;
-
             if (pointtime != 0)
-            {
-                double part = pointtime / triptime;
-
-                latitude = (double)(np.latitude - lp.latitude) * part;
-                longitude = (double)(np.longitude - lp.longitude) * part;
-            }
+                return lp.Location + (np.Location - lp.Location) * (pointtime / triptime);
             else
-            {
-                latitude = 0;
-                longitude = 0;
-            }
-
-            return new Tuple<double, double>((double)lp.latitude + latitude, (double)lp.longitude + longitude);
+                return lp.Location;
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Library.GeneratedDatabaseModel;
+using Library;
 
 namespace Library
 {
@@ -13,29 +13,25 @@ namespace Library
         /// Inserts new gps_data into database, depending on whether the bike has moved or not
         /// </summary>
         /// <param name="newLocation">The updated location to be inserted</param>
-        public static void InsertLocation(Database context, gps_data newLocation)
+        public static void InsertLocation(Database.DatabaseSession session, GPSData newLocation)
         {
-            if (newLocation == null)
-            {
-                throw new ArgumentNullException();
-            }
-            else if (newLocation.accuracy == null || newLocation.bikeId == null || newLocation.hasNotMoved == null || newLocation.id == null || 
-                     newLocation.latitude == null || newLocation.longitude == null || newLocation.queried == null)
-            {
-                throw new ArgumentException("newLocation must not contain null values.", "Please specify a argument without null values.");
-            }
+            var latestLocation = newLocation.Bike.LatestGPSData(session);
 
-            gps_data latestLocation = context.gps_data
-                .Where(x => x.bikeId == newLocation.bikeId)
-                .OrderByDescending(x => x.queried)
-                .FirstOrDefault();
-
-            if (latestLocation != null && gps_data.WithinAccuracy(newLocation, latestLocation))
-                latestLocation.hasNotMoved = true;
+            if (GPSData.WithinAccuracy(newLocation, latestLocation))
+                session.Execute("UPDATE citybikes_test SET hasNotMoved=true WHERE bikeId={0}", newLocation.Bike.Id);
             else
-                context.gps_data.AddObject(newLocation);
+                session.Execute("INSERT INTO gps_data (bikeId, latitude, longitude, accuracy, queried, hasNotMoved) VALUES{0}", formatGPS(newLocation));
+        }
 
-            context.SaveChanges();
+        private static string formatGPS(GPSData data)
+        {
+            return string.Format("({0}, {1}, {2}, {3}, {4}, {5})",
+                data.Bike.Id,
+                data.Location.Latitude,
+                data.Location.Longitude,
+                data.Accuracy,
+                data.QueryTime.ToString("yyyy-MM-dd hh:mm:ss"),
+                data.HasNotMoved);
         }
     }
 }

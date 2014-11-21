@@ -1,5 +1,4 @@
-﻿using Library.GeneratedDatabaseModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,45 +11,30 @@ namespace Library
         /// <summary>
         /// Gets a collection of all bikes and a <see cref="DateTime"/> value indicating when they were "parked".
         /// </summary>
-        /// <param name="context">A database context from which data should be retrieved.</param>
-        /// <returns>A collection of bikes and park-times.</returns>
-        public static IEnumerable<Tuple<long, DateTime>> GetBikesImmobile(this Database context)
+        /// <param name="session">A <see cref="Database.DatabaseSession"/> from which data should be retrieved.</param>
+        /// <returns>A collection of bikes, last-use-time and a boolean indicating if their are standing still.</returns>
+        public static Tuple<Bike, DateTime, bool>[] GetBikesImmobile(this Database.DatabaseSession session)
         {
-            Dictionary<long, gps_data> firstData = new Dictionary<long, gps_data>();
-            Dictionary<long, gps_data> lastData = new Dictionary<long, gps_data>();
-            List<long> stopped = new List<long>();
+            var rows = session.ExecuteRead(
+@"SELECT g1.bikeId, queried, hasNotMoved
+FROM citybike_test.gps_data g1
+INNER JOIN (
+    SELECT bikeId, MAX(queried) as MaxDate
+    FROM citybike_test.gps_data
+    GROUP BY bikeId
+) g2 ON g1.bikeId = g2.bikeId AND g1.queried = g2.MaxDate");
 
-            foreach (var v in from gps in context.gps_data orderby gps.queried select gps)
-            {
-                if (stopped.Contains(v.bikeId))
-                    continue;
-
-                if (!lastData.ContainsKey(v.bikeId))
-                {
-                    firstData.Add(v.bikeId, v);
-                    lastData.Add(v.bikeId, v);
-                }
-                else
-                {
-                    if (gps_data.WithinAccuracy(firstData[v.bikeId], v))
-                        lastData[v.bikeId] = v;
-                    else
-                        stopped.Add(v.bikeId);
-                }
-            }
-
-            foreach (var v in lastData)
-                yield return Tuple.Create(v.Key, v.Value.queried);
+            return rows.Select(row => row.ToTuple<Bike, DateTime, bool>()).ToArray();
         }
         /// <summary>
         /// Gets a collection of all bikes and a <see cref="DateTime"/> value indicating when they were "parked".
         /// </summary>
-        /// <param name="context">A database context from which data should be retrieved.</param>
+        /// <param name="session">A <see cref="Database.DatabaseSession"/> from which data should be retrieved.</param>
         /// <param name="immobileSince">Any bikes that were parked after <paramref name="immobileSince"/> will not be returned.</param>
-        /// <returns>A collection of bikes and park-times.</returns>
-        public static IEnumerable<Tuple<long, DateTime>> GetBikesImmobile(this Database context, DateTime immobileSince)
+        /// <returns>A collection of bikes, last-use-time and a boolean indicating if their are standing still.</returns>
+        public static Tuple<Bike, DateTime, bool>[] GetBikesImmobile(this Database.DatabaseSession session, DateTime immobileSince)
         {
-            return GetBikesImmobile(context).Where(b => b.Item2 < immobileSince);
+            return GetBikesImmobile(session).Where(b => b.Item2 < immobileSince).ToArray();
         }
     }
 }

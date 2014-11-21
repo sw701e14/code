@@ -5,22 +5,25 @@ using System.Text;
 using System.Threading.Tasks;
 using DatabaseImport;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Library.GeneratedDatabaseModel;
+using Library;
 
 namespace DatabaseImportTest
 {
     [TestClass()]
     public class CSVParserTests
     {
-        gps_data gps1;
-        gps_data gps2;
-        gps_data[] data = new gps_data[2];
+        Bike bike;
+        GPSData gps1;
+        GPSData gps2;
+        GPSData[] data = new GPSData[2];
 
         [TestInitialize]
         public void Setup()
         {
-            gps1 = new gps_data(new DateTime(2014, 9, 12, 11, 34, 03), 57.01162m, 9.99120m, 49, 1);
-            gps2 = new gps_data(new DateTime(2014, 9, 12, 23, 34, 03), 57.01162m, 9.99120m, 49, 1);
+            bike = new Bike(1);
+            gps1 = new GPSData(bike, new GPSLocation(57.01162m, 9.99120m), 49, new DateTime(2014, 9, 12, 11, 34, 03), false);
+            gps2 = new GPSData(bike, new GPSLocation(57.01162m, 9.99120m), 49, new DateTime(2014, 9, 12, 23, 34, 03), false);
+
             data[0] = gps1;
             data[1] = gps2;
         }
@@ -28,55 +31,55 @@ namespace DatabaseImportTest
         [TestMethod()]
         public void GetDataTestTimeStamp()
         {
-            gps_data[] actual = CSVParser.GetData("test.txt", 1);
-            gps_data[] expected = data;
+            GPSData[] actual = CSVParser.GetData("test.txt", bike);
+            GPSData[] expected = data;
             
-            Assert.AreEqual(expected[0].queried, actual[0].queried);
+            Assert.AreEqual(expected[0].QueryTime, actual[0].QueryTime);
         }
 
         [TestMethod()]
         public void GetDataTestTimeStampPM()
         {
-            gps_data[] actual = CSVParser.GetData("test.txt", 1);
-            gps_data[] expected = data;
+            GPSData[] actual = CSVParser.GetData("test.txt", bike);
+            GPSData[] expected = data;
 
-            Assert.AreEqual(expected[1].queried, actual[1].queried);
+            Assert.AreEqual(expected[1].QueryTime, actual[1].QueryTime);
         }
 
         [TestMethod()]
         public void GetDataTestLat()
         {
-            gps_data[] actual = CSVParser.GetData("test.txt", 1);
-            gps_data[] expected = data;
+            GPSData[] actual = CSVParser.GetData("test.txt", bike);
+            GPSData[] expected = data;
 
-            Assert.AreEqual(expected[0].latitude, actual[0].latitude);
+            Assert.AreEqual(expected[0].Location.Latitude, actual[0].Location.Latitude);
         }
 
         [TestMethod()]
         public void GetDataTestLon()
         {
-            gps_data[] actual = CSVParser.GetData("test.txt", 1);
-            gps_data[] expected = data;
+            GPSData[] actual = CSVParser.GetData("test.txt", bike);
+            GPSData[] expected = data;
 
-            Assert.AreEqual(expected[0].longitude, actual[0].longitude);
+            Assert.AreEqual(expected[0].Location.Longitude, actual[0].Location.Longitude);
         }
 
         [TestMethod()]
         public void GetDataTestAcc()
         {
-            gps_data[] actual = CSVParser.GetData("test.txt", 1);
-            gps_data[] expected = data;
+            GPSData[] actual = CSVParser.GetData("test.txt", bike);
+            GPSData[] expected = data;
 
-            Assert.AreEqual(expected[0].accuracy, actual[0].accuracy);
+            Assert.AreEqual(expected[0].Accuracy, actual[0].Accuracy);
         }
 
         [TestMethod()]
         public void GetDataTestID()
         {
-            gps_data[] actual = CSVParser.GetData("test.txt", 1);
-            gps_data[] expected = data;
+            GPSData[] actual = CSVParser.GetData("test.txt", bike);
+            GPSData[] expected = data;
 
-            Assert.AreEqual(expected[0].bikeId, actual[0].bikeId);
+            Assert.AreEqual(expected[0].Bike, actual[0].Bike);
         }
     }
 }
