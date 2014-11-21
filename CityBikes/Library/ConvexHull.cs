@@ -13,7 +13,7 @@ namespace Library
     /// published by MIT press Cambridge
     public static class ConvexHull
     {
-        
+
 
 
 
@@ -24,11 +24,18 @@ namespace Library
         /// <returns>The set of the points that make up the convex hull</returns>
         public static GPSLocation[] GrahamScan(IEnumerable<GPSLocation> data)
         {
+            data = data.Distinct();
+
+            if (data.Count() < 3)
+                return data.ToArray();
+
             GPSLocation p0 = data.Aggregate((minItem, nextItem) => minItem.Longitude < nextItem.Longitude ? minItem : nextItem);
             GPSLocation[] remaining = data.Where(x => !x.Equals(p0)).OrderBy(x => computePolarAngle(p0, x)).ToArray();
 
+
             Stack<GPSLocation> stack = new Stack<GPSLocation>();
             stack.Push(p0);
+
             stack.Push(remaining[0]);
             stack.Push(remaining[1]);
 
