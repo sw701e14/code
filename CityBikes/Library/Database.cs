@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Library
@@ -172,6 +173,10 @@ namespace Library
                 Execute(cmd);
 
                 return hotspot;
+            }
+            public Hotspot[] GetAllHotspots()
+            {
+                return ExecuteRead("SELECT convex_hull FROM hotspots").Select(row => row.GetHotspot()).ToArray();
             }
 
             internal int Execute(MySqlCommand command)
