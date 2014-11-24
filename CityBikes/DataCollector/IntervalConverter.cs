@@ -26,7 +26,7 @@ namespace DataCollector
             {
                 if (route[nextPoint].QueryTime > nextTime)
                 {
-                    var point = generateBetweenPoint(route, lastPoint, nextPoint, nextTime);
+                    var point = generateBetweenPoint(lastPoint, nextPoint, nextTime);
                     yield return new GPSData(route.First().Bike, point, null, nextTime, false);
 
                     foreach (var item in convertToIntervalRoute(nextTime.AddMinutes(interval), interval, route, lastPoint, nextPoint))
@@ -40,7 +40,7 @@ namespace DataCollector
             }
         }
 
-        private static GPSLocation generateBetweenPoint(List<GPSData> route, int lastPoint, int nextPoint, DateTime time)
+        private GPSLocation generateBetweenPoint(int lastPoint, int nextPoint, DateTime time)
         {
             GPSData np = route[nextPoint];
             GPSData lp = route[lastPoint];
