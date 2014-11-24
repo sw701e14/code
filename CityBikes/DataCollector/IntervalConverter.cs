@@ -20,27 +20,27 @@ namespace DataCollector
         /// <param name="lastPoint">The index of the last point.</param>
         /// <param name="nextPoint">The index of the next point.</param>
         /// <returns></returns>
-        private static IEnumerable<GPSData> ConvertToIntervalRoute(DateTime nextTime, int interval, List<GPSData> route, int lastPoint, int nextPoint)
+        private static IEnumerable<GPSData> convertToIntervalRoute(DateTime nextTime, int interval, List<GPSData> route, int lastPoint, int nextPoint)
         {
             if (nextPoint < route.Count)
             {
                 if (route[nextPoint].QueryTime > nextTime)
                 {
-                    var point = GenerateBetweenPoint(route, lastPoint, nextPoint, nextTime);
+                    var point = generateBetweenPoint(route, lastPoint, nextPoint, nextTime);
                     yield return new GPSData(route.First().Bike, point, null, nextTime, false);
 
-                    foreach (var item in ConvertToIntervalRoute(nextTime.AddMinutes(interval), interval, route, lastPoint, nextPoint))
+                    foreach (var item in convertToIntervalRoute(nextTime.AddMinutes(interval), interval, route, lastPoint, nextPoint))
                         yield return item;
                 }
                 else
                 {
-                    foreach (var item in ConvertToIntervalRoute(nextTime, interval, route, lastPoint + 1, nextPoint + 1))
+                    foreach (var item in convertToIntervalRoute(nextTime, interval, route, lastPoint + 1, nextPoint + 1))
                         yield return item;
                 }
             }
         }
 
-        private static GPSLocation GenerateBetweenPoint(List<GPSData> route, int lastPoint, int nextPoint, DateTime time)
+        private static GPSLocation generateBetweenPoint(List<GPSData> route, int lastPoint, int nextPoint, DateTime time)
         {
             GPSData np = route[nextPoint];
             GPSData lp = route[lastPoint];
