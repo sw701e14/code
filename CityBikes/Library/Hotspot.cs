@@ -28,10 +28,5 @@ namespace Library
             this.dataPoints = new GPSLocation[dataPoints.Length];
             dataPoints.CopyTo(this.dataPoints, 0);
         }
-
-        public static Hotspot[] GetAllHotspots(this Database.DatabaseSession session)
-        {
-            return session.ExecuteRead("SELECT convex_hull FROM hotspots").Select(row => row.GetHotspot()).ToArray();
-        }
     }
 }
