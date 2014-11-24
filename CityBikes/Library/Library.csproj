@@ -63,12 +63,14 @@
     <Compile Include="Database.cs" />
     <Compile Include="GPSData.cs" />
     <Compile Include="GPSLocation.cs" />
+    <Compile Include="BuildMarkov.cs" />
     <Compile Include="Heatmap.cs" />
     <Compile Include="HeatmapImagegenerator.cs">
       <DependentUpon>Heatmap.cs</DependentUpon>
     </Compile>
     <Compile Include="Hotspot.cs" />
     <Compile Include="MapToIndex.cs" />
+    <Compile Include="MarkovChain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
