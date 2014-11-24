@@ -9,12 +9,24 @@ namespace Library
 {
     public static class BikeUpdateLocation
     {
+        private static List<Bike> bikesWithKnownLastLocation = new List<Bike>();
+
         /// <summary>
         /// Inserts new gps_data into database, depending on whether the bike has moved or not
         /// </summary>
         /// <param name="newLocation">The updated location to be inserted</param>
         public static void InsertLocation(Database.DatabaseSession session, GPSData newLocation)
         {
+            if (!bikesWithKnownLastLocation.Contains(newLocation.Bike))
+            {
+                bikesWithKnownLastLocation.Add(newLocation.Bike);
+                if (!session.ExecuteRead("SELECT bikeId, latitude, longitude, accuracy, queried, hasNotMoved FROM citybike_test.gps_data WHERE bikeId = {0} ORDER BY queried DESC", newLocation.Bike.Id).Any())
+                {
+                    session.Execute("INSERT INTO gps_data (bikeId, latitude, longitude, accuracy, queried, hasNotMoved) VALUES{0}", formatGPS(newLocation));
+                    return;
+                }
+            }
+
             var latestLocation = newLocation.Bike.LatestGPSData(session);
 
             if (GPSData.WithinAccuracy(newLocation, latestLocation))
