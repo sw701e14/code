@@ -25,13 +25,13 @@ namespace Library
 
         private static string formatGPS(GPSData data)
         {
-            return string.Format("({0}, {1}, {2}, {3}, {4}, {5})",
+            return string.Format("('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')",
                 data.Bike.Id,
                 data.Location.Latitude,
                 data.Location.Longitude,
                 data.Accuracy,
                 data.QueryTime.ToString("yyyy-MM-dd hh:mm:ss"),
-                data.HasNotMoved);
+                data.HasNotMoved ? '1' : '0');
         }
     }
 }
