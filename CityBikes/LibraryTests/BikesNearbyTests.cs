@@ -10,12 +10,13 @@ namespace Library.Tests
     [TestClass]
     public class BikesNearbyTests
     {
-        private static Database database;
+        private Database database;
 
         [TestInitialize()]
         public void Initialize()
         {
             database = new Database();
+            LibraryTests.DatabaseLoader.EnsureDB();
         }
 
         [TestCleanup()]
