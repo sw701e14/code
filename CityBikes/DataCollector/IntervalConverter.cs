@@ -9,48 +9,45 @@ namespace DataCollector
 {
     public class IntervalConverter
     {
-        private GPSData[] route;
-
-        /// <summary>
-        /// Generates real points from the route. Real points are spaced out in a fixed time interval 
-        /// </summary>
-        /// <param name="nextTime">The next time to create point</param>
-        /// <param name="interval">The interval.</param>
-        /// <param name="route">The route to generate point from</param>
-        /// <param name="lastPoint">The index of the last point.</param>
-        /// <param name="nextPoint">The index of the next point.</param>
-        /// <returns></returns>
-        private IEnumerable<GPSData> convertToIntervalRoute(DateTime nextTime, int interval, int lastPoint, int nextPoint)
+        private static IEnumerable<GPSData> convertToInterval(IEnumerable<GPSData> route, TimeSpan interval)
         {
-            if (nextPoint < route.Length)
+            var e = route.GetEnumerator();
+
+            if (!e.MoveNext())
             {
-                if (route[nextPoint].QueryTime > nextTime)
+                e.Dispose();
+                yield break;
+            }
+
+            Bike bike = e.Current.Bike;
+
+            var lastPoint = e.Current;
+            yield return lastPoint;
+            DateTime nextTime = lastPoint.QueryTime.Add(interval);
+
+            while (e.MoveNext())
+            {
+                var nextPoint = e.Current;
+
+                while (nextPoint.QueryTime >= nextTime)
                 {
                     var point = generateBetweenPoint(lastPoint, nextPoint, nextTime);
-                    yield return new GPSData(route.First().Bike, point, null, nextTime, false);
+                    yield return new GPSData(bike, point, null, nextTime);
+                    nextTime = nextTime.Add(interval);
+                }
 
-                    foreach (var item in convertToIntervalRoute(nextTime.AddMinutes(interval), interval, lastPoint, nextPoint))
-                        yield return item;
-                }
-                else
-                {
-                    foreach (var item in convertToIntervalRoute(nextTime, interval, lastPoint + 1, nextPoint + 1))
-                        yield return item;
-                }
+                lastPoint = nextPoint;
             }
+
+            e.Dispose();
         }
 
-        private GPSLocation generateBetweenPoint(int lastPoint, int nextPoint, DateTime time)
+        private static GPSLocation generateBetweenPoint(GPSData lp, GPSData np, DateTime time)
         {
-            GPSData np = route[nextPoint];
-            GPSData lp = route[lastPoint];
-
             var diff = (np.QueryTime - lp.QueryTime);
 
             double triptime = diff.TotalSeconds;
-
-            var g = (time - route[lastPoint].QueryTime);
-            double pointtime = g.TotalSeconds;
+            double pointtime = (time - lp.QueryTime).TotalSeconds;
 
             if (pointtime != 0)
                 return lp.Location + (np.Location - lp.Location) * (pointtime / triptime);
