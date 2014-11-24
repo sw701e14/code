@@ -16,7 +16,7 @@ namespace DatabaseImport
         /// <summary>
         /// The timeinterval (in minutes) between points
         /// </summary>
-        public const int POINTINTERVAL = 5;
+        public const int STANDSTILL = 30;
 
         /// <summary>
         /// Generates a route for the specified bike id with the specified array of destinations starting from the specified startTime and iterating the specified number of time
@@ -28,47 +28,25 @@ namespace DatabaseImport
         /// <returns></returns>
         public static IEnumerable<GPSData> GenerateBikeRoute(Bike bike, string[] destinations, DateTime startTime, int iterations)
         {
-            List<GPSData> result = new List<GPSData>();
-
             string startPoint = nextDestination(destinations, "");
             string destination = nextDestination(destinations, startPoint);
 
             Debug.WriteLine("Bike: {0}", bike.Id);
             for (int i = 0; i < iterations; i++)
             {
-
-                Thread.Sleep(500); // max 2 requests pr second in the Google directions API
+                Thread.Sleep(200); // max 2 requests pr second in the Google directions API
                 Console.WriteLine("Iteration {0}", i);
 
                 var route = GoogleDirectionsParser.GetData(startPoint, destination, startTime, bike).ToList();
 
-                var gpsdata = GenerateRealRoute(startTime, POINTINTERVAL, route);
-
-                foreach (var point in gpsdata)
-                {
-                    yield return point;
-                }
+                foreach (var p in route)
+                    yield return p;
 
                 GPSData lastpoint = route.Last();
-
-                Debug.WriteLine(route.Count() + " points generated");
-                Debug.WriteLine("Start: {0}\nEnd: {1}\nStartTime: {2}\nEndTime: {3}", startPoint, destination, startTime, lastpoint.QueryTime);
-
-                startPoint = destination;
-                destination = nextDestination(destinations, startPoint);
-
-
-                startTime = startTime.AddMinutes(POINTINTERVAL * gpsdata.Count());
-
-
-                foreach (var item in generateBikeStandStill(startTime, POINTINTERVAL))
-                {
-                    yield return new GPSData(bike, lastpoint.Location, null, item, false);
-                    startTime = item;
-                }
-
-                startTime = startTime.AddMinutes(POINTINTERVAL);
-                Debug.WriteLine("");
+                Random r = new Random();
+                int random = r.Next(STANDSTILL);
+                yield return new GPSData(bike, lastpoint.Location, null, lastpoint.QueryTime.AddMinutes(random), false);
+                startTime = lastpoint.QueryTime.AddMinutes(random);
             }
         }
 
@@ -86,106 +64,9 @@ namespace DatabaseImport
             {
                 Console.WriteLine("Generating bike {0}", bike.Id);
                 foreach (var item in GenerateBikeRoute(bike, destinations, startTime, iterations))
-                {
                     yield return item;
-                }
             }
         }
-
-        /// <summary>
-        /// Generates a route with real points from the route. Real points are spaced out in a fixed time interval 
-        /// </summary>
-        /// <param name="nextTime">The next time.</param>
-        /// <param name="interval">The interval.</param>
-        /// <param name="route">The route.</param>
-        /// <returns></returns>
-        public static IEnumerable<GPSData> GenerateRealRoute(DateTime nextTime, int interval, IEnumerable<GPSData> route)
-        {
-            List<GPSData> point = route.ToList();
-
-            yield return route.First();
-
-            foreach (var item in GenerateRealPoints(nextTime.AddMinutes(interval), interval, point, 0, 1))
-            {
-                yield return item;
-            }
-        }
-
-        /// <summary>
-        /// Generates real points from the route. Real points are spaced out in a fixed time interval 
-        /// </summary>
-        /// <param name="nextTime">The next time to create point</param>
-        /// <param name="interval">The interval.</param>
-        /// <param name="route">The route to generate point from</param>
-        /// <param name="lastPoint">The index of the last point.</param>
-        /// <param name="nextPoint">The index of the next point.</param>
-        /// <returns></returns>
-        private static IEnumerable<GPSData> GenerateRealPoints(DateTime nextTime, int interval, List<GPSData> route, int lastPoint, int nextPoint)
-        {
-            if (nextPoint < route.Count())
-            {
-                if (route[nextPoint].QueryTime > nextTime)
-                {
-                    var point = GenerateBetweenPoint(route, lastPoint, nextPoint, nextTime);
-                    yield return new GPSData(route.First().Bike, point, null, nextTime, false);
-
-                    foreach (var item in GenerateRealPoints(nextTime.AddMinutes(interval), interval, route, lastPoint, nextPoint))
-                        yield return item;
-                }
-                else
-                {
-                    foreach (var item in GenerateRealPoints(nextTime, interval, route, lastPoint + 1, nextPoint + 1))
-                        yield return item;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Generates a random amount of datetimes from the startTime of the specified interval
-        /// </summary>
-        /// <param name="startTime">The start time.</param>
-        /// <param name="interval">The interval.</param>
-        /// <returns>A set of datetimes</returns>
-        private static IEnumerable<DateTime> generateBikeStandStill(DateTime startTime, int interval)
-        {
-            Random rand = new Random();
-
-            DateTime endTime = startTime + new TimeSpan(0, rand.Next(MAXSTANDSTILLTIME), 0);
-
-            while (startTime < endTime)
-            {
-                yield return startTime;
-                startTime = startTime.AddMinutes(interval);
-            }
-        }
-
-
-        /// <summary>
-        /// Calculates a point between two points, given a timestamp.
-        /// </summary>
-        /// <param name="route">The route.</param>
-        /// <param name="lastPoint">The last point.</param>
-        /// <param name="nextPoint">The next point.</param>
-        /// <param name="time">The time.</param>
-        /// <returns></returns>
-        private static GPSLocation GenerateBetweenPoint(List<GPSData> route, int lastPoint, int nextPoint, DateTime time)
-        {
-            GPSData np = route[nextPoint];
-            GPSData lp = route[lastPoint];
-
-            var diff = (np.QueryTime - lp.QueryTime);
-
-            double triptime = diff.TotalSeconds;
-
-            var g = (time - route[lastPoint].QueryTime);
-            double pointtime = g.TotalSeconds;
-
-            if (pointtime != 0)
-                return lp.Location + (np.Location - lp.Location) * (decimal)(pointtime / triptime);
-            else
-                return new GPSLocation(0, 0);
-        }
-
 
         /// <summary>
         /// Returns a random destination from the destinations array that is not the exclude string
