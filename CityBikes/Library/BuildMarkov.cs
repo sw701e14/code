@@ -38,57 +38,42 @@ namespace Library
                 oldIndex = -1;
                 foreach (var gps_data in bike)
                 {
-                    if (oldIndex == -1)
+                    if (hotspots.Any(x => IsInConvexHull(x, gps_data))) // destination is hotspot
                     {
-                        if (hotspots.Any(x => IsInConvexHull(x, gps_data))) // destination is hotspot
-                        {
-                            var v = hotspots.Where(x => IsInConvexHull(x, gps_data));
-                            if (v.Count() > 1)
-                                throw new InvalidOperationException("a point should not be able to be in more than one hotspot at a time");
-                            GPSLocation[] h = v.First();
+                        var v = hotspots.Where(x => IsInConvexHull(x, gps_data));
+                        if (v.Count() > 1)
+                            throw new InvalidOperationException("a point should not be able to be in more than one hotspot at a time");
+                        GPSLocation[] h = v.First();
+                        if (oldIndex == -1)
                             oldIndex = getHotspotIndex(h, hotspots);
-                        }
-                        else //default initial??
+                        else
                         {
-                            oldIndex = 0; // find closest cluster
-                        }
-                    }
-                    else
-                    {
-
-                        if (hotspots.Any(x => IsInConvexHull(x, gps_data))) // destination is hotspot
-                        {
-                            var v = hotspots.Where(x => IsInConvexHull(x, gps_data));
-                            if (v.Count() > 1)
-                                throw new InvalidOperationException("a point should not be able to be in more than one hotspot at a time");
-                            GPSLocation[] h = v.First();
                             int destinationIndex = getHotspotIndex(h, hotspots);
                             mc[oldIndex, destinationIndex] += 1;
                             oldIndex = destinationIndex;
                         }
-                        else // destination is not hotspot
+                    }
+                    else if (oldIndex == -1) //default initial??
+                    {
+                        oldIndex = 0; // find closest cluster
+                    }
+                    else // destination is not hotspot
+                    {
+                        if (oldIndex % 2 == 0) // oldindex was hotspot
                         {
-
-                            if (oldIndex % 2 == 0) // oldindex was hotspot
-                            {
-                                int destinationIndex = oldIndex + 1;
-                                mc[oldIndex, oldIndex + 1] += 1;
-                                oldIndex = destinationIndex;
-                            }
-                            else // oldindex was not hotspot
-                            {
-                                mc[oldIndex, oldIndex] += 1;
-
-                            }
-
+                            int destinationIndex = oldIndex + 1;
+                            mc[oldIndex, oldIndex + 1] += 1;
+                            oldIndex = destinationIndex;
+                        }
+                        else // oldindex was not hotspot
+                        {
+                            mc[oldIndex, oldIndex] += 1;
                         }
                     }
-
                 }
             }
             mc.CreateChain();
             return mc;
-
         }
 
         /// <summary>
