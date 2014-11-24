@@ -23,12 +23,12 @@ namespace Library
         {
             //hotspots = context.LoadHotSpotsFromDatabase();
 
-            //hotspots = session.
+            //var routes = from gps_data in context.gps_data
+            //             group gps_data by gps_data.bikeId into bike
+            //             select bike;
 
-            var routes = from gps_data in context.gps_data
-                         group gps_data by gps_data.bikeId into bike
-                         select bike;
-
+            var routes = new List<GPSData[]>();
+            throw new NotImplementedException("Waiting for implementation of a database extension method that gets all hotspots");
 
             MarkovChain mc = new MarkovChain(hotspots.Count() * 2);
 
