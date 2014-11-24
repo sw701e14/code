@@ -16,7 +16,7 @@ namespace Library
         private DateTime queryTime;
         private bool hasNotMoved;
 
-        public GPSData(Bike bike, GPSLocation location, byte? accuracy, DateTime queryTime, bool hasNotMoved)
+        public GPSData(Bike bike, GPSLocation location, byte? accuracy, DateTime queryTime, bool hasNotMoved = false)
         {
             this.bike = bike;
             this.location = location;

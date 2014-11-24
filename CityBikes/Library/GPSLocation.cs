@@ -90,6 +90,15 @@ namespace Library
             return new GPSLocation(g1.latitude - g2.latitude, g1.longitude - g2.longitude);
         }
 
+        public static GPSLocation operator *(GPSLocation location, double scalar)
+        {
+            return location * (decimal)scalar;
+        }
+        public static GPSLocation operator /(GPSLocation location, double scalar)
+        {
+            return location / (decimal)scalar;
+        }
+
         public static GPSLocation operator *(GPSLocation location, decimal scalar)
         {
             return new GPSLocation(location.latitude * scalar, location.longitude * scalar);
@@ -97,6 +106,30 @@ namespace Library
         public static GPSLocation operator /(GPSLocation location, decimal scalar)
         {
             return new GPSLocation(location.latitude / scalar, location.longitude / scalar);
+        }
+
+        /// <summary>
+        /// Moves the point the specified distance at the specified angled
+        /// </summary>
+        /// <param name="point">The gps_data to move</param>
+        /// <param name="angle">Angle clockwise from north</param>
+        /// <param name="distance">The distance in km</param>
+        /// <returns></returns>
+        public static GPSLocation Move(GPSLocation point, double angle, double distance)
+        {
+            int R = 6371; // earth radius in km
+            double δ = distance / R;
+
+            double oldLatitide = (Math.PI * (double)point.Latitude) / 180;
+            double oldLongitude = (Math.PI * (double)point.Longitude) / 180;
+
+            double newLatitude = Math.Asin(Math.Sin((double)oldLatitide) * Math.Cos(δ) + Math.Cos(angle) * Math.Sin(δ) * Math.Cos(angle));
+            double newLongitude = (double)oldLongitude + Math.Atan2(Math.Sin(angle) * Math.Sin(δ) * Math.Cos((double)oldLatitide), Math.Cos(δ) - Math.Sin((double)oldLatitide) * Math.Sin(newLatitude));
+
+            newLatitude = (180 * newLatitude) / Math.PI;
+            newLongitude = (180 * newLongitude) / Math.PI;
+
+            return new GPSLocation((decimal)newLatitude, (decimal)newLongitude);
         }
 
         /// <summary>

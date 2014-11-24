@@ -8,8 +8,22 @@ namespace LibraryTests
     [TestClass]
     public class BikeUpdateLocationTests
     {
-        Database database = new Database();
+        private Database database;
         int rndNumber = 50;
+
+        [TestInitialize()]
+        public void Initialize()
+        {
+            database = new Database();
+            LibraryTests.DatabaseLoader.EnsureDB();
+        }
+
+        [TestCleanup()]
+        public void Cleanup()
+        {
+            database.Dispose();
+            database = null;
+        }
 
         /// <summary>
         /// Make sure the expected <see cref="GPSData"/> is not already in database, else the test will fail.

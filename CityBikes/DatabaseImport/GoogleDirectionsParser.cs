@@ -63,10 +63,12 @@ namespace DatabaseImport
 
         private IEnumerable<GPSData> loadPoints(string url)
         {
+            retry:
+
             Uri requestUrl = new Uri(url);
-            Stream responseStream = null;
             WebRequest request = null;
             HttpWebResponse response = null;
+            XDocument xmlDoc = null;
 
             request = System.Net.WebRequest.Create(requestUrl);
             request.Proxy = null;
@@ -75,10 +77,23 @@ namespace DatabaseImport
             //Allows for validation of SSL certificates 
             System.Net.ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, ssl) => true;
 
-            response = (System.Net.HttpWebResponse)request.GetResponse();
-            responseStream = response.GetResponseStream();
-
-            XDocument xmlDoc = XDocument.Load(responseStream);
+            try
+            {
+                response = (System.Net.HttpWebResponse)request.GetResponse();
+                using (Stream responseStream = response.GetResponseStream())
+                {
+                    xmlDoc = XDocument.Load(responseStream);
+                }
+            }
+            catch (WebException e)
+            {
+                goto retry;
+            }
+            finally
+            {
+                if (response != null)
+                    response.Dispose();
+            }
 
             foreach (var step in xmlDoc.Descendants("step"))
                 yield return parseLocationData(step, false);
