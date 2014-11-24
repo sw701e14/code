@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace DataCollector
 {
-    public class IntervalConverter
+    public static class IntervalConverter
     {
-        private static IEnumerable<GPSData> convertToInterval(IEnumerable<GPSData> route, TimeSpan interval)
+        public static IEnumerable<GPSData> ConvertToInterval(IEnumerable<GPSData> route, TimeSpan interval)
         {
             var e = route.GetEnumerator();
 
