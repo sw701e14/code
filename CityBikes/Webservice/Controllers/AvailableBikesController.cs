@@ -22,17 +22,17 @@ namespace Webservice.Controllers
         /// <returns>The bikes.</returns>
         [Route("")]
         [HttpGet]
-        [ResponseType(typeof(ListAvailableBikes))]
+        [ResponseType(typeof(availableBikes))]
         public HttpResponseMessage getAll()
         {
             Database context = new Database();
 
-            ListAvailableBikes bikeResources = new ListAvailableBikes();
+            availableBikes bikeResources = new availableBikes();
             int bikeCount = 0;
             foreach (Tuple<Bike, GPSLocation> item in context.RunSession(session => session.GetAvailableBikes()))
             {
                 bikeCount++;
-                bikeResources.bikes.Add(new Webservice.Models.AvailableBikes.bike() { id = item.Item1.Id, href = item.Item1.Id.ToString() } );
+                bikeResources.bikes.Add(new Webservice.Models.AvailableBikes.availableBikes.availableBike() { id = item.Item1.Id, href = item.Item1.Id.ToString() } );
             }
             bikeResources.count = bikeCount;
 
@@ -55,7 +55,7 @@ namespace Webservice.Controllers
             if (bikeLocation == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
-            BikeResource bikeResource = new BikeResource() { bike = bikeLocation.Item1, latitude = bikeLocation.Item2.Latitude, longitude = bikeLocation.Item2.Longitude };
+            availableBike bikeResource = new availableBike() { id = bikeLocation.Item1.Id, latitude = bikeLocation.Item2.Latitude, longitude = bikeLocation.Item2.Longitude };
 
             return Request.CreateResponse(HttpStatusCode.OK, bikeResource);
         }
