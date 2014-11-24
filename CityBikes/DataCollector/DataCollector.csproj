@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="GoogleDataSource.cs" />
     <Compile Include="IDataSource.cs" />
+    <Compile Include="IntervalConverter.cs" />
     <Compile Include="MultiDataSource.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
