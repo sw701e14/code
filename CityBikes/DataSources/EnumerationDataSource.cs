@@ -6,7 +6,6 @@ namespace DataSources
 {
     public class EnumerationDataSource : IDataSource
     {
-        private IEnumerable<GPSData> data;
         private IEnumerator<GPSData> e;
 
         public EnumerationDataSource(IEnumerable<GPSData> data)
@@ -14,8 +13,7 @@ namespace DataSources
             if (data == null)
                 throw new ArgumentNullException("data");
 
-            this.data = data;
-            this.e = this.data.GetEnumerator();
+            this.e = data.GetEnumerator();
         }
 
         public GPSData? GetData()
