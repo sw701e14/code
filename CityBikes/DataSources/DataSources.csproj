@@ -47,6 +47,7 @@
     <Compile Include="GPSDataExtension.cs" />
     <Compile Include="IDataSource.cs" />
     <Compile Include="MultiDataSource.cs" />
+    <Compile Include="NoFutureDataSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
