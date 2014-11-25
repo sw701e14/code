@@ -13,6 +13,7 @@ namespace DataSources
         /// The max time (in minutes) a bike can stand still between routes
         /// </summary>
         private const int MAX_WAIT_MINUTES = 120;
+        private static Random r = new Random();
 
         /// <summary>
         /// Generates a route for the specified bike id with the specified array of destinations starting from the specified startTime and iterating the specified number of time
@@ -39,7 +40,6 @@ namespace DataSources
                     yield return p;
 
                 GPSData lastpoint = route.Last();
-                Random r = new Random();
                 int random = r.Next(MAX_WAIT_MINUTES);
                 yield return new GPSData(bike, lastpoint.Location, null, lastpoint.QueryTime.AddMinutes(random), false);
                 startTime = lastpoint.QueryTime.AddMinutes(random);
@@ -75,15 +75,10 @@ namespace DataSources
             if (destinations.Length == 1)
                 throw new InvalidOperationException("destinations must contain more than one string");
 
-            Random rand = new Random();
+            string dest = exclude;
 
-            string dest;
-
-            do
-            {
-                dest = destinations[rand.Next(destinations.Length)];
-            }
-            while (dest == exclude);
+            while (dest == exclude)
+                dest = destinations[r.Next(destinations.Length)];
 
             return dest;
         }
