@@ -8,6 +8,12 @@ namespace DataCollector
    {
        public static IEnumerable<GPSData> ConvertToInterval(this IEnumerable<GPSData> route, TimeSpan interval)
        {
+           if (route == null)
+               throw new ArgumentNullException("route");
+
+           if (interval.TotalSeconds <= 0.0)
+               throw new ArgumentOutOfRangeException("interval", "The interval used for conversion must be strictly positive.");
+
            var e = route.GetEnumerator();
 
            if (!e.MoveNext())
