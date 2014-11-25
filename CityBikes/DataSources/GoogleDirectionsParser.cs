@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Xml.Linq;
 
-namespace DatabaseImport
+namespace DataSources
 {
     /// <summary>
     /// Exposes methods for retrieving <see cref="GPSData"/>s from a Google Directions route.
