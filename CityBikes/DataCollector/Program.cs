@@ -12,16 +12,20 @@ namespace DataCollector
         private static Database database;
         private static bool shouldExit;
 
-        private static readonly IDataSource dataSource = null;
-
         private const int SLEEP_MILLISECONDS = 100;
 
         private static List<Bike> knownBikes = new List<Bike>();
+
+        private static IDataSource createDataSource()
+        {
+            throw new NotImplementedException();
+        }
 
         static void Main(string[] args)
         {
             shouldExit = false;
 
+            var dataSource = createDataSource();
             if (dataSource == null)
                 throw new NullReferenceException("dataSource field must be set to an instance of an object.");
 
@@ -41,8 +45,8 @@ namespace DataCollector
 
             knownBikes.AddRange(database.RunSession(session => session.ExecuteRead("SELECT * FROM citybike_test.bikes").Select(row => row.GetBike())));
 
-            Thread t = new Thread(runDataLoader);
-            t.Start();
+            Thread t = new Thread(o => runDataLoader(o as IDataSource));
+            t.Start(dataSource);
             Console.ReadKey(true);
 
             shouldExit = true;
@@ -51,7 +55,7 @@ namespace DataCollector
             database.Dispose();
         }
 
-        private static void runDataLoader()
+        private static void runDataLoader(IDataSource dataSource)
         {
             while (!shouldExit)
             {
