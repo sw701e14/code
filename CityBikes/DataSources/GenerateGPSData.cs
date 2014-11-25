@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
-namespace DatabaseImport
+namespace DataSources
 {
     public static class GenerateGPSData
     {

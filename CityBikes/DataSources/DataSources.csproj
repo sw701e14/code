@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EnumerationDataSource.cs" />
+    <Compile Include="GenerateGPSData.cs" />
     <Compile Include="GoogleDataSource.cs" />
     <Compile Include="GoogleDirectionsParser.cs" />
     <Compile Include="GPSDataExtension.cs" />
