@@ -1,6 +1,8 @@
 ﻿using DataSources;
 using Library;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 namespace DataCollector
@@ -13,6 +15,8 @@ namespace DataCollector
         private static readonly IDataSource dataSource = null;
 
         private const int SLEEP_MILLISECONDS = 100;
+
+        private static List<Bike> knownBikes = new List<Bike>();
 
         static void Main(string[] args)
         {
@@ -34,6 +38,8 @@ namespace DataCollector
             Thread.Sleep(1000);
 
             database = new Database();
+
+            knownBikes.AddRange(database.RunSession(session => session.ExecuteRead("SELECT * FROM citybike_test.bikes").Select(row => row.GetBike())));
 
             Thread t = new Thread(runDataLoader);
             t.Start();
@@ -60,6 +66,12 @@ namespace DataCollector
 
         private static void InsertIntoDB(GPSData data)
         {
+            if (!knownBikes.Contains(data.Bike))
+            {
+                knownBikes.Add(data.Bike);
+                database.RunSession(session => session.Execute("INSERT INTO citybike_test.bikes (id) VALUES ({0})", data.Bike.Id));
+            }
+
             Console.WriteLine("Updated the location of bike {0} to ({1}, {2}).", data.Bike.Id, data.Location.Latitude, data.Location.Longitude);
             database.RunSession(session => Library.BikeUpdateLocation.InsertLocation(session, data));
         }
