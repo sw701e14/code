@@ -46,10 +46,10 @@ namespace DataSources
             for (int i = 0; i < sources.Length; i++)
             {
                 data = sources[index].GetData();
+                next();
+
                 if (data.HasValue)
                     return data;
-                else
-                    next();
             }
 
             return null;
