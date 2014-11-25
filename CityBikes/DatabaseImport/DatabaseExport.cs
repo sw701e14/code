@@ -34,14 +34,5 @@ namespace DatabaseImport
                 BikeUpdateLocation.InsertLocation(session, movedPoint);
             }
         }
-
-        static Random r = new Random();
-        public static GPSData MoveRandom(GPSData point)
-        {
-            double angle = r.NextDouble() * 2 * Math.PI;
-            double distance = r.Next(20);
-
-            return new GPSData(point.Bike, GPSLocation.Move(point.Location, angle, distance / 1000), point.Accuracy, point.QueryTime, point.HasNotMoved);
-        }
     }
 }
