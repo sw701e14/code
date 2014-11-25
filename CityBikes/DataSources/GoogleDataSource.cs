@@ -7,18 +7,20 @@ using System.Threading.Tasks;
 
 namespace DataSources
 {
-    public class GoogleDataSource : IDataSource
+    public static class GoogleDataSource
     {
-        private Bike bike;
+        private static readonly TimeSpan interval = TimeSpan.FromMinutes(5);
 
-        public GoogleDataSource(Bike bike)
+        public static IDataSource GetSource(Bike bike, string[] destinations, DateTime startTime, int iterations)
         {
-            this.bike = bike;
+            IEnumerable<GPSData> enumeration = GenerateGPSData.GenerateBikeRoute(bike, destinations, startTime, iterations);
+
+            return new EnumerationDataSource(enumeration.Randomize().ConvertToInterval(interval));
         }
 
-        public GPSData? GetData()
+        public static IDataSource GetSource(IEnumerable<Bike> bikes, string[] destinations, DateTime startTime, int iterations)
         {
-            throw new NotImplementedException();
+            return new MultiDataSource(bikes.Select(b => GetSource(b, destinations, startTime, iterations)));
         }
     }
 }
