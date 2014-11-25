@@ -10,13 +10,9 @@ namespace DataSources
     public static class GenerateGPSData
     {
         /// <summary>
-        /// The max time (in minutes) a bike can stand still in the generated data
+        /// The max time (in minutes) a bike can stand still between routes
         /// </summary>
-        public const int MAXSTANDSTILLTIME = 120;
-        /// <summary>
-        /// The timeinterval (in minutes) between points
-        /// </summary>
-        public const int STANDSTILL = 30;
+        private const int MAX_WAIT_MINUTES = 120;
 
         /// <summary>
         /// Generates a route for the specified bike id with the specified array of destinations starting from the specified startTime and iterating the specified number of time
@@ -44,7 +40,7 @@ namespace DataSources
 
                 GPSData lastpoint = route.Last();
                 Random r = new Random();
-                int random = r.Next(STANDSTILL);
+                int random = r.Next(MAX_WAIT_MINUTES);
                 yield return new GPSData(bike, lastpoint.Location, null, lastpoint.QueryTime.AddMinutes(random), false);
                 startTime = lastpoint.QueryTime.AddMinutes(random);
             }
