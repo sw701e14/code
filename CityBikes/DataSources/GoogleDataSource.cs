@@ -26,7 +26,7 @@ namespace DataSources
         /// <returns>A <see cref="IDataSource"/> from which the location of the bike can be extracted continuosly.</returns>
         public static IDataSource GetSource(Bike bike, string[] destinations, DateTime startTime, int iterations)
         {
-            IEnumerable<GPSData> enumeration = GenerateGPSData.GenerateBikeRoute(bike, destinations, startTime, iterations);
+            IEnumerable<GPSData> enumeration = generateBikeRoute(bike, destinations, startTime, iterations);
 
             return new EnumerationDataSource(enumeration.Randomize().ConvertToInterval(interval));
         }
@@ -44,7 +44,7 @@ namespace DataSources
             return new MultiDataSource(bikes.Select(b => GetSource(b, destinations, startTime, iterations)));
         }
 
-        public static IEnumerable<GPSData> GenerateBikeRoute(Bike bike, string[] destinations, DateTime startTime, int iterations)
+        private static IEnumerable<GPSData> generateBikeRoute(Bike bike, string[] destinations, DateTime startTime, int iterations)
         {
             string startPoint = nextDestination(destinations, "");
             string destination = nextDestination(destinations, startPoint);
@@ -53,7 +53,6 @@ namespace DataSources
             for (int i = 0; i < iterations; i++)
             {
                 Thread.Sleep(200); // max 2 requests pr second in the Google directions API
-                Console.WriteLine("Iteration {0}", i);
 
                 var route = GoogleDirectionsParser.GetData(startPoint, destination, startTime, bike).ToList();
 
@@ -64,16 +63,6 @@ namespace DataSources
                 int random = r.Next(MAX_WAIT_MINUTES);
                 yield return new GPSData(bike, lastpoint.Location, null, lastpoint.QueryTime.AddMinutes(random), false);
                 startTime = lastpoint.QueryTime.AddMinutes(random);
-            }
-        }
-
-        public static IEnumerable<GPSData> GenerateBikeRoutes(IEnumerable<Bike> bikes, string[] destinations, DateTime startTime, int iterations)
-        {
-            foreach (var bike in bikes)
-            {
-                Console.WriteLine("Generating bike {0}", bike.Id);
-                foreach (var item in GenerateBikeRoute(bike, destinations, startTime, iterations))
-                    yield return item;
             }
         }
 
