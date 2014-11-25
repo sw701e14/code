@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace DataCollector
+namespace DataSources
 {
    public static class GPSDataExtension
    {

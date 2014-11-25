@@ -1,6 +1,6 @@
 ﻿using Library;
 
-namespace DataCollector
+namespace DataSources
 {
     /// <summary>
     /// Defines methods used to retrieve <see cref="GPSData"/> from a data source.

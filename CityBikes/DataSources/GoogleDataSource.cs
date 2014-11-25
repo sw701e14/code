@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataCollector
+namespace DataSources
 {
     public class GoogleDataSource : IDataSource
     {
