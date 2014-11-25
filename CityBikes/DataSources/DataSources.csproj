@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnumerationDataSource.cs" />
     <Compile Include="GoogleDataSource.cs" />
     <Compile Include="GoogleDirectionsParser.cs" />
     <Compile Include="GPSDataExtension.cs" />
