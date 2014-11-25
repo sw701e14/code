@@ -9,7 +9,7 @@ namespace DataCollector
 {
     public static class IntervalConverter
     {
-        public static IEnumerable<GPSData> ConvertToInterval(IEnumerable<GPSData> route, TimeSpan interval)
+        public static IEnumerable<GPSData> ConvertToInterval(this IEnumerable<GPSData> route, TimeSpan interval)
         {
             var e = route.GetEnumerator();
 
