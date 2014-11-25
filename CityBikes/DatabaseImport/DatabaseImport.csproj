@@ -59,6 +59,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataCollector\DataCollector.csproj">
+      <Project>{41615c7b-69c3-4c67-8207-7c352b0c3ce2}</Project>
+      <Name>DataCollector</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DeadDog\DeadDog.csproj">
       <Project>{675ab5e0-4637-4e6c-8d38-aa7bb135b5ce}</Project>
       <Name>DeadDog</Name>
