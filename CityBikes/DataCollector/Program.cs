@@ -29,7 +29,7 @@ namespace DataCollector
             for (uint i = 10; i < 10 + count; i++)
                 bikes.Add(new Bike(i));
 
-            return new NoFutureDataSource(GoogleDataSource.GetSource(bikes, DateTime.Now, int.MaxValue));
+            return new MultiDataSource(bikes.Select(b => new NoFutureDataSource(GoogleDataSource.GetSource(b, DateTime.Now, int.MaxValue))));
         }
 
         static void Main(string[] args)
