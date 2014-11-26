@@ -15,11 +15,18 @@ namespace DataCollector
         private const int SLEEP_MILLISECONDS = 100;
 
         private static List<Bike> knownBikes = new List<Bike>();
+        private static int insertCount = 0;
 
         private static IDataSource createDataSource()
         {
+            Console.Write("Specify number of bikes: ");
+            string numberStr = Console.ReadLine();
+            int count = int.Parse(numberStr);
+            Console.WriteLine("Data will be generated for {0} bikes.", count);
+            Console.WriteLine();
+
             List<Bike> bikes = new List<Bike>();
-            for (uint i = 30; i < 35; i++)
+            for (uint i = 10; i < 10 + count; i++)
                 bikes.Add(new Bike(i));
 
             return new NoFutureDataSource(GoogleDataSource.GetSource(bikes, DateTime.Now, int.MaxValue));
@@ -29,16 +36,16 @@ namespace DataCollector
         {
             shouldExit = false;
 
-            var dataSource = createDataSource();
-            if (dataSource == null)
-                throw new NullReferenceException("dataSource field must be set to an instance of an object.");
-
             Console.WriteLine("This application will load GPS Data fom the supplied source.");
             Console.WriteLine("Press Q during the process to exit the application.");
-            
+
             Console.WriteLine("Press any key now to start the process.");
             Console.ReadKey(true);
             Console.WriteLine();
+
+            var dataSource = createDataSource();
+            if (dataSource == null)
+                throw new NullReferenceException("dataSource field must be set to an instance of an object.");
 
             database = new Database();
 
@@ -77,7 +84,14 @@ namespace DataCollector
                 database.RunSession(session => session.Execute("INSERT INTO citybike_test.bikes (id) VALUES ({0})", data.Bike.Id));
             }
 
-            Console.WriteLine("Updated the location of bike {0} to ({1:0,0000000}, {2:0,0000000}) at {3}.", data.Bike.Id, data.Location.Latitude, data.Location.Longitude, data.QueryTime.ToLongTimeString());
+            insertCount++;
+
+            Console.WriteLine("Bike {0:000} at ({1:0.0000}, {2:0.0000}) at {3}. {4:0000} points in database.",
+                data.Bike.Id,
+                data.Location.Latitude,
+                data.Location.Longitude,
+                data.QueryTime.ToLongTimeString(),
+                insertCount);
             database.RunSession(session => Library.BikeUpdateLocation.InsertLocation(session, data));
         }
     }
