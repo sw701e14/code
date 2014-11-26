@@ -75,7 +75,7 @@ namespace DataCollector
                 database.RunSession(session => session.Execute("INSERT INTO citybike_test.bikes (id) VALUES ({0})", data.Bike.Id));
             }
 
-            Console.WriteLine("Updated the location of bike {0} to ({1}, {2}).", data.Bike.Id, data.Location.Latitude, data.Location.Longitude);
+            Console.WriteLine("Updated the location of bike {0} to ({1:0,0000000}, {2:0,0000000}) at {3}.", data.Bike.Id, data.Location.Latitude, data.Location.Longitude, data.QueryTime.ToLongTimeString());
             database.RunSession(session => Library.BikeUpdateLocation.InsertLocation(session, data));
         }
     }
