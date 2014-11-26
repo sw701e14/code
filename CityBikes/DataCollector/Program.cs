@@ -34,16 +34,11 @@ namespace DataCollector
                 throw new NullReferenceException("dataSource field must be set to an instance of an object.");
 
             Console.WriteLine("This application will load GPS Data fom the supplied source.");
-            Console.WriteLine("Press Q to exit the application.");
-
+            Console.WriteLine("Press Q during the process to exit the application.");
+            
+            Console.WriteLine("Press any key now to start the process.");
+            Console.ReadKey(true);
             Console.WriteLine();
-            Console.WriteLine("Loading will start in:");
-            Console.WriteLine(3);
-            Thread.Sleep(1000);
-            Console.WriteLine(2);
-            Thread.Sleep(1000);
-            Console.WriteLine(1);
-            Thread.Sleep(1000);
 
             database = new Database();
 
