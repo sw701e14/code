@@ -46,7 +46,9 @@ namespace DataCollector
 
             Thread t = new Thread(o => runDataLoader(o as IDataSource));
             t.Start(dataSource);
-            Console.ReadKey(true);
+            ConsoleKey key = ConsoleKey.A;
+            while (key != ConsoleKey.Q)
+                key = Console.ReadKey(true).Key;
 
             shouldExit = true;
             while (t.IsAlive) { }
