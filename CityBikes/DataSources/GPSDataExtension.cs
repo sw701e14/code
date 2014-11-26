@@ -26,7 +26,7 @@ namespace DataSources
 
            var lastPoint = e.Current;
            yield return lastPoint;
-           DateTime nextTime = lastPoint.QueryTime.Add(interval);
+           DateTime nextTime = lastPoint.QueryTime.Add(interval).addRandomSeconds(60);
 
            while (e.MoveNext())
            {
@@ -36,13 +36,17 @@ namespace DataSources
                {
                    var point = generateBetweenPoint(lastPoint, nextPoint, nextTime);
                    yield return new GPSData(bike, point, null, nextTime);
-                   nextTime = nextTime.Add(interval);
+                   nextTime = nextTime.Add(interval).addRandomSeconds(60);
                }
 
                lastPoint = nextPoint;
            }
 
            e.Dispose();
+       }
+       private static DateTime addRandomSeconds(this DateTime dt, double secondsRange)
+       {
+           return dt.AddSeconds((r.NextDouble() - 0.5) * secondsRange);
        }
        private static GPSLocation generateBetweenPoint(GPSData lp, GPSData np, DateTime time)
        {
