@@ -75,18 +75,6 @@ namespace DataSources
         }
 
         /// <summary>
-        /// Generates routes for the specified bikes using a predefined collection of destinations starting from the specified startTime and iterating the specified number of time
-        /// </summary>
-        /// <param name="bikes">A collection of bikes to generate routes for.</param>
-        /// <param name="startTime">The start time.</param>
-        /// <param name="iterations">The number iterations.</param>
-        /// <returns>A <see cref="IDataSource"/> from which the location of all bikes can be extracted continuosly.</returns>
-        public static IDataSource GetSource(IEnumerable<Bike> bikes, DateTime startTime, int iterations)
-        {
-            return GetSource(bikes, allAdresses, startTime, iterations);
-        }
-
-        /// <summary>
         /// Generates a route for the specified bike id with the specified array of destinations starting from the specified startTime and iterating the specified number of time
         /// </summary>
         /// <param name="bike">The bike to which the route should be associated.</param>
@@ -99,19 +87,6 @@ namespace DataSources
             IEnumerable<GPSData> enumeration = generateBikeRoute(bike, destinations, startTime, iterations);
 
             return new EnumerationDataSource(enumeration.Randomize().ConvertToInterval(interval));
-        }
-
-        /// <summary>
-        /// Generates routes for the specified bikes with the specified array of destinations starting from the specified startTime and iterating the specified number of time
-        /// </summary>
-        /// <param name="bikes">A collection of bikes to generate routes for.</param>
-        /// <param name="destinations">The destinations.</param>
-        /// <param name="startTime">The start time.</param>
-        /// <param name="iterations">The number iterations.</param>
-        /// <returns>A <see cref="IDataSource"/> from which the location of all bikes can be extracted continuosly.</returns>
-        public static IDataSource GetSource(IEnumerable<Bike> bikes, string[] destinations, DateTime startTime, int iterations)
-        {
-            return new MultiDataSource(bikes.Select(b => GetSource(b, destinations, startTime, iterations)));
         }
 
         private static IEnumerable<GPSData> generateBikeRoute(Bike bike, string[] destinations, DateTime startTime, int iterations)
