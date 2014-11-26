@@ -39,8 +39,8 @@ namespace Library
         {
             return string.Format("('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')",
                 data.Bike.Id,
-                data.Location.Latitude,
-                data.Location.Longitude,
+                data.Location.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                data.Location.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture),
                 data.Accuracy,
                 data.QueryTime.ToString("yyyy-MM-dd hh:mm:ss"),
                 data.HasNotMoved ? '1' : '0');
