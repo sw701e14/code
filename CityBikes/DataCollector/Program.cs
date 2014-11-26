@@ -18,7 +18,11 @@ namespace DataCollector
 
         private static IDataSource createDataSource()
         {
-            throw new NotImplementedException();
+            List<Bike> bikes = new List<Bike>();
+            for (uint i = 30; i < 35; i++)
+                bikes.Add(new Bike(i));
+
+            return new NoFutureDataSource(GoogleDataSource.GetSource(bikes, DateTime.Now, int.MaxValue));
         }
 
         static void Main(string[] args)
@@ -43,7 +47,7 @@ namespace DataCollector
 
             database = new Database();
 
-            knownBikes.AddRange(database.RunSession(session => session.ExecuteRead("SELECT * FROM citybike_test.bikes").Select(row => row.GetBike())));
+            knownBikes.AddRange(database.RunSession(session => session.ExecuteRead("SELECT * FROM citybike_test.bikes").Select(row => row.GetBike()).ToArray()));
 
             Thread t = new Thread(o => runDataLoader(o as IDataSource));
             t.Start(dataSource);
