@@ -38,9 +38,6 @@ namespace DataCollector
 
             Console.WriteLine("This application will load GPS Data fom the supplied source.");
             Console.WriteLine("Press Q during the process to exit the application.");
-
-            Console.WriteLine("Press any key now to start the process.");
-            Console.ReadKey(true);
             Console.WriteLine();
 
             var dataSource = createDataSource();
