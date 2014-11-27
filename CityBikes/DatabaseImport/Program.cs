@@ -16,6 +16,11 @@ namespace Run
 
             menu.Add("Load data", loadData);
             menu.Add("Clear data", clearData);
+            menu.Add("Generate map from DB", () =>
+                {
+                    using (Database db = new Database())
+                        db.RunSession(s => GPSPointMapPlotter.SaveMapAsHtml(s));
+                });
 
             menu.SetCancel("Exit");
 
