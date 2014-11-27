@@ -97,8 +97,6 @@ namespace DataSources
             Debug.WriteLine("Bike: {0}", bike.Id);
             for (int i = 0; i < iterations; i++)
             {
-                Thread.Sleep(200); // max 2 requests pr second in the Google directions API
-
                 var route = GoogleDirectionsParser.GetData(startPoint, destination, startTime, bike).ToList();
 
                 foreach (var p in route)
