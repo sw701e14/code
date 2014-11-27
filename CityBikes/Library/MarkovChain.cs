@@ -33,6 +33,12 @@ namespace Library
             return k;
         }
 
+        public int size
+        {
+            get { return markovChain.Length; }
+        }
+        
+
 
         /// <summary>
         /// Creates the markov chain from the frequencies inputted and saves it in the MarkovChain
