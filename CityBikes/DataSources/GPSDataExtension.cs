@@ -66,9 +66,11 @@ namespace DataSources
        public static GPSData Randomize(this GPSData point)
        {
            double angle = r.NextDouble() * 2 * Math.PI;
-           double distance = r.Next(20);
+           double distance = r.NextDouble() * (double)point.Accuracy;
 
-           return new GPSData(point.Bike, GPSLocation.Move(point.Location, angle, distance / 1000), point.Accuracy, point.QueryTime, point.HasNotMoved);
+           distance /= 1000.0; // Conversion to kilometers
+
+           return new GPSData(point.Bike, GPSLocation.Move(point.Location, angle, distance), point.Accuracy, point.QueryTime, point.HasNotMoved);
        }
        public static IEnumerable<GPSData> Randomize(this IEnumerable<GPSData> points)
        {
