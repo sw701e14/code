@@ -156,7 +156,7 @@ namespace Library
         /// </summary>
         /// <param name="serializedMarkovChain">The serialized markov chain.</param>
         /// <returns>A MarkovChain object as it were before serialization</returns>
-        private MarkovChain deSerializeMarkovChain(double[][] serializedMarkovChain)
+        private MarkovChain deserializeMarkovChain(double[][] serializedMarkovChain)
         {
             //Markov Chains are always n*n in size
             int markovChainSize = serializedMarkovChain[0].Count();
