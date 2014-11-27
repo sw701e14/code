@@ -86,7 +86,7 @@ namespace DataSources
         {
             IEnumerable<GPSData> enumeration = generateBikeRoute(bike, destinations, startTime, iterations);
 
-            return new EnumerationDataSource(enumeration.Randomize().ConvertToInterval(interval));
+            return new EnumerationDataSource(enumeration.ConvertToInterval(interval).Randomize());
         }
 
         private static IEnumerable<GPSData> generateBikeRoute(Bike bike, string[] destinations, DateTime startTime, int iterations)
