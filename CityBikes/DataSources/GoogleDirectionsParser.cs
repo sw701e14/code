@@ -23,19 +23,6 @@ namespace DataSources
         }
 
         /// <summary>
-        /// Queries Google Directions with a URL and generates a set of <see cref="GPSData"/>s representing the generated route.
-        /// </summary>
-        /// <param name="url">The URL from which Google Directions should generate a route.</param>
-        /// <param name="startTime">The time associated with the first <see cref="GPSData"/> in the result.</param>
-        /// <param name="bikeId">The bike identifier.</param>
-        /// <returns>A collection of <see cref="GPSData"/>s representing the generated route.</returns>
-        public static IEnumerable<GPSData> GetData(string url, DateTime startTime, Bike bike)
-        {
-            var parser = new GoogleDirectionsParser(startTime, bike);
-            return parser.loadPoints(url);
-        }
-
-        /// <summary>
         /// Queries Google Directions with a from and a to string and generates a set of <see cref="GPSData"/>s representing the generated route.
         /// </summary>
         /// <param name="from">The location where the route should start (an address).</param>
@@ -58,10 +45,11 @@ namespace DataSources
                 System.Web.HttpUtility.UrlEncode(from),
                 System.Web.HttpUtility.UrlEncode(to));
 
-            return GetData(url, startTime, bike);
+            var parser = new GoogleDirectionsParser(startTime, bike);
+            return parser.loadPointsFromURL(url);
         }
 
-        private IEnumerable<GPSData> loadPoints(string url)
+        private IEnumerable<GPSData> loadPointsFromURL(string url)
         {
             retry:
 
@@ -98,7 +86,7 @@ namespace DataSources
             foreach (var p in loadPoints(xmlDoc))
                 yield return p;
         }
-
+        
         private IEnumerable<GPSData> loadPoints(XDocument xmlDoc)
         {
             foreach (var step in xmlDoc.Descendants("step"))
