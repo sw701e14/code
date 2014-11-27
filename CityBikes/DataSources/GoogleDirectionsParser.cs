@@ -46,10 +46,14 @@ namespace DataSources
                 System.Web.HttpUtility.UrlEncode(to));
 
             var parser = new GoogleDirectionsParser(startTime, bike);
-            return parser.loadPointsFromURL(url);
+            var xml = parser.downloadXML(url);
+
+            return parser.loadPoints(xml);
         }
 
-        private IEnumerable<GPSData> loadPointsFromURL(string url)
+
+
+        private XDocument downloadXML(string url)
         {
             retry:
 
@@ -83,8 +87,7 @@ namespace DataSources
                     response.Dispose();
             }
 
-            foreach (var p in loadPoints(xmlDoc))
-                yield return p;
+            return xmlDoc;
         }
         
         private IEnumerable<GPSData> loadPoints(XDocument xmlDoc)
