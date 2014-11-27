@@ -95,6 +95,12 @@ namespace DataSources
                     response.Dispose();
             }
 
+            foreach (var p in loadPoints(xmlDoc))
+                yield return p;
+        }
+
+        private IEnumerable<GPSData> loadPoints(XDocument xmlDoc)
+        {
             foreach (var step in xmlDoc.Descendants("step"))
                 yield return parseLocationData(step, false);
 
