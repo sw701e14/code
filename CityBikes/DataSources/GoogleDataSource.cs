@@ -104,7 +104,6 @@ namespace DataSources
 
                 GPSData lastpoint = route.Last();
                 int random = r.Next(MAX_WAIT_MINUTES);
-                yield return new GPSData(bike, lastpoint.Location, null, lastpoint.QueryTime.AddMinutes(random), false);
                 startTime = lastpoint.QueryTime.AddMinutes(random);
             }
         }
