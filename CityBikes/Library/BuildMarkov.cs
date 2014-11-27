@@ -122,5 +122,54 @@ namespace Library
             }
             return result;
         }
+
+
+        /// <summary>
+        /// Serializes a markov chain.
+        /// It is crucial that the markovChain is n*n in size for this implementation to work.
+        /// </summary>
+        /// <param name="markovChain">The markov chain.</param>
+        /// <returns></returns>
+        private double[][] serializeMarkovChain(MarkovChain markovChain)
+        {
+            //Markov Chains are always n*n in size
+            int markovChainSize = markovChain.size;
+            double[][] serializedMarkovChain = new double[markovChainSize][];
+
+            for (int i = 0; i < markovChainSize; i++)
+            {
+                serializedMarkovChain[i] = double[markovChainSize];
+
+                for (int j = 0; j < markovChainSize; j++)
+                {
+                    serializedMarkovChain[i][j] = markovChain[i, j];
+                }
+            }
+
+            return serializedMarkovChain;
+        }
+
+        /// <summary>
+        /// Deserializes an already serialized markov chain.
+        /// It is crucial that the markovChain is n*n in size for this implementation to work.
+        /// </summary>
+        /// <param name="serializedMarkovChain">The serialized markov chain.</param>
+        /// <returns></returns>
+        private MarkovChain deSerializeMarkovChain(double[][] serializedMarkovChain)
+        {
+            //Markov Chains are always n*n in size
+            int markovChainSize = serializedMarkovChain[0].Count();
+            MarkovChain markovChain = new MarkovChain(markovChainSize);
+
+            for (int i = 0; i < markovChainSize; i++)
+            {
+                for (int j = 0; j < markovChainSize; j++)
+                {
+                    markovChain[i, j] = serializedMarkovChain[i][j];
+                }
+            }
+
+            return markovChain;
+        }
     }
 }

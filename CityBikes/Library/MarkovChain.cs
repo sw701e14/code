@@ -21,6 +21,7 @@ namespace Library
         {
             markovFrequencies = new double[size, size];
             markovChain = new double[size, size];
+            this.size = size;
         }
 
         private int Sum()
@@ -33,6 +34,12 @@ namespace Library
             return k;
         }
 
+
+        public int size
+        {
+            get { return size; }
+        }
+        
 
         /// <summary>
         /// Creates the markov chain from the frequencies inputted and saves it in the MarkovChain
@@ -119,8 +126,5 @@ namespace Library
             }
             return k;
         }
-
-
-
     }
 }
