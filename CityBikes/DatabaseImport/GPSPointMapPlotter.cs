@@ -40,7 +40,7 @@ namespace DatabaseImport
             if (session == null)
                 throw new ArgumentNullException();
 
-            GPSData[] data = session.ExecuteRead("SElECT * FROM citybikes_test.gps_data").Select(r => r.GetGPSData()).ToArray();
+            GPSData[] data = session.ExecuteRead("SElECT * FROM citybike_test.gps_data").Select(r => r.GetGPSData(1)).ToArray();
 
             SaveMapAsHtml(data);
         }
