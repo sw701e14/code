@@ -102,9 +102,10 @@ namespace DataSources
                 foreach (var p in route)
                     yield return p;
 
-                GPSData lastpoint = route.Last();
-                int random = r.Next(MAX_WAIT_MINUTES);
-                startTime = lastpoint.QueryTime.AddMinutes(random);
+                startTime = route.Last().QueryTime.AddMinutes(r.Next(MAX_WAIT_MINUTES));
+
+                startPoint = destination;
+                destination = nextDestination(destinations, startPoint);
             }
         }
 
