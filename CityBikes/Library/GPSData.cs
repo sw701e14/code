@@ -41,7 +41,7 @@ namespace Library
         /// <returns><c>true</c> if the two points are within range of their respective accuracies; otherwise <c>false</c>.</returns>
         public static bool WithinAccuracy(GPSData d1, GPSData d2)
         {
-            double dist = GPSLocation.GetDistance(d1.Location, d2.Location) * 1000;
+            double dist = GPSLocation.GetDistance(d1.Location, d2.Location);
             return d1.accuracy + d2.accuracy >= dist;
         }
 
