@@ -35,7 +35,7 @@ namespace Library
 
         public int size
         {
-            get { return markovChain.Length; }
+            get { return markovChain.GetLength(0); }
         }
         
 
@@ -125,8 +125,5 @@ namespace Library
             }
             return k;
         }
-
-
-
     }
 }

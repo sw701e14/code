@@ -174,9 +174,19 @@ namespace Library
 
                 return hotspot;
             }
+
             public Hotspot[] GetAllHotspots()
             {
                 return ExecuteRead("SELECT convex_hull FROM hotspots").Select(row => row.GetHotspot()).ToArray();
+            }
+
+            public MarkovChain GetMarkovChain(int column = 0)
+            {
+                RowCollection serializedMarkovChain = ExecuteRead("SELECT mc FROM markov_chains");
+
+                byte[] data = serializedMarkovChain.ElementAt(column).GetValue<byte[]>();
+
+                return BuildMarkov.deserializeMarkovChain(data);
             }
 
             internal int Execute(MySqlCommand command)
