@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
+using System.Text;
 using System.Xml.Linq;
 
 namespace DataSources
@@ -32,30 +34,52 @@ namespace DataSources
         /// <returns>A collection of <see cref="GPSData"/>s representing the generated route.</returns>
         public static IEnumerable<GPSData> GetData(string from, string to, DateTime startTime, Bike bike)
         {
-            string apialexander = "AIzaSyDIy0olG2SFd75gMbdshoEc61wZyzlGLOg";
-            string apimikael = "AIzaSyBLIB1DsgmDpNPuhUaFKSMO-SEt2gLA9Vk";
-            string apistefan = "AIzaSyCRqTjo_VNze5PlFoPtLHzTM_4MfPIZR7w";
-            string apibruno = "AIzaSyCsiJFXbak8ywb8p3GkoJ8Bji2DxgmH78g";
-
-            string url = "https://maps.googleapis.com/maps/api/directions/xml?origin={0}&destination={1}&sensor=false&key="+apibruno +"&avoid=highways&mode=bicycling&language=da";
-
-            string enc = System.Web.HttpUtility.UrlEncode(from);
-
-            url = string.Format(url,
-                System.Web.HttpUtility.UrlEncode(from),
-                System.Web.HttpUtility.UrlEncode(to));
+            string file = getFileName(from, to);
+            XDocument xml;
 
             var parser = new GoogleDirectionsParser(startTime, bike);
-            var xml = parser.downloadXML(url);
 
+            if (File.Exists(file))
+            {
+                xml = XDocument.Load(file);
+            }
+            else
+            {
+                string apialexander = "AIzaSyDIy0olG2SFd75gMbdshoEc61wZyzlGLOg";
+                string apimikael = "AIzaSyBLIB1DsgmDpNPuhUaFKSMO-SEt2gLA9Vk";
+                string apistefan = "AIzaSyCRqTjo_VNze5PlFoPtLHzTM_4MfPIZR7w";
+                string apibruno = "AIzaSyCsiJFXbak8ywb8p3GkoJ8Bji2DxgmH78g";
+
+                string API = apialexander;
+
+                string url = "https://maps.googleapis.com/maps/api/directions/xml?origin={0}&destination={1}&sensor=false&key=" + API + "&avoid=highways&mode=bicycling&language=da";
+
+                string enc = System.Web.HttpUtility.UrlEncode(from);
+
+                url = string.Format(url,
+                    System.Web.HttpUtility.UrlEncode(from),
+                    System.Web.HttpUtility.UrlEncode(to));
+
+                xml = parser.downloadXML(url);
+                xml.Save(file);
+            }
             return parser.loadPoints(xml);
         }
 
-
+        private static MD5 md5 = MD5.Create();
+        private static string getHash(string text)
+        {
+            var hash = md5.ComputeHash(Encoding.UTF8.GetBytes(text));
+            return string.Concat(hash.Select(b => b.ToString("X2")).ToArray());
+        }
+        private static string getFileName(string from, string to)
+        {
+            return "google/" + getHash(from) + "_" + getHash(to);
+        }
 
         private XDocument downloadXML(string url)
         {
-            retry:
+        retry:
 
             Uri requestUrl = new Uri(url);
             WebRequest request = null;
@@ -89,7 +113,7 @@ namespace DataSources
 
             return xmlDoc;
         }
-        
+
         private IEnumerable<GPSData> loadPoints(XDocument xmlDoc)
         {
             foreach (var step in xmlDoc.Descendants("step"))
