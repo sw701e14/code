@@ -58,6 +58,10 @@
       <Project>{7ba32c48-aab4-41c6-b7a4-94693c3a9614}</Project>
       <Name>DataLoading.LocationSource</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DeadDog\DeadDog.csproj">
+      <Project>{675ab5e0-4637-4e6c-8d38-aa7bb135b5ce}</Project>
+      <Name>DeadDog</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Library\Library.csproj">
       <Project>{0b5c6a5b-dcbf-4f1c-a80e-50c3877bffe5}</Project>
       <Name>Library</Name>
