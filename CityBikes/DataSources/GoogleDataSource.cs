@@ -1,4 +1,4 @@
-﻿using Library;
+﻿using DataLoading.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -69,7 +69,7 @@ namespace DataLoading.LocationSource
         /// <param name="startTime">The start time.</param>
         /// <param name="iterations">The iterations.</param>
         /// <returns>A <see cref="IDataSource"/> from which the location of the bike can be extracted continuosly.</returns>
-        public static IDataSource GetSource(Bike bike, DateTime startTime, int iterations)
+        public static IDataSource GetSource(uint bike, DateTime startTime, int iterations)
         {
             return GetSource(bike, allAdresses, startTime, iterations);
         }
@@ -82,19 +82,19 @@ namespace DataLoading.LocationSource
         /// <param name="startTime">The start time.</param>
         /// <param name="iterations">The iterations.</param>
         /// <returns>A <see cref="IDataSource"/> from which the location of the bike can be extracted continuosly.</returns>
-        public static IDataSource GetSource(Bike bike, string[] destinations, DateTime startTime, int iterations)
+        public static IDataSource GetSource(uint bike, string[] destinations, DateTime startTime, int iterations)
         {
-            IEnumerable<GPSData> enumeration = generateBikeRoute(bike, destinations, startTime, iterations);
+            IEnumerable<GPSInput> enumeration = generateBikeRoute(bike, destinations, startTime, iterations);
 
-            return new EnumerationDataSource(enumeration.ConvertToInterval(interval).Randomize());
+            return new EnumerationDataSource(enumeration.ConvertToInterval(interval).Select(s => { s.AddNoise(); return s; }));
         }
 
-        private static IEnumerable<GPSData> generateBikeRoute(Bike bike, string[] destinations, DateTime startTime, int iterations)
+        private static IEnumerable<GPSInput> generateBikeRoute(uint bike, string[] destinations, DateTime startTime, int iterations)
         {
             string startPoint = nextDestination(destinations, "");
             string destination = nextDestination(destinations, startPoint);
 
-            Debug.WriteLine("Bike: {0}", bike.Id);
+            Debug.WriteLine("Bike: {0}", bike);
             for (int i = 0; i < iterations; i++)
             {
                 var route = GoogleDirectionsParser.GetData(startPoint, destination, startTime, bike).ToList();
@@ -102,7 +102,7 @@ namespace DataLoading.LocationSource
                 foreach (var p in route)
                     yield return p;
 
-                startTime = route.Last().QueryTime.AddMinutes(r.Next(MAX_WAIT_MINUTES));
+                startTime = route.Last().Timestamp.AddMinutes(r.Next(MAX_WAIT_MINUTES));
 
                 startPoint = destination;
                 destination = nextDestination(destinations, startPoint);

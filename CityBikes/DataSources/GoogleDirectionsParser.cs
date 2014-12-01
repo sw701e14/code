@@ -1,4 +1,4 @@
-﻿using Library;
+﻿using DataLoading.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,9 +16,9 @@ namespace DataLoading.LocationSource
     public class GoogleDirectionsParser
     {
         private DateTime nextDate;
-        private Bike bike;
+        private uint bike;
 
-        private GoogleDirectionsParser(DateTime startTime, Bike bike)
+        private GoogleDirectionsParser(DateTime startTime, uint bike)
         {
             this.nextDate = startTime;
             this.bike = bike;
@@ -32,7 +32,7 @@ namespace DataLoading.LocationSource
         /// <param name="startTime">The time associated with the first <see cref="GPSData"/> in the result.</param>
         /// <param name="bikeId">The bike identifier.</param>
         /// <returns>A collection of <see cref="GPSData"/>s representing the generated route.</returns>
-        public static IEnumerable<GPSData> GetData(string from, string to, DateTime startTime, Bike bike)
+        public static IEnumerable<GPSInput> GetData(string from, string to, DateTime startTime, uint bike)
         {
             string file = getFileName(from, to);
             XDocument xml;
@@ -114,7 +114,7 @@ namespace DataLoading.LocationSource
             return xmlDoc;
         }
 
-        private IEnumerable<GPSData> loadPoints(XDocument xmlDoc)
+        private IEnumerable<GPSInput> loadPoints(XDocument xmlDoc)
         {
             foreach (var step in xmlDoc.Descendants("step"))
                 yield return parseLocationData(step, false);
@@ -122,14 +122,13 @@ namespace DataLoading.LocationSource
             yield return parseLocationData(xmlDoc.Descendants("step").Last(), true);
         }
 
-        private GPSData parseLocationData(XElement element, bool last)
+        private GPSInput parseLocationData(XElement element, bool last)
         {
             var location = last ? element.Element("end_location") : element.Element("start_location");
             double lat = double.Parse(location.Element("lat").Value, System.Globalization.CultureInfo.InvariantCulture);
             double lng = double.Parse(location.Element("lng").Value, System.Globalization.CultureInfo.InvariantCulture);
 
-            var gpsloc = new GPSLocation((decimal)lat, (decimal)lng);
-            var point = new GPSData(bike, gpsloc, null, nextDate, false);
+            var point = new GPSInput(bike, (decimal)lat, (decimal)lng, null, nextDate);
 
             int durationSeconds = int.Parse(element.Element("duration").Element("value").Value);
             nextDate = nextDate.AddSeconds(durationSeconds);
