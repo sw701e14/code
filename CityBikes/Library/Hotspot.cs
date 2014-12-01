@@ -28,5 +28,10 @@ namespace Library
             this.dataPoints = new GPSLocation[dataPoints.Length];
             dataPoints.CopyTo(this.dataPoints, 0);
         }
+
+        public GPSLocation[] getDataPoints()
+        {
+            return dataPoints;
+        }
     }
 }

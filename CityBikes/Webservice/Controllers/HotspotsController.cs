@@ -32,10 +32,17 @@ namespace Webservice.Controllers
             foreach (Hotspot item in context.RunSession(session => session.GetAllHotspots()))
             {
                 hotspotsCount++;
-                
-               
-                
-               
+                hotspot tempHotspot = new hotspot();
+
+                foreach (GPSLocation gpsLoc in item.getDataPoints())
+	            {
+                    coordinate tempCoordinate = new coordinate();
+                    tempCoordinate.latitude = gpsLoc.Latitude;
+                    tempCoordinate.longtitude = gpsLoc.Longitude;
+                    tempHotspot.coordinates.Add(tempCoordinate);
+	            }
+
+                hotspotResources.hotspotList.Add(tempHotspot);
                
             }
             hotspotResources.count = hotspotsCount;
