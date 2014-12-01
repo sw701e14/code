@@ -15,7 +15,6 @@ namespace DataCollector
         private const int SLEEP_MILLISECONDS = 100;
 
         private static List<Bike> knownBikes = new List<Bike>();
-        private static int insertCount = 0;
 
         private static IDataSource createDataSource()
         {
@@ -85,14 +84,11 @@ namespace DataCollector
                 database.RunSession(session => session.Execute("INSERT INTO citybike_test.bikes (id) VALUES ({0})", data.Bike.Id));
             }
 
-            insertCount++;
-
-            Console.WriteLine("Bike {0:000} at ({1:0.0000}, {2:0.0000}) at {3}. {4:0000} points in database.",
+            Console.WriteLine("Bike {0:000} at ({1:0.0000}, {2:0.0000}) at {3}.",
                 data.Bike.Id,
                 data.Location.Latitude,
                 data.Location.Longitude,
-                data.QueryTime.ToLongTimeString(),
-                insertCount);
+                data.QueryTime.ToLongTimeString());
             database.RunSession(session => Library.BikeUpdateLocation.InsertLocation(session, data));
         }
     }
