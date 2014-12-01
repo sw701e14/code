@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace DataLoading.Common
 {
-   public static class GPSDataExtension
+   public static class GPSInputExtension
    {
        public static IEnumerable<GPSData> ConvertToInterval(this IEnumerable<GPSData> route, TimeSpan interval)
        {

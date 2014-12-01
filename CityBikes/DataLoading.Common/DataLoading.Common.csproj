@@ -40,7 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EnumerationDataSource.cs" />
-    <Compile Include="GPSDataExtension.cs" />
+    <Compile Include="GPSInputExtension.cs" />
     <Compile Include="GPSInput.cs" />
     <Compile Include="IDataSource.cs" />
     <Compile Include="MultiDataSource.cs" />
