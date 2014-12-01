@@ -7,8 +7,8 @@
     <ProjectGuid>{7BA32C48-AAB4-41C6-B7A4-94693C3A9614}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DataSources</RootNamespace>
-    <AssemblyName>DataSources</AssemblyName>
+    <RootNamespace>DataLoading.LocationSource</RootNamespace>
+    <AssemblyName>DataLoading.LocationSource</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

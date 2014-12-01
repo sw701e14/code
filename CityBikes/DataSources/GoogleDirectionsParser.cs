@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Linq;
 
-namespace DataSources
+namespace DataLoading.LocationSource
 {
     /// <summary>
     /// Exposes methods for retrieving <see cref="GPSData"/>s from a Google Directions route.

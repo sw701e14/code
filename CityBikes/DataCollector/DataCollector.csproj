@@ -52,9 +52,9 @@
       <Project>{a4640d97-4d48-420d-864e-f2a119bbf81e}</Project>
       <Name>DataLoading.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DataSources\DataSources.csproj">
+    <ProjectReference Include="..\DataSources\DataLoading.LocationSource.csproj">
       <Project>{7ba32c48-aab4-41c6-b7a4-94693c3a9614}</Project>
-      <Name>DataSources</Name>
+      <Name>DataLoading.LocationSource</Name>
     </ProjectReference>
     <ProjectReference Include="..\Library\Library.csproj">
       <Project>{0b5c6a5b-dcbf-4f1c-a80e-50c3877bffe5}</Project>

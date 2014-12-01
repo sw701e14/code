@@ -30,7 +30,7 @@ namespace DatabaseImport
                     oldbikes.Add(p.Bike);
                 }
 
-                GPSData movedPoint = DataSources.GPSDataExtension.Randomize(p);
+                GPSData movedPoint = DataLoading.LocationSource.GPSDataExtension.Randomize(p);
                 BikeUpdateLocation.InsertLocation(session, movedPoint);
             }
         }
