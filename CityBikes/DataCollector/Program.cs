@@ -29,7 +29,9 @@ namespace DataCollector
             for (uint i = 10; i < 10 + count; i++)
                 bikes.Add(new Bike(i));
 
-            return new MultiDataSource(bikes.Select(b => new NoFutureDataSource(GoogleDataSource.GetSource(b, DateTime.Now, int.MaxValue))));
+            DateTime start = DateTime.Now.Date.AddDays(-1);
+
+            return new MultiDataSource(bikes.Select(b => new NoFutureDataSource(GoogleDataSource.GetSource(b, start, int.MaxValue))));
         }
 
         static void Main(string[] args)
