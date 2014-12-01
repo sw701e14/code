@@ -1,5 +1,6 @@
 ﻿using DataLoading.Common;
 using DataLoading.LocationSource;
+using DeadDog.Console;
 using Library;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,7 @@ namespace DataLoading.DataCollector
     {
         private static IDataSource createDataSource()
         {
-            Console.Write("Specify number of bikes: ");
-            string numberStr = Console.ReadLine();
-            int count = int.Parse(numberStr);
-            Console.WriteLine("Data will be generated for {0} bikes.", count);
-            Console.WriteLine();
+            int count = "Specify number of bikes: ".GetInt32(x => x > 0);
 
             List<Bike> bikes = new List<Bike>();
             for (uint i = 10; i < 10 + count; i++)
@@ -29,7 +26,39 @@ namespace DataLoading.DataCollector
 
         static void Main(string[] args)
         {
-            DataLoader.StartLoad(createDataSource(), true);
+            Menu menu = new Menu("Select an option");
+
+            menu.Add("Load data", loadData);
+            menu.Add("Clear data", clearData);
+            menu.Add("Generate map from DB", () =>
+            {
+                using (Database db = new Database())
+                    db.RunSession(s => GPSPointMapPlotter.SaveMapAsHtml(s));
+            });
+            menu.Add("Start a server simulation", simulate);
+
+            menu.SetCancel("Exit");
+
+            menu.Show(true);
+        }
+
+        static void clearData()
+        {
+            using (Database database = new Database())
+                database.RunSession(session => session.Execute("TRUNCATE TABLE gps_data"));
+        }
+        static void loadData()
+        {
+            string from = "From: ".GetString(x => x.Trim().Length > 0);
+            string to = "To: ".GetString(x => x.Trim().Length > 0);
+            DateTime start = "Start time: ".GetDateTime();
+            uint id = (uint)"Specify bike ID: ".GetInt32(x => x >= 0);
+
+            DataLoader.StartLoad(new EnumerationDataSource(GoogleDirectionsParser.GetData(from, to, start, id).Select(x => { x.AddNoise(); return x; })), false, true);
+        }
+        static void simulate()
+        {
+            DataLoader.StartLoad(createDataSource(), true, false);
         }
     }
 }
