@@ -12,7 +12,7 @@ namespace DataSources
     public static class GoogleDataSource
     {
         private static readonly TimeSpan interval = TimeSpan.FromMinutes(5);
-        private const int MAX_WAIT_MINUTES = 120;
+        private const int MAX_WAIT_MINUTES = 60;
 
         #region Addresses
 
