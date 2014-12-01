@@ -1,14 +1,13 @@
-﻿using Library;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace DataLoading.Common
 {
     public class EnumerationDataSource : IDataSource
     {
-        private IEnumerator<GPSData> e;
+        private IEnumerator<GPSInput> e;
 
-        public EnumerationDataSource(IEnumerable<GPSData> data)
+        public EnumerationDataSource(IEnumerable<GPSInput> data)
         {
             if (data == null)
                 throw new ArgumentNullException("data");
@@ -16,7 +15,7 @@ namespace DataLoading.Common
             this.e = data.GetEnumerator();
         }
 
-        public GPSData? GetData()
+        public GPSInput GetData()
         {
             if (e.MoveNext())
                 return e.Current;

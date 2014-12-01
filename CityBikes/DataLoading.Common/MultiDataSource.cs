@@ -1,5 +1,4 @@
-﻿using Library;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +7,7 @@ using System.Threading.Tasks;
 namespace DataLoading.Common
 {
     /// <summary>
-    /// Retrives <see cref="GPSData"/> from a collection of data sources by querying each of them one at a time.
+    /// Retrives <see cref="GPSInput"/> from a collection of data sources by querying each of them one at a time.
     /// </summary>
     public class MultiDataSource : IDataSource
     {
@@ -39,16 +38,16 @@ namespace DataLoading.Common
         /// <returns>
         /// The oldest <see cref="GPSData" /> available at the data source; <c>null</c> if no data is available.
         /// </returns>
-        public GPSData? GetData()
+        public GPSInput GetData()
         {
-            GPSData? data = null;
+            GPSInput data = null;
 
             for (int i = 0; i < sources.Length; i++)
             {
                 data = sources[index].GetData();
                 next();
 
-                if (data.HasValue)
+                if (data != null)
                     return data;
             }
 

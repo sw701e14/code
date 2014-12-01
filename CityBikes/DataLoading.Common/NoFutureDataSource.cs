@@ -1,5 +1,4 @@
-﻿using Library;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +9,7 @@ namespace DataLoading.Common
     public class NoFutureDataSource : IDataSource
     {
         private IDataSource source;
-        private GPSData? data;
+        private GPSInput data;
 
         public NoFutureDataSource(IDataSource source)
         {
@@ -21,14 +20,14 @@ namespace DataLoading.Common
             this.data = null;
         }
 
-        public GPSData? GetData()
+        public GPSInput GetData()
         {
-            if (!data.HasValue)
+            if (data == null)
                 data = source.GetData();
 
-            if (!data.HasValue)
+            if (data == null)
                 return null;
-            else if (data.Value.QueryTime > DateTime.Now)
+            else if (data.Timestamp > DateTime.Now)
                 return null;
             else
             {
