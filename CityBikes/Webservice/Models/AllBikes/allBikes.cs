@@ -5,14 +5,14 @@ using System.Web;
 
 namespace Webservice.Models.AllBikes
 {
-    public class allBikes
+    public class bikes
     {
         public int count { get; set; }
-        public List<bike> bikes { get; set; }
+        public List<bike> bikeList { get; set; }
 
-        public allBikes()
+        public bikes()
         {
-            bikes = new List<bike>();
+            bikeList = new List<bike>();
         }
 
         public class bike

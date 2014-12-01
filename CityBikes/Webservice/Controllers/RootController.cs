@@ -28,7 +28,7 @@ namespace Webservice.Controllers
         {
             List<RootResource.Resource> resources = new List<RootResource.Resource>();
             resources.Add(new RootResource.Resource() { href = "availablebikes" });
-            resources.Add(new RootResource.Resource() { href = "allbikes" });
+            resources.Add(new RootResource.Resource() { href = "bikes" });
 
             return Request.CreateResponse(HttpStatusCode.OK,
                 new RootResource() { apiVersion = API_VERSION, resources = resources });

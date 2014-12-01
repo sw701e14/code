@@ -11,30 +11,30 @@ using Webservice.Models.AllBikes;
 namespace Webservice.Controllers
 {
     /// <summary>
-    /// Publicly available methods for getting available bikes' locations.
+    /// Publicly available methods for getting all bikes' locations.
     /// </summary>
-    [RoutePrefix("allbikes")]
-    public class AllBikesController : ApiController
+    [RoutePrefix("bikes")]
+    public class BikesController : ApiController
     {
         /// <summary>
-        /// Get list of available bikes.
+        /// Get list of all bikes.
         /// </summary>
         /// <returns>The bikes.</returns>
         [Route("")]
         [HttpGet]
-        [ResponseType(typeof(allBikes))]
+        [ResponseType(typeof(bikes))]
         public HttpResponseMessage getAll()
         {
             Database context = new Database();
 
             Tuple<Bike, DateTime, bool>[] immobileSinceTimes = context.RunSession(session => Library.BikeStandstill.GetBikesImmobile(session));
 
-            allBikes bikeResources = new allBikes();
+            bikes bikeResources = new bikes();
             int bikeCount = 0;
             foreach (Tuple<Bike, GPSLocation> item in context.RunSession(session => session.GetBikeLocations()))
             {
                 bikeCount++;
-                bikeResources.bikes.Add(new Webservice.Models.AllBikes.allBikes.bike()
+                bikeResources.bikeList.Add(new Webservice.Models.AllBikes.bikes.bike()
                 {
                     id = item.Item1.Id.ToString(),
                     latitude = item.Item2.Latitude.ToString(),
@@ -48,7 +48,7 @@ namespace Webservice.Controllers
         }
 
         /// <summary>
-        /// Get available bike.
+        /// Get bike with bikeId.
         /// </summary>
         /// <param name="bikeId">The bikeId.</param>
         /// <returns>The bike.</returns>
