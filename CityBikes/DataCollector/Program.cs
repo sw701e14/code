@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace DataCollector
+namespace DataLoading.DataCollector
 {
     class Program
     {

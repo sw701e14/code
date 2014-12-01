@@ -7,8 +7,8 @@
     <ProjectGuid>{41615C7B-69C3-4C67-8207-7C352B0C3CE2}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DataCollector</RootNamespace>
-    <AssemblyName>DataCollector</AssemblyName>
+    <RootNamespace>DataLoading.DataCollector</RootNamespace>
+    <AssemblyName>DataLoading.DataCollector</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

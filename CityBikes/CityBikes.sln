@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeadDog", "DeadDog\DeadDog.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Webservice", "Webservice\Webservice.csproj", "{9F705337-1D3B-4F46-8873-407DD741FD8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataCollector", "DataCollector\DataCollector.csproj", "{41615C7B-69C3-4C67-8207-7C352B0C3CE2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLoading.DataCollector", "DataCollector\DataLoading.DataCollector.csproj", "{41615C7B-69C3-4C67-8207-7C352B0C3CE2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLoading.LocationSource", "DataSources\DataLoading.LocationSource.csproj", "{7BA32C48-AAB4-41C6-B7A4-94693C3A9614}"
 EndProject
