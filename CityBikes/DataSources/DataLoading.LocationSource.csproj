@@ -49,10 +49,6 @@
       <Project>{a4640d97-4d48-420d-864e-f2a119bbf81e}</Project>
       <Name>DataLoading.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Library\Library.csproj">
-      <Project>{0b5c6a5b-dcbf-4f1c-a80e-50c3877bffe5}</Project>
-      <Name>Library</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
