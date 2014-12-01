@@ -5,15 +5,15 @@ using System.Web;
 
 namespace Webservice.Models.Hotspots
 {
-    public class hotspots
+    public class AllHotspots
     {
         public int count { get; set; }
 
-        public List<hotspot> hotspotList { get; set; }
+        public List<hotspot> hotspots { get; set; }
 
-        public hotspots()
+        public AllHotspots()
         {
-            hotspotList = new List<hotspot>();
+            hotspots = new List<hotspot>();
         }
     }
 }
