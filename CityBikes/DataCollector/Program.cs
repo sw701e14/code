@@ -88,7 +88,7 @@ namespace DataCollector
                 data.Bike.Id,
                 data.Location.Latitude,
                 data.Location.Longitude,
-                data.QueryTime.ToLongTimeString());
+                data.QueryTime.ToString("dd/MM HH:mm:ss"));
             database.RunSession(session => Library.BikeUpdateLocation.InsertLocation(session, data));
         }
     }
