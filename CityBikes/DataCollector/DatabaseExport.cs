@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DatabaseImport
+namespace DataLoading.DataCollector
 {
     public static class DatabaseExport
     {

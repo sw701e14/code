@@ -5,10 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Library;
 using System.IO;
-using HtmlAgilityPack;
 
-
-namespace DatabaseImport
+namespace DataLoading.DataCollector
 {
     /// <summary>
     /// Provides methods that creates a Google Map with plotted in GPS locations.
