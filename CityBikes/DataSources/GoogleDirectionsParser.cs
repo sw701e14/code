@@ -74,6 +74,10 @@ namespace DataLoading.LocationSource
         }
         private static string getFileName(string from, string to)
         {
+            DirectoryInfo dir;
+            if (!Directory.Exists("google"))
+                dir = Directory.CreateDirectory("google");
+
             return "google/" + getHash(from) + "_" + getHash(to);
         }
 
