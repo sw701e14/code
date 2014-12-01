@@ -10,13 +10,6 @@ namespace DataLoading.DataCollector
 {
     class Program
     {
-        private static Database database;
-        private static bool shouldExit;
-
-        private const int SLEEP_MILLISECONDS = 100;
-
-        private static List<Bike> knownBikes = new List<Bike>();
-
         private static IDataSource createDataSource()
         {
             Console.Write("Specify number of bikes: ");
@@ -36,61 +29,7 @@ namespace DataLoading.DataCollector
 
         static void Main(string[] args)
         {
-            shouldExit = false;
-
-            Console.WriteLine("This application will load GPS Data fom the supplied source.");
-            Console.WriteLine("Press Q during the process to exit the application.");
-            Console.WriteLine();
-
-            var dataSource = createDataSource();
-            if (dataSource == null)
-                throw new NullReferenceException("dataSource field must be set to an instance of an object.");
-
-            database = new Database();
-
-            database.RunSession(s => s.Execute("TRUNCATE citybike_test.gps_data; TRUNCATE citybike_test.bikes; TRUNCATE citybike_test.hotspots"));
-
-            knownBikes.AddRange(database.RunSession(session => session.ExecuteRead("SELECT * FROM citybike_test.bikes").Select(row => row.GetBike()).ToArray()));
-
-            Thread t = new Thread(o => runDataLoader(o as IDataSource));
-            t.Start(dataSource);
-            ConsoleKey key = ConsoleKey.A;
-            while (key != ConsoleKey.Q)
-                key = Console.ReadKey(true).Key;
-
-            shouldExit = true;
-            while (t.IsAlive) { }
-
-            database.Dispose();
-        }
-
-        private static void runDataLoader(IDataSource dataSource)
-        {
-            while (!shouldExit)
-            {
-                var data = dataSource.GetData();
-
-                if (data != null)
-                    InsertIntoDB(new GPSData(new Bike(data.BikeId), new GPSLocation(data.Latitude, data.Longitude), data.Accuracy, data.Timestamp));
-                else
-                    Thread.Sleep(SLEEP_MILLISECONDS);
-            }
-        }
-
-        private static void InsertIntoDB(GPSData data)
-        {
-            if (!knownBikes.Contains(data.Bike))
-            {
-                knownBikes.Add(data.Bike);
-                database.RunSession(session => session.Execute("INSERT INTO citybike_test.bikes (id) VALUES ({0})", data.Bike.Id));
-            }
-
-            Console.WriteLine("Bike {0:000} at ({1:0.0000}, {2:0.0000}) at {3}.",
-                data.Bike.Id,
-                data.Location.Latitude,
-                data.Location.Longitude,
-                data.QueryTime.ToString("dd/MM HH:mm:ss"));
-            database.RunSession(session => Library.BikeUpdateLocation.InsertLocation(session, data));
+            DataLoader.StartLoad(createDataSource(), true);
         }
     }
 }
