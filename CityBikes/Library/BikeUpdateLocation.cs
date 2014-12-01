@@ -9,7 +9,7 @@ namespace Library
 {
     public static class BikeUpdateLocation
     {
-        private static List<Bike> bikesWithKnownLastLocation = new List<Bike>();
+        private static Dictionary<Bike, GPSData> bikesWithKnownLastLocation = new Dictionary<Bike, GPSData>();
 
         /// <summary>
         /// Inserts new gps_data into database, depending on whether the bike has moved or not
@@ -17,9 +17,9 @@ namespace Library
         /// <param name="newLocation">The updated location to be inserted</param>
         public static void InsertLocation(Database.DatabaseSession session, GPSData newLocation)
         {
-            if (!bikesWithKnownLastLocation.Contains(newLocation.Bike))
+            if (!bikesWithKnownLastLocation.ContainsKey(newLocation.Bike))
             {
-                bikesWithKnownLastLocation.Add(newLocation.Bike);
+                bikesWithKnownLastLocation.Add(newLocation.Bike, newLocation);
                 if (!session.ExecuteRead("SELECT bikeId, latitude, longitude, accuracy, queried, hasNotMoved FROM citybike_test.gps_data WHERE bikeId = {0} ORDER BY queried DESC", newLocation.Bike.Id).Any())
                 {
                     session.Execute("INSERT INTO gps_data (bikeId, latitude, longitude, accuracy, queried, hasNotMoved) VALUES{0}", formatGPS(newLocation));
@@ -27,12 +27,14 @@ namespace Library
                 }
             }
 
-            var latestLocation = newLocation.Bike.LatestGPSData(session);
+            var latestLocation = bikesWithKnownLastLocation[newLocation.Bike];
 
             if (GPSData.WithinAccuracy(newLocation, latestLocation))
                 session.Execute("UPDATE gps_data SET hasNotMoved=true WHERE bikeId={0}", newLocation.Bike.Id);
             else
                 session.Execute("INSERT INTO gps_data (bikeId, latitude, longitude, accuracy, queried, hasNotMoved) VALUES{0}", formatGPS(newLocation));
+
+            bikesWithKnownLastLocation[newLocation.Bike] = newLocation;
         }
 
         private static string formatGPS(GPSData data)
