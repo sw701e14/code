@@ -1,4 +1,5 @@
-﻿using DataLoading.LocationSource;
+﻿using DataLoading.Common;
+using DataLoading.LocationSource;
 using Library;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace DataLoading.DataCollector
 
             DateTime start = DateTime.Now.Date.AddDays(-1);
 
-            return new MultiDataSource(bikes.Select(b => new NoFutureDataSource(GoogleDataSource.GetSource(b, start, int.MaxValue))));
+            return new MultiDataSource(bikes.Select(b => new NoFutureDataSource(GoogleDataSource.GetSource(b.Id, start, int.MaxValue))));
         }
 
         static void Main(string[] args)
@@ -69,8 +70,8 @@ namespace DataLoading.DataCollector
             {
                 var data = dataSource.GetData();
 
-                if (data.HasValue)
-                    InsertIntoDB(data.Value);
+                if (data != null)
+                    InsertIntoDB(new GPSData(new Bike(data.BikeId), new GPSLocation(data.Latitude, data.Longitude), data.Accuracy, data.Timestamp));
                 else
                     Thread.Sleep(SLEEP_MILLISECONDS);
             }
