@@ -22,28 +22,28 @@ namespace Webservice.Controllers
         /// <returns>The bikes.</returns>
         [Route("")]
         [HttpGet]
-        [ResponseType(typeof(bikes))]
+        [ResponseType(typeof(AllBikes))]
         public HttpResponseMessage getAll()
         {
             Database context = new Database();
 
             Tuple<Bike, DateTime, bool>[] immobileSinceTimes = context.RunSession(session => Library.BikeStandstill.GetBikesImmobile(session));
 
-            bikes bikeResources = new bikes();
+            AllBikes bikeResources = new AllBikes();
             int bikeCount = 0;
             foreach (Tuple<Bike, GPSLocation> item in context.RunSession(session => session.GetBikeLocations()))
             {
                 bikeCount++;
-                bikeResources.bikeList.Add(new Webservice.Models.AllBikes.bikes.bike()
+                bikeResources.bikes.Add(new Webservice.Models.AllBikes.bike()
                 {
                     id = item.Item1.Id,
-                    latitude = item.Item2.Latitude.ToString(),
-                    longtitude = item.Item2.Longitude.ToString(),
-                    immobileSince = immobileSinceTimes.Where(x => x.Item1.Id == item.Item1.Id).FirstOrDefault().Item2.ToString()
+                    latitude = item.Item2.Latitude,
+                    longtitude = item.Item2.Longitude,
+                    immobileSince = immobileSinceTimes.Where(x => x.Item1.Id == item.Item1.Id).FirstOrDefault().Item2
                 });
             }
             bikeResources.count = bikeCount;
-            bikeResources.bikeList = bikeResources.bikeList.OrderBy(x => x.id).ToList();
+            bikeResources.bikes = bikeResources.bikes.OrderBy(x => x.id).ToList();
 
             return Request.CreateResponse(HttpStatusCode.OK, bikeResources);
         }
@@ -65,7 +65,7 @@ namespace Webservice.Controllers
             if (bikeLocation == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
-            bike bikeResource = new bike() { id = bikeId, latitude = bikeLocation.Latitude, longitude = bikeLocation.Longitude, immobileSince = immobileSinceTimes.Where(x => x.Item1.Id == bikeId).FirstOrDefault().Item2 };
+            bike bikeResource = new bike() { id = bikeId, latitude = bikeLocation.Latitude, longtitude = bikeLocation.Longitude, immobileSince = immobileSinceTimes.Where(x => x.Item1.Id == bikeId).FirstOrDefault().Item2 };
 
             return Request.CreateResponse(HttpStatusCode.OK, bikeResource);
         }
