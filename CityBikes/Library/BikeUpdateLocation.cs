@@ -30,7 +30,15 @@ namespace Library
             var latestLocation = bikesWithKnownLastLocation[newLocation.Bike];
 
             if (GPSData.WithinAccuracy(newLocation, latestLocation))
-                session.Execute("UPDATE gps_data SET hasNotMoved=true WHERE bikeId={0}", newLocation.Bike.Id);
+                session.Execute(
+@"UPDATE gps_data a
+INNER JOIN
+(
+    SELECT  bikeId, MAX(id) id
+    FROM    gps_data
+    GROUP   BY bikeId
+) b ON  a.id = b.id AND {0} = b.bikeId
+SET a.hasNotMoved = '1'", newLocation.Bike.Id);
             else
                 session.Execute("INSERT INTO gps_data (bikeId, latitude, longitude, accuracy, queried, hasNotMoved) VALUES{0}", formatGPS(newLocation));
 
