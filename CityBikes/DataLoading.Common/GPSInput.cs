@@ -43,6 +43,32 @@ namespace DataLoading.Common
         }
 
         /// <summary>
+        /// Adds random the noise (within accuracy) to a <see cref="GPSInput"/> node.
+        /// Applying this method to the same instance multiple times could result in errors.
+        /// </summary>
+        public void AddNoise()
+        {
+            double angle = rnd.NextDouble() * 2 * Math.PI;
+            double distance = rnd.NextDouble() * (double)accuracy;
+            distance /= 1000.0;
+
+            int R = 6371; // earth radius in km
+            double δ = distance / R;
+
+            double oldLatitide = (Math.PI * (double)latitude) / 180;
+            double oldLongitude = (Math.PI * (double)longitude) / 180;
+
+            double newLatitude = Math.Asin(Math.Sin((double)oldLatitide) * Math.Cos(δ) + Math.Cos(angle) * Math.Sin(δ) * Math.Cos(angle));
+            double newLongitude = (double)oldLongitude + Math.Atan2(Math.Sin(angle) * Math.Sin(δ) * Math.Cos((double)oldLatitide), Math.Cos(δ) - Math.Sin((double)oldLatitide) * Math.Sin(newLatitude));
+
+            newLatitude = (180 * newLatitude) / Math.PI;
+            newLongitude = (180 * newLongitude) / Math.PI;
+
+            this.latitude = (decimal)newLatitude;
+            this.longitude = (decimal)newLongitude;
+        }
+
+        /// <summary>
         /// Gets the identifier for the bike that this GPS data is associated with.
         /// </summary>
         public uint BikeId

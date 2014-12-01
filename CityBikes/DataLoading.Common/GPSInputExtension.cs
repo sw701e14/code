@@ -1,11 +1,12 @@
-﻿using Library;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace DataLoading.Common
 {
    public static class GPSInputExtension
    {
+       private static Random r = new Random();
+       
        public static IEnumerable<GPSData> ConvertToInterval(this IEnumerable<GPSData> route, TimeSpan interval)
        {
            if (route == null)
@@ -61,21 +62,6 @@ namespace DataLoading.Common
                return lp.Location;
        }
 
-       
-       private static Random r = new Random();
-       public static GPSData Randomize(this GPSData point)
-       {
-           double angle = r.NextDouble() * 2 * Math.PI;
-           double distance = r.NextDouble() * (double)point.Accuracy;
 
-           distance /= 1000.0; // Conversion to kilometers
-
-           return new GPSData(point.Bike, GPSLocation.Move(point.Location, angle, distance), point.Accuracy, point.QueryTime, point.HasNotMoved);
-       }
-       public static IEnumerable<GPSData> Randomize(this IEnumerable<GPSData> points)
-       {
-           foreach (var p in points)
-               yield return Randomize(p);
-       }
     }
 }
