@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace DataLoading.LocationSource
+namespace DataLoading.Common
 {
     public class EnumerationDataSource : IDataSource
     {

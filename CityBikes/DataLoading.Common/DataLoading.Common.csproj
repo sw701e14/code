@@ -39,7 +39,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnumerationDataSource.cs" />
+    <Compile Include="GPSDataExtension.cs" />
     <Compile Include="GPSInput.cs" />
+    <Compile Include="IDataSource.cs" />
+    <Compile Include="MultiDataSource.cs" />
+    <Compile Include="NoFutureDataSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataLoading.LocationSource
+namespace DataLoading.Common
 {
     /// <summary>
     /// Retrives <see cref="GPSData"/> from a collection of data sources by querying each of them one at a time.

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataLoading.LocationSource
+namespace DataLoading.Common
 {
     public class NoFutureDataSource : IDataSource
     {

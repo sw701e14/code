@@ -1,6 +1,6 @@
 ﻿using Library;
 
-namespace DataLoading.LocationSource
+namespace DataLoading.Common
 {
     /// <summary>
     /// Defines methods used to retrieve <see cref="GPSData"/> from a data source.
