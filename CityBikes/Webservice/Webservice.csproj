@@ -161,8 +161,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AllBikes\allBikes.cs" />
-    <Compile Include="Models\AllBikes\bike.cs" />
+    <Compile Include="Models\Bikes\bikes.cs" />
+    <Compile Include="Models\Bikes\bike.cs" />
     <Compile Include="Models\AvailableBikes\availableBike.cs" />
     <Compile Include="Models\AvailableBikes\availableBikes.cs" />
     <Compile Include="Models\Root\RootResource.cs" />

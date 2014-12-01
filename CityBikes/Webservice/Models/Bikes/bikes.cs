@@ -17,7 +17,7 @@ namespace Webservice.Models.AllBikes
 
         public class bike
         {
-            public string id { get; set; }
+            public uint id { get; set; }
             public string latitude { get; set; }
             public string longtitude { get; set; }
 

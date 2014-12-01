@@ -36,13 +36,14 @@ namespace Webservice.Controllers
                 bikeCount++;
                 bikeResources.bikeList.Add(new Webservice.Models.AllBikes.bikes.bike()
                 {
-                    id = item.Item1.Id.ToString(),
+                    id = item.Item1.Id,
                     latitude = item.Item2.Latitude.ToString(),
                     longtitude = item.Item2.Longitude.ToString(),
                     immobileSince = immobileSinceTimes.Where(x => x.Item1.Id == item.Item1.Id).FirstOrDefault().Item2.ToString()
                 });
             }
             bikeResources.count = bikeCount;
+            bikeResources.bikeList = bikeResources.bikeList.OrderBy(x => x.id).ToList();
 
             return Request.CreateResponse(HttpStatusCode.OK, bikeResources);
         }
