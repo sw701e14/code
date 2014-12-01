@@ -52,7 +52,7 @@ SET a.hasNotMoved = '1'", newLocation.Bike.Id);
                 data.Location.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture),
                 data.Location.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture),
                 data.Accuracy,
-                data.QueryTime.ToString("yyyy-MM-dd hh:mm:ss"),
+                data.QueryTime.ToString("yyyy-MM-dd HH:mm:ss"),
                 data.HasNotMoved ? '1' : '0');
         }
     }
