@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataCollector", "DataCollec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataSources", "DataSources\DataSources.csproj", "{7BA32C48-AAB4-41C6-B7A4-94693C3A9614}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLoading.Common", "DataLoading.Common\DataLoading.Common.csproj", "{A4640D97-4D48-420D-864E-F2A119BBF81E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{7BA32C48-AAB4-41C6-B7A4-94693C3A9614}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BA32C48-AAB4-41C6-B7A4-94693C3A9614}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7BA32C48-AAB4-41C6-B7A4-94693C3A9614}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4640D97-4D48-420D-864E-F2A119BBF81E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4640D97-4D48-420D-864E-F2A119BBF81E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4640D97-4D48-420D-864E-F2A119BBF81E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4640D97-4D48-420D-864E-F2A119BBF81E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
