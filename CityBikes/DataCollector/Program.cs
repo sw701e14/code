@@ -46,6 +46,8 @@ namespace DataCollector
 
             database = new Database();
 
+            database.RunSession(s => s.Execute("TRUNCATE citybike_test.gps_data; TRUNCATE citybike_test.bikes; TRUNCATE citybike_test.hotspots"));
+
             knownBikes.AddRange(database.RunSession(session => session.ExecuteRead("SELECT * FROM citybike_test.bikes").Select(row => row.GetBike()).ToArray()));
 
             Thread t = new Thread(o => runDataLoader(o as IDataSource));
