@@ -15,15 +15,15 @@ namespace DataLoading.DataCollector
         private bool shouldExit;
 
         private IDataSource dataSource;
-        private bool prompt;
+        private bool prompt, runall;
 
         private const int SLEEP_MILLISECONDS = 100;
 
         private List<Bike> knownBikes = new List<Bike>();
 
-        public static void StartLoad(IDataSource dataSource, bool prompt)
+        public static void StartLoad(IDataSource dataSource, bool prompt, bool runall)
         {
-            DataLoader loader = new DataLoader(dataSource, prompt);
+            DataLoader loader = new DataLoader(dataSource, prompt, runall);
 
             if (prompt)
             {
@@ -40,9 +40,13 @@ namespace DataLoading.DataCollector
 
             Thread t = new Thread(o => loader.runDataLoader(o as IDataSource));
             t.Start(dataSource);
-            ConsoleKey key = ConsoleKey.A;
-            while (key != ConsoleKey.Q)
-                key = Console.ReadKey(true).Key;
+
+            if (!runall)
+            {
+                ConsoleKey key = ConsoleKey.A;
+                while (key != ConsoleKey.Q)
+                    key = Console.ReadKey(true).Key;
+            }
 
             loader.shouldExit = true;
             while (t.IsAlive) { }
@@ -50,13 +54,14 @@ namespace DataLoading.DataCollector
             loader.database.Dispose();
         }
 
-        private DataLoader(IDataSource dataSource, bool prompt)
+        private DataLoader(IDataSource dataSource, bool prompt, bool runall)
         {
             if (dataSource == null)
                 throw new ArgumentNullException("dataSource");
 
             this.dataSource = dataSource;
             this.prompt = prompt;
+            this.runall = runall;
 
             shouldExit = false;
         }
@@ -69,6 +74,8 @@ namespace DataLoading.DataCollector
 
                 if (data != null)
                     InsertIntoDB(new GPSData(new Bike(data.BikeId), new GPSLocation(data.Latitude, data.Longitude), data.Accuracy, data.Timestamp));
+                else if (runall)
+                    break;
                 else
                     Thread.Sleep(SLEEP_MILLISECONDS);
             }
@@ -82,11 +89,13 @@ namespace DataLoading.DataCollector
                 database.RunSession(session => session.Execute("INSERT INTO citybike_test.bikes (id) VALUES ({0})", data.Bike.Id));
             }
 
-            Console.WriteLine("Bike {0:000} at ({1:0.0000}, {2:0.0000}) at {3}.",
-                data.Bike.Id,
-                data.Location.Latitude,
-                data.Location.Longitude,
-                data.QueryTime.ToString("dd/MM HH:mm:ss"));
+            if (prompt)
+                Console.WriteLine("Bike {0:000} at ({1:0.0000}, {2:0.0000}) at {3}.",
+                    data.Bike.Id,
+                    data.Location.Latitude,
+                    data.Location.Longitude,
+                    data.QueryTime.ToString("dd/MM HH:mm:ss"));
+
             database.RunSession(session => Library.BikeUpdateLocation.InsertLocation(session, data));
         }
     }
