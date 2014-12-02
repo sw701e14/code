@@ -157,6 +157,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\BikesController.cs" />
     <Compile Include="Controllers\AvailableBikesController.cs" />
+    <Compile Include="Controllers\HotspotsController.cs" />
     <Compile Include="Controllers\RootController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -165,6 +166,9 @@
     <Compile Include="Models\Bikes\bike.cs" />
     <Compile Include="Models\AvailableBikes\availableBike.cs" />
     <Compile Include="Models\AvailableBikes\availableBikes.cs" />
+    <Compile Include="Models\Hotspots\coordinate.cs" />
+    <Compile Include="Models\Hotspots\hotspot.cs" />
+    <Compile Include="Models\Hotspots\hotspots.cs" />
     <Compile Include="Models\Root\RootResource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
