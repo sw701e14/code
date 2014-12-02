@@ -104,6 +104,14 @@ namespace DataLoading.LocationSource
                 {
                     xmlDoc = XDocument.Load(responseStream);
                 }
+                var status = xmlDoc.Element("DirectionsResponse").Element("status").Value;
+
+                if (status != "OK")
+                {
+                    response.Dispose();
+                    System.Threading.Thread.Sleep(500);
+                    goto retry;
+                }
             }
             catch (WebException e)
             {
