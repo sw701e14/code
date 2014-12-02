@@ -519,14 +519,14 @@
         </member>
         <member name="T:Webservice.Controllers.HotspotsController">
             <summary>
-            Publicly available methods for getting available bikes' locations.
+            Publicly available methods for getting all hotspots.
             </summary>
         </member>
         <member name="M:Webservice.Controllers.HotspotsController.getAll">
             <summary>
-            Get list of available bikes.
+            Get list of hotspots.
             </summary>
-            <returns>The bikes.</returns>
+            <returns>The hotspots.</returns>
         </member>
         <member name="T:Webservice.Controllers.RootController">
             <summary>
