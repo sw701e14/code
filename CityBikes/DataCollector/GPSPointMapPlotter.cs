@@ -38,7 +38,7 @@ namespace DataLoading.DataCollector
             if (session == null)
                 throw new ArgumentNullException();
 
-            GPSData[] data = session.ExecuteRead("SElECT * FROM citybike_test.gps_data").Select(r => r.GetGPSData(1)).ToArray();
+            GPSData[] data = session.ExecuteRead("SELECT * FROM citybike_test.gps_data").Select(r => r.GetGPSData(1)).ToArray();
 
             SaveMapAsHtml(data);
         }
