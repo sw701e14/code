@@ -22,7 +22,7 @@ namespace Webservice.Controllers
         /// <returns>The hotspots.</returns>
         [Route("")]
         [HttpGet]
-        [ResponseType(typeof(AllHotspots))]
+        [ResponseType(typeof(allHotspots))]
         public HttpResponseMessage getAll()
         {
             Database context = new Database();
@@ -33,7 +33,7 @@ namespace Webservice.Controllers
             context.RunSession(session => session.CreateHotspot(locs, false));
             */
 
-            AllHotspots hotspotResources = new AllHotspots();
+            allHotspots hotspotResources = new allHotspots();
             int hotspotsCount = 0;
             foreach (Hotspot item in context.RunSession(session => session.GetAllHotspots()))
             {

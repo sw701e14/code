@@ -9,7 +9,7 @@ namespace Webservice.Models.AvailableBikes
     public class availableBike
     {
         public long id { get; set; }
-        public GPSLocation? location { get; set; }
+        public GPSLocation location { get; set; }
 
         public availableBike(long bikeId) 
         {
