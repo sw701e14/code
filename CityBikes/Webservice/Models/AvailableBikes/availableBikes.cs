@@ -17,7 +17,6 @@ namespace Webservice.Models.AvailableBikes
 
         public class availableBike
         {
-            public long id { get; set; }
             public string href { get; set; }
 
             public availableBike() { }

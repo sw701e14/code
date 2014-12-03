@@ -170,7 +170,7 @@ namespace Library
         /// <param name="gps1">The first location to use in the calculation.</param>
         /// <param name="gps2">The second location to use in the calculation.</param>
         /// <returns>The distance (in meters) between the two locations.</returns>
-        /// <remarks>Implemented using the description at http://www.movable-type.co.uk/scripts/latlong.html</remarks>
+        /// <remarks>Implemented using the description at http://www.movable-type.co.uk/scripts/latlong.html </remarks>
         public static double GetDistance(GPSLocation gps1, GPSLocation gps2)
         {
             var φ1 = degreeToRadians(gps1.latitude);
