@@ -344,6 +344,27 @@ namespace Shared.DAL
                 return new Hotspot(points);
             }
 
+            public Matrix GetMatrix(int column = 0)
+            {
+                object item = data[column + tupleIndexShift];
+
+                MemoryStream stream = new MemoryStream((byte[])item);
+                BinaryReader reader = new BinaryReader(stream);
+
+                int w = reader.ReadInt32();
+                int h = reader.ReadInt32();
+
+                double[,] m = new double[w, h];
+                for (int y = 0; y < h; y++)
+                    for (int x = 0; x < w; x++)
+                        m[x, y] = reader.ReadDouble();
+
+                reader.Close();
+                reader.Dispose();
+
+                return new Matrix(m);
+            }
+
             /// <summary>
             /// Converts the row into a <see cref="Tuple"/> where each element corresponds to a column.
             /// </summary>
