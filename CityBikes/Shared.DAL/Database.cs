@@ -129,7 +129,7 @@ namespace Shared.DAL
             /// <param name="query">The query that should be executed.</param>
             /// <param name="args">An object array that contains zero or more objects to format.</param>
             /// <returns>A <see cref="RowCollection"/> element from which data can be read.</returns>
-            public RowCollection ExecuteRead(string query, params object[] args)
+            internal RowCollection ExecuteRead(string query, params object[] args)
             {
                 if (!query.ToLower().Trim().StartsWith("select"))
                     throw new ArgumentException("ExecuteRead must be performed with a SELECT query. Use Execute instead.");
@@ -144,7 +144,7 @@ namespace Shared.DAL
             /// <param name="query">The query that should be executed.</param>
             /// <param name="args">An object array that contains zero or more objects to format.</param>
             /// <returns>The number of affected rows.</returns>
-            public int Execute(string query, params object[] args)
+            internal int Execute(string query, params object[] args)
             {
                 if (query.ToLower().Trim().StartsWith("select"))
                     throw new ArgumentException("Execute cannot be performed with a SELECT query. Use ExecuteRead instead.");
