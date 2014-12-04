@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Shared.DAL;
 using Shared.DTO;
 
-namespace Webservice.Model
+namespace Webservice.Models
 {
     public static class BikesNearby
     {

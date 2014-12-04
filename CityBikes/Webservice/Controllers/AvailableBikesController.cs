@@ -7,6 +7,8 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Library;
 using Webservice.Models.AvailableBikes;
+using Shared.DAL;
+using Shared.DTO;
 
 namespace Webservice.Controllers
 {
@@ -22,17 +24,15 @@ namespace Webservice.Controllers
         /// <returns>The bikes.</returns>
         [Route("")]
         [HttpGet]
-        [ResponseType(typeof(availableBikes))]
+        [ResponseType(typeof(AvailableBikes))]
         public HttpResponseMessage getAll()
         {
-            Database context = new Database();
-
-            availableBikes bikeResources = new availableBikes();
+            AvailableBikes bikeResources = new AvailableBikes();
             int bikeCount = 0;
-            foreach (Tuple<Bike, GPSLocation> item in context.RunSession(session => session.GetAvailableBikes()))
+            foreach (Tuple<Bike, GPSLocation> item in Webservice.Models.AvailableBikes.AvailableBikes.GetAvailableBikes())
             {
                 bikeCount++;
-                bikeResources.bikes.Add(new Webservice.Models.AvailableBikes.availableBikes.availableBike() { href = item.Item1.Id.ToString() } );
+                bikeResources.bikes.Add(new Webservice.Models.AvailableBikes.AvailableBikes.availableBike() { href = item.Item1.Id.ToString() } );
             }
             bikeResources.count = bikeCount;
 
@@ -48,14 +48,13 @@ namespace Webservice.Controllers
         [HttpGet]
         public HttpResponseMessage get(long bikeId)
         {
-            Database context = new Database();
-            var bikeLocation = context.RunSession(session => session.GetAvailableBikes()).Where(x => x.Item1.Id == bikeId).FirstOrDefault();
+            var bikeLocation = Webservice.Models.AvailableBikes.AvailableBikes.GetAvailableBikes().Where(x => x.Item1.Id == bikeId).FirstOrDefault();
 
 
             if (bikeLocation == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
-            availableBike bikeResource = new availableBike() { id = bikeLocation.Item1.Id, latitude = bikeLocation.Item2.Latitude, longitude = bikeLocation.Item2.Longitude };
+            AvailableBike bikeResource = new AvailableBike() { id = bikeLocation.Item1.Id, latitude = bikeLocation.Item2.Latitude, longitude = bikeLocation.Item2.Longitude };
 
             return Request.CreateResponse(HttpStatusCode.OK, bikeResource);
         }

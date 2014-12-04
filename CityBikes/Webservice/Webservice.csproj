@@ -160,9 +160,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AvailableBikes.cs" />
-    <Compile Include="Models\AvailableBikes\availableBike.cs" />
-    <Compile Include="Models\AvailableBikes\availableBikes.cs" />
+    <Compile Include="Models\AvailableBikes\AvailableBike.cs" />
+    <Compile Include="Models\AvailableBikes\AvailableBikes.cs" />
     <Compile Include="Models\BikesNearby.cs" />
     <Compile Include="Models\BikeUpdateLocation.cs" />
     <Compile Include="Models\GetMarkov.cs" />
