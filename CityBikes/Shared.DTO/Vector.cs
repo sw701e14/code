@@ -9,7 +9,6 @@ namespace Shared.DTO
     public struct Vector
     {
         private readonly double[] data;
-        private readonly int size;
 
         public Vector(double[] data)
         {
@@ -19,10 +18,18 @@ namespace Shared.DTO
             if (data.Length <= 0)
                 throw new ArgumentOutOfRangeException("data", "The size of a vector must be greater than zero. It cannot be constructed from an empty array.");
 
-            this.size = data.Length;
-
-            this.data = new double[size];
+            this.data = new double[data.Length];
             data.CopyTo(this.data, 0);
+        }
+
+        public double this[int index]
+        {
+            get { return data[index]; }
+        }
+
+        public int Length
+        {
+            get { return data.Length; }
         }
     }
 }
