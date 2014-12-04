@@ -62,9 +62,9 @@ INNER JOIN (
             return rows.Select(row => row.ToTuple<Bike, GPSLocation>()).ToArray();
         }
 
-        public static Hotspot[] GetAllHotspots()
+        public static List<Hotspot> GetAllHotspots()
         {
-            return Database.RunCommand(session => session.ExecuteRead("SELECT convex_hull FROM hotspots").Select(row => row.GetHotspot()).ToArray());
+            return Database.RunCommand(session => session.ExecuteRead("SELECT convex_hull FROM hotspots").Select(row => row.GetHotspot()).ToList());
         }
 
         public static bool BikeExists(int bikeId)

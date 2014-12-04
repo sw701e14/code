@@ -15,6 +15,7 @@ namespace Shared.DTO
     {
         private GPSLocation[] dataPoints;
 
+        public GPSLocation[] DataPoints { get { return dataPoints; } }
         // Hotspots cannot be created directly - they can only be saved to/read from the database.
         public Hotspot(GPSLocation[] dataPoints)
         {

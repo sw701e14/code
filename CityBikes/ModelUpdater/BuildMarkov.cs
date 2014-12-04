@@ -13,7 +13,7 @@ namespace Library
 {
     public class BuildMarkov
     {
-        private List<GPSLocation[]> hotspots;
+        private List<Hotspot> hotspots;
 
         /// <summary>
         /// Builds markov chains from the data in the database specified
@@ -31,8 +31,11 @@ namespace Library
             //             group gps_data by gps_data.bikeId into bike
             //             select bike;
 
-            var routes = new List<GPSData[]>();
-            throw new NotImplementedException("Waiting for implementation of a database extension method that gets all hotspots");
+            var routes = new ;
+            throw new NotImplementedException("hent ruter ind fra db");
+            
+            
+            hotspots = Shared.DAL.SelectQueries.GetAllHotspots();
 
             MarkovChain mc = new MarkovChain(hotspots.Count() * 2);
 
@@ -48,7 +51,7 @@ namespace Library
                         var v = hotspots.Where(x => IsInConvexHull(x, gps_data));
                         if (v.Count() > 1)
                             throw new InvalidOperationException("a point should not be able to be in more than one hotspot at a time");
-                        GPSLocation[] h = v.First();
+                        Hotspot h = v.First();
                         if (oldIndex == -1)
                             oldIndex = getHotspotIndex(h, hotspots);
                         else
@@ -87,7 +90,7 @@ namespace Library
         /// <param name="hotspot">The hotspot.</param>
         /// <param name="hotspots">The hotspots.</param>
         /// <returns></returns>
-        private int getHotspotIndex(GPSLocation[] hotspot, List<GPSLocation[]> hotspots)
+        private int getHotspotIndex(Hotspot hotspot, List<Hotspot> hotspots)
         {
             return hotspots.IndexOf(hotspot) * 2;
         }
@@ -98,7 +101,7 @@ namespace Library
         /// <param name="hotspot">The hotspot.</param>
         /// <param name="hotspots">The hotspots.</param>
         /// <returns>The index of the indice that represents that a hot spot has been left.</returns>
-        private int getHotSpotLeftIndex(GPSLocation[] hotspot, List<GPSLocation[]> hotspots)
+        private int getHotSpotLeftIndex(Hotspot hotspot, List<Hotspot> hotspots)
         {
             return hotspots.IndexOf(hotspot) * 2 + 1;
         }
@@ -109,11 +112,12 @@ namespace Library
         /// <param name="polygon">The polygon.</param>
         /// <param name="testPoint">The test point.</param>
         /// <returns>true if testPoint is in the hotspot</returns>
-        private bool IsInConvexHull(GPSLocation[] polygon, GPSData testPoint)
+        private bool IsInConvexHull(Hotspot hotspot, GPSData testPoint)
         {
             //inspired by http://stackoverflow.com/a/14998816
             bool result = false;
-            int j = polygon.Count() - 1;
+            GPSLocation[] polygon = hotspot.DataPoints;
+            int j = polygon .Count() - 1;
             for (int i = 0; i < polygon.Count(); i++)
             {
                 if (polygon[i].Latitude < testPoint.Location.Latitude && polygon[j].Latitude >= testPoint.Location.Latitude || polygon[j].Latitude < testPoint.Location.Latitude && polygon[i].Latitude >= testPoint.Location.Latitude)
