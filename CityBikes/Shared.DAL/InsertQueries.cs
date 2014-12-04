@@ -13,14 +13,6 @@ namespace Shared.DAL
 {
     public static class InsertQueries
     {
-        public static void InsertMarkovChain(Database.DatabaseSession session, MarkovChain markovChain)
-        {
-            MySqlCommand cmd = new MySqlCommand("INSERT INTO markov_chains (mc) VALUES(@data)");
-            cmd.Parameters.Add("@data", MySqlDbType.MediumBlob).Value = markovChain.serializeMarkovChain();
-
-            session.Execute(cmd);
-        }
-
         public static void InsertGPSData(this Database.DatabaseSession session, GPSData newLocation)
         {
              session.Execute("INSERT INTO gps_data (bikeId, latitude, longitude, accuracy, queried, hasNotMoved) VALUES{0}", formatGPS(newLocation));
@@ -65,9 +57,10 @@ namespace Shared.DAL
                     for (int x = 0; x < matrix.Width; x++)
                         writer.Write(matrix[x, y]);
 
-                /* INSERT INTO */
+                MySqlCommand cmd = new MySqlCommand("INSERT INTO markov_chains (mc) VALUES(@data)");
+                cmd.Parameters.Add("@data", MySqlDbType.MediumBlob).Value = ms.ToArray();
+                session.Execute(cmd);
             }
-            throw new NotImplementedException();
         }
 
         public static void InsertBike(this Database.DatabaseSession session,uint bikeId)
