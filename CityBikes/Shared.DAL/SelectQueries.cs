@@ -18,9 +18,9 @@ namespace Shared.DAL
 
         public byte[] AllMarkovChains(int column)
         {
-            var serializedMarkovChain = Database.RunCommand(session=>session.ExecuteRead("SELECT mc FROM markov_chains"));
+            var serializedMarkovChain = Database.RunCommand(session => session.ExecuteRead("SELECT mc FROM markov_chains"));
             byte[] data = serializedMarkovChain.ElementAt(column).GetValue<byte[]>();
-            
+
             return data;
         }
 
@@ -32,13 +32,13 @@ namespace Shared.DAL
         /// <returns>The GPSLocation of the bike with <paramref name="id"/>.</returns>
         public GPSLocation GetBikeLocation(long id)
         {
-            var rows = Database.RunCommand(session=>
+            var rows = Database.RunCommand(session =>
             session.ExecuteRead(
 @"SELECT latitude, longitude
 FROM citybike_test.gps_data
 WHERE bikeId = {0}
 ORDER BY queried desc", id));
-            
+
             return rows.First().GetValue<GPSLocation>();
         }
 
@@ -59,8 +59,13 @@ INNER JOIN (
     GROUP BY bikeId
 ) g2 ON g1.bikeId = g2.bikeId AND g1.queried = g2.MaxDate"));
 
-            
+
             return rows.Select(row => row.ToTuple<Bike, GPSLocation>()).ToArray();
+        }
+
+        public Hotspot[] GetAllHotspots()
+        {
+            return Database.RunCommand(session => session.ExecuteRead("SELECT convex_hull FROM hotspots").Select(row => row.GetHotspot()).ToArray());
         }
 
     }

@@ -190,12 +190,6 @@ namespace Shared.DAL
                 return hotspot;
             }
 
-            public Hotspot[] GetAllHotspots()
-            {
-                return ExecuteRead("SELECT convex_hull FROM hotspots").Select(row => row.GetHotspot()).ToArray();
-            }
-            
-        
             internal int Execute(MySqlCommand command)
             {
                 if (command == null)
