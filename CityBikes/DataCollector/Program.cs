@@ -34,8 +34,7 @@ namespace DataLoading.DataCollector
             menu.Add("Clear data", clearData);
             menu.Add("Generate map from DB", () =>
             {
-                using (Database db = new Database())
-                    db.RunSession(s => GPSPointMapPlotter.SaveMapAsHtml(s));
+                    GPSPointMapPlotter.SaveMapAsHtml();
             });
             menu.Add("Start a server simulation", simulate);
 

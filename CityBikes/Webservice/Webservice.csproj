@@ -164,7 +164,6 @@
     <Compile Include="Models\AvailableBikes\AvailableBikes.cs" />
     <Compile Include="Models\BikesNearby.cs" />
     <Compile Include="Models\BikeUpdateLocation.cs" />
-    <Compile Include="Models\GetMarkov.cs" />
     <Compile Include="Models\Root\RootResource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

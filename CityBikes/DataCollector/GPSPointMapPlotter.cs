@@ -35,13 +35,10 @@ namespace DataLoading.DataCollector
         /// Saves the map as a HTML-file in working directory.
         /// </summary>
         /// <param name="session">The <see cref="Database.DatabaseSession"/> used to load gps data.</param>
-        public static void SaveMapAsHtml(Database.DatabaseSession session)
+        public static void SaveMapAsHtml()
         {
-            if (session == null)
-                throw new ArgumentNullException();
-
-            GPSData[] data = session.ExecuteRead("SELECT * FROM citybike_test.gps_data").Select(r => r.GetGPSData(1)).ToArray();
-
+            GPSData[] data = Shared.DAL.SelectQueries.GetAllGPSData();
+                
             SaveMapAsHtml(data);
         }
 
