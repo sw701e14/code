@@ -12,5 +12,10 @@ namespace Shared.DAL
         {
            Database.RunCommand(session=>session.Execute("TRUNCATE citybike_test.gps_data; TRUNCATE citybike_test.bikes; TRUNCATE citybike_test.hotspots"));
         }
+
+        public static void TruncateGPS_data()
+        {
+            Database.RunCommand(session=>session.Execute("TRUNCATE TABLE gps_data"));
+        }
     }
 }

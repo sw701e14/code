@@ -45,8 +45,8 @@ namespace DataLoading.DataCollector
 
         static void clearData()
         {
-            using (Database database = new Database())
-                database.RunSession(session => session.Execute("TRUNCATE TABLE gps_data"));
+            Shared.DAL.DeleteQueries.TruncateGPS_data();
+                
         }
         static void loadData()
         {
