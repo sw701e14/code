@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Shared.DTO;
 using Shared.DAL;
 
-namespace Webservice.Model
+namespace Webservice.Models
 {
     public static class BikeUpdateLocation
     {

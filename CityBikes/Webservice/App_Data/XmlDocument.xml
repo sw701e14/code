@@ -525,7 +525,7 @@
             <param name="gpsLocation">The GPS location from which distance should be measured.</param>
             <returns>A list of bikes and their location sorted by their distance to <paramref name="gpsLocation"/>.</returns>
         </member>
-        <member name="M:Webservice.Model.BikeUpdateLocation.InsertLocation(Shared.DAL.Database.DatabaseSession,Shared.DTO.GPSData)">
+        <member name="M:Webservice.Models.BikeUpdateLocation.InsertLocation(Shared.DAL.Database.DatabaseSession,Shared.DTO.GPSData)">
             <summary>
             Inserts new gps_data into database, depending on whether the bike has moved or not
             </summary>

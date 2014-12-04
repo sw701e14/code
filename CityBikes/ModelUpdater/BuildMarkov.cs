@@ -31,7 +31,7 @@ namespace Library
             //             group gps_data by gps_data.bikeId into bike
             //             select bike;
 
-            var routes = new ;
+            var routes = new List<GPSData[]>();
             throw new NotImplementedException("hent ruter ind fra db");
             
             

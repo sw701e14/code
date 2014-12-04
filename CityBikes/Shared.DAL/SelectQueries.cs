@@ -110,5 +110,6 @@ INNER JOIN (
         {
             return Database.RunCommand(session=>session.ExecuteRead("SELECT * FROM citybike_test.gps_data").Select(r => r.GetGPSData(1)).ToArray());
         }
+
     }
 }
