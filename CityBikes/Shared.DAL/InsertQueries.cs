@@ -18,5 +18,21 @@ namespace Shared.DAL
 
             session.Execute(cmd);
         }
+
+        public static void InsertGPSData(GPSData newLocation)
+        {
+            Database.RunCommand(session=>session.Execute("INSERT INTO gps_data (bikeId, latitude, longitude, accuracy, queried, hasNotMoved) VALUES{0}", formatGPS(newLocation))); 
+        }
+
+        private static string formatGPS(GPSData data)
+        {
+            return string.Format("('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')",
+                data.Bike.Id,
+                data.Location.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                data.Location.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                data.Accuracy,
+                data.QueryTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                data.HasNotMoved ? '1' : '0');
+        }
     }
 }

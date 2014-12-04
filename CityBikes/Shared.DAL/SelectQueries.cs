@@ -67,5 +67,9 @@ INNER JOIN (
             return Database.RunCommand(session => session.ExecuteRead("SELECT convex_hull FROM hotspots").Select(row => row.GetHotspot()).ToArray());
         }
 
+        public static bool BikeExists(int bikeId)
+        {
+            return Database.RunCommand(session => session.ExecuteRead("SELECT bikeId, latitude, longitude, accuracy, queried, hasNotMoved FROM citybike_test.gps_data WHERE bikeId = {0} ORDER BY queried DESC", bikeId).Any());
+        }
     }
 }

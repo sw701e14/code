@@ -7,7 +7,7 @@ using Library;
 using Shared.DTO;
 using Shared.DAL;
 
-namespace Library
+namespace Webservice.Model
 {
     public static class BikeUpdateLocation
     {
@@ -22,9 +22,9 @@ namespace Library
             if (!bikesWithKnownLastLocation.ContainsKey(newLocation.Bike))
             {
                 bikesWithKnownLastLocation.Add(newLocation.Bike, newLocation);
-                if (!session.ExecuteRead("SELECT bikeId, latitude, longitude, accuracy, queried, hasNotMoved FROM citybike_test.gps_data WHERE bikeId = {0} ORDER BY queried DESC", newLocation.Bike.Id).Any())
+                if (!Shared.DAL.SelectQueries.BikeExists((int)newLocation.Bike.Id))
                 {
-                    session.Execute("INSERT INTO gps_data (bikeId, latitude, longitude, accuracy, queried, hasNotMoved) VALUES{0}", formatGPS(newLocation));
+                    newLocation = InsertGPSData(session, newLocation);
                     return;
                 }
             }
@@ -38,11 +38,11 @@ namespace Library
             }
             else
             {
-                session.Execute("INSERT INTO gps_data (bikeId, latitude, longitude, accuracy, queried, hasNotMoved) VALUES{0}", formatGPS(newLocation));
                 bikesWithKnownLastLocation[newLocation.Bike] = newLocation;
             }
         }
 
+        
         private static void setHasNotMoved(Database.DatabaseSession session, Bike bike)
         {
             session.Execute(
@@ -59,15 +59,6 @@ SET a.hasNotMoved = '1'", bike.Id);
             bikesWithKnownLastLocation[bike] = new GPSData(bike, old.Location, old.Accuracy, old.QueryTime, true);
         }
 
-        private static string formatGPS(GPSData data)
-        {
-            return string.Format("('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')",
-                data.Bike.Id,
-                data.Location.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                data.Location.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                data.Accuracy,
-                data.QueryTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                data.HasNotMoved ? '1' : '0');
-        }
+        
     }
 }
