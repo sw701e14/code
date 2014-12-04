@@ -9,9 +9,9 @@ using Shared.DTO;
 
 namespace ModelUpdater
 {
-    class CreateHotspot
+    class Hotspot
     {
-        public static void CreateHotspot(GPSLocation[] data, bool applyConvexHull)
+        public static void Hotspot(GPSLocation[] data, bool applyConvexHull)
         {
             if (applyConvexHull)
                 data = GPSLocation.GetConvexHull(data);

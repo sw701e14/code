@@ -24,7 +24,7 @@ namespace Webservice.Model
                 bikesWithKnownLastLocation.Add(newLocation.Bike, newLocation);
                 if (!Shared.DAL.SelectQueries.BikeExists((int)newLocation.Bike.Id))
                 {
-                    newLocation = Shared.DAL.InsertQueries.InsertGPSData(newLocation);
+                    Shared.DAL.InsertQueries.InsertGPSData(newLocation);
                     return;
                 }
             }
