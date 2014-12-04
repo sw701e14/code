@@ -53,24 +53,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AvailableBikes.cs" />
-    <Compile Include="Bike.cs" />
-    <Compile Include="BikesNearby.cs" />
-    <Compile Include="BikeStandstill.cs" />
-    <Compile Include="AllBikesLocation.cs" />
-    <Compile Include="ClusteringTechniques.cs" />
-    <Compile Include="BikeUpdateLocation.cs" />
-    <Compile Include="Database.cs" />
-    <Compile Include="GPSData.cs" />
-    <Compile Include="GPSLocation.cs" />
-    <Compile Include="BuildMarkov.cs" />
     <Compile Include="Heatmap.cs" />
     <Compile Include="HeatmapImagegenerator.cs">
       <DependentUpon>Heatmap.cs</DependentUpon>
     </Compile>
-    <Compile Include="Hotspot.cs" />
     <Compile Include="MapToIndex.cs" />
-    <Compile Include="MarkovChain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

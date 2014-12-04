@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Library;
+using Shared.DTO;
+using Shared.DAL;
 
 namespace Library
 {

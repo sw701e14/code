@@ -39,8 +39,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="BuildMarkov.cs" />
+    <Compile Include="ClusteringTechniques.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Shared.DAL\Shared.DAL.csproj">
+      <Project>{4af0e08d-5003-43b1-9794-b7ce198e4744}</Project>
+      <Name>Shared.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shared.DTO\Shared.DTO.csproj">
+      <Project>{981276fb-8563-48a0-a54b-d8d95e83e0da}</Project>
+      <Name>Shared.DTO</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

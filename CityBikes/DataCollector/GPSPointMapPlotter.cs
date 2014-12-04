@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Library;
 using System.IO;
+using Shared.DTO;
+using Shared.DAL;
 
 namespace DataLoading.DataCollector
 {

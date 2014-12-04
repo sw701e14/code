@@ -160,8 +160,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AllBikesLocation.cs" />
+    <Compile Include="Models\AvailableBikes.cs" />
     <Compile Include="Models\AvailableBikes\availableBike.cs" />
     <Compile Include="Models\AvailableBikes\availableBikes.cs" />
+    <Compile Include="Models\BikesNearby.cs" />
+    <Compile Include="Models\BikeStandstill.cs" />
+    <Compile Include="Models\BikeUpdateLocation.cs" />
+    <Compile Include="Models\GetMarkov.cs" />
     <Compile Include="Models\Root\RootResource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -200,6 +206,14 @@
     <ProjectReference Include="..\Library\Library.csproj">
       <Project>{0b5c6a5b-dcbf-4f1c-a80e-50c3877bffe5}</Project>
       <Name>Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shared.DAL\Shared.DAL.csproj">
+      <Project>{4af0e08d-5003-43b1-9794-b7ce198e4744}</Project>
+      <Name>Shared.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shared.DTO\Shared.DTO.csproj">
+      <Project>{981276fb-8563-48a0-a54b-d8d95e83e0da}</Project>
+      <Name>Shared.DTO</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

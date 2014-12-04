@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Library
+namespace Shared.DTO
 {
     public struct Bike : IEquatable<Bike>
     {
@@ -46,9 +46,5 @@ namespace Library
             return (int)id;
         }
 
-        public GPSData LatestGPSData(Database.DatabaseSession session)
-        {
-            return session.ExecuteRead("SELECT bikeId, latitude, longitude, accuracy, queried, hasNotMoved FROM citybike_test.gps_data WHERE bikeId = {0} ORDER BY queried DESC", id).First().GetGPSData();
-        }
     }
 }

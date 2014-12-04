@@ -7,6 +7,8 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using Shared.DAL;
+using Shared.DTO;
 
 namespace Library
 {

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Shared.DAL;
+using Shared.DTO;
 
-namespace Library
+namespace Webservice.Model
 {
     public static class AllBikesLocation
     {

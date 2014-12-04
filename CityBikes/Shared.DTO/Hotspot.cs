@@ -1,5 +1,4 @@
-﻿using MySql.Data.MySqlClient;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,7 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Library
+namespace Shared.DTO
 {
     /// <summary>
     /// Represents a hotspot in the system and provides methods for saving/loading hotspots to/from the database.
@@ -17,7 +16,7 @@ namespace Library
         private GPSLocation[] dataPoints;
 
         // Hotspots cannot be created directly - they can only be saved to/read from the database.
-        internal Hotspot(GPSLocation[] dataPoints)
+        public Hotspot(GPSLocation[] dataPoints)
         {
             if (dataPoints == null)
                 throw new ArgumentNullException("dataPoints");
