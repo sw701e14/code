@@ -164,7 +164,6 @@
     <Compile Include="Models\AvailableBikes\availableBike.cs" />
     <Compile Include="Models\AvailableBikes\availableBikes.cs" />
     <Compile Include="Models\BikesNearby.cs" />
-    <Compile Include="Models\BikeStandstill.cs" />
     <Compile Include="Models\BikeUpdateLocation.cs" />
     <Compile Include="Models\GetMarkov.cs" />
     <Compile Include="Models\Root\RootResource.cs" />
