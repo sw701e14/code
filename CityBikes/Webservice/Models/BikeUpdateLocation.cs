@@ -21,9 +21,9 @@ namespace Webservice.Models
             if (!bikesWithKnownLastLocation.ContainsKey(newLocation.Bike))
             {
                 bikesWithKnownLastLocation.Add(newLocation.Bike, newLocation);
-                if (!Shared.DAL.SelectQueries.BikeExists((int)newLocation.Bike.Id))
+                if (!Shared.DAL.SelectQueries.BikeExists(session,(int)newLocation.Bike.Id))
                 {
-                    Shared.DAL.InsertQueries.InsertGPSData(newLocation);
+                    Shared.DAL.InsertQueries.InsertGPSData(session, newLocation);
                     return;
                 }
             }
@@ -43,9 +43,12 @@ namespace Webservice.Models
 
         private static void setHasNotMoved(Bike bike)
         {
-            Shared.DAL.UpdateQueries.setHasNotMoved(bike);
-            var old = bikesWithKnownLastLocation[bike];
-            bikesWithKnownLastLocation[bike] = new GPSData(bike, old.Location, old.Accuracy, old.QueryTime, true);
+            using (Database db = new Database())
+            {
+                db.RunSession(session => session.setHasNotMoved(bike));
+                var old = bikesWithKnownLastLocation[bike];
+                bikesWithKnownLastLocation[bike] = new GPSData(bike, old.Location, old.Accuracy, old.QueryTime, true);
+            }
         }
     }
 }

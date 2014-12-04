@@ -21,9 +21,9 @@ namespace Shared.DAL
             session.Execute(cmd);
         }
 
-        public static void InsertGPSData(GPSData newLocation)
+        public static void InsertGPSData(this Database.DatabaseSession session, GPSData newLocation)
         {
-            Database.RunCommand(session=>session.Execute("INSERT INTO gps_data (bikeId, latitude, longitude, accuracy, queried, hasNotMoved) VALUES{0}", formatGPS(newLocation))); 
+             session.Execute("INSERT INTO gps_data (bikeId, latitude, longitude, accuracy, queried, hasNotMoved) VALUES{0}", formatGPS(newLocation));
         }
 
         private static string formatGPS(GPSData data)
@@ -37,7 +37,7 @@ namespace Shared.DAL
                 data.HasNotMoved ? '1' : '0');
         }
 
-        public static void InsertHotSpot(GPSLocation[] data)
+        public static void InsertHotSpot(this Database.DatabaseSession session, GPSLocation[] data)
         {
 
             Hotspot hotspot = new Hotspot(data);
@@ -50,12 +50,12 @@ namespace Shared.DAL
                 formatter.Serialize(ms, data);
                 cmd.Parameters.Add("@data", MySqlDbType.Blob).Value = ms.ToArray();
             }
-            Database.RunCommand(session=> session.Execute(cmd));
+             session.Execute(cmd);
         }
 
-        public static void InsertBike(uint bikeId)
+        public static void InsertBike(this Database.DatabaseSession session,uint bikeId)
         {
-            Database.RunCommand(session=>session.Execute("INSERT INTO citybike_test.bikes (id) VALUES ({0})", bikeId));
+             session.Execute("INSERT INTO citybike_test.bikes (id) VALUES ({0})", bikeId);
         }
     }
 }

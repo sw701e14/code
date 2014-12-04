@@ -36,9 +36,12 @@ namespace LocationService.DataCollector
         /// <param name="session">The <see cref="Database.DatabaseSession"/> used to load gps data.</param>
         public static void SaveMapAsHtml()
         {
-            GPSData[] data = Shared.DAL.SelectQueries.GetAllGPSData();
-                
-            SaveMapAsHtml(data);
+            using (Database db = new Database())
+            {
+                GPSData[] data = db.RunSession<GPSData[]>(session => session.GetAllGPSData());
+                SaveMapAsHtml(data);
+            }   
+         
         }
 
         /// <summary>
@@ -70,7 +73,7 @@ namespace LocationService.DataCollector
                 location.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture),
                 location.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture));
         }
-        
+
         private void generateHTML(GPSData[] data)
         {
             sb.AppendLine("<!DOCTYPE html>");

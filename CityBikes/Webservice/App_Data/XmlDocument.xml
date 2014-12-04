@@ -514,10 +514,10 @@
             <summary>
             Gets a collection of all the available bikes.
             </summary>
-            <param name="session">A <see cref="!:Database.DatabaseSession"/> from which data should be retrieved.</param>
+            <param name="session">A <see cref="T:Shared.DAL.Database.DatabaseSession"/> from which data should be retrieved.</param>
             <returns>A collection of bikes and their location.</returns>
         </member>
-        <member name="M:Webservice.Models.BikesNearby.GetBikesNearby(Shared.DAL.Database.DatabaseSession,Shared.DTO.GPSLocation)">
+        <member name="M:Webservice.Models.BikesNearby.GetBikesNearby(Shared.DTO.GPSLocation)">
             <summary>
             Gets a sorted list, based on distance, of bikes and their location.
             </summary>
