@@ -97,7 +97,7 @@ namespace DataLoading.DataCollector
                     data.Location.Longitude,
                     data.QueryTime.ToString("dd/MM HH:mm:ss"));
 
-            database.RunSession(session => Library.BikeUpdateLocation.InsertLocation(session, data));
+            Shared.DAL.InsertQueries.InsertGPSData(data);
         }
     }
 }
