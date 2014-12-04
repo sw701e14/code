@@ -34,11 +34,9 @@ namespace DataLoading.DataCollector
                 Console.WriteLine();
             }
 
-            loader.database = new Database();
+            Shared.DAL.DeleteQueries.TruncateAll();
 
-            loader.database.RunSession(s => s.Execute("TRUNCATE citybike_test.gps_data; TRUNCATE citybike_test.bikes; TRUNCATE citybike_test.hotspots"));
-
-            loader.knownBikes.AddRange(loader.database.RunSession(session => session.ExecuteRead("SELECT * FROM citybike_test.bikes").Select(row => row.GetBike()).ToArray()));
+            loader.knownBikes.AddRange(Shared.DAL.SelectQueries.GetBikes());
 
             Thread t = new Thread(o => loader.runDataLoader(o as IDataSource));
             t.Start(dataSource);

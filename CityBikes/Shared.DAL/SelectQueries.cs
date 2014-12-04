@@ -79,7 +79,7 @@ INNER JOIN (
         /// <returns>A collection of bikes, last-use-time and a boolean indicating if their are standing still.</returns>
         public static Tuple<Bike, DateTime, bool>[] GetBikesImmobile()
         {
-            var rows = Database.RunCommand(session=>session.ExecuteRead(
+            var rows = Database.RunCommand(session => session.ExecuteRead(
 @"SELECT g1.bikeId, queried, hasNotMoved
 FROM citybike_test.gps_data g1
 INNER JOIN (
@@ -99,6 +99,11 @@ INNER JOIN (
         public static Tuple<Bike, DateTime, bool>[] GetBikesImmobile(DateTime immobileSince)
         {
             return GetBikesImmobile().Where(b => b.Item2 < immobileSince).ToArray();
+        }
+
+        public static Bike[] GetBikes()
+        {
+            return Database.RunCommand(session => session.ExecuteRead("SELECT * FROM citybike_test.bikes").Select(row => row.GetBike()).ToArray());
         }
     }
 }
