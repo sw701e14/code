@@ -23,7 +23,7 @@ namespace Library
         /// <exception cref="System.InvalidOperationException">
         /// a point should not be able to be in more than one hotspot at a time
         /// </exception>
-        public MarkovChain Build(Database.DatabaseSession session)
+        public MarkovChain Build()
         {
             //hotspots = context.LoadHotSpotsFromDatabase();
 
@@ -31,11 +31,14 @@ namespace Library
             //             group gps_data by gps_data.bikeId into bike
             //             select bike;
 
-            var routes = new List<GPSData[]>();
-            throw new NotImplementedException("hent ruter ind fra db");
-            
-            
-            hotspots = Shared.DAL.SelectQueries.GetAllHotspots();
+            List<GPSData[]> routes;
+
+            using (Database db = new Database())
+            {
+                routes = new List<GPSData[]>();
+                hotspots = db.RunSession(session=>session.GetAllHotspots());
+                throw new NotImplementedException("hent ruter ind fra db");
+            }
 
             MarkovChain mc = new MarkovChain(hotspots.Count() * 2);
 

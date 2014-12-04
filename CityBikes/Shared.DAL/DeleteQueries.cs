@@ -8,14 +8,14 @@ namespace Shared.DAL
 {
     public static class DeleteQueries
     {
-        public static void TruncateAll()
+        public static void TruncateAll(this Database.DatabaseSession session)
         {
-           Database.RunCommand(session=>session.Execute("TRUNCATE citybike_test.gps_data; TRUNCATE citybike_test.bikes; TRUNCATE citybike_test.hotspots"));
+            session.Execute("TRUNCATE citybike_test.gps_data; TRUNCATE citybike_test.bikes; TRUNCATE citybike_test.hotspots");
         }
 
-        public static void TruncateGPS_data()
+        public static void TruncateGPS_data(this Database.DatabaseSession session)
         {
-            Database.RunCommand(session=>session.Execute("TRUNCATE TABLE gps_data"));
+             session.Execute("TRUNCATE TABLE gps_data");
         }
     }
 }

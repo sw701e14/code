@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using Shared.DAL;
 using Shared.DTO;
 
 namespace ModelUpdater
@@ -16,7 +17,10 @@ namespace ModelUpdater
             if (applyConvexHull)
                 data = GPSLocation.GetConvexHull(data);
 
-            Shared.DAL.InsertQueries.InsertHotSpot(data);
+            using (Database db = new Database())
+            {
+                db.RunSession(session=>session.InsertHotSpot(data));
+            }
         }
 
     }

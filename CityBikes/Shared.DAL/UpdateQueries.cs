@@ -9,9 +9,9 @@ namespace Shared.DAL
 {
     public static class UpdateQueries
     {
-        public static void setHasNotMoved(Bike bike)
+        public static void setHasNotMoved(this Database.DatabaseSession session, Bike bike)
         {
-            Database.RunCommand(session=>session.Execute(
+             session.Execute(
 @"UPDATE gps_data a
 INNER JOIN
 (
@@ -19,9 +19,9 @@ INNER JOIN
     FROM    gps_data
     GROUP   BY bikeId
 ) b ON  a.id = b.id AND {0} = b.bikeId
-SET a.hasNotMoved = '1'", bike.Id));
+SET a.hasNotMoved = '1'", bike.Id);
 
-            
+
         }
     }
 }

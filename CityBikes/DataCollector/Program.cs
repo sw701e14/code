@@ -44,7 +44,10 @@ namespace LocationService.DataCollector
 
         static void clearData()
         {
-            Shared.DAL.DeleteQueries.TruncateGPS_data();
+            using (Database db = new Database())
+            {
+                db.RunSession(session=>session.TruncateGPS_data());
+            }
                 
         }
         static void loadData()

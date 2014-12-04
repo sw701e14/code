@@ -32,9 +32,12 @@ namespace LocationService.DataCollector
                 Console.WriteLine();
             }
 
-            Shared.DAL.DeleteQueries.TruncateAll();
+            using (Database db = new Database())
+            {
+                db.RunSession(session=>session.TruncateAll());
 
-            loader.knownBikes.AddRange(Shared.DAL.SelectQueries.GetBikes());
+                loader.knownBikes.AddRange(db.RunSession(session =>session.GetBikes()));
+            }
 
             Thread t = new Thread(o => loader.runDataLoader(o as IDataSource));
             t.Start(dataSource);
@@ -82,19 +85,24 @@ namespace LocationService.DataCollector
         {
             if (!knownBikes.Contains(data.Bike))
             {
-                knownBikes.Add(data.Bike);
-                Shared.DAL.InsertQueries.InsertBike(data.Bike.Id);
-                
+                using (Database db = new Database())
+                {
+                    knownBikes.Add(data.Bike);
+
+                    db.RunSession(session => session.InsertBike(data.Bike.Id));
+
+
+
+                    if (prompt)
+                        Console.WriteLine("Bike {0:000} at ({1:0.0000}, {2:0.0000}) at {3}.",
+                            data.Bike.Id,
+                            data.Location.Latitude,
+                            data.Location.Longitude,
+                            data.QueryTime.ToString("dd/MM HH:mm:ss"));
+
+                    db.RunSession(session => session.InsertGPSData(data));
+                }
             }
-
-            if (prompt)
-                Console.WriteLine("Bike {0:000} at ({1:0.0000}, {2:0.0000}) at {3}.",
-                    data.Bike.Id,
-                    data.Location.Latitude,
-                    data.Location.Longitude,
-                    data.QueryTime.ToString("dd/MM HH:mm:ss"));
-
-            Shared.DAL.InsertQueries.InsertGPSData(data);
         }
     }
 }
