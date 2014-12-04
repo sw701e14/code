@@ -1,5 +1,4 @@
-﻿using MySql.Data.MySqlClient;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -127,79 +126,6 @@ namespace Library
                 j = i;
             }
             return result;
-        }
-
-        /// <summary>
-        /// Serializes a markov chain.
-        /// Creates a byte array with size $MarkovChainElements * ByteSizeOfDouble + 1*ByteSizeOfDouble$
-        /// First 8 bytes (ByteSizeOfDouble) is the size of the MarkovChain. The rest are MarkovChainElementValues group by 8.
-        /// </summary>
-        /// <param name="markovChain">The markov chain.</param>
-        /// <returns>ByteArray with all elements in "markovChain" converted to bytes</returns>
-        private static byte[] serializeMarkovChain(MarkovChain markovChain)
-        {
-            //Markov Chains are always n*n in size
-            int markovChainSize = markovChain.size;
-            int byteSizeOfDouble = 8;
-            int l = 0;
-
-            byte[] serializedMarkovChain = new byte[((markovChainSize * markovChainSize) * byteSizeOfDouble) + byteSizeOfDouble];
-            foreach (byte item in BitConverter.GetBytes((double)markovChainSize))
-            {
-                serializedMarkovChain[l] = item;
-                l++;
-	        }
-
-            for (int i = 0; i < markovChainSize; i++)
-            {
-                for (int j = 0; j < markovChainSize; j++)
-                {
-                    byte[] temp = BitConverter.GetBytes(markovChain[i,j]);
-                    for (int k = 0; k < byteSizeOfDouble; k++)
-                    {
-                        serializedMarkovChain[l] = temp[k];
-                        l++;
-                    }
-                }
-            }
-
-            return serializedMarkovChain;
-        }
-
-        /// <summary>
-        /// Deserializes the markov chain based on structure from "serializeMarkovChain" method.
-        /// </summary>
-        /// <param name="serializedMarkovChain">The serialized markov chain.</param>
-        /// <returns></returns>
-        public static MarkovChain deserializeMarkovChain(byte[] serializedMarkovChain)
-        {
-            int k = 0;
-
-            int markovChainSize = (int)BitConverter.ToDouble(serializedMarkovChain, k);
-            k = k + 8;
-
-            MarkovChain markovChain = new MarkovChain(markovChainSize);
-            
-            for (int i = 0; i < markovChainSize; i++)
-            {
-                for (int j = 0; j < markovChainSize; j++)
-                {
-                    markovChain[i, j] = BitConverter.ToDouble(serializedMarkovChain, k);
-                    k = k + 8;
-                }
-            }
-
-            markovChain.CreateChain();
-            return markovChain;
-        }
-
-
-        public static void InsertMarkovChain(Database.DatabaseSession session, MarkovChain markovChain)
-        {
-            MySqlCommand cmd = new MySqlCommand("INSERT INTO markov_chains (mc) VALUES(@data)");
-            cmd.Parameters.Add("@data", MySqlDbType.MediumBlob).Value = serializeMarkovChain(markovChain);
-
-            session.Execute(cmd);
         }
     }
 }
