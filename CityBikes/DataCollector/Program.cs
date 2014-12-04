@@ -1,5 +1,5 @@
-﻿using DataLoading.Common;
-using DataLoading.LocationSource;
+﻿using LocationService.Common;
+using LocationService.LocationSource;
 using DeadDog.Console;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Threading;
 using Shared.DTO;
 using Shared.DAL;
 
-namespace DataLoading.DataCollector
+namespace LocationService.DataCollector
 {
     class Program
     {

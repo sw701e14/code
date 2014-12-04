@@ -22,7 +22,7 @@ namespace Shared.DAL
         /// <summary>
         /// Initializes a new instance of the <see cref="Database"/> class.
         /// </summary>
-        private Database()
+        public Database()
         {
             Initialize();
         }

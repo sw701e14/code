@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7BA32C48-AAB4-41C6-B7A4-94693C3A9614}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{41615C7B-69C3-4C67-8207-7C352B0C3CE2}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DataLoading.LocationSource</RootNamespace>
-    <AssemblyName>DataLoading.LocationSource</AssemblyName>
+    <RootNamespace>LocationService.DataCollector</RootNamespace>
+    <AssemblyName>DataLoading.DataCollector</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -32,7 +34,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,14 +41,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GoogleDataSource.cs" />
-    <Compile Include="GoogleDirectionsParser.cs" />
+    <Compile Include="DataLoader.cs" />
+    <Compile Include="GPSPointMapPlotter.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DataLoading.Common\DataLoading.Common.csproj">
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataLoading.Common\LocationService.Common.csproj">
       <Project>{a4640d97-4d48-420d-864e-f2a119bbf81e}</Project>
-      <Name>DataLoading.Common</Name>
+      <Name>LocationService.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataSources\LocationService.LocationSource.csproj">
+      <Project>{7ba32c48-aab4-41c6-b7a4-94693c3a9614}</Project>
+      <Name>LocationService.LocationSource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DeadDog\DeadDog.csproj">
+      <Project>{675ab5e0-4637-4e6c-8d38-aa7bb135b5ce}</Project>
+      <Name>DeadDog</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shared.DAL\Shared.DAL.csproj">
+      <Project>{4af0e08d-5003-43b1-9794-b7ce198e4744}</Project>
+      <Name>Shared.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shared.DTO\Shared.DTO.csproj">
+      <Project>{981276fb-8563-48a0-a54b-d8d95e83e0da}</Project>
+      <Name>Shared.DTO</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,4 +1,4 @@
-﻿using DataLoading.Common;
+﻿using LocationService.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Linq;
 
-namespace DataLoading.LocationSource
+namespace LocationService.LocationSource
 {
     /// <summary>
     /// Exposes methods for retrieving <see cref="GPSData"/>s from a Google Directions route.

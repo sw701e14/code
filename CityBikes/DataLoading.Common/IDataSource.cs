@@ -1,4 +1,4 @@
-﻿namespace DataLoading.Common
+﻿namespace LocationService.Common
 {
     /// <summary>
     /// Defines methods used to retrieve <see cref="GPSInput"/> from a data source.

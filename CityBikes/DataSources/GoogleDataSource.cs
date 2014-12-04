@@ -1,4 +1,4 @@
-﻿using DataLoading.Common;
+﻿using LocationService.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DataLoading.LocationSource
+namespace LocationService.LocationSource
 {
     public static class GoogleDataSource
     {

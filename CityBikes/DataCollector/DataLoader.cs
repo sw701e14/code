@@ -1,4 +1,4 @@
-﻿using DataLoading.Common;
+﻿using LocationService.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Shared.DAL;
 using Shared.DTO;
 
-namespace DataLoading.DataCollector
+namespace LocationService.DataCollector
 {
     public class DataLoader
     {

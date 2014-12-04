@@ -7,7 +7,7 @@ using System.IO;
 using Shared.DTO;
 using Shared.DAL;
 
-namespace DataLoading.DataCollector
+namespace LocationService.DataCollector
 {
     /// <summary>
     /// Provides methods that creates a Google Map with plotted in GPS locations.
