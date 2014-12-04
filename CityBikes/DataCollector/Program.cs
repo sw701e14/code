@@ -1,7 +1,6 @@
 ﻿using DataLoading.Common;
 using DataLoading.LocationSource;
 using DeadDog.Console;
-using Library;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +21,7 @@ namespace DataLoading.DataCollector
                 bikes.Add(new Bike(i));
 
             DateTime start = DateTime.Now.Date.AddDays(-1);
-
+                
             return new MultiDataSource(bikes.Select(b => new NoFutureDataSource(GoogleDataSource.GetSource(b.Id, start, int.MaxValue))));
         }
 

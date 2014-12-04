@@ -11,7 +11,7 @@ namespace ModelUpdater
 {
     class Hotspot
     {
-        public static void Hotspot(GPSLocation[] data, bool applyConvexHull)
+        public static void CreateHotspot(GPSLocation[] data, bool applyConvexHull)
         {
             if (applyConvexHull)
                 data = GPSLocation.GetConvexHull(data);

@@ -5,7 +5,6 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using Library;
 using Webservice.Models.AvailableBikes;
 using Shared.DAL;
 using Shared.DTO;

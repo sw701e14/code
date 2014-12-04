@@ -1,5 +1,4 @@
 ﻿using DataLoading.Common;
-using Library;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +12,6 @@ namespace DataLoading.DataCollector
 {
     public class DataLoader
     {
-        private Database database;
         private bool shouldExit;
 
         private IDataSource dataSource;
@@ -51,7 +49,6 @@ namespace DataLoading.DataCollector
             loader.shouldExit = true;
             while (t.IsAlive) { }
 
-            loader.database.Dispose();
         }
 
         private DataLoader(IDataSource dataSource, bool prompt, bool runall)
