@@ -9,7 +9,7 @@ using Shared.DTO;
 
 namespace Shared.DAL
 {
-    public class InsertQueries
+    public static class InsertQueries
     {
         public static void InsertMarkovChain(Database.DatabaseSession session, MarkovChain markovChain)
         {
