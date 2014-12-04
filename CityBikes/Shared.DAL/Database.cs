@@ -46,6 +46,20 @@ namespace Shared.DAL
             connection.Dispose();
         }
 
+        public static T RunCommand<T>(Func<DatabaseSession, T> operation)
+        {
+            T row;
+            using (Database db = new Database())
+                row = db.RunSession(operation);
+            return row;
+        }
+
+        public static void RunCommand(Action<DatabaseSession> operation)
+        {
+            using (Database db = new Database())
+                db.RunSession(operation);
+        }
+
         /// <summary>
         /// Runs a database session by connection to the database, executing <paramref name="operation"/> and disconnecting.
         /// </summary>
@@ -180,9 +194,8 @@ namespace Shared.DAL
             {
                 return ExecuteRead("SELECT convex_hull FROM hotspots").Select(row => row.GetHotspot()).ToArray();
             }
-
             
-
+        
             internal int Execute(MySqlCommand command)
             {
                 if (command == null)
