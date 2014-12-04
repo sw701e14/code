@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="BuildMarkov.cs" />
     <Compile Include="ClusteringTechniques.cs" />
+    <Compile Include="CreateHotspot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
@@ -33,6 +35,22 @@ namespace Shared.DAL
                 data.Accuracy,
                 data.QueryTime.ToString("yyyy-MM-dd HH:mm:ss"),
                 data.HasNotMoved ? '1' : '0');
+        }
+
+        public static void InsertHotSpot(GPSLocation[] data)
+        {
+
+            Hotspot hotspot = new Hotspot(data);
+
+            MySqlCommand cmd = new MySqlCommand("INSERT INTO hotspots (convex_hull) VALUES(@hotspot)");
+
+            BinaryFormatter formatter = new BinaryFormatter();
+            using (MemoryStream ms = new MemoryStream())
+            {
+                formatter.Serialize(ms, data);
+                cmd.Parameters.Add("@data", MySqlDbType.Blob).Value = ms.ToArray();
+            }
+            Database.RunCommand(session=> session.Execute(cmd));
         }
     }
 }

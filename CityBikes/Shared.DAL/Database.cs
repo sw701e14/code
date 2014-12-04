@@ -170,26 +170,6 @@ namespace Shared.DAL
                 return count;
             }
 
-            public Hotspot CreateHotspot(GPSLocation[] data, bool applyConvexHull)
-            {
-                if (applyConvexHull)
-                    data = GPSLocation.GetConvexHull(data);
-
-                MySqlCommand cmd = new MySqlCommand("INSERT INTO hotspots (convex_hull) VALUES(@data)");
-                Hotspot hotspot = new Hotspot(data);
-
-                BinaryFormatter formatter = new BinaryFormatter();
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    formatter.Serialize(ms, data);
-                    cmd.Parameters.Add("@data", MySqlDbType.Blob).Value = ms.ToArray();
-                }
-
-                Execute(cmd);
-
-                return hotspot;
-            }
-
             internal int Execute(MySqlCommand command)
             {
                 if (command == null)
