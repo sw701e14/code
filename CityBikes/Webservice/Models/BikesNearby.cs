@@ -18,7 +18,7 @@ namespace Webservice.Model
         /// <returns>A list of bikes and their location sorted by their distance to <paramref name="gpsLocation"/>.</returns>
         public static IEnumerable<Tuple<Bike, GPSLocation>> GetBikesNearby(this Database.DatabaseSession session, GPSLocation gpsLocation)
         {
-            var bikeList = session.GetBikeLocations().ToList();
+            var bikeList = Shared.DAL.SelectQueries.GetBikeLocations().ToList();
 
             var distances = bikeList.ToDictionary(x => x.Item1, x => x.Item2.DistanceTo(gpsLocation));
             bikeList.Sort((x, y) => distances[x.Item1].CompareTo(distances[y.Item1]));
