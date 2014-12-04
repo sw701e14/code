@@ -17,10 +17,10 @@ namespace Webservice.Model
         /// </summary>
         /// <param name="session">A <see cref="Database.DatabaseSession"/> from which data should be retrieved.</param>
         /// <returns>A collection of bikes and their location.</returns>
-        public static Tuple<Bike, GPSLocation>[] GetAvailableBikes(this Database.DatabaseSession session)
+        public static Tuple<Bike, GPSLocation>[] GetAvailableBikes()
         {
-            Dictionary<Bike, GPSLocation> positions = session.GetBikeLocations().ToDictionary(x => x.Item1, x => x.Item2);
-            Dictionary<Bike, DateTime> immobile = session.GetBikesImmobile().ToDictionary(x => x.Item1, x => x.Item2);
+            Dictionary<Bike, GPSLocation> positions = Shared.DAL.SelectQueries.GetBikeLocations().ToDictionary(x => x.Item1, x => x.Item2);
+            Dictionary<Bike, DateTime> immobile = Shared.DAL.SelectQueries.GetBikesImmobile().ToDictionary(x => x.Item1, x => x.Item2);
 
             var immobileTimeSpan = new TimeSpan(0, IMMOBILE_MINUTES, 0);
             DateTime now = DateTime.Now;
