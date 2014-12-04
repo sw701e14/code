@@ -86,7 +86,8 @@ namespace DataLoading.DataCollector
             if (!knownBikes.Contains(data.Bike))
             {
                 knownBikes.Add(data.Bike);
-                database.RunSession(session => session.Execute("INSERT INTO citybike_test.bikes (id) VALUES ({0})", data.Bike.Id));
+                Shared.DAL.InsertQueries.InsertBike(data.Bike.Id);
+                
             }
 
             if (prompt)

@@ -52,5 +52,10 @@ namespace Shared.DAL
             }
             Database.RunCommand(session=> session.Execute(cmd));
         }
+
+        public static void InsertBike(uint bikeId)
+        {
+            Database.RunCommand(session=>session.Execute("INSERT INTO citybike_test.bikes (id) VALUES ({0})", bikeId));
+        }
     }
 }
