@@ -14,6 +14,7 @@ namespace Webservice.Models.All
 
         public allBikes()
         {
+            bikes = new List<bike>();
             foreach (var b in Data.GetAllBikes().ToList())
             {
                 bikes.Add(b);
