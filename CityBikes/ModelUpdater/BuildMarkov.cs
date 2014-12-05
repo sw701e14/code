@@ -108,31 +108,5 @@ namespace Library
         {
             return hotspots.IndexOf(hotspot) * 2 + 1;
         }
-
-        /// <summary>
-        /// Determines whether testpoint is in the hotspot defined by the specified polygon.
-        /// </summary>
-        /// <param name="polygon">The polygon.</param>
-        /// <param name="testPoint">The test point.</param>
-        /// <returns>true if testPoint is in the hotspot</returns>
-        private bool IsInConvexHull(Hotspot hotspot, GPSData testPoint)
-        {
-            //inspired by http://stackoverflow.com/a/14998816
-            bool result = false;
-            GPSLocation[] polygon = hotspot.DataPoints;
-            int j = polygon .Count() - 1;
-            for (int i = 0; i < polygon.Count(); i++)
-            {
-                if (polygon[i].Latitude < testPoint.Location.Latitude && polygon[j].Latitude >= testPoint.Location.Latitude || polygon[j].Latitude < testPoint.Location.Latitude && polygon[i].Latitude >= testPoint.Location.Latitude)
-                {
-                    if (polygon[i].Longitude + (testPoint.Location.Latitude - polygon[i].Latitude) / (polygon[j].Latitude - polygon[i].Latitude) * (polygon[j].Longitude - polygon[i].Longitude) < testPoint.Location.Longitude)
-                    {
-                        result = !result;
-                    }
-                }
-                j = i;
-            }
-            return result;
-        }
     }
 }
