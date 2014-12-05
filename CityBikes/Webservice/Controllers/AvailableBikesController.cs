@@ -5,7 +5,6 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using Library;
 using Webservice.Models.AvailableBikes;
 
 namespace Webservice.Controllers
@@ -37,13 +36,13 @@ namespace Webservice.Controllers
         /// <returns>The bike.</returns>
         [Route("{bikeId}")]
         [HttpGet]
-        [ResponseType(typeof(availableBike))]
+        [ResponseType(typeof(singleAvailableBike))]
         public HttpResponseMessage get(long bikeId)
         {
-            availableBike bikeResource;
+            singleAvailableBike bikeResource;
             try
             {
-                bikeResource = new availableBike(bikeId);
+                bikeResource = new singleAvailableBike(bikeId);
             }
             catch (NullReferenceException)
             {

@@ -2,30 +2,29 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Library;
+using Shared.DAL;
+using Shared.DTO;
 
 namespace Webservice.Models.AllBikes
 {
-    public class bike
+    public class singleBike
     {
         public long id { get; set; }
-        public GPSLocation location { get; set; }
+        public decimal latitude { get; set; }
+        public decimal longitude { get; set; }
         public DateTime immobileSince { get; set; }
 
-        public bike(long bikeId) 
+        public singleBike(long bikeId) 
         {
-            Database context = new Database();
-            var bikeLocation = context.RunSession(session => session.GetBikeLocation(bikeId));
+            var bike = allBikes.GetAllBikes().Where(x => x.id == bikeId).FirstOrDefault();
 
-            if (bikeLocation == null)
+            if (bike == null)
                 throw new NullReferenceException();
 
-            location = bikeLocation;
-            id = bikeId;
-
-            Tuple<Bike, DateTime, bool>[] immobileSinceTimes = context.RunSession(session => session.GetBikesImmobile());
-
-            immobileSince = immobileSinceTimes.Where(x => x.Item1.Id == id).FirstOrDefault().Item2;
+            latitude = bike.latitude;
+            longitude = bike.longitude;
+            id = bike.id;
+            immobileSince = bike.immobileSince;
         }
     }
 }

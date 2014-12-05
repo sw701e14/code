@@ -539,26 +539,12 @@
             </summary>
             <returns>API version and list of resources.</returns>
         </member>
-        <member name="M:Webservice.Models.AvailableBikes.AvailableBikes.GetAvailableBikes">
+        <member name="M:Webservice.Models.AvailableBikes.availableBikes.GetAvailableBikes">
             <summary>
             Gets a collection of all the available bikes.
             </summary>
             <param name="session">A <see cref="T:Shared.DAL.Database.DatabaseSession"/> from which data should be retrieved.</param>
             <returns>A collection of bikes and their location.</returns>
-        </member>
-        <member name="M:Webservice.Models.BikesNearby.GetBikesNearby(Shared.DTO.GPSLocation)">
-            <summary>
-            Gets a sorted list, based on distance, of bikes and their location.
-            </summary>
-            <param name="session">A <see cref="T:Shared.DAL.Database.DatabaseSession"/> from which data should be retrieved.</param>
-            <param name="gpsLocation">The GPS location from which distance should be measured.</param>
-            <returns>A list of bikes and their location sorted by their distance to <paramref name="gpsLocation"/>.</returns>
-        </member>
-        <member name="M:Webservice.Models.BikeUpdateLocation.InsertLocation(Shared.DAL.Database.DatabaseSession,Shared.DTO.GPSData)">
-            <summary>
-            Inserts new gps_data into database, depending on whether the bike has moved or not
-            </summary>
-            <param name="newLocation">The updated location to be inserted</param>
         </member>
     </members>
 </doc>
