@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shared.DTO
+namespace ModelUpdater
 {
     public class MarkovChain
     {
