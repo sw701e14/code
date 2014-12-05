@@ -13,7 +13,7 @@ namespace Shared.DAL
 {
     public static class InsertQueries
     {
-        public static void InsertMarkovChain(Database.DatabaseSession session, MarkovChain markovChain)
+        public static void InsertMarkovChain(this Database.DatabaseSession session, MarkovChain markovChain)
         {
             MySqlCommand cmd = new MySqlCommand("INSERT INTO markov_chains (mc) VALUES(@data)");
             cmd.Parameters.Add("@data", MySqlDbType.MediumBlob).Value = markovChain.serializeMarkovChain();
@@ -56,6 +56,19 @@ namespace Shared.DAL
         public static void InsertBike(this Database.DatabaseSession session,uint bikeId)
         {
              session.Execute("INSERT INTO citybike_test.bikes (id) VALUES ({0})", bikeId);
+        }
+
+        public static bool TestDatabase(this Database.DatabaseSession session)
+        {
+            if (!System.IO.File.Exists("test_data.sql"))
+            {
+                return false;
+            }
+            string sqlContent = System.IO.File.ReadAllText("test_data.sql");
+
+            session.Execute(sqlContent);
+
+            return true;
         }
     }
 }
