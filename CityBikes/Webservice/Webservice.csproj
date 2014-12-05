@@ -151,16 +151,24 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\BikesController.cs" />
     <Compile Include="Controllers\AvailableBikesController.cs" />
+    <Compile Include="Controllers\HotspotsController.cs" />
     <Compile Include="Controllers\RootController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AvailableBikes\AvailableBike.cs" />
-    <Compile Include="Models\AvailableBikes\AvailableBikes.cs" />
-    <Compile Include="Models\BikesNearby.cs" />
-    <Compile Include="Models\BikeUpdateLocation.cs" />
-    <Compile Include="Models\Root\RootResource.cs" />
+    <Compile Include="Models\availableBike.cs" />
+    <Compile Include="Models\bike.cs" />
+    <Compile Include="Models\Ressources\All\bikes.cs" />
+    <Compile Include="Models\Ressources\All\singleBike.cs" />
+    <Compile Include="Models\Ressources\Available\singleAvailableBike.cs" />
+    <Compile Include="Models\Ressources\Available\availableBikes.cs" />
+    <Compile Include="Models\Data.cs" />
+    <Compile Include="Models\coordinate.cs" />
+    <Compile Include="Models\hotspot.cs" />
+    <Compile Include="Models\Ressources\Hotspots\hotspots.cs" />
+    <Compile Include="Models\Ressources\RootResource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

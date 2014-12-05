@@ -40,6 +40,17 @@ ORDER BY queried desc", id);
             return rows.First().GetValue<GPSLocation>();
         }
 
+        public static GPSData GetBikeGPSData(this Database.DatabaseSession session, long id)
+        {
+            var rows = session.ExecuteRead(
+@"SELECT *
+FROM citybike_test.gps_data
+WHERE bikeId = {0}
+ORDER BY queried desc", id);
+
+            return rows.First().GetValue<GPSData>(1);
+        }
+
         /// <summary>
         /// Gets the latest location of all bikes
         /// </summary>
