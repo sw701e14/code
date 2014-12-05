@@ -67,5 +67,18 @@ namespace Shared.DAL
         {
              session.Execute("INSERT INTO citybike_test.bikes (id) VALUES ({0})", bikeId);
         }
+
+        public static bool TestDatabase(this Database.DatabaseSession session)
+        {
+            if (!System.IO.File.Exists("test_data.sql"))
+            {
+                return false;
+            }
+            string sqlContent = System.IO.File.ReadAllText("test_data.sql");
+
+            session.Execute(sqlContent);
+
+            return true;
+        }
     }
 }

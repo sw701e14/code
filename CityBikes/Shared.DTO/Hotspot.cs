@@ -50,5 +50,10 @@ namespace Shared.DTO
         {
             return Contains(data.Location);
         }
+
+        public GPSLocation[] getDataPoints()
+        {
+            return dataPoints;
+        }
     }
 }

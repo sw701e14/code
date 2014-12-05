@@ -15,12 +15,12 @@ namespace Shared.DAL
             return  session.ExecuteRead("SELECT bikeId, latitude, longitude, accuracy, queried, hasNotMoved FROM citybike_test.gps_data WHERE bikeId = {0} ORDER BY queried DESC", b.Id).First().GetGPSData();
         }
 
-        public static byte[] AllMarkovChains(this Database.DatabaseSession session, int column)
+        public static MarkovChain GetMarkovChain(this Database.DatabaseSession session, int column)
         {
             var serializedMarkovChain =  session.ExecuteRead("SELECT mc FROM markov_chains");
             byte[] data = serializedMarkovChain.ElementAt(column).GetValue<byte[]>();
 
-            return data;
+            return MarkovChain.deserializeMarkovChain(data);
         }
 
         /// <summary>
@@ -38,6 +38,17 @@ WHERE bikeId = {0}
 ORDER BY queried desc", id);
 
             return rows.First().GetValue<GPSLocation>();
+        }
+
+        public static GPSData GetBikeGPSData(this Database.DatabaseSession session, long id)
+        {
+            var rows = session.ExecuteRead(
+@"SELECT *
+FROM citybike_test.gps_data
+WHERE bikeId = {0}
+ORDER BY queried desc", id);
+
+            return rows.First().GetValue<GPSData>(1);
         }
 
         /// <summary>
