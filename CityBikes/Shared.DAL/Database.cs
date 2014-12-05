@@ -71,6 +71,8 @@ namespace Shared.DAL
                 connection.Close();
             }
 
+            
+
             if (error != null)
                 throw error;
         }

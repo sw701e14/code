@@ -35,7 +35,7 @@ namespace LibraryTests
                             dataLoadCancelled = !session.TestDatabase();
 
                             if (dataLoadCancelled == true)
-                                Assert.Inconclusive("test_data.sql file not found. Check that your working directory is the TestData directory.");
+                                Assert.Inconclusive("test_data.sql file not found. Check that test_data.sql is in LibraryTest/bin/debug");
                         });
                 }
                 else if (runTests == DialogResult.Cancel)
