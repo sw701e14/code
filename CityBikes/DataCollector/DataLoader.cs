@@ -34,9 +34,9 @@ namespace LocationService.DataCollector
 
             using (Database db = new Database())
             {
-                db.RunSession(session=>session.TruncateAll());
+                db.RunSession(session => session.TruncateAll());
 
-                loader.knownBikes.AddRange(db.RunSession(session =>session.GetBikes()));
+                loader.knownBikes.AddRange(db.RunSession(session => session.GetBikes()));
             }
 
             Thread t = new Thread(o => loader.runDataLoader(o as IDataSource));
@@ -83,15 +83,15 @@ namespace LocationService.DataCollector
 
         private void InsertIntoDB(GPSData data)
         {
-            if (!knownBikes.Contains(data.Bike))
+            using (Database db = new Database())
             {
-                using (Database db = new Database())
+                db.RunSession(session =>
                 {
-                    knownBikes.Add(data.Bike);
-
-                    db.RunSession(session => session.InsertBike(data.Bike.Id));
-
-
+                    if (!knownBikes.Contains(data.Bike))
+                    {
+                        knownBikes.Add(data.Bike);
+                        session.InsertBike(data.Bike.Id);
+                    }
 
                     if (prompt)
                         Console.WriteLine("Bike {0:000} at ({1:0.0000}, {2:0.0000}) at {3}.",
@@ -100,8 +100,10 @@ namespace LocationService.DataCollector
                             data.Location.Longitude,
                             data.QueryTime.ToString("dd/MM HH:mm:ss"));
 
-                    db.RunSession(session => session.InsertGPSData(data));
-                }
+                    var last = session.GetBikeGPSData(data.Bike.Id);
+                    if (GPSData.WithinAccuracy(last, data))
+                        session.InsertGPSData(data);
+                });
             }
         }
     }
