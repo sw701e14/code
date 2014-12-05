@@ -158,14 +158,17 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Bikes\bikes.cs" />
-    <Compile Include="Models\Bikes\bike.cs" />
-    <Compile Include="Models\AvailableBikes\availableBike.cs" />
-    <Compile Include="Models\AvailableBikes\availableBikes.cs" />
-    <Compile Include="Models\Hotspots\coordinate.cs" />
-    <Compile Include="Models\Hotspots\hotspot.cs" />
-    <Compile Include="Models\Hotspots\hotspots.cs" />
-    <Compile Include="Models\Root\RootResource.cs" />
+    <Compile Include="Models\availableBike.cs" />
+    <Compile Include="Models\bike.cs" />
+    <Compile Include="Models\Ressources\All\bikes.cs" />
+    <Compile Include="Models\Ressources\All\singleBike.cs" />
+    <Compile Include="Models\Ressources\Available\singleAvailableBike.cs" />
+    <Compile Include="Models\Ressources\Available\availableBikes.cs" />
+    <Compile Include="Models\Data.cs" />
+    <Compile Include="Models\coordinate.cs" />
+    <Compile Include="Models\hotspot.cs" />
+    <Compile Include="Models\Ressources\Hotspots\hotspots.cs" />
+    <Compile Include="Models\Ressources\RootResource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

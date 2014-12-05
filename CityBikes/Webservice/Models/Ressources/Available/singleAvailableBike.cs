@@ -5,7 +5,7 @@ using System.Web;
 using Shared.DAL;
 using Shared.DTO;
 
-namespace Webservice.Models.AvailableBikes
+namespace Webservice.Models.Available
 {
     public class singleAvailableBike
     {
@@ -16,7 +16,7 @@ namespace Webservice.Models.AvailableBikes
         {
             using (Database context = new Database())
             {
-                var bike = availableBikes.GetAvailableBikes().Where(x => x.Item1.Id == bikeId).FirstOrDefault();
+                var bike = Data.GetAvailableBikes().Where(x => x.Item1.Id == bikeId).FirstOrDefault();
 
                 if (bike == null)
                     throw new NullReferenceException();

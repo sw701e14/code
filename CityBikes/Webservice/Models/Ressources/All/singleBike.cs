@@ -5,7 +5,7 @@ using System.Web;
 using Shared.DAL;
 using Shared.DTO;
 
-namespace Webservice.Models.AllBikes
+namespace Webservice.Models.All
 {
     public class singleBike
     {
@@ -16,7 +16,7 @@ namespace Webservice.Models.AllBikes
 
         public singleBike(long bikeId) 
         {
-            var bike = allBikes.GetAllBikes().Where(x => x.id == bikeId).FirstOrDefault();
+            var bike = Data.GetAllBikes().Where(x => x.id == bikeId).FirstOrDefault();
 
             if (bike == null)
                 throw new NullReferenceException();
