@@ -37,8 +37,6 @@ namespace Shared.DTO
         {
             get { return markovChain.GetLength(0); }
         }
-        
-
 
         /// <summary>
         /// Creates the markov chain from the frequencies inputted and saves it in the MarkovChain
@@ -133,7 +131,7 @@ namespace Shared.DTO
         /// </summary>
         /// <param name="markovChain">The markov chain.</param>
         /// <returns>ByteArray with all elements in "markovChain" converted to bytes</returns>
-        public  byte[] serializeMarkovChain()
+        public byte[] serializeMarkovChain()
         {
             //Markov Chains are always n*n in size
             int markovChainSize = size;
@@ -168,7 +166,7 @@ namespace Shared.DTO
         /// </summary>
         /// <param name="serializedMarkovChain">The serialized markov chain.</param>
         /// <returns></returns>
-        public MarkovChain deserializeMarkovChain(byte[] serializedMarkovChain)
+        public static MarkovChain deserializeMarkovChain(byte[] serializedMarkovChain)
         {
             int k = 0;
 
