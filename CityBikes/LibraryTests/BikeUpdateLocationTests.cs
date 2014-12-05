@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Library;
+using Shared.DAL;
+using Shared.DTO;
 
 namespace LibraryTests
 {
@@ -34,9 +35,9 @@ namespace LibraryTests
             var bike = new Bike((uint)rndNumber);
             GPSData expected = new GPSData(bike, new GPSLocation(rndNumber, rndNumber), (byte)rndNumber, DateTime.Now, false);
 
-            database.RunSession(session => BikeUpdateLocation.InsertLocation(session, expected));
+            database.RunSession(session => session.InsertGPSData(expected));
 
-            GPSData actual = database.RunSession(session => bike.LatestGPSData(session));
+            GPSData actual = database.RunSession(session => session.LatestGPSData(bike));
 
             Assert.AreEqual(expected.Bike, actual.Bike);
             Assert.AreEqual(expected.Accuracy, actual.Accuracy);
@@ -56,11 +57,11 @@ namespace LibraryTests
 
             database.RunSession(session =>
             {
-                BikeUpdateLocation.InsertLocation(session, expected);
-                BikeUpdateLocation.InsertLocation(session, expected);
+                session.InsertGPSData(expected);
+                session.InsertGPSData(expected);
             });
 
-            GPSData actual = database.RunSession(session => bike.LatestGPSData(session));
+            GPSData actual = database.RunSession(session => session.LatestGPSData(bike));
 
             Assert.AreEqual(expected.Bike, actual.Bike);
             Assert.AreEqual(expected.Accuracy, actual.Accuracy);
