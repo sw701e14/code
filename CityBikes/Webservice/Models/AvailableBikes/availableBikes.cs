@@ -16,7 +16,14 @@ namespace Webservice.Models.AvailableBikes
 
         public AvailableBikes()
         {
+            Database context = new Database();
+
             bikes = new List<availableBike>();
+            foreach (Tuple<Bike, GPSLocation> item in context.RunSession(session => session.GetAvailableBikes()))
+            {
+                count++;
+                bikes.Add(new Webservice.Models.AvailableBikes.availableBikes.availableBike() { href = item.Item1.Id.ToString() });
+            }
         }
 
         public class availableBike

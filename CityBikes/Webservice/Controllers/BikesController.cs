@@ -6,44 +6,43 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Library;
-using Webservice.Models.AvailableBikes;
+using Webservice.Models.AllBikes;
 
 namespace Webservice.Controllers
 {
     /// <summary>
-    /// Publicly available methods for getting available bikes' locations.
+    /// Publicly available methods for getting all bikes' locations.
     /// </summary>
-    [RoutePrefix("availablebikes")]
-    public class AvailableBikesController : ApiController
+    [RoutePrefix("bikes")]
+    public class BikesController : ApiController
     {
         /// <summary>
-        /// Get list of available bikes.
+        /// Get list of all bikes.
         /// </summary>
         /// <returns>The bikes.</returns>
         [Route("")]
         [HttpGet]
-        [ResponseType(typeof(availableBikes))]
+        [ResponseType(typeof(allBikes))]
         public HttpResponseMessage getAll()
         {
-            availableBikes bikeResources = new availableBikes();
+            allBikes bikeResources = new allBikes();
 
             return Request.CreateResponse(HttpStatusCode.OK, bikeResources);
         }
 
         /// <summary>
-        /// Get available bike.
+        /// Get bike with bikeId.
         /// </summary>
         /// <param name="bikeId">The bikeId.</param>
         /// <returns>The bike.</returns>
         [Route("{bikeId}")]
         [HttpGet]
-        [ResponseType(typeof(availableBike))]
         public HttpResponseMessage get(long bikeId)
         {
-            availableBike bikeResource;
+            bike bikeResource;
             try
             {
-                bikeResource = new availableBike(bikeId);
+                bikeResource = new bike(bikeId);
             }
             catch (NullReferenceException)
             {

@@ -481,6 +481,24 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
+        <member name="T:Webservice.Controllers.BikesController">
+            <summary>
+            Publicly available methods for getting all bikes' locations.
+            </summary>
+        </member>
+        <member name="M:Webservice.Controllers.BikesController.getAll">
+            <summary>
+            Get list of all bikes.
+            </summary>
+            <returns>The bikes.</returns>
+        </member>
+        <member name="M:Webservice.Controllers.BikesController.get(System.Int64)">
+            <summary>
+            Get bike with bikeId.
+            </summary>
+            <param name="bikeId">The bikeId.</param>
+            <returns>The bike.</returns>
+        </member>
         <member name="T:Webservice.Controllers.AvailableBikesController">
             <summary>
             Publicly available methods for getting available bikes' locations.
@@ -498,6 +516,17 @@
             </summary>
             <param name="bikeId">The bikeId.</param>
             <returns>The bike.</returns>
+        </member>
+        <member name="T:Webservice.Controllers.HotspotsController">
+            <summary>
+            Publicly available methods for getting all hotspots.
+            </summary>
+        </member>
+        <member name="M:Webservice.Controllers.HotspotsController.getAll">
+            <summary>
+            Get list of hotspots.
+            </summary>
+            <returns>The hotspots.</returns>
         </member>
         <member name="T:Webservice.Controllers.RootController">
             <summary>
