@@ -13,7 +13,7 @@ namespace Shared.DAL
 {
     public static class InsertQueries
     {
-        public static void InsertMarkovChain(Database.DatabaseSession session, MarkovChain markovChain)
+        public static void InsertMarkovChain(this Database.DatabaseSession session, MarkovChain markovChain)
         {
             MySqlCommand cmd = new MySqlCommand("INSERT INTO markov_chains (mc) VALUES(@data)");
             cmd.Parameters.Add("@data", MySqlDbType.MediumBlob).Value = markovChain.serializeMarkovChain();
