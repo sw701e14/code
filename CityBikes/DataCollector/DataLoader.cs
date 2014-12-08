@@ -100,8 +100,8 @@ namespace LocationService.DataCollector
                             data.Location.Longitude,
                             data.QueryTime.ToString("dd/MM HH:mm:ss"));
 
-                    var last = session.GetBikeGPSData(data.Bike.Id);
-                    if (GPSData.WithinAccuracy(last, data))
+                    var last = session.LatestGPSData(data.Bike);
+                    if (last.HasValue && GPSData.WithinAccuracy(last.Value, data))
                         session.InsertGPSData(data);
                 });
             }
