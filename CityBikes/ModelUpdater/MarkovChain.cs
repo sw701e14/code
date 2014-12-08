@@ -15,13 +15,14 @@ namespace ModelUpdater
 
         public static Matrix BuildMarkovMatrix(Hotspot[] hotspots, GPSData[] data)
         {
-            var dict = groupData(data);
+            var groups = groupData(data).ToArray();
+
+            throw new NotImplementedException();
         }
-        private static Dictionary<Bike, GPSData[]> groupData(GPSData[] data)
+        private static IEnumerable<dataenumerator> groupData(GPSData[] data)
         {
             Array.Sort(data, buildSort);
 
-            Dictionary<Bike, GPSData[]> dict = new Dictionary<Bike, GPSData[]>();
             List<GPSData> list = new List<GPSData>();
 
             Bike current = data[0].Bike;
@@ -30,15 +31,14 @@ namespace ModelUpdater
             {
                 if (current != data[i].Bike)
                 {
-                    dict.Add(current, list.ToArray());
+                    yield return new dataenumerator(list.ToArray());
                     list.Clear();
                     current = data[i].Bike;
                 }
                 list.Add(data[i]);
             }
-            if (list.Count > 0) dict.Add(current, list.ToArray());
-
-            return dict;
+            if (list.Count > 0)
+                yield return new dataenumerator(list.ToArray());
         }
         private static int buildSort(GPSData d1, GPSData d2)
         {
@@ -46,6 +46,28 @@ namespace ModelUpdater
             if (diff == 0)
                 diff = d1.QueryTime.CompareTo(d2.QueryTime);
             return diff;
+        }
+
+        private class dataenumerator
+        {
+            private GPSData[] data;
+
+            public dataenumerator(GPSData[] data)
+            {
+                this.data = data;
+            }
+
+            public GPSData GetData(DateTime time)
+            {
+                if (time < data[0].QueryTime)
+                    return data[0];
+
+                for (int i = 1; i < data.Length; i++)
+                    if (time < data[i].QueryTime)
+                        return data[i - 1];
+
+                return data[data.Length - 1];
+            }
         }
 
         public double this[int i, int j]
