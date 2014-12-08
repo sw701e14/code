@@ -32,13 +32,6 @@ namespace LocationService.DataCollector
                 Console.WriteLine();
             }
 
-            using (Database db = new Database())
-            {
-                db.RunSession(session => session.TruncateAll());
-
-                loader.knownBikes.AddRange(db.RunSession(session => session.GetBikes()));
-            }
-
             Thread t = new Thread(o => loader.runDataLoader(o as IDataSource));
             t.Start(dataSource);
 
@@ -68,6 +61,9 @@ namespace LocationService.DataCollector
 
         private void runDataLoader(IDataSource dataSource)
         {
+            using (Database db = new Database())
+                knownBikes.AddRange(db.RunSession(s => s.GetBikes()));
+
             while (!shouldExit)
             {
                 var data = dataSource.GetData();
