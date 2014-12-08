@@ -72,6 +72,7 @@ namespace Shared.DTO
         {
             return dataPoints;
         }
+
         public static GPSLocation[] applyConvexHull(GPSLocation[] data)
         {
             return GPSLocation.GetConvexHull(data);

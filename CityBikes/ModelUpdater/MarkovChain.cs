@@ -12,7 +12,7 @@ namespace ModelUpdater
     {
         private Matrix probabilities;
 
-        public static Matrix BuildMarkovMatrix(Hotspot[] hotspots, GPSData[] data)
+        public static Matrix BuildMarkovMatrix(Shared.DTO.Hotspot[] hotspots, GPSData[] data)
         {
             var start = data.Min(d => d.QueryTime);
             var end = data.Max(d => d.QueryTime);
@@ -84,7 +84,7 @@ namespace ModelUpdater
             return diff;
         }
 
-        private static int getHotspotIndex(Hotspot[] hotspots, GPSLocation location)
+        private static int getHotspotIndex(Shared.DTO.Hotspot[] hotspots, GPSLocation location)
         {
             double dist = double.PositiveInfinity;
             int index = int.MaxValue;

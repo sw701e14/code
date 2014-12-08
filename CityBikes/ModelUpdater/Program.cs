@@ -33,7 +33,7 @@ namespace ModelUpdater
 
             List<GPSLocation[]> allClusters = ClusteringTechniques.FindClusters(allGPSLocations, 4, 60);
 
-            MarkovChain markovChain = new MarkovChain(allClusters.Count);
+            //MarkovChain markovChain = new MarkovChain(allClusters.Count);
 
 
 
