@@ -51,6 +51,23 @@ namespace Shared.DTO
             return Contains(data.Location);
         }
 
+        public double DistanceTo(GPSLocation location)
+        {
+            double dist = double.MaxValue;
+
+            for (int i = 0; i < dataPoints.Length; i++)
+            {
+                var d = dataPoints[i].DistanceTo(location);
+                if (d < dist) dist = d;
+            }
+
+            return dist;
+        }
+        public double DistanceTo(GPSData data)
+        {
+            return DistanceTo(data.Location);
+        }
+
         public GPSLocation[] getDataPoints()
         {
             return dataPoints;
