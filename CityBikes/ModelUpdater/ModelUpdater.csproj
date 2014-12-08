@@ -39,9 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BuildMarkov.cs" />
     <Compile Include="ClusteringTechniques.cs" />
     <Compile Include="Hotspot.cs" />
+    <Compile Include="MarkovChain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

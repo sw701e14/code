@@ -32,13 +32,6 @@ namespace LocationService.DataCollector
                 Console.WriteLine();
             }
 
-            using (Database db = new Database())
-            {
-                db.RunSession(session => session.TruncateAll());
-
-                loader.knownBikes.AddRange(db.RunSession(session => session.GetBikes()));
-            }
-
             Thread t = new Thread(o => loader.runDataLoader(o as IDataSource));
             t.Start(dataSource);
 
@@ -68,7 +61,10 @@ namespace LocationService.DataCollector
 
         private void runDataLoader(IDataSource dataSource)
         {
-            while (!shouldExit)
+            using (Database db = new Database())
+                knownBikes.AddRange(db.RunSession(s => s.GetBikes()));
+
+            while (!shouldExit || runall)
             {
                 var data = dataSource.GetData();
 
@@ -100,8 +96,10 @@ namespace LocationService.DataCollector
                             data.Location.Longitude,
                             data.QueryTime.ToString("dd/MM HH:mm:ss"));
 
-                    var last = session.GetBikeGPSData(data.Bike.Id);
-                    if (GPSData.WithinAccuracy(last, data))
+                    var last = session.LatestGPSData(data.Bike);
+                    if (last.HasValue && GPSData.WithinAccuracy(last.Value, data))
+                        session.setHasNotMoved(data.Bike);
+                    else
                         session.InsertGPSData(data);
                 });
             }
