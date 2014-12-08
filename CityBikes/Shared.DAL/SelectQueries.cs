@@ -10,14 +10,23 @@ namespace Shared.DAL
 {
     public static class SelectQueries
     {
-        public static GPSData LatestGPSData(this Database.DatabaseSession session, Bike b)
+        public static GPSData? LatestGPSData(this Database.DatabaseSession session, Bike b)
         {
-            return  session.ExecuteRead("SELECT bikeId, latitude, longitude, accuracy, queried, hasNotMoved FROM citybike_test.gps_data WHERE bikeId = {0} ORDER BY queried DESC", b.Id).First().GetGPSData();
+            var data = session.ExecuteRead(
+@"SELECT *
+FROM citybike_test.gps_data
+WHERE bikeId = {0}
+ORDER BY queried DESC", b.Id).FirstOrDefault();
+
+            if (data == null)
+                return null;
+            else
+                return data.GetGPSData(1);
         }
 
         public static MarkovChain GetMarkovChain(this Database.DatabaseSession session, int column)
         {
-            var serializedMarkovChain =  session.ExecuteRead("SELECT mc FROM markov_chains");
+            var serializedMarkovChain = session.ExecuteRead("SELECT mc FROM markov_chains");
             byte[] data = serializedMarkovChain.ElementAt(column).GetValue<byte[]>();
 
             return MarkovChain.deserializeMarkovChain(data);
@@ -40,17 +49,6 @@ ORDER BY queried desc", id);
             return rows.First().GetValue<GPSLocation>();
         }
 
-        public static GPSData GetBikeGPSData(this Database.DatabaseSession session, long id)
-        {
-            var rows = session.ExecuteRead(
-@"SELECT *
-FROM citybike_test.gps_data
-WHERE bikeId = {0}
-ORDER BY queried desc", id);
-
-            return rows.First().GetValue<GPSData>(1);
-        }
-
         /// <summary>
         /// Gets the latest location of all bikes
         /// </summary>
@@ -59,7 +57,7 @@ ORDER BY queried desc", id);
         public static Tuple<Bike, GPSLocation>[] GetBikeLocations(this Database.DatabaseSession session)
         {
 
-            var rows =  session.ExecuteRead(
+            var rows = session.ExecuteRead(
 @"SELECT g1.bikeId, latitude, longitude
 FROM citybike_test.gps_data g1
 INNER JOIN (
@@ -74,12 +72,12 @@ INNER JOIN (
 
         public static List<Hotspot> GetAllHotspots(this Database.DatabaseSession session)
         {
-            return  session.ExecuteRead("SELECT convex_hull FROM hotspots").Select(row => row.GetHotspot()).ToList();
+            return session.ExecuteRead("SELECT convex_hull FROM hotspots").Select(row => row.GetHotspot()).ToList();
         }
 
         public static bool BikeExists(this Database.DatabaseSession session, int bikeId)
         {
-            return  session.ExecuteRead("SELECT bikeId, latitude, longitude, accuracy, queried, hasNotMoved FROM citybike_test.gps_data WHERE bikeId = {0} ORDER BY queried DESC", bikeId).Any();
+            return session.ExecuteRead("SELECT bikeId, latitude, longitude, accuracy, queried, hasNotMoved FROM citybike_test.gps_data WHERE bikeId = {0} ORDER BY queried DESC", bikeId).Any();
         }
 
         /// <summary>
@@ -89,7 +87,7 @@ INNER JOIN (
         /// <returns>A collection of bikes, last-use-time and a boolean indicating if their are standing still.</returns>
         public static Tuple<Bike, DateTime, bool>[] GetBikesImmobile(this Database.DatabaseSession session)
         {
-            var rows =  session.ExecuteRead(
+            var rows = session.ExecuteRead(
 @"SELECT g1.bikeId, queried, hasNotMoved
 FROM citybike_test.gps_data g1
 INNER JOIN (
@@ -113,12 +111,12 @@ INNER JOIN (
 
         public static Bike[] GetBikes(this Database.DatabaseSession session)
         {
-            return  session.ExecuteRead("SELECT * FROM citybike_test.bikes").Select(row => row.GetBike()).ToArray();
+            return session.ExecuteRead("SELECT * FROM citybike_test.bikes").Select(row => row.GetBike()).ToArray();
         }
 
         public static GPSData[] GetAllGPSData(this Database.DatabaseSession session)
         {
-            return  session.ExecuteRead("SELECT * FROM citybike_test.gps_data").Select(r => r.GetGPSData(1)).ToArray();
+            return session.ExecuteRead("SELECT * FROM citybike_test.gps_data").Select(r => r.GetGPSData(1)).ToArray();
         }
 
     }

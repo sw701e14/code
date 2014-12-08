@@ -13,14 +13,6 @@ namespace Shared.DAL
 {
     public static class InsertQueries
     {
-        public static void InsertMarkovChain(this Database.DatabaseSession session, MarkovChain markovChain)
-        {
-            MySqlCommand cmd = new MySqlCommand("INSERT INTO markov_chains (mc) VALUES(@data)");
-            cmd.Parameters.Add("@data", MySqlDbType.MediumBlob).Value = markovChain.serializeMarkovChain();
-
-            session.Execute(cmd);
-        }
-
         public static void InsertGPSData(this Database.DatabaseSession session, GPSData newLocation)
         {
              session.Execute("INSERT INTO gps_data (bikeId, latitude, longitude, accuracy, queried, hasNotMoved) VALUES{0}", formatGPS(newLocation));
@@ -39,7 +31,6 @@ namespace Shared.DAL
 
         public static void InsertHotSpot(this Database.DatabaseSession session, GPSLocation[] data)
         {
-
             Hotspot hotspot = new Hotspot(data);
 
             MySqlCommand cmd = new MySqlCommand("INSERT INTO hotspots (convex_hull) VALUES(@hotspot)");
@@ -51,6 +42,25 @@ namespace Shared.DAL
                 cmd.Parameters.Add("@data", MySqlDbType.Blob).Value = ms.ToArray();
             }
              session.Execute(cmd);
+        }
+
+        public static void InsertMarkovMatrix(this Database.DatabaseSession session, Matrix matrix)
+        {
+            using(MemoryStream ms = new MemoryStream())
+            using(BinaryWriter writer = new BinaryWriter(ms))
+            {
+                writer.Write(matrix.Width);
+                writer.Write(matrix.Height);
+
+                double[,] m = new double[matrix.Width, matrix.Height];
+                for (int y = 0; y < matrix.Height; y++)
+                    for (int x = 0; x < matrix.Width; x++)
+                        writer.Write(matrix[x, y]);
+
+                MySqlCommand cmd = new MySqlCommand("INSERT INTO markov_chains (mc) VALUES(@data)");
+                cmd.Parameters.Add("@data", MySqlDbType.MediumBlob).Value = ms.ToArray();
+                session.Execute(cmd);
+            }
         }
 
         public static void InsertBike(this Database.DatabaseSession session,uint bikeId)
