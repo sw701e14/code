@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Shared.DAL;
 using Shared.DTO;
 
-namespace Library
+namespace ModelUpdater
 {
     public class ClusteringTechniques
     {

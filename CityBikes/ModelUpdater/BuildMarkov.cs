@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Shared.DAL;
 using Shared.DTO;
 
-namespace Library
+namespace ModelUpdater
 {
     public class BuildMarkov
     {
@@ -119,7 +119,7 @@ namespace Library
         {
             //inspired by http://stackoverflow.com/a/14998816
             bool result = false;
-            GPSLocation[] polygon = hotspot.DataPoints;
+            GPSLocation[] polygon = hotspot.getDataPoints();
             int j = polygon .Count() - 1;
             for (int i = 0; i < polygon.Count(); i++)
             {
