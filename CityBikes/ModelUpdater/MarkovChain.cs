@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Shared.DAL;
+using Shared.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +12,41 @@ namespace ModelUpdater
     {
         double[,] markovChain;
         private double[,] markovFrequencies;
+
+        public static Matrix BuildMarkovMatrix(Hotspot[] hotspots, GPSData[] data)
+        {
+            var dict = groupData(data);
+        }
+        private static Dictionary<Bike, GPSData[]> groupData(GPSData[] data)
+        {
+            Array.Sort(data, buildSort);
+
+            Dictionary<Bike, GPSData[]> dict = new Dictionary<Bike, GPSData[]>();
+            List<GPSData> list = new List<GPSData>();
+
+            Bike current = data[0].Bike;
+            list.Add(data[0]);
+            for (int i = 1; i < data.Length; i++)
+            {
+                if (current != data[i].Bike)
+                {
+                    dict.Add(current, list.ToArray());
+                    list.Clear();
+                    current = data[i].Bike;
+                }
+                list.Add(data[i]);
+            }
+            if (list.Count > 0) dict.Add(current, list.ToArray());
+
+            return dict;
+        }
+        private static int buildSort(GPSData d1, GPSData d2)
+        {
+            int diff = d1.Bike.Id.CompareTo(d2.Bike.Id);
+            if (diff == 0)
+                diff = d1.QueryTime.CompareTo(d2.QueryTime);
+            return diff;
+        }
 
         public double this[int i, int j]
         {
@@ -37,7 +74,7 @@ namespace ModelUpdater
         {
             get { return markovChain.GetLength(0); }
         }
-        
+
 
 
         /// <summary>
