@@ -33,5 +33,11 @@ namespace Shared.DTO
         {
             return dataPoints;
         }
+
+        public static void applyConvexHull(GPSLocation[] data, bool applyConvexHull)
+        {
+            if (applyConvexHull)
+                data = GPSLocation.GetConvexHull(data);
+        }
     }
 }
