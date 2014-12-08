@@ -24,14 +24,6 @@ ORDER BY queried DESC", b.Id).FirstOrDefault();
                 return data.GetGPSData(1);
         }
 
-        public static MarkovChain GetMarkovChain(this Database.DatabaseSession session, int column)
-        {
-            var serializedMarkovChain = session.ExecuteRead("SELECT mc FROM markov_chains");
-            byte[] data = serializedMarkovChain.ElementAt(column).GetValue<byte[]>();
-
-            return MarkovChain.deserializeMarkovChain(data);
-        }
-
         /// <summary>
         /// Gets the location of the bike with <paramref name="id"/>.
         /// </summary>
