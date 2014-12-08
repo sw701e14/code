@@ -15,7 +15,19 @@ namespace ModelUpdater
 
         public static Matrix BuildMarkovMatrix(Hotspot[] hotspots, GPSData[] data)
         {
+            var first = data.Min(d => d.QueryTime);
+            var step = TimeSpan.FromMinutes(5);
             var groups = groupData(data).ToArray();
+
+            int size = hotspots.Length * 2;
+            int[,] counter = new int[size, size];
+            int[] last = new int[groups.Length];
+
+            for (int b = 0; b < groups.Length; b++)
+            {
+                int index = getHotspotIndex(hotspots, groups[b].GetData(first).Location);
+                last[b] = index >= 0 ? index * 2 : (~index + 1);
+            }
 
             throw new NotImplementedException();
         }
@@ -46,6 +58,24 @@ namespace ModelUpdater
             if (diff == 0)
                 diff = d1.QueryTime.CompareTo(d2.QueryTime);
             return diff;
+        }
+
+        private static int getHotspotIndex(Hotspot[] hotspots, GPSLocation location)
+        {
+            double dist = double.PositiveInfinity;
+            int index = int.MaxValue;
+
+            for (int i = 0; i < hotspots.Length; i++)
+            {
+                double d = hotspots[i].DistanceTo(location);
+                if (d < dist)
+                {
+                    dist = d;
+                    index = i;
+                }
+            }
+
+            return hotspots[index].Contains(location) ? index * 2 : (index * 2 + 1);
         }
 
         private class dataenumerator
