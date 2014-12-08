@@ -20,7 +20,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -44,11 +43,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClusteringTechniques.cs" />
-    <Compile Include="Program.cs">
-      <SubType>
-      </SubType>
-    </Compile>
-    <Compile Include="Hotspot.cs" />
+    <Compile Include="MarkovChain.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
