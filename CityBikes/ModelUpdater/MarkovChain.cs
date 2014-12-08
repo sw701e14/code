@@ -15,21 +15,43 @@ namespace ModelUpdater
 
         public static Matrix BuildMarkovMatrix(Hotspot[] hotspots, GPSData[] data)
         {
-            var first = data.Min(d => d.QueryTime);
+            var start = data.Min(d => d.QueryTime);
+            var end = data.Max(d => d.QueryTime);
+
             var step = TimeSpan.FromMinutes(5);
             var groups = groupData(data).ToArray();
 
             int size = hotspots.Length * 2;
-            int[,] counter = new int[size, size];
+            double[,] counter = new double[size, size];
             int[] last = new int[groups.Length];
 
             for (int b = 0; b < groups.Length; b++)
+                last[b] = getHotspotIndex(hotspots, groups[b].GetData(start).Location);
+
+            for (DateTime d = start; d <= end; d.Add(step))
             {
-                int index = getHotspotIndex(hotspots, groups[b].GetData(first).Location);
-                last[b] = index >= 0 ? index * 2 : (~index + 1);
+                for (int b = 0; b < groups.Length; b++)
+                {
+                    int next = getHotspotIndex(hotspots, groups[b].GetData(d).Location);
+
+                    if (next % 2 == 1 && last[b] % 2 == 1)
+                        next = last[b];
+                    else if (next % 2 == 1 && last[b] % 2 == 0)
+                        next = last[b] + 1;
+
+                    counter[last[b], next]++;
+
+                    last[b] = next;
+                }
             }
 
-            throw new NotImplementedException();
+            for (int i = 0; i < size; i++)
+            {
+                double sum = 0;
+                for (int j = 0; j < size; j++) sum += counter[i, j];
+                for (int j = 0; j < size; j++) counter[i, j] /= sum;
+            }
+            return new Matrix(counter);
         }
         private static IEnumerable<dataenumerator> groupData(GPSData[] data)
         {
