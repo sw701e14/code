@@ -61,13 +61,21 @@
     <Compile Include="SerializeMarkovChainTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Library\Library.csproj">
-      <Project>{0B5C6A5B-DCBF-4F1C-A80E-50C3877BFFE5}</Project>
-      <Name>Library</Name>
-    </ProjectReference>
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <ProjectReference Include="..\ModelUpdater\ModelUpdater.csproj">
+      <Project>{87c6f723-707c-4ece-8081-c27da321f550}</Project>
+      <Name>ModelUpdater</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shared.DAL\Shared.DAL.csproj">
+      <Project>{4af0e08d-5003-43b1-9794-b7ce198e4744}</Project>
+      <Name>Shared.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shared.DTO\Shared.DTO.csproj">
+      <Project>{981276fb-8563-48a0-a54b-d8d95e83e0da}</Project>
+      <Name>Shared.DTO</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

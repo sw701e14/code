@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Library
+namespace Shared.DTO
 {
     [Serializable]
     public struct GPSLocation : IEquatable<GPSLocation>

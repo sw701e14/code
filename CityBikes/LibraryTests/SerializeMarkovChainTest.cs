@@ -2,6 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Library;
 using System.Collections.Generic;
+using Shared.DAL;
+using Shared.DTO;
 
 
 
@@ -49,9 +51,9 @@ namespace LibraryTests
             {
                 MarkovChain expected = allMarkovChains[i];
 
-                database.RunSession(session => BuildMarkov.InsertMarkovChain(session, expected));
+                database.RunSession(session => session.InsertMarkovChain(expected));
 
-                MarkovChain actual = database.RunSession(session => session.GetMarkovChain(i));
+                MarkovChain actual =  database.RunSession(session => session.GetMarkovChain(i));
 
                 for (int j = 0; j < expected.size; j++)
                 {

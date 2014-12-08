@@ -1,13 +1,14 @@
-﻿using DataLoading.Common;
-using DataLoading.LocationSource;
+﻿using LocationService.Common;
+using LocationService.LocationSource;
 using DeadDog.Console;
-using Library;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Shared.DTO;
+using Shared.DAL;
 
-namespace DataLoading.DataCollector
+namespace LocationService.DataCollector
 {
     class Program
     {
@@ -20,7 +21,7 @@ namespace DataLoading.DataCollector
                 bikes.Add(new Bike(i));
 
             DateTime start = DateTime.Now.Date.AddDays(-1);
-
+                
             return new MultiDataSource(bikes.Select(b => new NoFutureDataSource(GoogleDataSource.GetSource(b.Id, start, int.MaxValue))));
         }
 
@@ -32,8 +33,7 @@ namespace DataLoading.DataCollector
             menu.Add("Clear data", clearData);
             menu.Add("Generate map from DB", () =>
             {
-                using (Database db = new Database())
-                    db.RunSession(s => GPSPointMapPlotter.SaveMapAsHtml(s));
+                    GPSPointMapPlotter.SaveMapAsHtml();
             });
             menu.Add("Start a server simulation", simulate);
 
@@ -44,8 +44,11 @@ namespace DataLoading.DataCollector
 
         static void clearData()
         {
-            using (Database database = new Database())
-                database.RunSession(session => session.Execute("TRUNCATE TABLE gps_data"));
+            using (Database db = new Database())
+            {
+                db.RunSession(session=>session.TruncateGPS_data());
+            }
+                
         }
         static void loadData()
         {

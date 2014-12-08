@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Shared.DAL;
 
 namespace LibraryTests
 {
@@ -26,18 +27,15 @@ namespace LibraryTests
                 {
                     dataLoadCancelled = false;
 
-                    if (!System.IO.File.Exists("test_data.sql"))
-                    {
-                        dataLoadCancelled = true;
-                        Assert.Inconclusive("test_data.sql file not found. Check that your working directory is the TestData directory.");
-                        return;
-                    }
-                    string sqlContent = System.IO.File.ReadAllText("test_data.sql");
+
 
                     using (Database database = new Database())
                         database.RunSession(session =>
                         {
-                            session.Execute(sqlContent);
+                            dataLoadCancelled = !session.TestDatabase();
+
+                            if (dataLoadCancelled == true)
+                                Assert.Inconclusive("test_data.sql file not found. Check that test_data.sql is in LibraryTest/bin/debug");
                         });
                 }
                 else if (runTests == DialogResult.Cancel)
@@ -45,7 +43,7 @@ namespace LibraryTests
 
                 loaded = true;
             }
-            
+
             if (dataLoadCancelled)
                 Assert.Inconclusive("Testing database was not loaded. Test could not be executed.");
         }

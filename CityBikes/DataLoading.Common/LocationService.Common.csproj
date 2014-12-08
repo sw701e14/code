@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7BA32C48-AAB4-41C6-B7A4-94693C3A9614}</ProjectGuid>
+    <ProjectGuid>{A4640D97-4D48-420D-864E-F2A119BBF81E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DataLoading.LocationSource</RootNamespace>
-    <AssemblyName>DataLoading.LocationSource</AssemblyName>
+    <RootNamespace>LocationService.Common</RootNamespace>
+    <AssemblyName>DataLoading.Common</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -32,7 +32,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,15 +39,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GoogleDataSource.cs" />
-    <Compile Include="GoogleDirectionsParser.cs" />
+    <Compile Include="EnumerationDataSource.cs" />
+    <Compile Include="GPSInputExtension.cs" />
+    <Compile Include="GPSInput.cs" />
+    <Compile Include="IDataSource.cs" />
+    <Compile Include="MultiDataSource.cs" />
+    <Compile Include="NoFutureDataSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DataLoading.Common\DataLoading.Common.csproj">
-      <Project>{a4640d97-4d48-420d-864e-f2a119bbf81e}</Project>
-      <Name>DataLoading.Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

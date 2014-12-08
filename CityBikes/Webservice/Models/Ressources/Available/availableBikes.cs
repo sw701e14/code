@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Shared.DAL;
+using Shared.DTO;
 
-namespace Webservice.Models.AvailableBikes
+namespace Webservice.Models.Available
 {
     public class availableBikes
     {
@@ -13,13 +15,11 @@ namespace Webservice.Models.AvailableBikes
         public availableBikes()
         {
             bikes = new List<availableBike>();
-        }
-
-        public class availableBike
-        {
-            public string href { get; set; }
-
-            public availableBike() { }
+            foreach (Tuple<Bike, GPSLocation> item in Data.GetAvailableBikes())
+            {
+                count++;
+                bikes.Add(new availableBike() { href = item.Item1.Id.ToString() });
+            }
         }
     }
 }

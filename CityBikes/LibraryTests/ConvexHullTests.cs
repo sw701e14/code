@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Library;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Shared.DTO;
 namespace Library.Tests
 {
     [TestClass()]

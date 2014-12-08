@@ -1,17 +1,17 @@
-﻿using DataLoading.Common;
-using Library;
+﻿using LocationService.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Shared.DAL;
+using Shared.DTO;
 
-namespace DataLoading.DataCollector
+namespace LocationService.DataCollector
 {
     public class DataLoader
     {
-        private Database database;
         private bool shouldExit;
 
         private IDataSource dataSource;
@@ -32,11 +32,12 @@ namespace DataLoading.DataCollector
                 Console.WriteLine();
             }
 
-            loader.database = new Database();
+            using (Database db = new Database())
+            {
+                db.RunSession(session => session.TruncateAll());
 
-            loader.database.RunSession(s => s.Execute("TRUNCATE citybike_test.gps_data; TRUNCATE citybike_test.bikes; TRUNCATE citybike_test.hotspots"));
-
-            loader.knownBikes.AddRange(loader.database.RunSession(session => session.ExecuteRead("SELECT * FROM citybike_test.bikes").Select(row => row.GetBike()).ToArray()));
+                loader.knownBikes.AddRange(db.RunSession(session => session.GetBikes()));
+            }
 
             Thread t = new Thread(o => loader.runDataLoader(o as IDataSource));
             t.Start(dataSource);
@@ -51,7 +52,6 @@ namespace DataLoading.DataCollector
             loader.shouldExit = true;
             while (t.IsAlive) { }
 
-            loader.database.Dispose();
         }
 
         private DataLoader(IDataSource dataSource, bool prompt, bool runall)
@@ -83,20 +83,28 @@ namespace DataLoading.DataCollector
 
         private void InsertIntoDB(GPSData data)
         {
-            if (!knownBikes.Contains(data.Bike))
+            using (Database db = new Database())
             {
-                knownBikes.Add(data.Bike);
-                database.RunSession(session => session.Execute("INSERT INTO citybike_test.bikes (id) VALUES ({0})", data.Bike.Id));
+                db.RunSession(session =>
+                {
+                    if (!knownBikes.Contains(data.Bike))
+                    {
+                        knownBikes.Add(data.Bike);
+                        session.InsertBike(data.Bike.Id);
+                    }
+
+                    if (prompt)
+                        Console.WriteLine("Bike {0:000} at ({1:0.0000}, {2:0.0000}) at {3}.",
+                            data.Bike.Id,
+                            data.Location.Latitude,
+                            data.Location.Longitude,
+                            data.QueryTime.ToString("dd/MM HH:mm:ss"));
+
+                    var last = session.GetBikeGPSData(data.Bike.Id);
+                    if (GPSData.WithinAccuracy(last, data))
+                        session.InsertGPSData(data);
+                });
             }
-
-            if (prompt)
-                Console.WriteLine("Bike {0:000} at ({1:0.0000}, {2:0.0000}) at {3}.",
-                    data.Bike.Id,
-                    data.Location.Latitude,
-                    data.Location.Longitude,
-                    data.QueryTime.ToString("dd/MM HH:mm:ss"));
-
-            database.RunSession(session => Library.BikeUpdateLocation.InsertLocation(session, data));
         }
     }
 }

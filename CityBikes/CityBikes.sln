@@ -1,21 +1,25 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library", "Library\Library.csproj", "{0B5C6A5B-DCBF-4F1C-A80E-50C3877BFFE5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryTests", "LibraryTests\LibraryTests.csproj", "{E4639957-97EE-4DEB-9169-159BCA9E7A84}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeadDog", "DeadDog\DeadDog.csproj", "{675AB5E0-4637-4E6C-8D38-AA7BB135B5CE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Webservice", "Webservice\Webservice.csproj", "{9F705337-1D3B-4F46-8873-407DD741FD8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLoading.DataCollector", "DataCollector\DataLoading.DataCollector.csproj", "{41615C7B-69C3-4C67-8207-7C352B0C3CE2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocationService.DataCollector", "DataCollector\LocationService.DataCollector.csproj", "{41615C7B-69C3-4C67-8207-7C352B0C3CE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLoading.LocationSource", "DataSources\DataLoading.LocationSource.csproj", "{7BA32C48-AAB4-41C6-B7A4-94693C3A9614}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocationService.LocationSource", "DataSources\LocationService.LocationSource.csproj", "{7BA32C48-AAB4-41C6-B7A4-94693C3A9614}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLoading.Common", "DataLoading.Common\DataLoading.Common.csproj", "{A4640D97-4D48-420D-864E-F2A119BBF81E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocationService.Common", "DataLoading.Common\LocationService.Common.csproj", "{A4640D97-4D48-420D-864E-F2A119BBF81E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.DAL", "Shared.DAL\Shared.DAL.csproj", "{4AF0E08D-5003-43B1-9794-B7CE198E4744}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.DTO", "Shared.DTO\Shared.DTO.csproj", "{981276FB-8563-48A0-A54B-D8D95E83E0DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelUpdater", "ModelUpdater\ModelUpdater.csproj", "{87C6F723-707C-4ECE-8081-C27DA321F550}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +27,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0B5C6A5B-DCBF-4F1C-A80E-50C3877BFFE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0B5C6A5B-DCBF-4F1C-A80E-50C3877BFFE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0B5C6A5B-DCBF-4F1C-A80E-50C3877BFFE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0B5C6A5B-DCBF-4F1C-A80E-50C3877BFFE5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E4639957-97EE-4DEB-9169-159BCA9E7A84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E4639957-97EE-4DEB-9169-159BCA9E7A84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4639957-97EE-4DEB-9169-159BCA9E7A84}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,6 +51,18 @@ Global
 		{A4640D97-4D48-420D-864E-F2A119BBF81E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4640D97-4D48-420D-864E-F2A119BBF81E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4640D97-4D48-420D-864E-F2A119BBF81E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AF0E08D-5003-43B1-9794-B7CE198E4744}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AF0E08D-5003-43B1-9794-B7CE198E4744}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AF0E08D-5003-43B1-9794-B7CE198E4744}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AF0E08D-5003-43B1-9794-B7CE198E4744}.Release|Any CPU.Build.0 = Release|Any CPU
+		{981276FB-8563-48A0-A54B-D8D95E83E0DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{981276FB-8563-48A0-A54B-D8D95E83E0DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{981276FB-8563-48A0-A54B-D8D95E83E0DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{981276FB-8563-48A0-A54B-D8D95E83E0DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87C6F723-707C-4ECE-8081-C27DA321F550}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87C6F723-707C-4ECE-8081-C27DA321F550}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87C6F723-707C-4ECE-8081-C27DA321F550}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87C6F723-707C-4ECE-8081-C27DA321F550}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

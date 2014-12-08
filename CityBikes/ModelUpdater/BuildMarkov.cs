@@ -1,5 +1,4 @@
-﻿using MySql.Data.MySqlClient;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -7,12 +6,14 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using Shared.DAL;
+using Shared.DTO;
 
 namespace Library
 {
     public class BuildMarkov
     {
-        private List<GPSLocation[]> hotspots;
+        private List<Hotspot> hotspots;
 
         /// <summary>
         /// Builds markov chains from the data in the database specified
@@ -22,7 +23,7 @@ namespace Library
         /// <exception cref="System.InvalidOperationException">
         /// a point should not be able to be in more than one hotspot at a time
         /// </exception>
-        public MarkovChain Build(Database.DatabaseSession session)
+        public MarkovChain Build()
         {
             //hotspots = context.LoadHotSpotsFromDatabase();
 
@@ -30,8 +31,14 @@ namespace Library
             //             group gps_data by gps_data.bikeId into bike
             //             select bike;
 
-            var routes = new List<GPSData[]>();
-            throw new NotImplementedException("Waiting for implementation of a database extension method that gets all hotspots");
+            List<GPSData[]> routes;
+
+            using (Database db = new Database())
+            {
+                routes = new List<GPSData[]>();
+                hotspots = db.RunSession(session=>session.GetAllHotspots());
+                throw new NotImplementedException("hent ruter ind fra db");
+            }
 
             MarkovChain mc = new MarkovChain(hotspots.Count() * 2);
 
@@ -47,7 +54,7 @@ namespace Library
                         var v = hotspots.Where(x => IsInConvexHull(x, gps_data));
                         if (v.Count() > 1)
                             throw new InvalidOperationException("a point should not be able to be in more than one hotspot at a time");
-                        GPSLocation[] h = v.First();
+                        Hotspot h = v.First();
                         if (oldIndex == -1)
                             oldIndex = getHotspotIndex(h, hotspots);
                         else
@@ -86,7 +93,7 @@ namespace Library
         /// <param name="hotspot">The hotspot.</param>
         /// <param name="hotspots">The hotspots.</param>
         /// <returns></returns>
-        private int getHotspotIndex(GPSLocation[] hotspot, List<GPSLocation[]> hotspots)
+        private int getHotspotIndex(Hotspot hotspot, List<Hotspot> hotspots)
         {
             return hotspots.IndexOf(hotspot) * 2;
         }
@@ -97,7 +104,7 @@ namespace Library
         /// <param name="hotspot">The hotspot.</param>
         /// <param name="hotspots">The hotspots.</param>
         /// <returns>The index of the indice that represents that a hot spot has been left.</returns>
-        private int getHotSpotLeftIndex(GPSLocation[] hotspot, List<GPSLocation[]> hotspots)
+        private int getHotSpotLeftIndex(Hotspot hotspot, List<Hotspot> hotspots)
         {
             return hotspots.IndexOf(hotspot) * 2 + 1;
         }
@@ -108,11 +115,12 @@ namespace Library
         /// <param name="polygon">The polygon.</param>
         /// <param name="testPoint">The test point.</param>
         /// <returns>true if testPoint is in the hotspot</returns>
-        private bool IsInConvexHull(GPSLocation[] polygon, GPSData testPoint)
+        private bool IsInConvexHull(Hotspot hotspot, GPSData testPoint)
         {
             //inspired by http://stackoverflow.com/a/14998816
             bool result = false;
-            int j = polygon.Count() - 1;
+            GPSLocation[] polygon = hotspot.DataPoints;
+            int j = polygon .Count() - 1;
             for (int i = 0; i < polygon.Count(); i++)
             {
                 if (polygon[i].Latitude < testPoint.Location.Latitude && polygon[j].Latitude >= testPoint.Location.Latitude || polygon[j].Latitude < testPoint.Location.Latitude && polygon[i].Latitude >= testPoint.Location.Latitude)
@@ -125,79 +133,6 @@ namespace Library
                 j = i;
             }
             return result;
-        }
-
-        /// <summary>
-        /// Serializes a markov chain.
-        /// Creates a byte array with size $MarkovChainElements * ByteSizeOfDouble + 1*ByteSizeOfDouble$
-        /// First 8 bytes (ByteSizeOfDouble) is the size of the MarkovChain. The rest are MarkovChainElementValues group by 8.
-        /// </summary>
-        /// <param name="markovChain">The markov chain.</param>
-        /// <returns>ByteArray with all elements in "markovChain" converted to bytes</returns>
-        private static byte[] serializeMarkovChain(MarkovChain markovChain)
-        {
-            //Markov Chains are always n*n in size
-            int markovChainSize = markovChain.size;
-            int byteSizeOfDouble = 8;
-            int l = 0;
-
-            byte[] serializedMarkovChain = new byte[((markovChainSize * markovChainSize) * byteSizeOfDouble) + byteSizeOfDouble];
-            foreach (byte item in BitConverter.GetBytes((double)markovChainSize))
-            {
-                serializedMarkovChain[l] = item;
-                l++;
-	        }
-
-            for (int i = 0; i < markovChainSize; i++)
-            {
-                for (int j = 0; j < markovChainSize; j++)
-                {
-                    byte[] temp = BitConverter.GetBytes(markovChain[i,j]);
-                    for (int k = 0; k < byteSizeOfDouble; k++)
-                    {
-                        serializedMarkovChain[l] = temp[k];
-                        l++;
-                    }
-                }
-            }
-
-            return serializedMarkovChain;
-        }
-
-        /// <summary>
-        /// Deserializes the markov chain based on structure from "serializeMarkovChain" method.
-        /// </summary>
-        /// <param name="serializedMarkovChain">The serialized markov chain.</param>
-        /// <returns></returns>
-        public static MarkovChain deserializeMarkovChain(byte[] serializedMarkovChain)
-        {
-            int k = 0;
-
-            int markovChainSize = (int)BitConverter.ToDouble(serializedMarkovChain, k);
-            k = k + 8;
-
-            MarkovChain markovChain = new MarkovChain(markovChainSize);
-            
-            for (int i = 0; i < markovChainSize; i++)
-            {
-                for (int j = 0; j < markovChainSize; j++)
-                {
-                    markovChain[i, j] = BitConverter.ToDouble(serializedMarkovChain, k);
-                    k = k + 8;
-                }
-            }
-
-            markovChain.CreateChain();
-            return markovChain;
-        }
-
-
-        public static void InsertMarkovChain(Database.DatabaseSession session, MarkovChain markovChain)
-        {
-            MySqlCommand cmd = new MySqlCommand("INSERT INTO markov_chains (mc) VALUES(@data)");
-            cmd.Parameters.Add("@data", MySqlDbType.MediumBlob).Value = serializeMarkovChain(markovChain);
-
-            session.Execute(cmd);
         }
     }
 }

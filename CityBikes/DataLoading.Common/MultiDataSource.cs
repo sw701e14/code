@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataLoading.Common
+namespace LocationService.Common
 {
     /// <summary>
     /// Retrives <see cref="GPSInput"/> from a collection of data sources by querying each of them one at a time.

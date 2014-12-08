@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using Shared.DTO;
 
-namespace Library
+namespace Shared.DAL
 {
     /// <summary>
     /// Exposes methods and classes enabling database interactions.
@@ -45,6 +46,7 @@ namespace Library
             connection.Dispose();
         }
 
+
         /// <summary>
         /// Runs a database session by connection to the database, executing <paramref name="operation"/> and disconnecting.
         /// </summary>
@@ -68,6 +70,8 @@ namespace Library
             {
                 connection.Close();
             }
+
+            
 
             if (error != null)
                 throw error;
@@ -128,7 +132,7 @@ namespace Library
             /// <param name="query">The query that should be executed.</param>
             /// <param name="args">An object array that contains zero or more objects to format.</param>
             /// <returns>A <see cref="RowCollection"/> element from which data can be read.</returns>
-            public RowCollection ExecuteRead(string query, params object[] args)
+            internal RowCollection ExecuteRead(string query, params object[] args)
             {
                 if (!query.ToLower().Trim().StartsWith("select"))
                     throw new ArgumentException("ExecuteRead must be performed with a SELECT query. Use Execute instead.");
@@ -143,7 +147,7 @@ namespace Library
             /// <param name="query">The query that should be executed.</param>
             /// <param name="args">An object array that contains zero or more objects to format.</param>
             /// <returns>The number of affected rows.</returns>
-            public int Execute(string query, params object[] args)
+            internal int Execute(string query, params object[] args)
             {
                 if (query.ToLower().Trim().StartsWith("select"))
                     throw new ArgumentException("Execute cannot be performed with a SELECT query. Use ExecuteRead instead.");
@@ -153,40 +157,6 @@ namespace Library
                 cmd.Dispose();
 
                 return count;
-            }
-
-            public Hotspot CreateHotspot(GPSLocation[] data, bool applyConvexHull)
-            {
-                if (applyConvexHull)
-                    data = GPSLocation.GetConvexHull(data);
-
-                MySqlCommand cmd = new MySqlCommand("INSERT INTO hotspots (convex_hull) VALUES(@data)");
-                Hotspot hotspot = new Hotspot(data);
-
-                BinaryFormatter formatter = new BinaryFormatter();
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    formatter.Serialize(ms, data);
-                    cmd.Parameters.Add("@data", MySqlDbType.Blob).Value = ms.ToArray();
-                }
-
-                Execute(cmd);
-
-                return hotspot;
-            }
-
-            public Hotspot[] GetAllHotspots()
-            {
-                return ExecuteRead("SELECT convex_hull FROM hotspots").Select(row => row.GetHotspot()).ToArray();
-            }
-
-            public MarkovChain GetMarkovChain(int column = 0)
-            {
-                RowCollection serializedMarkovChain = ExecuteRead("SELECT mc FROM markov_chains");
-
-                byte[] data = serializedMarkovChain.ElementAt(column).GetValue<byte[]>();
-
-                return BuildMarkov.deserializeMarkovChain(data);
             }
 
             internal int Execute(MySqlCommand command)

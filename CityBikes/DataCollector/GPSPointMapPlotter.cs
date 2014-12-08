@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Library;
 using System.IO;
+using Shared.DTO;
+using Shared.DAL;
 
-namespace DataLoading.DataCollector
+namespace LocationService.DataCollector
 {
     /// <summary>
     /// Provides methods that creates a Google Map with plotted in GPS locations.
@@ -33,14 +34,14 @@ namespace DataLoading.DataCollector
         /// Saves the map as a HTML-file in working directory.
         /// </summary>
         /// <param name="session">The <see cref="Database.DatabaseSession"/> used to load gps data.</param>
-        public static void SaveMapAsHtml(Database.DatabaseSession session)
+        public static void SaveMapAsHtml()
         {
-            if (session == null)
-                throw new ArgumentNullException();
-
-            GPSData[] data = session.ExecuteRead("SELECT * FROM citybike_test.gps_data").Select(r => r.GetGPSData(1)).ToArray();
-
-            SaveMapAsHtml(data);
+            using (Database db = new Database())
+            {
+                GPSData[] data = db.RunSession<GPSData[]>(session => session.GetAllGPSData());
+                SaveMapAsHtml(data);
+            }   
+         
         }
 
         /// <summary>
@@ -72,7 +73,7 @@ namespace DataLoading.DataCollector
                 location.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture),
                 location.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture));
         }
-        
+
         private void generateHTML(GPSData[] data)
         {
             sb.AppendLine("<!DOCTYPE html>");
