@@ -64,7 +64,7 @@ namespace LocationService.DataCollector
             using (Database db = new Database())
                 knownBikes.AddRange(db.RunSession(s => s.GetBikes()));
 
-            while (!shouldExit)
+            while (!shouldExit || runall)
             {
                 var data = dataSource.GetData();
 
@@ -98,6 +98,8 @@ namespace LocationService.DataCollector
 
                     var last = session.LatestGPSData(data.Bike);
                     if (last.HasValue && GPSData.WithinAccuracy(last.Value, data))
+                        session.setHasNotMoved(data.Bike);
+                    else
                         session.InsertGPSData(data);
                 });
             }
