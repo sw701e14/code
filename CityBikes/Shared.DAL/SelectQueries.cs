@@ -13,7 +13,7 @@ namespace Shared.DAL
         /// </summary>
         /// <param name="session">A <see cref="DatabaseSession"/> from which data should be retrieved.</param>
         /// <param name="id">The id of the bike to find the location of.</param>
-        /// <returns>A tuple with [latitude, longitude, accuracy, queried, hasNotMoved]</returns>
+        /// <returns>A tuple with [latitude, longitude, accuracy, queried, hasNotMoved] or <c>null</c> if no data exists.</returns>
         public static Tuple<decimal, decimal, byte, DateTime, bool> GetLastGPSData(this DatabaseSession session, uint bikeId)
         {
             var data = session.ExecuteRead(
@@ -70,13 +70,6 @@ FROM citybike_test.gps_data");
 FROM citybike_test.gps_data Where hasNotMoved");
 
             return rows.Select(row => row.ToTuple<uint, decimal, decimal, byte, DateTime, bool>()).ToArray();
-        }
-
-
-
-        public static bool BikeExists(this DatabaseSession session, int bikeId)
-        {
-            return session.ExecuteRead("SELECT bikeId, latitude, longitude, accuracy, queried, hasNotMoved FROM citybike_test.gps_data WHERE bikeId = {0} ORDER BY queried DESC", bikeId).Any();
         }
 
         /// <summary>
