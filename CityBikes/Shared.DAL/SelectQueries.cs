@@ -73,10 +73,6 @@ FROM citybike_test.gps_data Where hasNotMoved");
         }
 
 
-        public static List<Hotspot> GetAllHotspots(this DatabaseSession session)
-        {
-            return session.ExecuteRead("SELECT convex_hull FROM hotspots").Select(row => row.GetHotspot()).ToList();
-        }
 
         public static bool BikeExists(this DatabaseSession session, int bikeId)
         {
@@ -115,6 +111,11 @@ INNER JOIN (
         public static Bike[] GetBikes(this DatabaseSession session)
         {
             return session.ExecuteRead("SELECT * FROM citybike_test.bikes").Select(row => row.GetBike()).ToArray();
+        }
+
+        public static List<Hotspot> GetAllHotspots(this DatabaseSession session)
+        {
+            return session.ExecuteRead("SELECT convex_hull FROM hotspots").Select(row => row.GetHotspot()).ToList();
         }
     }
 }
