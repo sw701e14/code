@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shared.DAL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,15 @@ namespace Shared.DTO
             this.location = location;
             this.accuracy = getAccuracy(accuracy);
             this.queryTime = queryTime;
-            this.hasNotMoved = hasNotMoved;
+            this.hasNotMoved = false;
+        }
+
+        public static void InsertInDatabase(DatabaseSession session, GPSData data)
+        {
+            if (data.hasNotMoved)
+                throw new ArgumentException("Data cannot be inserted with hasNotMoved = true");
+
+            session.InsertGPSData(data.bike.Id, data.location.Latitude, data.location.Longitude, data.accuracy, data.queryTime);
         }
 
         private static byte getAccuracy(byte? accuracy)

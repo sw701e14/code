@@ -39,6 +39,11 @@ namespace Shared.DTO
             return session.GetBikes().Select(x => new Bike(x)).ToArray();
         }
 
+        public void SetHasNotMoved(DatabaseSession session)
+        {
+            session.SetHasNotMoved(this.id);
+        }
+
         public override bool Equals(object obj)
         {
             if (!(obj is Bike))
