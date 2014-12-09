@@ -51,7 +51,7 @@ namespace ModelUpdater
             database.RunSession(session => DeleteQueries.TruncateHotspots(session));
             database.RunSession(session => DeleteQueries.TruncateMarkov_chains(session));
 
-            storeDataInDatabase(database, allGPSData, allHotspots, markovChain);
+            storeDataInDatabase(database, allHotspots, markovChain);
 
             //Predict?
 
@@ -94,12 +94,8 @@ namespace ModelUpdater
             return allHotspots;
         }
 
-        private static void storeDataInDatabase(Database database, GPSData[] allGPSData, Hotspot[] allHotspots, Matrix markovChain)
+        private static void storeDataInDatabase(Database database, Hotspot[] allHotspots, Matrix markovChain)
         {
-            foreach (GPSData item in allGPSData)
-	        {
-                database.RunSession(session => InsertQueries.InsertGPSData(session, item));
-	        }
             foreach (Hotspot item in allHotspots)
             {
                 database.RunSession(session => InsertQueries.InsertHotSpot(session, item.getDataPoints()));
