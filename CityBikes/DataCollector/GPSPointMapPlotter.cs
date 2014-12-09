@@ -33,7 +33,7 @@ namespace LocationService.DataCollector
         /// Plots ALL <see cref="GPSData"/> from database to a Google Map and connects same-bike-id-points with lines.
         /// Saves the map as a HTML-file in working directory.
         /// </summary>
-        /// <param name="session">The <see cref="Database.DatabaseSession"/> used to load gps data.</param>
+        /// <param name="session">The <see cref="DatabaseSession"/> used to load gps data.</param>
         public static void SaveMapAsHtml()
         {
             using (Database db = new Database())

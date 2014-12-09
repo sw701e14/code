@@ -37,13 +37,16 @@ namespace LibraryTests
 
             database.RunSession(session => session.InsertGPSData(expected));
 
-            GPSData actual = database.RunSession(session => session.LatestGPSData(bike));
+            GPSData? actual = database.RunSession(session => session.LatestGPSData(bike));
 
-            Assert.AreEqual(expected.Bike, actual.Bike);
-            Assert.AreEqual(expected.Accuracy, actual.Accuracy);
-            Assert.AreEqual(expected.Location, actual.Location);
-            Assert.AreEqual(expected.HasNotMoved, actual.HasNotMoved);
-
+            Assert.IsNotNull(actual);
+            if (actual.HasValue)
+            {
+                Assert.AreEqual(expected.Bike, actual.Value.Bike);
+                Assert.AreEqual(expected.Accuracy, actual.Value.Accuracy);
+                Assert.AreEqual(expected.Location, actual.Value.Location);
+                Assert.AreEqual(expected.HasNotMoved, actual.Value.HasNotMoved);
+            }
         }
 
         /// <summary>
@@ -53,7 +56,7 @@ namespace LibraryTests
         public void updateLatestLocation()
         {
             var bike = new Bike((uint)rndNumber);
-            GPSData expected = new GPSData(bike, new GPSLocation(rndNumber, rndNumber), (byte)rndNumber, DateTime.Now, false);
+            GPSData expected = new GPSData(bike, new GPSLocation(rndNumber, rndNumber), (byte)rndNumber, DateTime.Now, true);
 
             database.RunSession(session =>
             {
@@ -61,12 +64,16 @@ namespace LibraryTests
                 session.InsertGPSData(expected);
             });
 
-            GPSData actual = database.RunSession(session => session.LatestGPSData(bike));
-
-            Assert.AreEqual(expected.Bike, actual.Bike);
-            Assert.AreEqual(expected.Accuracy, actual.Accuracy);
-            Assert.AreEqual(expected.Location, actual.Location);
-            Assert.AreEqual(true, actual.HasNotMoved);
+            GPSData? actual = database.RunSession(session => session.LatestGPSData(bike));
+            
+            Assert.IsNotNull(actual);
+            if (actual.HasValue)
+            {
+                Assert.AreEqual(expected.Bike, actual.Value.Bike);
+                Assert.AreEqual(expected.Accuracy, actual.Value.Accuracy);
+                Assert.AreEqual(expected.Location, actual.Value.Location);
+                Assert.AreEqual(expected.HasNotMoved, actual.Value.HasNotMoved);
+            }
         }
     }
 }

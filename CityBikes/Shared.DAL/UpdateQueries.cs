@@ -9,7 +9,7 @@ namespace Shared.DAL
 {
     public static class UpdateQueries
     {
-        public static void setHasNotMoved(this Database.DatabaseSession session, Bike bike)
+        public static void setHasNotMoved(this DatabaseSession session, Bike bike)
         {
              session.Execute(
 @"UPDATE gps_data a
