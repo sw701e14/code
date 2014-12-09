@@ -9,36 +9,62 @@ namespace ModelUpdater
 {
     class Program
     {
-        private static double updateModelEveryMinutes = 5;
+        private const double UPDATEMODELEVERYMINUTES = 1;
+        private static int countdown = 60*1;
 
         static void Main(string[] args)
         {
-            Database database = new Database();
+            double updateModelEveryMinutes = UPDATEMODELEVERYMINUTES;
 
             if (args.Any())
                 double.TryParse(args[0], out updateModelEveryMinutes);
             if (updateModelEveryMinutes <= 0)
-                updateModelEveryMinutes = 5;
+                updateModelEveryMinutes = UPDATEMODELEVERYMINUTES;
 
-            Timer timer = new Timer(e => updateModel(database), null, 0, (long)TimeSpan.FromMinutes(updateModelEveryMinutes).TotalMilliseconds);
-            Console.ReadKey();
+            Timer testTimer = new Timer(e => countdownTest(), null, 0, 1000);
+
+            Timer timer = new Timer(e => updateModel(), null, 0, (long)TimeSpan.FromMinutes(updateModelEveryMinutes).TotalMilliseconds);
+            Console.ReadKey(true);
         }
 
-        private static void updateModel(Database database)
+        private static void updateModel()
         {
-            GPSLocation[] allGPSLocations = getGPSLocationsFromGPSData(database.RunSession(session => SelectQueries.GetAllGPSData(session)));
-            List<Shared.DTO.Hotspot> allHotspots = database.RunSession(session => SelectQueries.GetAllHotspots(session));
+            Database database = new Database(); //New database each run or same always?
 
-            //database.RunSession(session => DeleteQueries.TruncateAll(session));
+            GPSData[] allGPSData = database.RunSession(session => SelectQueries.GetAllGPSData(session));
+            if (allGPSData == null || !allGPSData.Any())
+                return;
+
+            GPSLocation[] allGPSLocations = getGPSLocationsFromGPSData(allGPSData);
+            if (allGPSLocations == null || !allGPSLocations.Any())
+                return;
+
+            database.RunSession(session => DeleteQueries.TruncateGPS_data(session));
 
             List<GPSLocation[]> allClusters = ClusteringTechniques.FindClusters(allGPSLocations, 4, 60);
+            if (allClusters == null || !allClusters.Any())
+                return;
 
-            //MarkovChain markovChain = new MarkovChain(allClusters.Count);
+            Hotspot[] allHotspots = convertClustersToHotspots(allClusters);
+            if (allHotspots == null || !allHotspots.Any())
+                return;
+
+            Matrix markovChain = MarkovChain.BuildMarkovMatrix(allHotspots, allGPSData);
+
+            database.RunSession(session => DeleteQueries.TruncateHotspots(session));
+            database.RunSession(session => DeleteQueries.TruncateMarkov_chains(session));
+
+            storeDataInDatabase(database, allGPSData, allHotspots, markovChain);
+
+            //Predict?
 
 
 
+            //Testing
+            printMatrix(markovChain);
+            saveMatrixToFile(markovChain);
 
-            printClusters(allClusters);
+            database.Dispose();
         }
 
         private static GPSLocation[] getGPSLocationsFromGPSData(GPSData[] data)
@@ -55,17 +81,86 @@ namespace ModelUpdater
             return allGPSLocations;
         }
 
-        private static void printClusters(List<GPSLocation[]> allClusters)
+        private static Hotspot[] convertClustersToHotspots(List<GPSLocation[]> allClusters)
         {
-            for (int i = 0; i < allClusters.Count; i++)
+            Hotspot[] allHotspots = new Hotspot[allClusters.Count];
+
+            int i = 0;
+            foreach (GPSLocation[] item in allClusters)
             {
-                for (int j = 0; j < allClusters[i].GetLength(0); j++)
-                {
-                    Console.Write(allClusters[i][j]);
-                }
-                Console.WriteLine();
-                Console.WriteLine();
+                Hotspot tempHotspot = new Hotspot(item);
+                allHotspots[i] = tempHotspot;
+                i++;
             }
+
+            return allHotspots;
+        }
+
+        private static void storeDataInDatabase(Database database, GPSData[] allGPSData, Hotspot[] allHotspots, Matrix markovChain)
+        {
+            foreach (GPSData item in allGPSData)
+	        {
+                database.RunSession(session => InsertQueries.InsertGPSData(session, item));
+	        }
+            foreach (Hotspot item in allHotspots)
+            {
+                database.RunSession(session => InsertQueries.InsertHotSpot(session, item.getDataPoints()));
+            }
+            database.RunSession(session => InsertQueries.InsertMarkovMatrix(session, markovChain));
+        }
+
+
+
+
+
+
+
+
+
+
+
+        private static void countdownTest()
+        {
+            Console.WriteLine(countdown);
+            if (countdown == 0)
+            {
+                countdown = 60 * (int)UPDATEMODELEVERYMINUTES;
+                Console.Clear();
+            }
+            else
+                countdown--;
+        }
+
+
+
+
+
+        private static void printMatrix(Matrix markov)
+        {
+            for (int i = 0; i < markov.Height; i++)
+            {
+                for (int j = 0; j < markov.Width; j++)
+                {
+                    Console.Write(string.Format("{0} ", markov[i, j]));
+                }
+                Console.Write(Environment.NewLine + Environment.NewLine);
+            }
+        }
+
+        private static void saveMatrixToFile(Matrix markov)
+        {
+            System.IO.StreamWriter streamWriter = new System.IO.StreamWriter("c:\\test" + DateTime.UtcNow.Ticks.ToString() + ".txt");
+
+            for (int i = 0; i < markov.Height; i++)
+            {
+                for (int j = 0; j < markov.Width; j++)
+                {
+                    streamWriter.Write(string.Format("{0} ", markov[i, j]));
+                }
+                streamWriter.Write(Environment.NewLine);
+            }
+
+            streamWriter.Close();
         }
     }
 }
