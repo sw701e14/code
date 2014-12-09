@@ -39,7 +39,7 @@ namespace Shared.DAL
             using (MemoryStream ms = new MemoryStream())
             {
                 formatter.Serialize(ms, data);
-                cmd.Parameters.Add("@data", MySqlDbType.Blob).Value = ms.ToArray();
+                cmd.Parameters.Add("@hotspot", MySqlDbType.Blob).Value = ms.ToArray();
             }
              session.Execute(cmd);
         }
