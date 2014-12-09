@@ -11,7 +11,6 @@ namespace Shared.DAL
     public class Row
     {
         private object[] data;
-        private int tupleIndexShift = 0;
 
         internal Row(MySqlDataReader reader)
         {
@@ -28,7 +27,7 @@ namespace Shared.DAL
         /// <returns>The data at <paramref name="column"/> as type <typeparamref name="T"/>.</returns>
         public T GetValue<T>(int column = 0)
         {
-            object item = data[column + tupleIndexShift];
+            object item = data[column];
 
             if (item is DBNull)
                 return default(T);
@@ -44,7 +43,6 @@ namespace Shared.DAL
         /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
         public Tuple<T1> ToTuple<T1>(int column = 0)
         {
-            tupleIndexShift = column;
             return Tuple.Create(GetValue<T1>(0));
         }
         /// <summary>
@@ -56,7 +54,6 @@ namespace Shared.DAL
         /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
         public Tuple<T1, T2> ToTuple<T1, T2>(int column = 0)
         {
-            tupleIndexShift = column;
             return Tuple.Create(GetValue<T1>(0), GetValue<T2>(1));
         }
         /// <summary>
@@ -69,7 +66,6 @@ namespace Shared.DAL
         /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
         public Tuple<T1, T2, T3> ToTuple<T1, T2, T3>(int column = 0)
         {
-            tupleIndexShift = column;
             return Tuple.Create(GetValue<T1>(0), GetValue<T2>(1), GetValue<T3>(2));
         }
         /// <summary>
@@ -83,7 +79,6 @@ namespace Shared.DAL
         /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
         public Tuple<T1, T2, T3, T4> ToTuple<T1, T2, T3, T4>(int column = 0)
         {
-            tupleIndexShift = column;
             return Tuple.Create(GetValue<T1>(0), GetValue<T2>(1), GetValue<T3>(2), GetValue<T4>(3));
         }
         /// <summary>
@@ -98,7 +93,6 @@ namespace Shared.DAL
         /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
         public Tuple<T1, T2, T3, T4, T5> ToTuple<T1, T2, T3, T4, T5>(int column = 0)
         {
-            tupleIndexShift = column;
             return Tuple.Create(GetValue<T1>(0), GetValue<T2>(1), GetValue<T3>(2), GetValue<T4>(3), GetValue<T5>(4));
         }
         /// <summary>
@@ -114,7 +108,6 @@ namespace Shared.DAL
         /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
         public Tuple<T1, T2, T3, T4, T5, T6> ToTuple<T1, T2, T3, T4, T5, T6>(int column = 0)
         {
-            tupleIndexShift = column;
             return Tuple.Create(GetValue<T1>(0), GetValue<T2>(1), GetValue<T3>(2), GetValue<T4>(3), GetValue<T5>(4), GetValue<T6>(5));
         }
         /// <summary>
@@ -131,7 +124,6 @@ namespace Shared.DAL
         /// <returns>A <see cref="Tuple"/> whose value is the data from the row.</returns>
         public Tuple<T1, T2, T3, T4, T5, T6, T7> ToTuple<T1, T2, T3, T4, T5, T6, T7>(int column = 0)
         {
-            tupleIndexShift = column;
             return Tuple.Create(GetValue<T1>(0), GetValue<T2>(1), GetValue<T3>(2), GetValue<T4>(3), GetValue<T5>(4), GetValue<T6>(5), GetValue<T7>(6));
         }
 
