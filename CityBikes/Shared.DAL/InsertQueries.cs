@@ -33,7 +33,7 @@ namespace Shared.DAL
         {
             Hotspot hotspot = new Hotspot(data);
 
-            MySqlCommand cmd = new MySqlCommand("INSERT INTO hotspots (convex_hull) VALUES(@data)");
+            MySqlCommand cmd = new MySqlCommand("INSERT INTO hotspots (convex_hull) VALUES(@hotspot)");
 
             BinaryFormatter formatter = new BinaryFormatter();
             using (MemoryStream ms = new MemoryStream())
