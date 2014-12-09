@@ -1,5 +1,4 @@
 ﻿using MySql.Data.MySqlClient;
-using Shared.DTO;
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -29,91 +28,12 @@ namespace Shared.DAL
         /// <returns>The data at <paramref name="column"/> as type <typeparamref name="T"/>.</returns>
         public T GetValue<T>(int column = 0)
         {
-            if (typeof(T) == typeof(Bike))
-                return (T)(object)GetBike(column);
-
-            else if (typeof(T) == typeof(GPSLocation))
-                return (T)(object)GetGPSLocation(column);
-
-            else if (typeof(T) == typeof(GPSData))
-                return (T)(object)GetGPSData(column);
-
-            else if (typeof(T) == typeof(Hotspot))
-                return (T)(object)GetHotspot(column);
-
-            else
-            {
-                object item = data[column + tupleIndexShift];
-
-                if (item is DBNull)
-                    return default(T);
-
-                return (T)item;
-            }
-        }
-
-        public Bike GetBike(int column = 0)
-        {
-            object item = data[column + tupleIndexShift];
-            return new Bike((uint)item);
-        }
-
-        public GPSLocation GetGPSLocation(int column = 0)
-        {
-            object item1 = data[column + tupleIndexShift];
-            object item2 = data[column + tupleIndexShift + 1];
-
-            tupleIndexShift++;
-
-            return new GPSLocation((decimal)item1, (decimal)item2);
-        }
-
-        public GPSData GetGPSData(int column = 0)
-        {
-            Bike bike = GetBike(column);
-            GPSLocation location = GetGPSLocation(column + 1);
-            byte acc = GetValue<byte>(column + 2);
-            DateTime query = GetValue<DateTime>(column + 3);
-            bool notMoved = GetValue<bool>(column + 4);
-
-            tupleIndexShift += 4;
-            return new GPSData(bike, location, acc, query, notMoved);
-        }
-
-        public Hotspot GetHotspot(int column = 0)
-        {
             object item = data[column + tupleIndexShift];
 
-            MemoryStream stream = new MemoryStream((byte[])item);
-            BinaryFormatter formatter = new BinaryFormatter();
+            if (item is DBNull)
+                return default(T);
 
-            GPSLocation[] points = (GPSLocation[])formatter.Deserialize(stream);
-
-            stream.Close();
-            stream.Dispose();
-
-            return new Hotspot(points);
-        }
-
-        public Matrix GetMatrix(int column = 0)
-        {
-            object item = data[column + tupleIndexShift];
-
-            MemoryStream stream = new MemoryStream((byte[])item);
-            BinaryReader reader = new BinaryReader(stream);
-
-            int w = reader.ReadInt32();
-            int h = reader.ReadInt32();
-
-            double[,] m = new double[w, h];
-            for (int y = 0; y < h; y++)
-                for (int x = 0; x < w; x++)
-                    m[x, y] = reader.ReadDouble();
-
-            reader.Close();
-            reader.Dispose();
-
-            return new Matrix(m);
+            return (T)item;
         }
 
         /// <summary>
