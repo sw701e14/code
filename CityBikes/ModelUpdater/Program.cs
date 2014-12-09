@@ -9,9 +9,15 @@ namespace ModelUpdater
 {
     class Program
     {
-        private const double UPDATEMODELEVERYMINUTES = 1;
+        private const double UPDATEMODELEVERYMINUTES = 0.5;
         private const int MINIMUMPOINTSINCLUSTER = 4;
         private const double RADIUSINCLUSTER = 60;
+
+        ////////////////////////////////////////////////////////////
+        //                      For Testing                       //               
+        ////////////////////////////////////////////////////////////
+        private static double countdown = 60 * UPDATEMODELEVERYMINUTES;
+        //private static Timer testTimer = new Timer(e => countdownTest(), null, 0, 1000);
 
         static void Main(string[] args)
         {
@@ -21,8 +27,8 @@ namespace ModelUpdater
                 double.TryParse(args[0], out updateModelEveryMinutes);
             if (updateModelEveryMinutes <= 0)
                 updateModelEveryMinutes = UPDATEMODELEVERYMINUTES;
-
             Timer timer = new Timer(e => updateModel(), null, 0, (long)TimeSpan.FromMinutes(updateModelEveryMinutes).TotalMilliseconds);
+
             Console.ReadKey(true);
         }
 
@@ -48,8 +54,9 @@ namespace ModelUpdater
 
             Matrix markovChain = MarkovChain.BuildMarkovMatrix(allHotspots, allGPSData);
 
+            GPSData[] latestGPSData = getAllLatestsGPSData(database);
             truncateOldData(database);
-            storeNewData(database, allHotspots, markovChain);
+            storeNewData(database, latestGPSData, allHotspots, markovChain);
 
             //Predict?
 
@@ -92,6 +99,20 @@ namespace ModelUpdater
             return allHotspots;
         }
 
+        private static GPSData[] getAllLatestsGPSData(Database database)
+        {
+            Bike[] allBikes = database.RunSession(session => session.GetBikes());
+            GPSData[] latestGPSData = new GPSData[allBikes.Length];
+
+            int i = 0;
+            foreach (Bike item in allBikes)
+            {
+                latestGPSData[i] = (GPSData)database.RunSession(session => session.LatestGPSData(item));
+            }
+
+            return latestGPSData;
+        }
+
         private static void truncateOldData(Database database)
         {
             database.RunSession(session => DeleteQueries.TruncateGPS_data(session));
@@ -99,8 +120,12 @@ namespace ModelUpdater
             database.RunSession(session => DeleteQueries.TruncateMarkov_chains(session));
         }
 
-        private static void storeNewData(Database database, Hotspot[] allHotspots, Matrix markovChain)
+        private static void storeNewData(Database database, GPSData[] allGPSData, Hotspot[] allHotspots, Matrix markovChain)
         {
+            foreach (GPSData item in allGPSData)
+	        {
+		        database.RunSession(session => InsertQueries.InsertGPSData(session, item));
+	        }
             foreach (Hotspot item in allHotspots)
             {
                 database.RunSession(session => InsertQueries.InsertHotSpot(session, item.getDataPoints()));
@@ -123,13 +148,14 @@ namespace ModelUpdater
 
         private static void printMatrix(Matrix markov)
         {
+            Console.WriteLine("Markov at " + DateTime.UtcNow.ToString());
             for (int i = 0; i < markov.Height; i++)
             {
                 for (int j = 0; j < markov.Width; j++)
                 {
                     Console.Write(string.Format("{0} ", markov[i, j]));
                 }
-                Console.Write(Environment.NewLine + Environment.NewLine);
+                Console.Write(Environment.NewLine);
             }
         }
 
@@ -147,6 +173,19 @@ namespace ModelUpdater
             }
 
             streamWriter.Close();
+        }
+
+        private static void countdownTest()
+        {
+            Console.Write(countdown + " ");
+            if (countdown == 0)
+            {
+                countdown = 60 * UPDATEMODELEVERYMINUTES;
+                Console.Clear();
+                Console.Write("Countdown: ");
+            }
+            else
+                countdown--;
         }
     }
 }
