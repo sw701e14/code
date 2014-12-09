@@ -39,25 +39,33 @@ namespace Shared.DAL
             session.Execute("INSERT INTO citybike_test.bikes (id) VALUES ({0})", bikeId);
         }
 
-        public static void InsertHotSpot(this DatabaseSession session, GPSLocation[] data)
+        /// <summary>
+        /// Inserts a new hotspot into the database.
+        /// </summary>
+        /// <param name="session">A <see cref="DatabaseSession"/> using which data should be inserted.</param>
+        /// <param name="data">An array of gps location data representing the hotspot.</param>
+        public static void InsertHotSpot(this DatabaseSession session, Tuple<decimal, decimal>[] data)
         {
-            Hotspot hotspot = new Hotspot(data);
-
             MySqlCommand cmd = new MySqlCommand("INSERT INTO hotspots (convex_hull) VALUES(@data)");
 
-            BinaryFormatter formatter = new BinaryFormatter();
             using (MemoryStream ms = new MemoryStream())
+            using (BinaryWriter writer = new BinaryWriter(ms))
             {
-                formatter.Serialize(ms, data);
+                writer.Write(data.Length);
+                for (int i = 0; i < data.Length; i++)
+                {
+                    writer.Write(data[i].Item1);
+                    writer.Write(data[i].Item2);
+                }
                 cmd.Parameters.Add("@hotspot", MySqlDbType.Blob).Value = ms.ToArray();
             }
-             session.Execute(cmd);
+            session.Execute(cmd);
         }
 
         public static void InsertMarkovMatrix(this DatabaseSession session, Matrix matrix)
         {
-            using(MemoryStream ms = new MemoryStream())
-            using(BinaryWriter writer = new BinaryWriter(ms))
+            using (MemoryStream ms = new MemoryStream())
+            using (BinaryWriter writer = new BinaryWriter(ms))
             {
                 writer.Write(matrix.Width);
                 writer.Write(matrix.Height);

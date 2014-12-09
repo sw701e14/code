@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -82,9 +83,27 @@ FROM citybike_test.gps_data Where hasNotMoved");
             return session.ExecuteRead("SELECT id FROM citybike_test.bikes").Select(row => row.GetValue<uint>()).ToArray();
         }
 
-        public static List<Hotspot> GetAllHotspots(this DatabaseSession session)
+        /// <summary>
+        /// Gets all hotspots in the database.
+        /// </summary>
+        /// <param name="session">A <see cref="DatabaseSession"/> from which data should be retrieved.</param>
+        /// <returns>An array in which each element is an array of gps locations representing hotspots.</returns>
+        public static Tuple<decimal, decimal>[][] GetAllHotspots(this DatabaseSession session)
         {
-            return session.ExecuteRead("SELECT convex_hull FROM hotspots").Select(row => row.GetHotspot()).ToList();
+            var rows = session.ExecuteRead("SELECT convex_hull FROM hotspots").ToArray();
+            Tuple<decimal, decimal>[][] hotspots = new Tuple<decimal, decimal>[rows.Length][];
+
+            for (int i = 0; i < rows.Length; i++)
+                using (MemoryStream ms = new MemoryStream(rows[i].GetValue<byte[]>()))
+                using (BinaryReader reader = new BinaryReader(ms))
+                {
+                    int len = reader.ReadInt32();
+                    hotspots[i] = new Tuple<decimal, decimal>[len];
+                    for (int j = 0; j < len; j++)
+                        hotspots[i][j] = Tuple.Create(reader.ReadDecimal(), reader.ReadDecimal());
+                }
+
+            return hotspots;
         }
     }
 }
