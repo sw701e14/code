@@ -9,7 +9,7 @@ namespace ModelUpdater
 {
     class Program
     {
-        private const double UPDATEMODELEVERYMINUTES = 0.5;
+        private const double UPDATEMODELEVERYMINUTES = 0.1;
         private const int MINIMUMPOINTSINCLUSTER = 4;
         private const double RADIUSINCLUSTER = 60;
 
@@ -23,6 +23,7 @@ namespace ModelUpdater
         {
             double updateModelEveryMinutes = UPDATEMODELEVERYMINUTES;
 
+
             if (args.Any())
                 double.TryParse(args[0], out updateModelEveryMinutes);
             if (updateModelEveryMinutes <= 0)
@@ -30,44 +31,51 @@ namespace ModelUpdater
             Timer timer = new Timer(e => updateModel(), null, 0, (long)TimeSpan.FromMinutes(updateModelEveryMinutes).TotalMilliseconds);
 
             Console.ReadKey(true);
+
+
         }
 
         private static void updateModel()
         {
             Database database = new Database();
 
-            GPSData[] allGPSData = database.RunSession(session => SelectQueries.GetAllGPSData(session));
-            if (allGPSData == null || !allGPSData.Any())
-                return;
+            database.RunSession(session => 
+            {
+                GPSData[] allGPSData =  SelectQueries.GetAllGPSData(session);
+                if (allGPSData == null || !allGPSData.Any())
+                    return;
 
-            GPSLocation[] allGPSLocations = getGPSLocationsFromGPSData(allGPSData);
-            if (allGPSLocations == null || !allGPSLocations.Any())
-                return;
+                GPSLocation[] allGPSLocations = getGPSLocationsFromGPSData(allGPSData);
+                if (allGPSLocations == null || !allGPSLocations.Any())
+                    return;
 
-            List<GPSLocation[]> allClusters = ClusteringTechniques.FindClusters(allGPSLocations, MINIMUMPOINTSINCLUSTER, RADIUSINCLUSTER);
-            if (allClusters == null || !allClusters.Any())
-                return;
+                List<GPSLocation[]> allClusters = ClusteringTechniques.FindClusters(allGPSLocations, MINIMUMPOINTSINCLUSTER, RADIUSINCLUSTER);
+                if (allClusters == null || !allClusters.Any())
+                    return;
 
-            Hotspot[] allHotspots = convertClustersToHotspots(allClusters);
-            if (allHotspots == null || !allHotspots.Any())
-                return;
+                Hotspot[] allHotspots = convertClustersToHotspots(allClusters);
+                if (allHotspots == null || !allHotspots.Any())
+                    return;
 
-            Matrix markovChain = MarkovChain.BuildMarkovMatrix(allHotspots, allGPSData);
+                Matrix markovChain = MarkovChain.BuildMarkovMatrix(allHotspots, allGPSData);
 
-            GPSData[] latestGPSData = getAllLatestsGPSData(database);
-            truncateOldData(database);
-            storeNewData(database, latestGPSData, allHotspots, markovChain);
+                GPSData[] latestGPSData = getAllLatestsGPSData(session);
+                truncateOldData(session);
+                storeNewData(session, latestGPSData, allHotspots, markovChain);
 
-            //Predict?
+
+                //Predict?
+
+
+                ////////////////////////////////////////////////////////////
+                //                      For Testing                       //               
+                ////////////////////////////////////////////////////////////
+                printMatrix(markovChain);
+                saveMatrixToFile(markovChain);
+   
+            });
 
             database.Dispose();
-
-
-            ////////////////////////////////////////////////////////////
-            //                      For Testing                       //               
-            ////////////////////////////////////////////////////////////
-            printMatrix(markovChain);
-            saveMatrixToFile(markovChain);
         }
 
         private static GPSLocation[] getGPSLocationsFromGPSData(GPSData[] data)
@@ -99,38 +107,39 @@ namespace ModelUpdater
             return allHotspots;
         }
 
-        private static GPSData[] getAllLatestsGPSData(Database database)
+        private static GPSData[] getAllLatestsGPSData(Database.DatabaseSession session)
         {
-            Bike[] allBikes = database.RunSession(session => session.GetBikes());
+            Bike[] allBikes = session.GetBikes();
             GPSData[] latestGPSData = new GPSData[allBikes.Length];
 
             int i = 0;
             foreach (Bike item in allBikes)
             {
-                latestGPSData[i] = (GPSData)database.RunSession(session => session.LatestGPSData(item));
+                latestGPSData[i] = (GPSData)SelectQueries.LatestGPSData(session, item);
+                i++;
             }
 
             return latestGPSData;
         }
 
-        private static void truncateOldData(Database database)
+        private static void truncateOldData(Database.DatabaseSession session)
         {
-            database.RunSession(session => DeleteQueries.TruncateGPS_data(session));
-            database.RunSession(session => DeleteQueries.TruncateHotspots(session));
-            database.RunSession(session => DeleteQueries.TruncateMarkov_chains(session));
+            DeleteQueries.TruncateGPS_data(session);
+            DeleteQueries.TruncateHotspots(session);
+            DeleteQueries.TruncateMarkov_chains(session);
         }
 
-        private static void storeNewData(Database database, GPSData[] allGPSData, Hotspot[] allHotspots, Matrix markovChain)
+        private static void storeNewData(Database.DatabaseSession session, GPSData[] allGPSData, Hotspot[] allHotspots, Matrix markovChain)
         {
             foreach (GPSData item in allGPSData)
 	        {
-		        database.RunSession(session => InsertQueries.InsertGPSData(session, item));
+		        InsertQueries.InsertGPSData(session, item);
 	        }
             foreach (Hotspot item in allHotspots)
             {
-                database.RunSession(session => InsertQueries.InsertHotSpot(session, item.getDataPoints()));
+                InsertQueries.InsertHotSpot(session, item.getDataPoints());
             }
-            database.RunSession(session => InsertQueries.InsertMarkovMatrix(session, markovChain));
+            InsertQueries.InsertMarkovMatrix(session, markovChain);
         }
 
 
