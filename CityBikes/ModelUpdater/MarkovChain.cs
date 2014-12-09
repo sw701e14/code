@@ -33,7 +33,7 @@ namespace ModelUpdater
                 {
                     int next = getHotspotIndex(hotspots, groups[b].GetData(d).Location);
 
-                    if (next % 2 == 1 && last[b] % 2 == 1)//Mangler muligvis nogle cases
+                    if (next % 2 == 1 && last[b] % 2 == 1)//Possible missing some cases
                         next = last[b];
                     else if (next % 2 == 1 && last[b] % 2 == 0)
                         next = last[b] + 1;
@@ -48,7 +48,8 @@ namespace ModelUpdater
             {
                 double sum = 0;
                 for (int j = 0; j < size; j++) sum += counter[i, j];
-                for (int j = 0; j < size; j++) counter[i, j] /= sum; //Sum må ikke være nul (0)
+                if (sum > 0)
+                    for (int j = 0; j < size; j++) counter[i, j] /= sum; //Sum must not be nul (0)
             }
             return new Matrix(counter);
         }
