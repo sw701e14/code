@@ -34,6 +34,15 @@ namespace Shared.DTO
             session.InsertGPSData(data.bike.Id, data.location.Latitude, data.location.Longitude, data.accuracy, data.queryTime);
         }
 
+        public static GPSData[] GetAll(DatabaseSession session)
+        {
+            return session.GetAllGPSData().Select(x => new GPSData(new Bike(x.Item1), new GPSLocation(x.Item2, x.Item3), x.Item4, x.Item5, x.Item6)).ToArray();
+        }
+        public static GPSData[] GetAllHasNotMoved(DatabaseSession session)
+        {
+            return session.GetAllGPSNotMovedData().Select(x => new GPSData(new Bike(x.Item1), new GPSLocation(x.Item2, x.Item3), x.Item4, x.Item5, x.Item6)).ToArray();
+        }
+
         private static byte getAccuracy(byte? accuracy)
         {
             if (!accuracy.HasValue)
