@@ -6,27 +6,37 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
-using Shared.DTO;
-
 
 namespace Shared.DAL
 {
     public static class InsertQueries
     {
-        public static void InsertGPSData(this DatabaseSession session, GPSData newLocation)
+        /// <summary>
+        /// Inserts a new GPS data entity into the database.
+        /// </summary>
+        /// <param name="session">A <see cref="DatabaseSession"/> using which data should be inserted.</param>
+        /// <param name="bikeId">The bike identifier.</param>
+        /// <param name="latitude">The latitude.</param>
+        /// <param name="longitude">The longitude.</param>
+        /// <param name="accuracy">The accuracy.</param>
+        /// <param name="queryTime">The query time.</param>
+        public static void InsertGPSData(this DatabaseSession session, uint bikeId, decimal latitude, decimal longitude, byte accuracy, DateTime queryTime)
         {
-             session.Execute("INSERT INTO gps_data (bikeId, latitude, longitude, accuracy, queried, hasNotMoved) VALUES{0}", formatGPS(newLocation));
+            session.Execute("INSERT INTO gps_data (bikeId, latitude, longitude, accuracy, queried, hasNotMoved) VALUES('{0}', '{1}', '{2}', '{3}', '{4}', '0')",
+                bikeId,
+                latitude.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                longitude.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                accuracy,
+                queryTime.ToString("yyyy-MM-dd HH:mm:ss"));
         }
-
-        private static string formatGPS(GPSData data)
+        /// <summary>
+        /// Inserts a new the bike entity into the database.
+        /// </summary>
+        /// <param name="session">A <see cref="DatabaseSession"/> using which data should be inserted.</param>
+        /// <param name="bikeId">The bike identifier.</param>
+        public static void InsertBike(this DatabaseSession session, uint bikeId)
         {
-            return string.Format("('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')",
-                data.Bike.Id,
-                data.Location.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                data.Location.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                data.Accuracy,
-                data.QueryTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                data.HasNotMoved ? '1' : '0');
+            session.Execute("INSERT INTO citybike_test.bikes (id) VALUES ({0})", bikeId);
         }
 
         public static void InsertHotSpot(this DatabaseSession session, GPSLocation[] data)
@@ -61,11 +71,6 @@ namespace Shared.DAL
                 cmd.Parameters.Add("@data", MySqlDbType.MediumBlob).Value = ms.ToArray();
                 session.Execute(cmd);
             }
-        }
-
-        public static void InsertBike(this DatabaseSession session,uint bikeId)
-        {
-             session.Execute("INSERT INTO citybike_test.bikes (id) VALUES ({0})", bikeId);
         }
 
         public static bool TestDatabase(this DatabaseSession session)
