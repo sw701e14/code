@@ -72,9 +72,14 @@ FROM citybike_test.gps_data Where hasNotMoved");
             return rows.Select(row => row.ToTuple<uint, decimal, decimal, byte, DateTime, bool>()).ToArray();
         }
 
-        public static Bike[] GetBikes(this DatabaseSession session)
+        /// <summary>
+        /// Gets the id of all the bikes in the database.
+        /// </summary>
+        /// <param name="session">A <see cref="DatabaseSession"/> from which data should be retrieved.</param>
+        /// <returns>An array of bike ids.</returns>
+        public static uint[] GetBikes(this DatabaseSession session)
         {
-            return session.ExecuteRead("SELECT * FROM citybike_test.bikes").Select(row => row.GetBike()).ToArray();
+            return session.ExecuteRead("SELECT id FROM citybike_test.bikes").Select(row => row.GetValue<uint>()).ToArray();
         }
 
         public static List<Hotspot> GetAllHotspots(this DatabaseSession session)
