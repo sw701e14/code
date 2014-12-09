@@ -10,7 +10,6 @@ namespace ModelUpdater
     class Program
     {
         private const double UPDATEMODELEVERYMINUTES = 1;
-        private static int countdown = 60*1;
 
         static void Main(string[] args)
         {
@@ -20,8 +19,6 @@ namespace ModelUpdater
                 double.TryParse(args[0], out updateModelEveryMinutes);
             if (updateModelEveryMinutes <= 0)
                 updateModelEveryMinutes = UPDATEMODELEVERYMINUTES;
-
-            Timer testTimer = new Timer(e => countdownTest(), null, 0, 1000);
 
             Timer timer = new Timer(e => updateModel(), null, 0, (long)TimeSpan.FromMinutes(updateModelEveryMinutes).TotalMilliseconds);
             Console.ReadKey(true);
@@ -58,13 +55,14 @@ namespace ModelUpdater
 
             //Predict?
 
+            database.Dispose();
 
 
-            //Testing
+            ////////////////////////////////////////////////////////////
+            //                      For Testing                       //               
+            ////////////////////////////////////////////////////////////
             printMatrix(markovChain);
             saveMatrixToFile(markovChain);
-
-            database.Dispose();
         }
 
         private static GPSLocation[] getGPSLocationsFromGPSData(GPSData[] data)
@@ -118,22 +116,9 @@ namespace ModelUpdater
 
 
 
-
-        private static void countdownTest()
-        {
-            Console.WriteLine(countdown);
-            if (countdown == 0)
-            {
-                countdown = 60 * (int)UPDATEMODELEVERYMINUTES;
-                Console.Clear();
-            }
-            else
-                countdown--;
-        }
-
-
-
-
+        ////////////////////////////////////////////////////////////
+        //                      For Testing                       //               
+        ////////////////////////////////////////////////////////////
 
         private static void printMatrix(Matrix markov)
         {
