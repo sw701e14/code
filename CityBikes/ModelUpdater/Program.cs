@@ -10,6 +10,8 @@ namespace ModelUpdater
     class Program
     {
         private const double UPDATEMODELEVERYMINUTES = 1;
+        private const int MINIMUMPOINTSINCLUSTER = 4;
+        private const double RADIUSINCLUSTER = 60;
 
         static void Main(string[] args)
         {
@@ -36,9 +38,7 @@ namespace ModelUpdater
             if (allGPSLocations == null || !allGPSLocations.Any())
                 return;
 
-            database.RunSession(session => DeleteQueries.TruncateGPS_data(session));
-
-            List<GPSLocation[]> allClusters = ClusteringTechniques.FindClusters(allGPSLocations, 4, 60);
+            List<GPSLocation[]> allClusters = ClusteringTechniques.FindClusters(allGPSLocations, MINIMUMPOINTSINCLUSTER, RADIUSINCLUSTER);
             if (allClusters == null || !allClusters.Any())
                 return;
 
@@ -48,10 +48,8 @@ namespace ModelUpdater
 
             Matrix markovChain = MarkovChain.BuildMarkovMatrix(allHotspots, allGPSData);
 
-            database.RunSession(session => DeleteQueries.TruncateHotspots(session));
-            database.RunSession(session => DeleteQueries.TruncateMarkov_chains(session));
-
-            storeDataInDatabase(database, allHotspots, markovChain);
+            truncateOldData(database);
+            storeNewData(database, allHotspots, markovChain);
 
             //Predict?
 
@@ -94,7 +92,14 @@ namespace ModelUpdater
             return allHotspots;
         }
 
-        private static void storeDataInDatabase(Database database, Hotspot[] allHotspots, Matrix markovChain)
+        private static void truncateOldData(Database database)
+        {
+            database.RunSession(session => DeleteQueries.TruncateGPS_data(session));
+            database.RunSession(session => DeleteQueries.TruncateHotspots(session));
+            database.RunSession(session => DeleteQueries.TruncateMarkov_chains(session));
+        }
+
+        private static void storeNewData(Database database, Hotspot[] allHotspots, Matrix markovChain)
         {
             foreach (Hotspot item in allHotspots)
             {
