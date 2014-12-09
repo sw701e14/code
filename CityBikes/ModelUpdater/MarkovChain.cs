@@ -27,13 +27,13 @@ namespace ModelUpdater
             for (int b = 0; b < groups.Length; b++)
                 last[b] = getHotspotIndex(hotspots, groups[b].GetData(start).Location);
 
-            for (DateTime d = start; d <= end; d.Add(step))
+            for (DateTime d = start; d <= end; d = d.Add(step))
             {
                 for (int b = 0; b < groups.Length; b++)
                 {
                     int next = getHotspotIndex(hotspots, groups[b].GetData(d).Location);
 
-                    if (next % 2 == 1 && last[b] % 2 == 1)
+                    if (next % 2 == 1 && last[b] % 2 == 1)//Mangler muligvis nogle cases
                         next = last[b];
                     else if (next % 2 == 1 && last[b] % 2 == 0)
                         next = last[b] + 1;
@@ -48,7 +48,7 @@ namespace ModelUpdater
             {
                 double sum = 0;
                 for (int j = 0; j < size; j++) sum += counter[i, j];
-                for (int j = 0; j < size; j++) counter[i, j] /= sum;
+                for (int j = 0; j < size; j++) counter[i, j] /= sum; //Sum må ikke være nul (0)
             }
             return new Matrix(counter);
         }
