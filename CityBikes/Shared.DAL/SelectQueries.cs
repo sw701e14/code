@@ -111,5 +111,9 @@ INNER JOIN (
             return session.ExecuteRead("SELECT * FROM citybike_test.gps_data").Select(r => r.GetGPSData(1)).ToArray();
         }
 
+        public static GPSData[] GetAllGPSNotMovedData(this Database.DatabaseSession session)
+        {
+            return session.ExecuteRead("SELECT * FROM citybike_test.gps_data Where hasNotMoved").Select(r => r.GetGPSData(1)).ToArray();
+        }
     }
 }
