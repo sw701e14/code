@@ -34,6 +34,11 @@ namespace Shared.DTO
                 return new GPSData(bike, new GPSLocation(t.Item1, t.Item2), t.Item3, t.Item4, t.Item5);
         }
 
+        public static Bike[] GetAll(DatabaseSession session)
+        {
+            return session.GetBikes().Select(x => new Bike(x)).ToArray();
+        }
+
         public override bool Equals(object obj)
         {
             if (!(obj is Bike))
