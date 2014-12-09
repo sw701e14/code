@@ -21,7 +21,7 @@ namespace Shared.DTO
                 throw new ArgumentOutOfRangeException("data", "The size of a matrix must be greater than zero. It cannot be constructed from an empty array.");
 
             this.data = new double[data.GetLength(0), data.GetLength(1)];
-            data.CopyTo(this.data, 0);
+            this.data =  (double[,])data.Clone();
         }
 
         public double this[int x, int y]

@@ -208,18 +208,22 @@ namespace Shared.DTO
             GPSLocation[] remaining = data.Where(x => !x.Equals(p0)).Distinct().OrderBy(x => p0.PolarAngleTo(x)).ToArray();
 
             Stack<GPSLocation> stack = new Stack<GPSLocation>();
-            stack.Push(p0);
-            stack.Push(remaining[0]);
-            stack.Push(remaining[1]);
 
-            for (int i = 2; i < remaining.Length; i++)
+            if (remaining.Length >= 2)
             {
-                while (!isLeftTurn(stack.ElementAt(1), stack.ElementAt(0), remaining[i]))
-                    stack.Pop();
+                stack.Push(p0);
+                stack.Push(remaining[0]);
+                stack.Push(remaining[1]);
 
-                stack.Push(remaining[i]);
+
+                for (int i = 2; i < remaining.Length; i++)
+                {
+                    while (!isLeftTurn(stack.ElementAt(1), stack.ElementAt(0), remaining[i]))
+                        stack.Pop();
+
+                    stack.Push(remaining[i]);
+                }
             }
-
             return stack.ToArray();
         }
 

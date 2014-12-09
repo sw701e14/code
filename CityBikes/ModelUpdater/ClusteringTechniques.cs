@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Shared.DAL;
 using Shared.DTO;
 
-namespace Library
+namespace ModelUpdater
 {
     public class ClusteringTechniques
     {
@@ -27,11 +27,11 @@ namespace Library
         /// <param name="minimumPoints">The minimum amount of neighbour points in its vicinity before it can be a core point.</param>
         /// <param name="radius">The radius for a point to be a core point.</param>
         /// <returns>Returns a list of clusters.</returns>
-        public static GPSLocation[][] FindClusters(IEnumerable<GPSLocation> gpsLocations, int minimumPoints, double radius)
+        public static List<GPSLocation[]> FindClusters(IEnumerable<GPSLocation> gpsLocations, int minimumPoints, double radius)
         {
             ClusteringTechniques ct = new ClusteringTechniques(gpsLocations);
-            
-            throw new NotImplementedException();
+
+            return ct.DBSCAN(minimumPoints, radius);
         }
 
         private List<GPSLocation[]> DBSCAN(int minimumPoints, double radius)
