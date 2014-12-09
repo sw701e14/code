@@ -60,7 +60,9 @@ namespace Shared.DAL
 
             try
             {
+                var trans = connection.BeginTransaction();
                 operation(session);
+                trans.Commit();
             }
             catch (Exception ex)
             {
@@ -70,8 +72,6 @@ namespace Shared.DAL
             {
                 connection.Close();
             }
-
-            
 
             if (error != null)
                 throw error;
@@ -94,7 +94,9 @@ namespace Shared.DAL
 
             try
             {
+                var trans = connection.BeginTransaction();
                 result = operation(session);
+                trans.Commit();
             }
             catch (Exception ex)
             {
