@@ -26,7 +26,7 @@ namespace ModelUpdater
 
         private static void updateModel()
         {
-            Database database = new Database(); //New database each run or same always?
+            Database database = new Database();
 
             GPSData[] allGPSData = database.RunSession(session => SelectQueries.GetAllGPSData(session));
             if (allGPSData == null || !allGPSData.Any())
