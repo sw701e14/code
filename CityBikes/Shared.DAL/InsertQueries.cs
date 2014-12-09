@@ -62,17 +62,25 @@ namespace Shared.DAL
             session.Execute(cmd);
         }
 
-        public static void InsertMarkovMatrix(this DatabaseSession session, Matrix matrix)
+        /// <summary>
+        /// Inserts a new markov matrix into the database.
+        /// </summary>
+        /// <param name="session">A <see cref="DatabaseSession"/> using which data should be inserted.</param>
+        /// <param name="matrix">A two-dimensional matrix of probabilities representing the matrix.</param>
+        public static void InsertMarkovMatrix(this DatabaseSession session, double[,] matrix)
         {
             using (MemoryStream ms = new MemoryStream())
             using (BinaryWriter writer = new BinaryWriter(ms))
             {
-                writer.Write(matrix.Width);
-                writer.Write(matrix.Height);
+                int w = matrix.GetLength(0);
+                int h = matrix.GetLength(1);
 
-                double[,] m = new double[matrix.Width, matrix.Height];
-                for (int y = 0; y < matrix.Height; y++)
-                    for (int x = 0; x < matrix.Width; x++)
+                writer.Write(w);
+                writer.Write(h);
+
+                double[,] m = new double[w, h];
+                for (int x = 0; x < w; x++)
+                    for (int y = 0; y < h; y++)
                         writer.Write(matrix[x, y]);
 
                 MySqlCommand cmd = new MySqlCommand("INSERT INTO markov_chains (mc) VALUES(@data)");
@@ -80,6 +88,7 @@ namespace Shared.DAL
                 session.Execute(cmd);
             }
         }
+
 
         public static bool TestDatabase(this DatabaseSession session)
         {
