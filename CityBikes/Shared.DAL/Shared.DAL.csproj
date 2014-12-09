@@ -50,12 +50,6 @@
     <Compile Include="SelectQueries.cs" />
     <Compile Include="UpdateQueries.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Shared.DTO\Shared.DTO.csproj">
-      <Project>{981276fb-8563-48a0-a54b-d8d95e83e0da}</Project>
-      <Name>Shared.DTO</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -47,6 +47,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Vector.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Shared.DAL\Shared.DAL.csproj">
+      <Project>{4af0e08d-5003-43b1-9794-b7ce198e4744}</Project>
+      <Name>Shared.DAL</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
