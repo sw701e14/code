@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shared.DAL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,19 @@ namespace Shared.DTO
         public uint Id
         {
             get { return id; }
+        }
+
+        public static GPSData[] GetLatestData(DatabaseSession session)
+        {
+            return session.GetLastGPSData().Select(x => new GPSData(new Bike(x.Item1), new GPSLocation(x.Item2, x.Item3), x.Item4, x.Item5, x.Item6)).ToArray();
+        }
+        public static GPSData? GetLatestData(DatabaseSession session, Bike bike)
+        {
+            var t = session.GetLastGPSData(bike.id);
+            if (t == null)
+                return null;
+            else
+                return new GPSData(bike, new GPSLocation(t.Item1, t.Item2), t.Item3, t.Item4, t.Item5);
         }
 
         public override bool Equals(object obj)
