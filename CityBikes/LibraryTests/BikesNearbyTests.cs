@@ -33,7 +33,7 @@ namespace Library.Tests
         [TestMethod]
         public void GetBikeLocationTest()
         {
-            GPSLocation loc = database.RunSession(s => s.GetBikeLocation(65530));
+            GPSLocation loc = database.RunSession(s => Bike.GetLatestData(s, new Bike(65530)).Value.Location);
 
             GPSLocation expected = new GPSLocation(4.12345678m, -4.12345678m);
             Assert.AreEqual(expected, loc);
@@ -43,7 +43,7 @@ namespace Library.Tests
         [TestMethod]
         public void GetBikeLocationsTest()
         {
-            var locations = database.RunSession(s => s.GetBikeLocations()).ToList();
+            var locations = database.RunSession(s => Bike.GetLatestData(s).Select(x => Tuple.Create(x.Bike, x.Location)).ToList());
 
             List<Tuple<Bike, GPSLocation>> bikesExpected = new List<Tuple<Bike, GPSLocation>>() {
                 Tuple.Create(new Bike(65530),new GPSLocation (4.12345678m,-4.12345678m)),

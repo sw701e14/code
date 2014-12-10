@@ -35,9 +35,9 @@ namespace LibraryTests
             var bike = new Bike((uint)rndNumber);
             GPSData expected = new GPSData(bike, new GPSLocation(rndNumber, rndNumber), (byte)rndNumber, DateTime.Now, false);
 
-            database.RunSession(session => session.InsertGPSData(expected));
+            database.RunSession(session => GPSData.InsertInDatabase(session, expected));
 
-            GPSData? actual = database.RunSession(session => session.LatestGPSData(bike));
+            GPSData? actual = database.RunSession(session => Bike.GetLatestData(session, bike));
 
             Assert.IsNotNull(actual);
             if (actual.HasValue)
@@ -60,11 +60,11 @@ namespace LibraryTests
 
             database.RunSession(session =>
             {
-                session.InsertGPSData(expected);
-                session.InsertGPSData(expected);
+                GPSData.InsertInDatabase(session, expected);
+                GPSData.InsertInDatabase(session, expected);
             });
 
-            GPSData? actual = database.RunSession(session => session.LatestGPSData(bike));
+            GPSData? actual = database.RunSession(session => Bike.GetLatestData(session, bike));
             
             Assert.IsNotNull(actual);
             if (actual.HasValue)
