@@ -47,7 +47,7 @@ namespace Shared.DAL
         /// <returns>The id associated with the hotspot, in the database.</returns>
         public static uint InsertHotSpot(this DatabaseSession session, Tuple<decimal, decimal>[] data)
         {
-            MySqlCommand cmd = new MySqlCommand("INSERT INTO hotspots (convex_hull) VALUES(@data)");
+            MySqlCommand cmd = new MySqlCommand("INSERT INTO hotspots (convex_hull) VALUES(@hotspot)");
 
             using (MemoryStream ms = new MemoryStream())
             using (BinaryWriter writer = new BinaryWriter(ms))
