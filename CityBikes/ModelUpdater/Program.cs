@@ -33,7 +33,7 @@ namespace ModelUpdater
 
             database.RunSession(session => 
             {
-                GPSData[] allStandstillGPSData = SelectQueries.GetAllGPSNotMovedData(session);
+                GPSData[] allStandstillGPSData = GPSData.GetAllHasNotMoved(session);
                 if (allStandstillGPSData == null || !allStandstillGPSData.Any())
                     return;
 
