@@ -11,6 +11,7 @@ namespace ModelUpdater
     public class MarkovChain
     {
         private Matrix probabilities;
+        private Hotspot[] hotspots;
 
         public static Matrix BuildMarkovMatrix(Shared.DTO.Hotspot[] hotspots, GPSData[] data)
         {
@@ -127,8 +128,9 @@ namespace ModelUpdater
 
         #endregion
 
-        public MarkovChain(Matrix matrix)
+        private MarkovChain(Hotspot[] hotspots, Matrix matrix)
         {
+            this.hotspots = hotspots;
             this.probabilities = matrix;
         }
 
