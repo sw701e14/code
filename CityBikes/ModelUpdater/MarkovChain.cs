@@ -13,7 +13,9 @@ namespace ModelUpdater
         private Matrix probabilities;
         private Hotspot[] hotspots;
 
-        public static Matrix BuildMarkovMatrix(Shared.DTO.Hotspot[] hotspots, GPSData[] data)
+        #region Methods and types related to building markov matrices
+
+        private static Matrix buildMarkovMatrix(Hotspot[] hotspots, GPSData[] data)
         {
             var start = data.Min(d => d.QueryTime);
             var end = data.Max(d => d.QueryTime);
@@ -55,8 +57,6 @@ namespace ModelUpdater
             return new Matrix(counter);
         }
 
-        #region Methods and types related to building markov matrices
-
         private static IEnumerable<dataenumerator> groupData(GPSData[] data)
         {
             Array.Sort(data, buildSort);
@@ -86,7 +86,7 @@ namespace ModelUpdater
             return diff;
         }
 
-        private static int getHotspotIndex(Shared.DTO.Hotspot[] hotspots, GPSLocation location)
+        private static int getHotspotIndex(Hotspot[] hotspots, GPSLocation location)
         {
             double dist = double.PositiveInfinity;
             int index = int.MaxValue;
