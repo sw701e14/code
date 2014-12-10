@@ -73,6 +73,7 @@ FROM citybike_test.gps_data Where hasNotMoved");
             return rows.Select(row => row.ToTuple<uint, decimal, decimal, byte, DateTime, bool>()).ToArray();
         }
 
+
         /// <summary>
         /// Gets the id of all the bikes in the database.
         /// </summary>
@@ -82,6 +83,7 @@ FROM citybike_test.gps_data Where hasNotMoved");
         {
             return session.ExecuteRead("SELECT id FROM citybike_test.bikes").Select(row => row.GetValue<uint>()).ToArray();
         }
+
 
         /// <summary>
         /// Gets all hotspots in the database.
