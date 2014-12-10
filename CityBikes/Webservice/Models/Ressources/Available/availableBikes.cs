@@ -9,7 +9,7 @@ namespace Webservice.Models.Available
 {
     public class availableBikes
     {
-        public int count { get; set; }
+        public int count { get { return bikes.Count(); } }
         public List<availableBike> bikes { get; set; }
 
         public availableBikes()
@@ -17,7 +17,6 @@ namespace Webservice.Models.Available
             bikes = new List<availableBike>();
             foreach (Tuple<Bike, GPSLocation> item in Data.GetAvailableBikes())
             {
-                count++;
                 bikes.Add(new availableBike() { href = item.Item1.Id.ToString() });
             }
         }

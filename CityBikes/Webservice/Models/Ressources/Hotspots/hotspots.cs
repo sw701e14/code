@@ -9,7 +9,7 @@ namespace Webservice.Models.Hotspots
 {
     public class allHotspots
     {
-        public int count { get; set; }
+        public int count { get { return hotspots.Count; } }
 
         public List<hotspot> hotspots { get; set; }
 
@@ -17,11 +17,8 @@ namespace Webservice.Models.Hotspots
         {
             hotspots = new List<hotspot>();
 
-            foreach (var hotspot in Data.GetAllHotspots().ToList())
-            {
-                count++;
-                hotspots.Add(hotspot);
-            }
+            hotspots.AddRange(Data.GetAllHotspots());
+            
         }
     }
 }

@@ -9,19 +9,17 @@ namespace Webservice.Models.All
 {
     public class allBikes
     {
-        public int count { get; set; }
+        public int count { get { return bikes.Count(); } }
         public List<bike> bikes { get; set; }
 
         public allBikes()
         {
             bikes = new List<bike>();
-            foreach (var b in Data.GetAllBikes().ToList())
-            {
-                bikes.Add(b);
-                count++;
-            }
+
+            bikes.AddRange(Data.GetAllBikes());
+
             bikes = bikes.OrderBy(x => x.id).ToList();
         }
-        
+
     }
 }
