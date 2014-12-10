@@ -21,7 +21,7 @@ namespace LocationService.DataCollector
                 bikes.Add(new Bike(i));
 
             DateTime start = DateTime.Now.Date.AddDays(-1);
-                
+
             return new MultiDataSource(bikes.Select(b => new NoFutureDataSource(GoogleDataSource.GetSource(b.Id, start, int.MaxValue))));
         }
 
@@ -33,7 +33,7 @@ namespace LocationService.DataCollector
             menu.Add("Clear data", clearData);
             menu.Add("Generate map from DB", () =>
             {
-                    GPSPointMapPlotter.SaveMapAsHtml();
+                GPSPointMapPlotter.SaveMapAsHtml();
             });
             menu.Add("Start a server simulation", simulate);
 
@@ -46,9 +46,9 @@ namespace LocationService.DataCollector
         {
             using (Database db = new Database())
             {
-                db.RunSession(session=>session.TruncateGPS_data());
+                db.RunSession(session => session.TruncateAll());
             }
-                
+
         }
         static void loadData()
         {

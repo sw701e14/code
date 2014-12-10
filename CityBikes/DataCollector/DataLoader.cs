@@ -62,7 +62,7 @@ namespace LocationService.DataCollector
         private void runDataLoader(IDataSource dataSource)
         {
             using (Database db = new Database())
-                knownBikes.AddRange(db.RunSession(s => s.GetBikes()));
+                knownBikes.AddRange(db.RunSession(session => Bike.GetAll(session)));
 
             while (!shouldExit || runall)
             {
@@ -96,11 +96,11 @@ namespace LocationService.DataCollector
                             data.Location.Longitude,
                             data.QueryTime.ToString("dd/MM HH:mm:ss"));
 
-                    var last = session.LatestGPSData(data.Bike);
+                    var last = Bike.GetLatestData(session, data.Bike);
                     if (last.HasValue && GPSData.WithinAccuracy(last.Value, data))
-                        session.setHasNotMoved(data.Bike);
+                        data.Bike.SetHasNotMoved(session);
                     else
-                        session.InsertGPSData(data);
+                        GPSData.InsertInDatabase(session, data);
                 });
             }
         }

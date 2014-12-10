@@ -38,7 +38,7 @@ namespace LocationService.DataCollector
         {
             using (Database db = new Database())
             {
-                GPSData[] data = db.RunSession<GPSData[]>(session => session.GetAllGPSData());
+                GPSData[] data = db.RunSession(session => GPSData.GetAll(session));
                 SaveMapAsHtml(data);
             }   
          
