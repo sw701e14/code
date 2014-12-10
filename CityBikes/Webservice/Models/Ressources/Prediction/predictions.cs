@@ -9,6 +9,7 @@ namespace Webservice.Models.Ressources.Predictions
     {
         List<Prediction> Predictions;
 
+        public int Count { get { return Predictions.Count(); } }
         public AllPredictions()
         {
             Predictions = new List<Prediction>();
