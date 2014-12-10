@@ -87,21 +87,25 @@ FROM citybike_test.gps_data Where hasNotMoved");
         /// Gets all hotspots in the database.
         /// </summary>
         /// <param name="session">A <see cref="DatabaseSession"/> from which data should be retrieved.</param>
-        /// <returns>An array in which each element is an array of gps locations representing hotspots.</returns>
-        public static Tuple<decimal, decimal>[][] GetAllHotspots(this DatabaseSession session)
+        /// <returns>An array in which each element is an array of gps locations and an id representing hotspots.</returns>
+        public static Tuple<uint, Tuple<decimal, decimal>[]>[] GetAllHotspots(this DatabaseSession session)
         {
-            var rows = session.ExecuteRead("SELECT convex_hull FROM hotspots").ToArray();
-            Tuple<decimal, decimal>[][] hotspots = new Tuple<decimal, decimal>[rows.Length][];
+            var rows = session.ExecuteRead("SELECT id, convex_hull FROM hotspots").ToArray();
+            Tuple<uint, Tuple<decimal, decimal>[]>[] hotspots = new Tuple<uint, Tuple<decimal, decimal>[]>[rows.Length];
 
             for (int i = 0; i < rows.Length; i++)
-                using (MemoryStream ms = new MemoryStream(rows[i].GetValue<byte[]>()))
+            {
+                uint id = rows[i].GetValue<uint>(0);
+                using (MemoryStream ms = new MemoryStream(rows[i].GetValue<byte[]>(1)))
                 using (BinaryReader reader = new BinaryReader(ms))
                 {
                     int len = reader.ReadInt32();
-                    hotspots[i] = new Tuple<decimal, decimal>[len];
+                    var hs = new Tuple<decimal, decimal>[len];
+                    hotspots[i] = Tuple.Create(id, hs);
                     for (int j = 0; j < len; j++)
-                        hotspots[i][j] = Tuple.Create(reader.ReadDecimal(), reader.ReadDecimal());
+                        hs[j] = Tuple.Create(reader.ReadDecimal(), reader.ReadDecimal());
                 }
+            }
 
             return hotspots;
         }
@@ -120,14 +124,14 @@ FROM citybike_test.gps_data Where hasNotMoved");
 
             Tuple<decimal, decimal>[] hotspot;
 
-                using (MemoryStream ms = new MemoryStream(row.GetValue<byte[]>()))
-                using (BinaryReader reader = new BinaryReader(ms))
-                {
-                    int len = reader.ReadInt32();
-                    hotspot = new Tuple<decimal, decimal>[len];
-                    for (int i = 0; i < len; i++)
-                        hotspot[i] = Tuple.Create(reader.ReadDecimal(), reader.ReadDecimal());
-                }
+            using (MemoryStream ms = new MemoryStream(row.GetValue<byte[]>()))
+            using (BinaryReader reader = new BinaryReader(ms))
+            {
+                int len = reader.ReadInt32();
+                hotspot = new Tuple<decimal, decimal>[len];
+                for (int i = 0; i < len; i++)
+                    hotspot[i] = Tuple.Create(reader.ReadDecimal(), reader.ReadDecimal());
+            }
 
             return hotspot;
         }
