@@ -55,9 +55,7 @@ namespace ModelUpdater
                 foreach (var cluster in allClusters)
                     hotspots.Add(Hotspot.CreateHotspot(session, cluster));
 
-                Matrix markovChain = MarkovChain.BuildMarkovMatrix(hotspots.ToArray(), allStandstillGPSData);
-
-                storeNewData(session, latestGPSData, markovChain);
+                MarkovChain.CreateMarkovChain(session, hotspots.ToArray(), allStandstillGPSData);
 
 #if DEBUG
                 printMatrix(markovChain);
@@ -87,11 +85,6 @@ namespace ModelUpdater
             DeleteQueries.TruncateGPS_data(session);
             DeleteQueries.TruncateHotspots(session);
             DeleteQueries.TruncateMarkov_chains(session);
-        }
-
-        private static void storeNewData(DatabaseSession session, GPSData[] allGPSData, Matrix markovChain)
-        {
-            InsertQueries.InsertMarkovMatrix(session, markovChain);
         }
 
 #if DEBUG
