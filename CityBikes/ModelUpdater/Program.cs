@@ -23,16 +23,14 @@ namespace ModelUpdater
         {
             double updateModelEveryMinutes = UPDATEMODELEVERYMINUTES;
 
-
             if (args.Any())
                 double.TryParse(args[0], out updateModelEveryMinutes);
             if (updateModelEveryMinutes <= 0)
                 updateModelEveryMinutes = UPDATEMODELEVERYMINUTES;
+
             Timer timer = new Timer(e => updateModel(), null, 0, (long)TimeSpan.FromMinutes(updateModelEveryMinutes).TotalMilliseconds);
 
             Console.ReadKey(true);
-
-
         }
 
         private static void updateModel()
@@ -62,7 +60,6 @@ namespace ModelUpdater
                 GPSData[] latestGPSData = getAllLatestsGPSData(session);
                 truncateOldData(session);
                 storeNewData(session, latestGPSData, allHotspots, markovChain);
-
 
                 ////////////////////////////////////////////////////////////
                 //                      For Testing                       //               
@@ -141,15 +138,6 @@ namespace ModelUpdater
             }
             InsertQueries.InsertMarkovMatrix(session, markovChain);
         }
-
-
-
-
-
-
-
-
-
 
         ////////////////////////////////////////////////////////////
         //                      For Testing                       //               
