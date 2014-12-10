@@ -42,9 +42,10 @@ namespace Shared.DAL
         /// <summary>
         /// Inserts a new hotspot into the database.
         /// </summary>
-        /// <param name="session">A <see cref="DatabaseSession"/> using which data should be inserted.</param>
+        /// <param name="session">A <see cref="DatabaseSession" /> using which data should be inserted.</param>
         /// <param name="data">An array of gps location data representing the hotspot.</param>
-        public static void InsertHotSpot(this DatabaseSession session, Tuple<decimal, decimal>[] data)
+        /// <returns>The id associated with the hotspot, in the database.</returns>
+        public static uint InsertHotSpot(this DatabaseSession session, Tuple<decimal, decimal>[] data)
         {
             MySqlCommand cmd = new MySqlCommand("INSERT INTO hotspots (convex_hull) VALUES(@data)");
 
@@ -60,6 +61,8 @@ namespace Shared.DAL
                 cmd.Parameters.Add("@hotspot", MySqlDbType.Blob).Value = ms.ToArray();
             }
             session.Execute(cmd);
+
+            return session.ExecuteRead("SELECT id FROM hotspots ORDER BY id DESC").First().GetValue<uint>();
         }
 
         /// <summary>
