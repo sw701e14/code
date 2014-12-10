@@ -137,5 +137,40 @@ FROM citybike_test.gps_data Where hasNotMoved");
 
             return hotspot;
         }
+
+        /// <summary>
+        /// Gets the single (first or null) markov chain in the database.
+        /// </summary>
+        /// <param name="session">A <see cref="DatabaseSession"/> from which data should be retrieved.</param>
+        /// <returns>A tuple with a two-dimensional matrix of probabilities representing the matrix and an array of hotspot identifier associated with the matrix.</returns>
+        public static Tuple<double[,], uint[]> GetMarkovChain(this DatabaseSession session)
+        {
+            var row = session.ExecuteRead("SELECT mc FROM markov_chains").FirstOrDefault();
+            if (row == null)
+                return null;
+
+            double[,] matrix;
+            uint[] hotspots;
+
+            using (MemoryStream ms = new MemoryStream(row.GetValue<byte[]>()))
+            using (BinaryReader reader = new BinaryReader(ms))
+            {
+                int w = reader.ReadInt32();
+                int h = reader.ReadInt32();
+
+                matrix = new double[w, h];
+                for (int x = 0; x < w; x++)
+                    for (int y = 0; y < h; y++)
+                        matrix[x, y] = reader.ReadDouble();
+
+                int len = reader.ReadInt32();
+
+                hotspots = new uint[len];
+                for (int i = 0; i < len; i++)
+                    hotspots[i] = reader.ReadUInt32();
+            }
+
+            return Tuple.Create(matrix, hotspots);
+        }
     }
 }
