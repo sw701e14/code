@@ -34,6 +34,30 @@ namespace Shared.DTO
 
             return hs;
         }
+        /// <summary>
+        /// Loads the hotspot in the database that is identified by <paramref name="id"/>.
+        /// This uses caching such that a single hotspot is only loaded from the database once.
+        /// </summary>
+        /// <param name="session">A <see cref="DatabaseSession"/> that should be used to insert the hotspot.</param>
+        /// <param name="id">The hotspot identifier.</param>
+        /// <returns>An instance of <see cref="Hotspot"/> representing the data stored in the database for <paramref name="id"/>.</returns>
+        public static Hotspot LoadHotspot(DatabaseSession session, uint id)
+        {
+            if (hotspots.ContainsKey(id))
+                return hotspots[id];
+            else
+            {
+                var data = session.GetHotspot(id);
+                if (data == null)
+                    throw new ArgumentOutOfRangeException("id", "No hotspot with id " + id + " exists in the database.");
+                else
+                {
+                    Hotspot hs = new Hotspot(data.Select(x => new GPSLocation(x.Item1, x.Item2)).ToArray());
+                    hotspots.Add(id, hs);
+                    return hs;
+                }
+            }
+        }
 
         private readonly GPSLocation[] dataPoints;
 
