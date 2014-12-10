@@ -9,7 +9,7 @@ namespace Webservice.Models
 {
     public static class Data
     {
-        public const int IMMOBILE_MINUTES = 10;
+        private const int IMMOBILE_MINUTES = 10;
 
         /// <summary>
         /// Gets a collection of all the available bikes.
@@ -18,56 +18,56 @@ namespace Webservice.Models
         /// <returns>A collection of bikes and their location.</returns>
         public static Tuple<Bike, GPSLocation>[] GetAvailableBikes()
         {
+            GPSData[] data;
             using (Database db = new Database())
-            {
-                Dictionary<Bike, GPSLocation> positions = db.RunSession(session => session.GetBikeLocations().ToDictionary(x => x.Item1, x => x.Item2));
-                Dictionary<Bike, DateTime> immobile = db.RunSession(session => session.GetBikesImmobile().ToDictionary(x => x.Item1, x => x.Item2));
+                data = db.RunSession(session => Bike.GetLatestData(session));
 
-                var immobileTimeSpan = new TimeSpan(0, IMMOBILE_MINUTES, 0);
-                DateTime now = DateTime.Now;
+            var immobileTimeSpan = new TimeSpan(0, IMMOBILE_MINUTES, 0);
+            DateTime now = DateTime.Now;
 
-                return (from p in immobile
-                        where (now - p.Value).CompareTo(immobileTimeSpan) > 0
-                        select Tuple.Create(p.Key, positions[p.Key])).ToArray();
-            }
+            return (from b in data
+                    where (now - b.QueryTime).CompareTo(immobileTimeSpan) > 0
+                    select Tuple.Create(b.Bike, b.Location)).ToArray();
         }
 
         public static IEnumerable<bike> GetAllBikes()
         {
-            using (Database context = new Database())
+            GPSData[] data;
+            using (Database db = new Database())
+                data = db.RunSession(session => Bike.GetLatestData(session));
+
+            Array.Sort(data, (x, y) => x.Bike.Id.CompareTo(y.Bike.Id));
+
+            foreach (GPSData item in data)
             {
-                Tuple<Bike, DateTime, bool>[] immobileSinceTimes = context.RunSession(session => session.GetBikesImmobile());
+                bike b = new bike();
+                b.id = item.Bike.Id;
+                b.latitude = item.Location.Latitude;
+                b.longitude = item.Location.Longitude;
+                b.immobileSince = item.QueryTime;
 
-                foreach (Tuple<Bike, GPSLocation> item in context.RunSession(session => session.GetBikeLocations()))
-                {
-                    bike b = new bike();
-                    b.id = item.Item1.Id;
-                    b.latitude = item.Item2.Latitude;
-                    b.longitude = item.Item2.Longitude;
-                    b.immobileSince = immobileSinceTimes.Where(x => x.Item1.Id == item.Item1.Id).FirstOrDefault().Item2;
-
-                    yield return b;
-                }
+                yield return b;
             }
         }
 
         public static IEnumerable<hotspot> GetAllHotspots()
         {
+            Hotspot[] hotspots;
             using (Database context = new Database())
-            {
-                foreach (Hotspot item in context.RunSession(session => session.GetAllHotspots()))
-                {
-                    hotspot tempHotspot = new hotspot();
+                hotspots = context.RunSession(s => Hotspot.LoadAllHotspots(s));
 
-                    foreach (GPSLocation gpsLoc in item.getDataPoints())
-                    {
-                        coordinate tempCoordinate = new coordinate();
-                        tempCoordinate.latitude = gpsLoc.Latitude;
-                        tempCoordinate.longtitude = gpsLoc.Longitude;
-                        tempHotspot.coordinates.Add(tempCoordinate);
-                    }
-                    yield return tempHotspot;
+            foreach (var hs in hotspots)
+            {
+                hotspot tempHotspot = new hotspot();
+
+                foreach (GPSLocation gpsLoc in hs.getDataPoints())
+                {
+                    coordinate tempCoordinate = new coordinate();
+                    tempCoordinate.latitude = gpsLoc.Latitude;
+                    tempCoordinate.longtitude = gpsLoc.Longitude;
+                    tempHotspot.coordinates.Add(tempCoordinate);
                 }
+                yield return tempHotspot;
             }
         }
     }
