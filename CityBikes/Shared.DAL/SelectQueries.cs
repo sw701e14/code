@@ -105,5 +105,31 @@ FROM citybike_test.gps_data Where hasNotMoved");
 
             return hotspots;
         }
+
+        /// <summary>
+        /// Gets a single hotspot from the database.
+        /// </summary>
+        /// <param name="session">A <see cref="DatabaseSession"/> from which data should be retrieved.</param>
+        /// <param name="id">The hotspot identifier for the hotspot that should be retrieved.</param>
+        /// <returns>An array of tuples [decimal, decimal] representing the gps locations of a hotspot.</returns>
+        public static Tuple<decimal, decimal>[] GetHotspot(this DatabaseSession session, uint id)
+        {
+            var row = session.ExecuteRead("SELECT convex_hull FROM hotspots WHERE id = {0}", id).FirstOrDefault();
+            if (row == null)
+                return null;
+
+            Tuple<decimal, decimal>[] hotspot;
+
+                using (MemoryStream ms = new MemoryStream(row.GetValue<byte[]>()))
+                using (BinaryReader reader = new BinaryReader(ms))
+                {
+                    int len = reader.ReadInt32();
+                    hotspot = new Tuple<decimal, decimal>[len];
+                    for (int i = 0; i < len; i++)
+                        hotspot[i] = Tuple.Create(reader.ReadDecimal(), reader.ReadDecimal());
+                }
+
+            return hotspot;
+        }
     }
 }
