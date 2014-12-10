@@ -12,10 +12,21 @@ namespace Shared.DTO
         private Matrix probabilities;
         private Hotspot[] hotspots;
 
-        public static MarkovChain CreateMarkovChain(Hotspot[] hotspots, GPSData[] data)
+        public static void CreateMarkovChain(DatabaseSession session, Hotspot[] hotspots, GPSData[] data)
         {
             Matrix matrix = buildMarkovMatrix(hotspots, data);
 
+            session.InsertMarkovMatrix(matrix.ToArray(), hotspots.Select(hs => hs.id).ToArray());
+        }
+
+        public static MarkovChain LoadMarkovChain(DatabaseSession session)
+        {
+            var data = session.GetMarkovChain();
+            
+            Matrix matrix = new Matrix(data.Item1);
+            Hotspot[] hotspots = data.Item2.Select(id => Hotspot.LoadHotspot(session, id)).ToArray();
+
+            return new MarkovChain(hotspots, matrix);
         }
 
         #region Methods and types related to building markov matrices
