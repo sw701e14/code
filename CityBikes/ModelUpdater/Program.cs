@@ -55,12 +55,10 @@ namespace ModelUpdater
                 truncateOldData(session);
                 storeNewData(session, latestGPSData, allHotspots, markovChain);
 
-                ////////////////////////////////////////////////////////////
-                //                      For Testing                       //               
-                ////////////////////////////////////////////////////////////
+#if DEBUG
                 printMatrix(markovChain);
                 saveMatrixToFile(markovChain);
-
+#endif
             });
 
             database.Dispose();
@@ -133,10 +131,7 @@ namespace ModelUpdater
             InsertQueries.InsertMarkovMatrix(session, markovChain);
         }
 
-        ////////////////////////////////////////////////////////////
-        //                      For Testing                       //               
-        ////////////////////////////////////////////////////////////
-
+#if DEBUG
         private static void printMatrix(Matrix markov)
         {
             Console.WriteLine("Markov at " + DateTime.UtcNow.ToString());
@@ -165,5 +160,6 @@ namespace ModelUpdater
 
             streamWriter.Close();
         }
+#endif
     }
 }
