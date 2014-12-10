@@ -154,6 +154,7 @@
     <Compile Include="Controllers\BikesController.cs" />
     <Compile Include="Controllers\AvailableBikesController.cs" />
     <Compile Include="Controllers\HotspotsController.cs" />
+    <Compile Include="Controllers\PredictionController.cs" />
     <Compile Include="Controllers\RootController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -168,6 +169,8 @@
     <Compile Include="Models\coordinate.cs" />
     <Compile Include="Models\hotspot.cs" />
     <Compile Include="Models\Ressources\Hotspots\hotspots.cs" />
+    <Compile Include="Models\prediction.cs" />
+    <Compile Include="Models\Ressources\Prediction\predictions.cs" />
     <Compile Include="Models\Ressources\RootResource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

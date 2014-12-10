@@ -70,5 +70,10 @@ namespace Webservice.Models
                 }
             }
         }
+
+        public static IEnumerable<prediction> GetPredictions()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
