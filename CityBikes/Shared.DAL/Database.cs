@@ -41,7 +41,6 @@ namespace Shared.DAL
             connection.Dispose();
         }
 
-
         /// <summary>
         /// Runs a database session by connection to the database, executing <paramref name="operation"/> and disconnecting.
         /// </summary>
@@ -53,15 +52,20 @@ namespace Shared.DAL
             DatabaseSession session = new DatabaseSession(this);
             Exception error = null;
 
+            MySqlTransaction transaction = null;
+
             try
             {
-                var trans = connection.BeginTransaction();
+                transaction = connection.BeginTransaction();
                 operation(session);
-                trans.Commit();
+                transaction.Commit();
             }
             catch (Exception ex)
             {
                 error = ex;
+
+                if (transaction != null)
+                    transaction.Rollback();
             }
             finally
             {
@@ -85,17 +89,21 @@ namespace Shared.DAL
             DatabaseSession session = new DatabaseSession(this);
             Exception error = null;
 
+            MySqlTransaction transaction = null;
             T result = default(T);
 
             try
             {
-                var trans = connection.BeginTransaction();
+                transaction = connection.BeginTransaction();
                 result = operation(session);
-                trans.Commit();
+                transaction.Commit();
             }
             catch (Exception ex)
             {
                 error = ex;
+
+                if (transaction != null)
+                    transaction.Rollback();
             }
             finally
             {
