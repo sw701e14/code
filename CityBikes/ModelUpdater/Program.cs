@@ -48,6 +48,8 @@ namespace ModelUpdater
                 GPSData[] latestGPSData = Bike.GetLatestData(session);
 
                 truncateOldData(session);
+                foreach (var point in latestGPSData)
+                    GPSData.InsertInDatabase(session, point);
 
                 List<Hotspot> hotspots = new List<Hotspot>();
                 foreach (var cluster in allClusters)
@@ -89,10 +91,6 @@ namespace ModelUpdater
 
         private static void storeNewData(DatabaseSession session, GPSData[] allGPSData, Matrix markovChain)
         {
-            foreach (GPSData item in allGPSData)
-	        {
-		        InsertQueries.InsertGPSData(session, item);
-	        }
             InsertQueries.InsertMarkovMatrix(session, markovChain);
         }
 
