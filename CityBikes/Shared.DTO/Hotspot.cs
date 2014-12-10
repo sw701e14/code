@@ -32,7 +32,7 @@ namespace Shared.DTO
             dataPoints = GPSLocation.GetConvexHull(dataPoints);
 
             uint id = session.InsertHotSpot(dataPoints.Select(x => Tuple.Create(x.Latitude, x.Longitude)).ToArray());
-            Hotspot hs = new Hotspot(dataPoints);
+            Hotspot hs = new Hotspot(id, dataPoints);
 
             hotspots.Add(id, hs);
 
@@ -56,7 +56,7 @@ namespace Shared.DTO
                     throw new ArgumentOutOfRangeException("id", "No hotspot with id " + id + " exists in the database.");
                 else
                 {
-                    Hotspot hs = new Hotspot(data.Select(x => new GPSLocation(x.Item1, x.Item2)).ToArray());
+                    Hotspot hs = new Hotspot(id, data.Select(x => new GPSLocation(x.Item1, x.Item2)).ToArray());
                     hotspots.Add(id, hs);
                     return hs;
                 }
@@ -82,7 +82,7 @@ namespace Shared.DTO
                     continue;
                 }
 
-                Hotspot hs = new Hotspot(alldata[i].Item2.Select(x => new GPSLocation(x.Item1, x.Item2)).ToArray());
+                Hotspot hs = new Hotspot(id, alldata[i].Item2.Select(x => new GPSLocation(x.Item1, x.Item2)).ToArray());
                 hotspots.Add(id, hs);
             }
 
@@ -93,14 +93,17 @@ namespace Shared.DTO
         }
 
         private readonly GPSLocation[] dataPoints;
+        private readonly uint id;
 
-        private Hotspot(GPSLocation[] dataPoints)
+        private Hotspot(uint id, GPSLocation[] dataPoints)
         {
             if (dataPoints == null)
                 throw new ArgumentNullException("dataPoints");
 
             if (dataPoints.Length == 0)
                 throw new ArgumentException("A hotspot must have at least one point.", "dataPoints");
+
+            this.id = id;
 
             this.dataPoints = new GPSLocation[dataPoints.Length];
             dataPoints.CopyTo(this.dataPoints, 0);
