@@ -68,9 +68,10 @@ namespace Shared.DAL
         /// <summary>
         /// Inserts a new markov matrix into the database.
         /// </summary>
-        /// <param name="session">A <see cref="DatabaseSession"/> using which data should be inserted.</param>
+        /// <param name="session">A <see cref="DatabaseSession" /> using which data should be inserted.</param>
         /// <param name="matrix">A two-dimensional matrix of probabilities representing the matrix.</param>
-        public static void InsertMarkovMatrix(this DatabaseSession session, double[,] matrix)
+        /// <param name="hotspots">An array of hotspot identifiers that should be associated with the matrix.</param>
+        public static void InsertMarkovMatrix(this DatabaseSession session, double[,] matrix, uint[] hotspots)
         {
             using (MemoryStream ms = new MemoryStream())
             using (BinaryWriter writer = new BinaryWriter(ms))
@@ -81,10 +82,14 @@ namespace Shared.DAL
                 writer.Write(w);
                 writer.Write(h);
 
-                double[,] m = new double[w, h];
                 for (int x = 0; x < w; x++)
                     for (int y = 0; y < h; y++)
                         writer.Write(matrix[x, y]);
+
+                writer.Write(hotspots.Length);
+
+                for (int i = 0; i < hotspots.Length; i++)
+                    writer.Write(hotspots[i]);
 
                 MySqlCommand cmd = new MySqlCommand("INSERT INTO markov_chains (mc) VALUES(@data)");
                 cmd.Parameters.Add("@data", MySqlDbType.MediumBlob).Value = ms.ToArray();
