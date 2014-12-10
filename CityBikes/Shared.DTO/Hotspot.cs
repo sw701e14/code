@@ -93,7 +93,7 @@ namespace Shared.DTO
         }
 
         private readonly GPSLocation[] dataPoints;
-        private readonly uint id;
+        internal readonly uint id;
 
         private Hotspot(uint id, GPSLocation[] dataPoints)
         {
