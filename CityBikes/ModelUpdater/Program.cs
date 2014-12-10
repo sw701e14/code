@@ -104,7 +104,7 @@ namespace ModelUpdater
             return allHotspots;
         }
 
-        private static GPSData[] getAllLatestsGPSData(Database.DatabaseSession session)
+        private static GPSData[] getAllLatestsGPSData(DatabaseSession session)
         {
             Bike[] allBikes = SelectQueries.GetBikes(session);
             GPSData[] latestGPSData = new GPSData[allBikes.Length];
@@ -122,14 +122,14 @@ namespace ModelUpdater
             return latestGPSData;
         }
 
-        private static void truncateOldData(Database.DatabaseSession session)
+        private static void truncateOldData(DatabaseSession session)
         {
             DeleteQueries.TruncateGPS_data(session);
             DeleteQueries.TruncateHotspots(session);
             DeleteQueries.TruncateMarkov_chains(session);
         }
 
-        private static void storeNewData(Database.DatabaseSession session, GPSData[] allGPSData, Hotspot[] allHotspots, Matrix markovChain)
+        private static void storeNewData(DatabaseSession session, GPSData[] allGPSData, Hotspot[] allHotspots, Matrix markovChain)
         {
             foreach (GPSData item in allGPSData)
 	        {

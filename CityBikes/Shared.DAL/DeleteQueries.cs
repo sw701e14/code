@@ -23,7 +23,7 @@ namespace Shared.DAL
             session.Execute("TRUNCATE citybike_test.markov_chains");
         }
 
-        public static void TruncateHotspots(this Database.DatabaseSession session)
+        public static void TruncateHotspots(this DatabaseSession session)
         {
             session.Execute("TRUNCATE citybike_test.hotspots");
         }
