@@ -13,6 +13,12 @@ namespace ModelUpdater
         private Matrix probabilities;
         private Hotspot[] hotspots;
 
+        public static MarkovChain CreateMarkovChain(Hotspot[] hotspots, GPSData[] data)
+        {
+            Matrix matrix = buildMarkovMatrix(hotspots, data);
+
+        }
+
         #region Methods and types related to building markov matrices
 
         private static Matrix buildMarkovMatrix(Hotspot[] hotspots, GPSData[] data)
