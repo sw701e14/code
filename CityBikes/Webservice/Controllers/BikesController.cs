@@ -21,10 +21,10 @@ namespace Webservice.Controllers
         /// <returns>The bikes.</returns>
         [Route("")]
         [HttpGet]
-        [ResponseType(typeof(allBikes))]
+        [ResponseType(typeof(AllBikes))]
         public HttpResponseMessage getAll()
         {
-            allBikes bikeResources = new allBikes();
+            AllBikes bikeResources = new AllBikes();
 
             return Request.CreateResponse(HttpStatusCode.OK, bikeResources);
         }
@@ -38,10 +38,10 @@ namespace Webservice.Controllers
         [HttpGet]
         public HttpResponseMessage get(long bikeId)
         {
-            singleBike bikeResource;
+            SingleBike bikeResource;
             try
             {
-                bikeResource = new singleBike(bikeId);
+                bikeResource = new SingleBike(bikeId);
             }
             catch (NullReferenceException)
             {

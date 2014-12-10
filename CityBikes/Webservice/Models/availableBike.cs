@@ -5,10 +5,10 @@ using System.Web;
 
 namespace Webservice.Models
 {
-    public class availableBike
+    public class AvailableBike
     {
-        public string href { get; set; }
+        public string Href { get; set; }
 
-        public availableBike() { }
+        public AvailableBike() { }
     }
 }

@@ -7,17 +7,17 @@ using Shared.DTO;
 
 namespace Webservice.Models.Hotspots
 {
-    public class allHotspots
+    public class AllHotspots
     {
-        public int count { get { return hotspots.Count; } }
+        public int Count { get { return Hotspots.Count; } }
 
-        public List<hotspot> hotspots { get; set; }
+        public List<Webservice.Models.Hotspot> Hotspots { get; set; }
 
-        public allHotspots()
+        public AllHotspots()
         {
-            hotspots = new List<hotspot>();
+            Hotspots = new List<Webservice.Models.Hotspot>();
 
-            hotspots.AddRange(Data.GetAllHotspots());
+            Hotspots.AddRange(Data.GetAllHotspots());
             
         }
     }

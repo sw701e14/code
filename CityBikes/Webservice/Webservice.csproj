@@ -159,18 +159,18 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\availableBike.cs" />
-    <Compile Include="Models\bike.cs" />
-    <Compile Include="Models\Ressources\All\bikes.cs" />
-    <Compile Include="Models\Ressources\All\singleBike.cs" />
-    <Compile Include="Models\Ressources\Available\singleAvailableBike.cs" />
-    <Compile Include="Models\Ressources\Available\availableBikes.cs" />
+    <Compile Include="Models\AvailableBike.cs" />
+    <Compile Include="Models\Bike.cs" />
+    <Compile Include="Models\Ressources\All\Bikes.cs" />
+    <Compile Include="Models\Ressources\All\SingleBike.cs" />
+    <Compile Include="Models\Ressources\Available\SingleAvailableBike.cs" />
+    <Compile Include="Models\Ressources\Available\AvailableBikes.cs" />
     <Compile Include="Models\Data.cs" />
-    <Compile Include="Models\coordinate.cs" />
-    <Compile Include="Models\hotspot.cs" />
-    <Compile Include="Models\Ressources\Hotspots\hotspots.cs" />
-    <Compile Include="Models\prediction.cs" />
-    <Compile Include="Models\Ressources\Prediction\predictions.cs" />
+    <Compile Include="Models\Coordinate.cs" />
+    <Compile Include="Models\Hotspot.cs" />
+    <Compile Include="Models\Ressources\Hotspots\Hotspots.cs" />
+    <Compile Include="Models\Prediction.cs" />
+    <Compile Include="Models\Ressources\Prediction\Predictions.cs" />
     <Compile Include="Models\Ressources\RootResource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

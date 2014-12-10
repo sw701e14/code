@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Webservice.Models.Ressources.Prediction
+namespace Webservice.Models.Ressources.Predictions
 {
-    public class predictions
+    public class AllPredictions
     {
-        List<prediction> allpredictions;
+        List<Prediction> Predictions;
 
-        public predictions()
+        public AllPredictions()
         {
-            allpredictions = new List<prediction>();
+            Predictions = new List<Prediction>();
 
-            allpredictions.AddRange(Data.GetPredictions());
+            Predictions.AddRange(Data.GetPredictions());
 
         }
     }

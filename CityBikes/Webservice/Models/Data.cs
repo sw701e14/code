@@ -16,12 +16,12 @@ namespace Webservice.Models
         /// </summary>
         /// <param name="session">A <see cref="DatabaseSession"/> from which data should be retrieved.</param>
         /// <returns>A collection of bikes and their location.</returns>
-        public static Tuple<Bike, GPSLocation>[] GetAvailableBikes()
+        public static Tuple<Shared.DTO.Bike, GPSLocation>[] GetAvailableBikes()
         {
             using (Database db = new Database())
             {
-                Dictionary<Bike, GPSLocation> positions = db.RunSession(session => session.GetBikeLocations().ToDictionary(x => x.Item1, x => x.Item2));
-                Dictionary<Bike, DateTime> immobile = db.RunSession(session => session.GetBikesImmobile().ToDictionary(x => x.Item1, x => x.Item2));
+                Dictionary<Shared.DTO.Bike, GPSLocation> positions = db.RunSession(session => session.GetBikeLocations().ToDictionary(x => x.Item1, x => x.Item2));
+                Dictionary<Shared.DTO.Bike, DateTime> immobile = db.RunSession(session => session.GetBikesImmobile().ToDictionary(x => x.Item1, x => x.Item2));
 
                 var immobileTimeSpan = new TimeSpan(0, IMMOBILE_MINUTES, 0);
                 DateTime now = DateTime.Now;
@@ -32,46 +32,46 @@ namespace Webservice.Models
             }
         }
 
-        public static IEnumerable<bike> GetAllBikes()
+        public static IEnumerable<Bike> GetAllBikes()
         {
             using (Database context = new Database())
             {
-                Tuple<Bike, DateTime, bool>[] immobileSinceTimes = context.RunSession(session => session.GetBikesImmobile());
+                Tuple<Shared.DTO.Bike, DateTime, bool>[] immobileSinceTimes = context.RunSession(session => session.GetBikesImmobile());
 
-                foreach (Tuple<Bike, GPSLocation> item in context.RunSession(session => session.GetBikeLocations()))
+                foreach (Tuple<Shared.DTO.Bike, GPSLocation> item in context.RunSession(session => session.GetBikeLocations()))
                 {
-                    bike b = new bike();
-                    b.id = item.Item1.Id;
-                    b.latitude = item.Item2.Latitude;
-                    b.longitude = item.Item2.Longitude;
-                    b.immobileSince = immobileSinceTimes.Where(x => x.Item1.Id == item.Item1.Id).FirstOrDefault().Item2;
+                    Bike b = new Bike();
+                    b.Id = item.Item1.Id;
+                    b.Latitude = item.Item2.Latitude;
+                    b.Longitude = item.Item2.Longitude;
+                    b.ImmobileSince = immobileSinceTimes.Where(x => x.Item1.Id == item.Item1.Id).FirstOrDefault().Item2;
 
                     yield return b;
                 }
             }
         }
 
-        public static IEnumerable<hotspot> GetAllHotspots()
+        public static IEnumerable<Webservice.Models.Hotspot> GetAllHotspots()
         {
             using (Database context = new Database())
             {
-                foreach (Hotspot item in context.RunSession(session => session.GetAllHotspots()))
+                foreach (Shared.DTO.Hotspot item in context.RunSession(session => session.GetAllHotspots()))
                 {
-                    hotspot tempHotspot = new hotspot();
+                    Webservice.Models.Hotspot tempHotspot = new Webservice.Models.Hotspot();
 
                     foreach (GPSLocation gpsLoc in item.getDataPoints())
                     {
-                        coordinate tempCoordinate = new coordinate();
-                        tempCoordinate.latitude = gpsLoc.Latitude;
-                        tempCoordinate.longtitude = gpsLoc.Longitude;
-                        tempHotspot.coordinates.Add(tempCoordinate);
+                        Coordinate tempCoordinate = new Coordinate();
+                        tempCoordinate.Latitude = gpsLoc.Latitude;
+                        tempCoordinate.Longtitude = gpsLoc.Longitude;
+                        tempHotspot.Coordinates.Add(tempCoordinate);
                     }
                     yield return tempHotspot;
                 }
             }
         }
 
-        public static IEnumerable<prediction> GetPredictions()
+        public static IEnumerable<Prediction> GetPredictions()
         {
             throw new NotImplementedException();
         }

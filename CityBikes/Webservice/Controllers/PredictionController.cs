@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using Webservice.Models.Ressources.Prediction;
+using Webservice.Models.Ressources.Predictions;
 
 namespace Webservice.Controllers
 {
@@ -15,10 +15,10 @@ namespace Webservice.Controllers
 
         [Route("")]
         [HttpGet]
-        [ResponseType(typeof(predictions))]
+        [ResponseType(typeof(AllPredictions))]
         public HttpResponseMessage allPredictions()
         {
-            predictions allPredictions = new predictions();
+            AllPredictions allPredictions = new AllPredictions();
 
             return Request.CreateResponse(HttpStatusCode.OK, allPredictions);
         }

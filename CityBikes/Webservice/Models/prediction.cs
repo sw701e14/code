@@ -5,12 +5,12 @@ using System.Web;
 
 namespace Webservice.Models
 {
-    public class prediction
+    public class Prediction
     {
-        hotspot hotspot;
+        Hotspot hotspot;
         int time;
 
-        public prediction(hotspot h,int time)
+        public Prediction(Hotspot h,int time)
         {
             this.hotspot = hotspot;
         }
