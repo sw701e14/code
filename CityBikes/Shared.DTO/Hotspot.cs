@@ -13,10 +13,9 @@ namespace Shared.DTO
     /// </summary>
     public class Hotspot
     {
-        private GPSLocation[] dataPoints;
+        private readonly GPSLocation[] dataPoints;
 
-        // Hotspots cannot be created directly - they can only be saved to/read from the database.
-        public Hotspot(GPSLocation[] dataPoints)
+        private Hotspot(GPSLocation[] dataPoints)
         {
             if (dataPoints == null)
                 throw new ArgumentNullException("dataPoints");
