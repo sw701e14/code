@@ -45,15 +45,17 @@ namespace ModelUpdater
                 if (allClusters == null || !allClusters.Any())
                     return;
 
-                Hotspot[] allHotspots = convertClustersToHotspots(allClusters);
-                if (allHotspots == null || !allHotspots.Any())
-                    return;
-
-                Matrix markovChain = MarkovChain.BuildMarkovMatrix(allHotspots, allStandstillGPSData);
-
                 GPSData[] latestGPSData = Bike.GetLatestData(session);
+
                 truncateOldData(session);
-                storeNewData(session, latestGPSData, allHotspots, markovChain);
+
+                List<Hotspot> hotspots = new List<Hotspot>();
+                foreach (var cluster in allClusters)
+                    hotspots.Add(Hotspot.CreateHotspot(session, cluster));
+
+                Matrix markovChain = MarkovChain.BuildMarkovMatrix(hotspots.ToArray(), allStandstillGPSData);
+
+                storeNewData(session, latestGPSData, markovChain);
 
 #if DEBUG
                 printMatrix(markovChain);
@@ -78,21 +80,6 @@ namespace ModelUpdater
             return allGPSLocations;
         }
 
-        private static Hotspot[] convertClustersToHotspots(List<GPSLocation[]> allClusters)
-        {
-            Hotspot[] allHotspots = new Hotspot[allClusters.Count];
-
-            int i = 0;
-            foreach (GPSLocation[] item in allClusters)
-            {
-                Hotspot tempHotspot = new Hotspot(item);
-                allHotspots[i] = tempHotspot;
-                i++;
-            }
-
-            return allHotspots;
-        }
-
         private static void truncateOldData(DatabaseSession session)
         {
             DeleteQueries.TruncateGPS_data(session);
@@ -100,16 +87,12 @@ namespace ModelUpdater
             DeleteQueries.TruncateMarkov_chains(session);
         }
 
-        private static void storeNewData(DatabaseSession session, GPSData[] allGPSData, Hotspot[] allHotspots, Matrix markovChain)
+        private static void storeNewData(DatabaseSession session, GPSData[] allGPSData, Matrix markovChain)
         {
             foreach (GPSData item in allGPSData)
 	        {
 		        InsertQueries.InsertGPSData(session, item);
 	        }
-            foreach (Hotspot item in allHotspots)
-            {
-                InsertQueries.InsertHotSpot(session, item.getDataPoints());
-            }
             InsertQueries.InsertMarkovMatrix(session, markovChain);
         }
 
