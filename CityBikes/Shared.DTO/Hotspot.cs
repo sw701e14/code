@@ -15,6 +15,10 @@ namespace Shared.DTO
     public class Hotspot
     {
         private static Dictionary<uint, Hotspot> hotspots;
+        static Hotspot()
+        {
+            hotspots = new Dictionary<uint, Hotspot>();
+        }
 
         /// <summary>
         /// Creates a new hotspot in the database.
