@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shared.DAL;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,6 +14,27 @@ namespace Shared.DTO
     /// </summary>
     public class Hotspot
     {
+        private static Dictionary<uint, Hotspot> hotspots;
+
+        /// <summary>
+        /// Creates a new hotspot in the database.
+        /// The convex hull that makes up the actual hotspot is automatically applied to <paramref name="dataPoints"/>.
+        /// </summary>
+        /// <param name="session">A <see cref="DatabaseSession"/> that should be used to insert the hotspot.</param>
+        /// <param name="dataPoints">The data points that make up the hotspot. Note that the convex hull is automatically found by this method.</param>
+        /// <returns>A new <see cref="Hotspot"/> constructed from <see cref="dataPoints"/></returns>
+        public static Hotspot CreateHotspot(DatabaseSession session, GPSLocation[] dataPoints)
+        {
+            dataPoints = GPSLocation.GetConvexHull(dataPoints);
+
+            uint id = session.InsertHotSpot(dataPoints.Select(x => Tuple.Create(x.Latitude, x.Longitude)).ToArray());
+            Hotspot hs = new Hotspot(dataPoints);
+
+            hotspots.Add(id, hs);
+
+            return hs;
+        }
+
         private readonly GPSLocation[] dataPoints;
 
         private Hotspot(GPSLocation[] dataPoints)
@@ -70,11 +92,6 @@ namespace Shared.DTO
         public GPSLocation[] getDataPoints()
         {
             return dataPoints;
-        }
-
-        public static GPSLocation[] applyConvexHull(GPSLocation[] data)
-        {
-            return GPSLocation.GetConvexHull(data);
         }
     }
 }
