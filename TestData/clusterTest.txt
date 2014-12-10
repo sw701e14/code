@@ -1,0 +1,5 @@
+Nyhavnsgade 9 9000 Aalborg - 57.048238, 9.926748
+Rantzausgade 39 9000 Aalborg - 57.043371, 9.920204
+Lollandsgade 15 9000 Aalborg - 57.042379, 9.943485
+Falstersgade 15 9000 Aalborg - 57.042811, 9.944494
+Østerbro 44 9000 Aalborg - 57.045997, 9.937091

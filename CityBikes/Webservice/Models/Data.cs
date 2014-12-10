@@ -14,7 +14,7 @@ namespace Webservice.Models
         /// <summary>
         /// Gets a collection of all the available bikes.
         /// </summary>
-        /// <param name="session">A <see cref="Database.DatabaseSession"/> from which data should be retrieved.</param>
+        /// <param name="session">A <see cref="DatabaseSession"/> from which data should be retrieved.</param>
         /// <returns>A collection of bikes and their location.</returns>
         public static Tuple<Bike, GPSLocation>[] GetAvailableBikes()
         {

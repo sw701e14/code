@@ -13,7 +13,7 @@ namespace Shared.DAL
 {
     public static class InsertQueries
     {
-        public static void InsertGPSData(this Database.DatabaseSession session, GPSData newLocation)
+        public static void InsertGPSData(this DatabaseSession session, GPSData newLocation)
         {
              session.Execute("INSERT INTO gps_data (bikeId, latitude, longitude, accuracy, queried, hasNotMoved) VALUES{0}", formatGPS(newLocation));
         }
@@ -29,7 +29,7 @@ namespace Shared.DAL
                 data.HasNotMoved ? '1' : '0');
         }
 
-        public static void InsertHotSpot(this Database.DatabaseSession session, GPSLocation[] data)
+        public static void InsertHotSpot(this DatabaseSession session, GPSLocation[] data)
         {
             Hotspot hotspot = new Hotspot(data);
 
@@ -44,7 +44,7 @@ namespace Shared.DAL
              session.Execute(cmd);
         }
 
-        public static void InsertMarkovMatrix(this Database.DatabaseSession session, Matrix matrix)
+        public static void InsertMarkovMatrix(this DatabaseSession session, Matrix matrix)
         {
             using(MemoryStream ms = new MemoryStream())
             using(BinaryWriter writer = new BinaryWriter(ms))
@@ -63,12 +63,12 @@ namespace Shared.DAL
             }
         }
 
-        public static void InsertBike(this Database.DatabaseSession session,uint bikeId)
+        public static void InsertBike(this DatabaseSession session,uint bikeId)
         {
              session.Execute("INSERT INTO citybike_test.bikes (id) VALUES ({0})", bikeId);
         }
 
-        public static bool TestDatabase(this Database.DatabaseSession session)
+        public static bool TestDatabase(this DatabaseSession session)
         {
             if (!System.IO.File.Exists("test_data.sql"))
             {
