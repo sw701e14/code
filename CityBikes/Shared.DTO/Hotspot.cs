@@ -58,6 +58,35 @@ namespace Shared.DTO
                 }
             }
         }
+        /// <summary>
+        /// Loads all hotspots in the database.
+        /// This updates the caching provided by the <see cref="Hotspot"/> class but will always query the database for any data.
+        /// </summary>
+        /// <param name="session">A <see cref="DatabaseSession"/> that should be used to insert the hotspot.</param>
+        /// <returns>An array of all <see cref="Hotspot"/>s currently in the database.</returns>
+        public static Hotspot[] LoadAllHotspots(DatabaseSession session)
+        {
+            List<uint> known = hotspots.Keys.ToList();
+            var alldata = session.GetAllHotspots();
+            
+            for (int i = 0; i < alldata.Length; i++)
+            {
+                uint id = alldata[i].Item1;
+                if (hotspots.ContainsKey(id))
+                {
+                    known.Remove(id);
+                    continue;
+                }
+
+                Hotspot hs = new Hotspot(alldata[i].Item2.Select(x => new GPSLocation(x.Item1, x.Item2)).ToArray());
+                hotspots.Add(id, hs);
+            }
+
+            foreach (var k in known)
+                hotspots.Remove(k);
+
+            return hotspots.Values.ToArray();
+        }
 
         private readonly GPSLocation[] dataPoints;
 
