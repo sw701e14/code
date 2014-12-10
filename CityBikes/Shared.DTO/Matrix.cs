@@ -20,8 +20,7 @@ namespace Shared.DTO
             if (data.GetLength(1) <= 0)
                 throw new ArgumentOutOfRangeException("data", "The size of a matrix must be greater than zero. It cannot be constructed from an empty array.");
 
-            this.data = new double[data.GetLength(0), data.GetLength(1)];
-            this.data =  (double[,])data.Clone();
+            this.data = (double[,])data.Clone();
         }
 
         public double this[int x, int y]
@@ -35,6 +34,11 @@ namespace Shared.DTO
         public int Height
         {
             get { return data.GetLength(1); }
+        }
+
+        public double[,] ToArray()
+        {
+            return (double[,])data.Clone();
         }
 
         public static Matrix operator *(Matrix left, Matrix right)
