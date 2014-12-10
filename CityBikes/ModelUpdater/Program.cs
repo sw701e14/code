@@ -51,7 +51,7 @@ namespace ModelUpdater
 
                 Matrix markovChain = MarkovChain.BuildMarkovMatrix(allHotspots, allStandstillGPSData);
 
-                GPSData[] latestGPSData = getAllLatestsGPSData(session);
+                GPSData[] latestGPSData = Bike.GetLatestData(session);
                 truncateOldData(session);
                 storeNewData(session, latestGPSData, allHotspots, markovChain);
 
@@ -91,24 +91,6 @@ namespace ModelUpdater
             }
 
             return allHotspots;
-        }
-
-        private static GPSData[] getAllLatestsGPSData(DatabaseSession session)
-        {
-            Bike[] allBikes = SelectQueries.GetBikes(session);
-            GPSData[] latestGPSData = new GPSData[allBikes.Length];
-
-            int i = 0;
-            foreach (Bike item in allBikes)
-            {
-                if (SelectQueries.LatestGPSData(session, item) != null)
-                {
-                    latestGPSData[i] = (GPSData)SelectQueries.LatestGPSData(session, item);
-                    i++;
-                }
-            }
-
-            return latestGPSData;
         }
 
         private static void truncateOldData(DatabaseSession session)
