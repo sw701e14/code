@@ -13,12 +13,6 @@ namespace ModelUpdater
         private const int MINIMUMPOINTSINCLUSTER = 4;
         private const double RADIUSINCLUSTER = 60;
 
-        ////////////////////////////////////////////////////////////
-        //                      For Testing                       //               
-        ////////////////////////////////////////////////////////////
-        private static double countdown = 60 * UPDATEMODELEVERYMINUTES;
-        //private static Timer testTimer = new Timer(e => countdownTest(), null, 0, 1000);
-
         static void Main(string[] args)
         {
             double updateModelEveryMinutes = UPDATEMODELEVERYMINUTES;
@@ -170,19 +164,6 @@ namespace ModelUpdater
             }
 
             streamWriter.Close();
-        }
-
-        private static void countdownTest()
-        {
-            Console.Write(countdown + " ");
-            if (countdown == 0)
-            {
-                countdown = 60 * UPDATEMODELEVERYMINUTES;
-                Console.Clear();
-                Console.Write("Countdown: ");
-            }
-            else
-                countdown--;
         }
     }
 }
