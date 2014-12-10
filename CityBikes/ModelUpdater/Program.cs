@@ -56,11 +56,6 @@ namespace ModelUpdater
                     hotspots.Add(Hotspot.CreateHotspot(session, cluster));
 
                 MarkovChain.CreateMarkovChain(session, hotspots.ToArray(), allStandstillGPSData);
-
-#if DEBUG
-                printMatrix(markovChain);
-                saveMatrixToFile(markovChain);
-#endif
             });
 
             database.Dispose();
@@ -86,36 +81,5 @@ namespace ModelUpdater
             DeleteQueries.TruncateHotspots(session);
             DeleteQueries.TruncateMarkov_chains(session);
         }
-
-#if DEBUG
-        private static void printMatrix(Matrix markov)
-        {
-            Console.WriteLine("Markov at " + DateTime.UtcNow.ToString());
-            for (int i = 0; i < markov.Height; i++)
-            {
-                for (int j = 0; j < markov.Width; j++)
-                {
-                    Console.Write(string.Format("{0} ", markov[i, j]));
-                }
-                Console.Write(Environment.NewLine);
-            }
-        }
-
-        private static void saveMatrixToFile(Matrix markov)
-        {
-            System.IO.StreamWriter streamWriter = new System.IO.StreamWriter("c:\\test" + DateTime.UtcNow.Ticks.ToString() + ".txt");
-
-            for (int i = 0; i < markov.Height; i++)
-            {
-                for (int j = 0; j < markov.Width; j++)
-                {
-                    streamWriter.Write(string.Format("{0} ", markov[i, j]));
-                }
-                streamWriter.Write(Environment.NewLine);
-            }
-
-            streamWriter.Close();
-        }
-#endif
     }
 }
