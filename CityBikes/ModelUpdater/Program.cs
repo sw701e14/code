@@ -34,15 +34,15 @@ namespace ModelUpdater
             database.RunSession(session => 
             {
                 GPSData[] allStandstillGPSData = GPSData.GetAllHasNotMoved(session);
-                if (allStandstillGPSData == null || !allStandstillGPSData.Any())
+                if (allStandstillGPSData == null || allStandstillGPSData.Length == 0)
                     return;
 
                 GPSLocation[] allStandstillGPSLocations = getGPSLocationsFromGPSData(allStandstillGPSData);
-                if (allStandstillGPSLocations == null || !allStandstillGPSLocations.Any())
+                if (allStandstillGPSLocations == null || allStandstillGPSLocations.Length == 0)
                     return;
 
                 GPSLocation[][] allClusters = ClusteringTechniques<GPSLocation>.DBSCAN(allStandstillGPSLocations, (a, b) => a.DistanceTo(b) < RADIUSINCLUSTER, MINIMUMPOINTSINCLUSTER);
-                if (allClusters == null || !allClusters.Any())
+                if (allClusters == null || allClusters.Length == 0)
                     return;
 
                 GPSData[] latestGPSData = Bike.GetLatestData(session);
