@@ -73,6 +73,17 @@ FROM citybike_test.gps_data Where hasNotMoved");
             return rows.Select(row => row.ToTuple<uint, decimal, decimal, byte, DateTime, bool>()).ToArray();
         }
 
+        public static Tuple<decimal, decimal, byte, DateTime, bool>[] GetBikeGPSData(this DatabaseSession session, uint bikeId, bool latestFirst)
+        {
+            var rows = session.ExecuteRead(
+@"SELECT latitude, longitude, accuracy, queried, hasNotMoved
+FROM citybike_test.gps_data
+WHERE bikeId = {0}
+ORDER BY queried {1}", bikeId, latestFirst ? "DESC" : "ASC");
+
+            return rows.Select(row => row.ToTuple<decimal, decimal, byte, DateTime, bool>()).ToArray();
+        }
+
 
         /// <summary>
         /// Gets the id of all the bikes in the database.

@@ -43,6 +43,11 @@ namespace Shared.DTO
             return session.GetAllGPSNotMovedData().Select(x => new GPSData(new Bike(x.Item1), new GPSLocation(x.Item2, x.Item3), x.Item4, x.Item5, x.Item6)).ToArray();
         }
 
+        public static GPSData[] GetBikeData(DatabaseSession session, Bike bike, bool latestFirst)
+        {
+            return session.GetBikeGPSData(bike.Id, latestFirst).Select(x => new GPSData(bike, new GPSLocation(x.Item1, x.Item2), x.Item3, x.Item4, x.Item5)).ToArray();
+        }
+
         private static byte getAccuracy(byte? accuracy)
         {
             if (!accuracy.HasValue)
