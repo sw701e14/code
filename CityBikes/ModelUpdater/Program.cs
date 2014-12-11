@@ -96,7 +96,7 @@ namespace ModelUpdater
             int i = 0;
             foreach (GPSLocation[] item in allClusters)
             {
-                Hotspot tempHotspot = new Hotspot(item);
+                Hotspot tempHotspot = new Hotspot(Hotspot.applyConvexHull(item));
                 allHotspots[i] = tempHotspot;
                 i++;
             }
