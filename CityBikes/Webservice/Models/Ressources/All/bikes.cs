@@ -7,21 +7,19 @@ using Shared.DTO;
 
 namespace Webservice.Models.All
 {
-    public class allBikes
+    public class AllBikes
     {
-        public int count { get; set; }
-        public List<bike> bikes { get; set; }
+        public int Count { get { return Bikes.Count(); } }
+        public List<Bike> Bikes { get; set; }
 
-        public allBikes()
+        public AllBikes()
         {
-            bikes = new List<bike>();
-            foreach (var b in Data.GetAllBikes().ToList())
-            {
-                bikes.Add(b);
-                count++;
-            }
-            bikes = bikes.OrderBy(x => x.id).ToList();
+            Bikes = new List<Bike>();
+
+            Bikes.AddRange(Data.GetAllBikes());
+
+            Bikes = Bikes.OrderBy(x => x.Id).ToList();
         }
-        
+
     }
 }

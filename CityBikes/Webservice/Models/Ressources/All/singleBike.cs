@@ -7,24 +7,24 @@ using Shared.DTO;
 
 namespace Webservice.Models.All
 {
-    public class singleBike
+    public class SingleBike
     {
-        public long id { get; set; }
-        public decimal latitude { get; set; }
-        public decimal longitude { get; set; }
-        public DateTime immobileSince { get; set; }
+        public long Id { get; set; }
+        public decimal Latitude { get; set; }
+        public decimal Longitude { get; set; }
+        public DateTime ImmobileSince { get; set; }
 
-        public singleBike(long bikeId) 
+        public SingleBike(long bikeId) 
         {
-            var bike = Data.GetAllBikes().Where(x => x.id == bikeId).FirstOrDefault();
+            var bike = Data.GetAllBikes().Where(x => x.Id == bikeId).FirstOrDefault();
 
             if (bike == null)
                 throw new NullReferenceException();
 
-            latitude = bike.latitude;
-            longitude = bike.longitude;
-            id = bike.id;
-            immobileSince = bike.immobileSince;
+            Latitude = bike.Latitude;
+            Longitude = bike.Longitude;
+            Id = bike.Id;
+            ImmobileSince = bike.ImmobileSince;
         }
     }
 }

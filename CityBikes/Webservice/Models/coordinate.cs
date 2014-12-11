@@ -5,11 +5,11 @@ using System.Web;
 
 namespace Webservice.Models
 {
-    public class coordinate
+    public class Coordinate
     {
-        public decimal latitude { get; set; }
-        public decimal longtitude { get; set; }
+        public decimal Latitude { get; set; }
+        public decimal Longtitude { get; set; }
 
-        public coordinate() { }
+        public Coordinate() { }
     }
 }
