@@ -22,7 +22,7 @@ namespace Shared.DTO
         public static MarkovChain LoadMarkovChain(DatabaseSession session)
         {
             var data = session.GetMarkovChain();
-            
+
             Matrix matrix = new Matrix(data.Item1);
             Hotspot[] hotspots = data.Item2.Select(id => Hotspot.LoadHotspot(session, id)).ToArray();
 
@@ -52,7 +52,7 @@ namespace Shared.DTO
                 {
                     int next = getHotspotIndex(hotspots, groups[b].GetData(d).Location);
 
-                    if (next % 2 == 1 && last[b] % 2 == 1)//Possible missing some cases
+                    if (next % 2 == 1 && last[b] % 2 == 1)
                         next = last[b];
                     else if (next % 2 == 1 && last[b] % 2 == 0)
                         next = last[b] + 1;
@@ -68,7 +68,7 @@ namespace Shared.DTO
                 double sum = 0;
                 for (int j = 0; j < size; j++) sum += counter[i, j];
                 if (sum > 0)
-                    for (int j = 0; j < size; j++) counter[i, j] /= sum; //Sum must not be nul (0)
+                    for (int j = 0; j < size; j++) counter[i, j] /= sum;
             }
             return new Matrix(counter);
         }
