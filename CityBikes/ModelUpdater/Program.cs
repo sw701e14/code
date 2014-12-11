@@ -41,7 +41,7 @@ namespace ModelUpdater
                 if (allStandstillGPSLocations == null || !allStandstillGPSLocations.Any())
                     return;
 
-                List<GPSLocation[]> allClusters = ClusteringTechniques.FindClusters(allStandstillGPSLocations, MINIMUMPOINTSINCLUSTER, RADIUSINCLUSTER);
+                GPSLocation[][] allClusters = ClusteringTechniques<GPSLocation>.DBSCAN(allStandstillGPSLocations, (a, b) => a.DistanceTo(b) < RADIUSINCLUSTER, MINIMUMPOINTSINCLUSTER);
                 if (allClusters == null || !allClusters.Any())
                     return;
 
