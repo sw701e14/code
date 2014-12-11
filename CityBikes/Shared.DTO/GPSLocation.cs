@@ -204,8 +204,19 @@ namespace Shared.DTO
         /// </remarks>
         public static GPSLocation[] GetConvexHull(IEnumerable<GPSLocation> data)
         {
-            GPSLocation p0 = data.Aggregate((minItem, nextItem) => minItem.Longitude < nextItem.Longitude ? minItem : nextItem);
+            GPSLocation p0 = data.Aggregate((minItem, nextItem) => minItem.latitude < nextItem.latitude ? minItem : nextItem);
             GPSLocation[] remaining = data.Where(x => !x.Equals(p0)).Distinct().OrderBy(x => p0.PolarAngleTo(x)).ToArray();
+            if (remaining[0].latitude == p0.latitude && remaining[1].latitude == p0.latitude)
+            {
+                List<GPSLocation> r = new List<GPSLocation>(remaining);
+                while(r[0].latitude == p0.latitude && r[1].latitude == p0.latitude)
+                {
+                    if (r[0].longitude < r[1].longitude)
+                        r[1] = r[0];
+                    r.RemoveAt(0);
+                }
+                remaining = r.ToArray();
+            }
 
             Stack<GPSLocation> stack = new Stack<GPSLocation>();
 
