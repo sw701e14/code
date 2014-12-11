@@ -31,6 +31,9 @@ namespace Shared.DTO
         {
             dataPoints = GPSLocation.GetConvexHull(dataPoints);
 
+            if (dataPoints.Length == 0)
+                return null;
+
             uint id = session.InsertHotSpot(dataPoints.Select(x => Tuple.Create(x.Latitude, x.Longitude)).ToArray());
             Hotspot hs = new Hotspot(id, dataPoints);
 

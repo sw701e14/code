@@ -53,7 +53,11 @@ namespace ModelUpdater
 
                 List<Hotspot> hotspots = new List<Hotspot>();
                 foreach (var cluster in allClusters)
-                    hotspots.Add(Hotspot.CreateHotspot(session, cluster));
+                {
+                    var hs = Hotspot.CreateHotspot(session, cluster);
+                    if (hs != null)
+                        hotspots.Add(hs);
+                }
 
                 MarkovChain.CreateMarkovChain(session, hotspots.ToArray(), allStandstillGPSData);
             });
