@@ -54,7 +54,7 @@ INNER JOIN (
         public static Tuple<uint, decimal, decimal, byte, DateTime, bool>[] GetAllGPSData(this DatabaseSession session)
         {
             var rows = session.ExecuteRead(
-@"SELECT latitude, longitude, accuracy, queried, hasNotMoved
+@"SELECT bikeId, latitude, longitude, accuracy, queried, hasNotMoved
 FROM citybike_test.gps_data");
 
             return rows.Select(row => row.ToTuple<uint, decimal, decimal, byte, DateTime, bool>()).ToArray();
@@ -67,7 +67,7 @@ FROM citybike_test.gps_data");
         public static Tuple<uint, decimal, decimal, byte, DateTime, bool>[] GetAllGPSNotMovedData(this DatabaseSession session)
         {
             var rows = session.ExecuteRead(
-@"SELECT latitude, longitude, accuracy, queried, hasNotMoved 
+@"SELECT bikeId, latitude, longitude, accuracy, queried, hasNotMoved 
 FROM citybike_test.gps_data Where hasNotMoved");
 
             return rows.Select(row => row.ToTuple<uint, decimal, decimal, byte, DateTime, bool>()).ToArray();
