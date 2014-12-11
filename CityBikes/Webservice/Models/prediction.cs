@@ -7,12 +7,14 @@ namespace Webservice.Models
 {
     public class Prediction
     {
-        Hotspot hotspot;
-        int time;
+        public Hotspot Hotspot { get; set; }
+        
+        public int  Time { get; set; }
 
-        public Prediction(Hotspot h,int time)
+        public Prediction(Hotspot hotspot,int time)
         {
-            this.hotspot = hotspot;
+            this.Hotspot = hotspot;
+            this.Time = time;
         }
     }
 }
