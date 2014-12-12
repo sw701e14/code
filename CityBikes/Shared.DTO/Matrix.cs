@@ -68,6 +68,10 @@ namespace Shared.DTO
             }
             return new Vector(result);
         }
+        public static Vector operator *(Vector vector, Matrix matrix)
+        {
+            return matrix * vector;
+        }
 
         private static double dotProduct(double[,] left, double[,] right, int row, int column)
         {
