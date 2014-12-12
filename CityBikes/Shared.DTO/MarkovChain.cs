@@ -60,7 +60,7 @@ namespace Shared.DTO
                             next++;
                     }
 
-                    counter[last[b], next]++;
+                    counter[next, last[b]]++;
 
                     last[b] = next;
                 }
@@ -69,9 +69,9 @@ namespace Shared.DTO
             for (int i = 0; i < size; i++)
             {
                 double sum = 0;
-                for (int j = 0; j < size; j++) sum += counter[i, j];
+                for (int j = 0; j < size; j++) sum += counter[j, i];
                 if (sum > 0)
-                    for (int j = 0; j < size; j++) counter[i, j] /= sum;
+                    for (int j = 0; j < size; j++) counter[j, i] /= sum;
                 else
                     throw new NotImplementedException("No bike was placed in state " + i + ".");
             }
