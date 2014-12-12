@@ -15,7 +15,7 @@ namespace LocationService.Common
         private static byte getAccuracy(byte? accuracy)
         {
             if (!accuracy.HasValue)
-                return (byte)rnd.Next(30);
+                return (byte)rnd.Next(15);
             else
                 return accuracy.Value;
         }
