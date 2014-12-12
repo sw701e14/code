@@ -72,6 +72,8 @@ namespace Shared.DTO
                 for (int j = 0; j < size; j++) sum += counter[i, j];
                 if (sum > 0)
                     for (int j = 0; j < size; j++) counter[i, j] /= sum;
+                else
+                    throw new NotImplementedException("No bike was placed in state " + i + ".");
             }
             return new Matrix(counter);
         }
