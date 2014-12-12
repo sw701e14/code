@@ -16,6 +16,8 @@ namespace LocationService.LocationSource
 
         #region Addresses
 
+        
+
         private static string[] bycykelstations =
         {
             "Karolinelund, 9000 Aalborg",
@@ -58,6 +60,7 @@ namespace LocationService.LocationSource
             get { return bycykelstations.Concat(otherAddresses).ToArray(); }
         }
 
+
         #endregion
 
         private static Random r = new Random();
@@ -71,7 +74,7 @@ namespace LocationService.LocationSource
         /// <returns>A <see cref="IDataSource"/> from which the location of the bike can be extracted continuosly.</returns>
         public static IDataSource GetSource(uint bike, DateTime startTime, int iterations)
         {
-            return GetSource(bike, allAdresses, startTime, iterations);
+            return GetSource(bike, allAdresses, startTime, iterations,null);
         }
 
         /// <summary>
@@ -82,17 +85,17 @@ namespace LocationService.LocationSource
         /// <param name="startTime">The start time.</param>
         /// <param name="iterations">The iterations.</param>
         /// <returns>A <see cref="IDataSource"/> from which the location of the bike can be extracted continuosly.</returns>
-        public static IDataSource GetSource(uint bike, string[] destinations, DateTime startTime, int iterations)
+        public static IDataSource GetSource(uint bike, string[] destinations, DateTime startTime, int iterations, int[] distribution)
         {
-            IEnumerable<GPSInput> enumeration = generateBikeRoute(bike, destinations, startTime, iterations);
+            IEnumerable<GPSInput> enumeration = generateBikeRoute(bike, destinations, startTime, iterations,distribution);
 
             return new EnumerationDataSource(enumeration.ConvertToInterval(interval).Select(s => { s.AddNoise(); return s; }));
         }
 
-        private static IEnumerable<GPSInput> generateBikeRoute(uint bike, string[] destinations, DateTime startTime, int iterations)
+        private static IEnumerable<GPSInput> generateBikeRoute(uint bike, string[] destinations, DateTime startTime, int iterations, int[] distribution = null)
         {
-            string startPoint = nextDestination(destinations, "");
-            string destination = nextDestination(destinations, startPoint);
+            string startPoint = nextDestination(destinations, "",distribution);
+            string destination = nextDestination(destinations, startPoint,distribution);
 
             Debug.WriteLine("Bike: {0}", bike);
             for (int i = 0; i < iterations; i++)
@@ -105,7 +108,7 @@ namespace LocationService.LocationSource
                 startTime = route.Last().Timestamp.AddMinutes(r.Next(MAX_WAIT_MINUTES));
 
                 startPoint = destination;
-                destination = nextDestination(destinations, startPoint);
+                destination = nextDestination(destinations, startPoint,distribution);
             }
         }
 
@@ -123,9 +126,40 @@ namespace LocationService.LocationSource
             string dest = exclude;
 
             while (dest == exclude)
+            {
                 dest = destinations[r.Next(destinations.Length)];
+            }
 
             return dest;
+        }
+
+        private static string nextDestination(string[] destinations, string exclude, int[] distributions=null)
+        {
+            if (destinations.Length == 1)
+                throw new InvalidOperationException("destinations must contain more than one string");
+
+            string dest = exclude;
+
+            while (dest == exclude)
+            {
+                dest = chooseDestinationWithDistribution(destinations, distributions, r.Next(100));
+            }
+
+            return dest;
+
+        }
+
+        private static string chooseDestinationWithDistribution(string[] dest, int[] dist, int r)
+        {
+            int p = 0;
+
+            for (int i = 0; i < dest.Length; i++)
+            {
+                if (r < dist[i] + p)
+                    return dest[i];
+                else p += dist[i];
+            }
+            throw new ArgumentException("Not a valid distribution");
         }
     }
 }
