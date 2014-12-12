@@ -50,12 +50,15 @@ namespace Shared.DTO
             {
                 for (int b = 0; b < groups.Length; b++)
                 {
+                    int old = last[b];
                     int next = getHotspotIndex(hotspots, groups[b].GetData(d).Location);
 
-                    if (next % 2 == 1 && last[b] % 2 == 1)
-                        next = last[b];
-                    else if (next % 2 == 1 && last[b] % 2 == 0)
-                        next = last[b] + 1;
+                    if (next % 2 == 1)
+                    {
+                        next = old;
+                        if (old % 2 == 0)
+                            next++;
+                    }
 
                     counter[last[b], next]++;
 
