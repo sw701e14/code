@@ -62,7 +62,7 @@ namespace Shared.DTO
             {
                 double k = 0;
                 for (int j = 0; j < vector.Length; j++)
-                    k += vector[i] * matrix[i, j];
+                    k += vector[j] * matrix[i, j];
 
                 result[i] = k;
             }
@@ -73,14 +73,14 @@ namespace Shared.DTO
             return matrix * vector;
         }
 
-        private static double dotProduct(double[,] left, double[,] right, int row, int column)
+        private static double dotProduct(double[,] left, double[,] right, int i, int j)
         {
-            double k = 0;
-            for (int i = 0; i < left.GetLength(0); i++)
+            double sum = 0;
+            for (int k = 0; k < left.GetLength(0); k++)
             {
-                k += left[i, row] * right[column, i];
+                sum += left[i, k] * right[k, j];
             }
-            return k;
+            return sum;
         }
     }
 }
