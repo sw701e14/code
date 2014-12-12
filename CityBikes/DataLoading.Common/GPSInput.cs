@@ -48,6 +48,7 @@ namespace LocationService.Common
         /// </summary>
         public void AddNoise()
         {
+            //http://www.movable-type.co.uk/scripts/latlong.html
             double angle = rnd.NextDouble() * 2 * Math.PI;
             double distance = rnd.NextDouble() * (double)accuracy;
             distance /= 1000.0;
@@ -58,7 +59,7 @@ namespace LocationService.Common
             double oldLatitide = (Math.PI * (double)latitude) / 180;
             double oldLongitude = (Math.PI * (double)longitude) / 180;
 
-            double newLatitude = Math.Asin(Math.Sin((double)oldLatitide) * Math.Cos(δ) + Math.Cos(angle) * Math.Sin(δ) * Math.Cos(angle));
+            double newLatitude = Math.Asin(Math.Sin((double)oldLatitide) * Math.Cos(δ) + Math.Cos(oldLatitide) * Math.Sin(δ) * Math.Cos(angle));
             double newLongitude = (double)oldLongitude + Math.Atan2(Math.Sin(angle) * Math.Sin(δ) * Math.Cos((double)oldLatitide), Math.Cos(δ) - Math.Sin((double)oldLatitide) * Math.Sin(newLatitude));
 
             newLatitude = (180 * newLatitude) / Math.PI;
