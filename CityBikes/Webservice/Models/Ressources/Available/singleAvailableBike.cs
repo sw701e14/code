@@ -7,12 +7,12 @@ using Shared.DTO;
 
 namespace Webservice.Models.Available
 {
-    public class singleAvailableBike
+    public class SingleAvailableBike
     {
-        public long id { get; set; }
-        public GPSLocation location { get; set; }
+        public long Id { get; set; }
+        public GPSLocation Location { get; set; }
 
-        public singleAvailableBike(long bikeId) 
+        public SingleAvailableBike(long bikeId) 
         {
             using (Database context = new Database())
             {
@@ -21,8 +21,8 @@ namespace Webservice.Models.Available
                 if (bike == null)
                     throw new NullReferenceException();
 
-                id = bike.Item1.Id;
-                location = bike.Item2;
+                Id = bike.Item1.Id;
+                Location = bike.Item2;
             }
         }
     }

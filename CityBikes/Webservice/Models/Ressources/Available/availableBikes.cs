@@ -7,18 +7,17 @@ using Shared.DTO;
 
 namespace Webservice.Models.Available
 {
-    public class availableBikes
+    public class AvailableBikes
     {
-        public int count { get; set; }
-        public List<availableBike> bikes { get; set; }
+        public int Count { get { return Bikes.Count(); } }
+        public List<AvailableBike> Bikes { get; set; }
 
-        public availableBikes()
+        public AvailableBikes()
         {
-            bikes = new List<availableBike>();
-            foreach (Tuple<Bike, GPSLocation> item in Data.GetAvailableBikes())
+            Bikes = new List<AvailableBike>();
+            foreach (Tuple<Shared.DTO.Bike, GPSLocation> item in Data.GetAvailableBikes())
             {
-                count++;
-                bikes.Add(new availableBike() { href = item.Item1.Id.ToString() });
+                Bikes.Add(new AvailableBike() { Href = item.Item1.Id.ToString() });
             }
         }
     }

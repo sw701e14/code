@@ -5,13 +5,13 @@ using System.Web;
 
 namespace Webservice.Models
 {
-    public class hotspot
+    public class Hotspot
     {
-        public List<coordinate> coordinates { get; set; }
+        public List<Coordinate> Coordinates { get; set; }
 
-        public hotspot()
+        public Hotspot()
         {
-            coordinates = new List<coordinate>();
+            Coordinates = new List<Coordinate>();
         }
     }
 }

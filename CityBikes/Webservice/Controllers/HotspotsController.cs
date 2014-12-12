@@ -21,10 +21,10 @@ namespace Webservice.Controllers
         /// <returns>The hotspots.</returns>
         [Route("")]
         [HttpGet]
-        [ResponseType(typeof(allHotspots))]
+        [ResponseType(typeof(AllHotspots))]
         public HttpResponseMessage getAll()
         {
-            allHotspots hotspotResources = new allHotspots();
+            AllHotspots hotspotResources = new AllHotspots();
 
             return Request.CreateResponse(HttpStatusCode.OK, hotspotResources);
         }

@@ -5,14 +5,14 @@ using System.Web;
 
 namespace Webservice.Models
 {
-    public class bike
+    public class Bike
     {
-        public long id { get; set; }
-        public decimal latitude { get; set; }
-        public decimal longitude { get; set; }
+        public long Id { get; set; }
+        public decimal Latitude { get; set; }
+        public decimal Longitude { get; set; }
 
-        public DateTime immobileSince { get; set; }
+        public DateTime ImmobileSince { get; set; }
 
-        public bike() { }
+        public Bike() { }
     }
 }

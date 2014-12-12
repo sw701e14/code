@@ -16,11 +16,11 @@ namespace Webservice.Models
         /// </summary>
         /// <param name="session">A <see cref="DatabaseSession"/> from which data should be retrieved.</param>
         /// <returns>A collection of bikes and their location.</returns>
-        public static Tuple<Bike, GPSLocation>[] GetAvailableBikes()
+        public static Tuple<Shared.DTO.Bike, GPSLocation>[] GetAvailableBikes()
         {
             GPSData[] data;
             using (Database db = new Database())
-                data = db.RunSession(session => Bike.GetLatestData(session));
+                data = db.RunSession(session => Shared.DTO.Bike.GetLatestData(session));
 
             var immobileTimeSpan = new TimeSpan(0, IMMOBILE_MINUTES, 0);
             DateTime now = DateTime.Now;
@@ -30,45 +30,50 @@ namespace Webservice.Models
                     select Tuple.Create(b.Bike, b.Location)).ToArray();
         }
 
-        public static IEnumerable<bike> GetAllBikes()
+        public static IEnumerable<Bike> GetAllBikes()
         {
             GPSData[] data;
             using (Database db = new Database())
-                data = db.RunSession(session => Bike.GetLatestData(session));
+                data = db.RunSession(session => Shared.DTO.Bike.GetLatestData(session));
 
             Array.Sort(data, (x, y) => x.Bike.Id.CompareTo(y.Bike.Id));
 
             foreach (GPSData item in data)
             {
-                bike b = new bike();
-                b.id = item.Bike.Id;
-                b.latitude = item.Location.Latitude;
-                b.longitude = item.Location.Longitude;
-                b.immobileSince = item.QueryTime;
+                Bike b = new Bike();
+                b.Id = item.Bike.Id;
+                b.Latitude = item.Location.Latitude;
+                b.Longitude = item.Location.Longitude;
+                b.ImmobileSince = item.QueryTime;
 
                 yield return b;
             }
         }
 
-        public static IEnumerable<hotspot> GetAllHotspots()
+        public static IEnumerable<Webservice.Models.Hotspot> GetAllHotspots()
         {
-            Hotspot[] hotspots;
+            Shared.DTO.Hotspot[] hotspots;
             using (Database context = new Database())
-                hotspots = context.RunSession(s => Hotspot.LoadAllHotspots(s));
+                hotspots = context.RunSession(s => Shared.DTO.Hotspot.LoadAllHotspots(s));
 
             foreach (var hs in hotspots)
             {
-                hotspot tempHotspot = new hotspot();
+                Webservice.Models.Hotspot tempHotspot = new Webservice.Models.Hotspot();
 
                 foreach (GPSLocation gpsLoc in hs.getDataPoints())
                 {
-                    coordinate tempCoordinate = new coordinate();
-                    tempCoordinate.latitude = gpsLoc.Latitude;
-                    tempCoordinate.longtitude = gpsLoc.Longitude;
-                    tempHotspot.coordinates.Add(tempCoordinate);
+                    Coordinate tempCoordinate = new Coordinate();
+                    tempCoordinate.Latitude = gpsLoc.Latitude;
+                    tempCoordinate.Longtitude = gpsLoc.Longitude;
+                    tempHotspot.Coordinates.Add(tempCoordinate);
                 }
                 yield return tempHotspot;
             }
+        }
+
+        public static IEnumerable<Prediction> GetPredictions()
+        {
+            throw new NotImplementedException();
         }
     }
 }

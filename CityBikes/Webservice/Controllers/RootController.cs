@@ -30,6 +30,7 @@ namespace Webservice.Controllers
             resources.Add(new RootResource.Resource() { href = "availablebikes" });
             resources.Add(new RootResource.Resource() { href = "bikes" });
             resources.Add(new RootResource.Resource() { href = "hotspots" });
+            resources.Add(new RootResource.Resource() { href = "predictions" });
 
 
             return Request.CreateResponse(HttpStatusCode.OK,
