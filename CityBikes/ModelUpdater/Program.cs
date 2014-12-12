@@ -11,7 +11,7 @@ namespace ModelUpdater
     {
         private const double UPDATEMODELEVERYMINUTES = 5;
         private const int MINIMUMPOINTSINCLUSTER = 4;
-        private const double RADIUSINCLUSTER = 60;
+        private const double RADIUSINCLUSTER = 15;
 
         static void Main(string[] args)
         {
