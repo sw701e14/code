@@ -159,5 +159,48 @@ namespace Shared.DTO
         {
             get { return probabilities; }
         }
+        public Hotspot[] Hotspots
+        {
+            get { return hotspots; }
+        }
+
+        public Vector BuildInitialState(DatabaseSession session)
+        {
+            var latest = Bike.GetLatestData(session);
+            int[] hsIndices = new int[latest.Length];
+            for (int i = 0; i < hsIndices.Length; i++)
+            {
+                hsIndices[i] = -1;
+                for (int j = 0; j < hotspots.Length; j++)
+                    if (hotspots[j].Contains(latest[i]))
+                    {
+                        hsIndices[i] = j * 2;
+                        break;
+                    }
+            }
+
+            for (int i = 0; i < hsIndices.Length; i++)
+            {
+                if (hsIndices[i] >= 0)
+                    continue;
+
+                var data = GPSData.GetBikeData(session, latest[i].Bike, true);
+                foreach (var d in data)
+                {
+                    for (int j = 0; j < hotspots.Length; j++)
+                        if (hotspots[j].Contains(d))
+                        {
+                            hsIndices[i] = j + 1;
+                            break;
+                        }
+                }
+            }
+
+            double[] v = new double[hotspots.Length * 2];
+            for (int i = 0; i < hsIndices.Length; i++)
+                v[hsIndices[i]]++;
+
+            return new Vector(v);
+        }
     }
 }
