@@ -59,7 +59,8 @@ namespace ModelUpdater
                         hotspots.Add(hs);
                 }
 
-                MarkovChain.CreateMarkovChain(session, hotspots.ToArray(), allStandstillGPSData);
+                GPSData[] data = GPSData.GetAll(session);
+                MarkovChain.CreateMarkovChain(session, hotspots.ToArray(), data);
             });
 
             database.Dispose();
