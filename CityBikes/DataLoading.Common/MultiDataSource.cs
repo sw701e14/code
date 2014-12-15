@@ -11,8 +11,7 @@ namespace LocationService.Common
     /// </summary>
     public class MultiDataSource : IDataSource
     {
-        private IDataSource[] sources;
-        private int index = 0;
+        private Tuple<IDataSource, GPSInput>[] sources;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MultiDataSource"/> class.
@@ -28,8 +27,9 @@ namespace LocationService.Common
         /// <param name="sources">An array containing the sources that should be queried by this <see cref="MultiDataSource"/>.</param>
         public MultiDataSource(params IDataSource[] sources)
         {
-            this.sources = new IDataSource[sources.Length];
-            sources.CopyTo(this.sources, 0);
+            this.sources = new Tuple<IDataSource, GPSInput>[sources.Length];
+            for (int i = 0; i < sources.Length; i++)
+                this.sources[i] = new Tuple<IDataSource, GPSInput>(sources[i], sources[i].GetData());
         }
 
         /// <summary>
@@ -40,23 +40,24 @@ namespace LocationService.Common
         /// </returns>
         public GPSInput GetData()
         {
-            GPSInput data = null;
+            Array.Sort(sources, compare);
 
-            for (int i = 0; i < sources.Length; i++)
-            {
-                data = sources[index].GetData();
-                next();
+            var s = sources[0];
+            sources[0] = new Tuple<IDataSource, GPSInput>(s.Item1, s.Item1.GetData());
 
-                if (data != null)
-                    return data;
-            }
-
-            return null;
+            return s.Item2;
         }
 
-        private void next()
+        private int compare(Tuple<IDataSource, GPSInput> a, Tuple<IDataSource, GPSInput> b)
         {
-            index = (index + 1) % sources.Length;
+            if (a.Item2 == null && b.Item2 == null)
+                return 0;
+            else if (a.Item2 == null)
+                return 1;
+            else if (b.Item2 == null)
+                return -1;
+            else
+                return a.Item2.Timestamp.CompareTo(b.Item2.Timestamp);
         }
     }
 }
