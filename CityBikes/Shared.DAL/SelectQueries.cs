@@ -73,6 +73,15 @@ FROM citybike_test.gps_data Where hasNotMoved");
             return rows.Select(row => row.ToTuple<uint, decimal, decimal, byte, DateTime, bool>()).ToArray();
         }
 
+        public static Tuple<uint, decimal, decimal, byte, DateTime, bool>[] GetAllGPSHasMovedData(this DatabaseSession session)
+        {
+            var rows = session.ExecuteRead(
+@"SELECT bikeId, latitude, longitude, accuracy, queried, hasNotMoved 
+FROM citybike_test.gps_data Where hasNotMoved = false");
+
+            return rows.Select(row => row.ToTuple<uint, decimal, decimal, byte, DateTime, bool>()).ToArray();
+        }
+
         public static Tuple<decimal, decimal, byte, DateTime, bool>[] GetBikeGPSData(this DatabaseSession session, uint bikeId, bool latestFirst)
         {
             var rows = session.ExecuteRead(

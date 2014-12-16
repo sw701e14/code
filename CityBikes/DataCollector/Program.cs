@@ -22,7 +22,9 @@ namespace LocationService.DataCollector
 
             DateTime start = DateTime.Now.Date.AddDays(-1);
 
-            return new MultiDataSource(bikes.Select(b => new NoFutureDataSource(GoogleDataSource.GetSource(b.Id, start, int.MaxValue))));
+            double hours = "Hvor mange timer skal vi køre?".GetDouble(x => x > 0);
+
+            return new FixedSpanDataSource( new MultiDataSource(bikes.Select(b => new NoFutureDataSource(GoogleDataSource.GetSource(b.Id, start, int.MaxValue)))),start.AddHours(hours));
         }
 
         static void Main(string[] args)
@@ -36,10 +38,22 @@ namespace LocationService.DataCollector
                 GPSPointMapPlotter.SaveMapAsHtml();
             });
             menu.Add("Start a server simulation", simulate);
+            menu.Add("MAtrixxxxxxxx", matrix);
 
             menu.SetCancel("Exit");
 
             menu.Show(true);
+        }
+
+        private static void matrix()
+        {
+            using (Database db = new Database())
+            {
+                MarkovChain m=  db.RunSession(session => MarkovChain.LoadMarkovChain(session));
+                string s = m.Probabilities.ToString();
+                System.Diagnostics.Debug.WriteLine(s);
+                System.Diagnostics.Debug.WriteLine("");
+            }
         }
 
         static void clearData()
@@ -61,7 +75,7 @@ namespace LocationService.DataCollector
         }
         static void simulate()
         {
-            DataLoader.StartLoad(createDataSource(), true, false);
+            DataLoader.StartLoad(createDataSource(), true, true);
         }
     }
 }

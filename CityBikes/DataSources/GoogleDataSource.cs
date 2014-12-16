@@ -12,11 +12,21 @@ namespace LocationService.LocationSource
     public static class GoogleDataSource
     {
         private static readonly TimeSpan interval = TimeSpan.FromMinutes(5);
-        private const int MAX_WAIT_MINUTES = 60;
+        private const int MAX_WAIT_MINUTES = 10;
 
         #region Addresses
 
-        
+        private static string[] teststations = 
+        {
+            "Nytorv 15, 9000 Aalborg",
+            "Nytorv 1, 9000 Aalborg"
+        };
+
+        private static int[] testDistributions = 
+        {
+            50,50
+        };
+
 
         private static string[] bycykelstations =
         {
@@ -68,13 +78,13 @@ namespace LocationService.LocationSource
         /// <summary>
         /// Generates a route for the specified bike id using a predefined collection of destinations starting from the specified startTime and iterating the specified number of time
         /// </summary>
-        /// <param name="bike">The bike to which the route should be associated.</param>
+        /// <param name="bike">The bike to which the route should be associated.</param>    
         /// <param name="startTime">The start time.</param>
         /// <param name="iterations">The iterations.</param>
         /// <returns>A <see cref="IDataSource"/> from which the location of the bike can be extracted continuosly.</returns>
         public static IDataSource GetSource(uint bike, DateTime startTime, int iterations)
         {
-            return GetSource(bike, allAdresses, startTime, iterations,null);
+            return GetSource(bike, teststations, startTime, iterations,testDistributions);
         }
 
         /// <summary>
@@ -85,17 +95,28 @@ namespace LocationService.LocationSource
         /// <param name="startTime">The start time.</param>
         /// <param name="iterations">The iterations.</param>
         /// <returns>A <see cref="IDataSource"/> from which the location of the bike can be extracted continuosly.</returns>
-        public static IDataSource GetSource(uint bike, string[] destinations, DateTime startTime, int iterations, int[] distribution)
+        public static IDataSource GetSource(uint bike, string[] destinations, DateTime startTime, int iterations, int[] distribution =null)
         {
-            IEnumerable<GPSInput> enumeration = generateBikeRoute(bike, destinations, startTime, iterations,distribution);
+            IEnumerable<GPSInput> enumeration = generateBikeRoute(bike, destinations, startTime, iterations, distribution);
 
             return new EnumerationDataSource(enumeration.ConvertToInterval(interval).Select(s => { s.AddNoise(); return s; }));
         }
 
         private static IEnumerable<GPSInput> generateBikeRoute(uint bike, string[] destinations, DateTime startTime, int iterations, int[] distribution = null)
         {
-            string startPoint = nextDestination(destinations, "",distribution);
-            string destination = nextDestination(destinations, startPoint,distribution);
+            string startPoint;
+            string destination;
+
+            if (distribution == null)
+            {
+                startPoint = nextDestination(destinations, "");
+                destination = nextDestination(destinations, startPoint);
+            }
+            else { 
+                startPoint = nextDestination(destinations, "", distribution);
+                destination = nextDestination(destinations, startPoint, distribution);
+            }
+
 
             Debug.WriteLine("Bike: {0}", bike);
             for (int i = 0; i < iterations; i++)
@@ -105,10 +126,17 @@ namespace LocationService.LocationSource
                 foreach (var p in route)
                     yield return p;
 
-                startTime = route.Last().Timestamp.AddMinutes(r.Next(MAX_WAIT_MINUTES));
+                startTime = route.Last().Timestamp.AddMinutes(12);
 
                 startPoint = destination;
-                destination = nextDestination(destinations, startPoint,distribution);
+                if (distribution == null)
+                {
+                    destination = nextDestination(destinations, startPoint);
+                }
+                else
+                {
+                    destination = nextDestination(destinations, startPoint, distribution);
+                }
             }
         }
 
@@ -133,7 +161,7 @@ namespace LocationService.LocationSource
             return dest;
         }
 
-        private static string nextDestination(string[] destinations, string exclude, int[] distributions=null)
+        private static string nextDestination(string[] destinations, string exclude, int[] distributions = null)
         {
             if (destinations.Length == 1)
                 throw new InvalidOperationException("destinations must contain more than one string");

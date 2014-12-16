@@ -81,8 +81,10 @@ namespace ModelUpdater
                 }
                 //if P' is not yet member of any cluster
                 if (!Pp.Clustered)
-                    //    add P' to cluster C
+                //    add P' to cluster C
+                {
                     C.Add(Pp);
+                }
             }
         }
         private static Point[] regionQuery(Point P, Func<Point, Point[]> eps)

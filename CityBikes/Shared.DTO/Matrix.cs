@@ -82,5 +82,31 @@ namespace Shared.DTO
             }
             return sum;
         }
+
+        public override string ToString()
+        {
+            StringBuilder b = new StringBuilder();
+
+            for (int i = 0; i < Width; i++)
+            {
+                //b.Append("\\hline ");
+                for (int j = 0; j < Height; j++)
+                {
+                    if (data[j, i] == 0)
+                        b.Append(" ");
+                    else
+                    {
+                        string s = String.Format("{0,5:0.0}", data[j, i]*100);
+                        b.Append(s);
+                    }
+                    if (j != Width - 1)
+                        b.Append(" & ");
+                }
+                b.Append("\\\\");
+                b.Append('\n');
+            }
+
+            return b.ToString();
+        }
     }
 }

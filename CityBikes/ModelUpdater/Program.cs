@@ -45,12 +45,14 @@ namespace ModelUpdater
                 if (allClusters == null || allClusters.Length == 0)
                     return;
 
+
+                /*
                 GPSData[] latestGPSData = Bike.GetLatestData(session);
 
                 truncateOldData(session);
                 foreach (var point in latestGPSData)
                     GPSData.InsertInDatabase(session, point);
-
+                */ 
                 List<Hotspot> hotspots = new List<Hotspot>();
                 foreach (var cluster in allClusters)
                 {
@@ -61,6 +63,7 @@ namespace ModelUpdater
 
                 GPSData[] data = GPSData.GetAll(session);
                 MarkovChain.CreateMarkovChain(session, hotspots.ToArray(), data);
+                Console.WriteLine("hej, det gik fint");
             });
 
             database.Dispose();
