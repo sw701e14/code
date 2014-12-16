@@ -9,6 +9,8 @@ namespace Shared.DTO
 {
     public class MarkovChain
     {
+        public static readonly TimeSpan TIME_INTERVAL = TimeSpan.FromMinutes(5);
+
         private Matrix probabilities;
         private Hotspot[] hotspots;
 
@@ -36,7 +38,7 @@ namespace Shared.DTO
             var start = data.Min(d => d.QueryTime);
             var end = data.Max(d => d.QueryTime);
 
-            var step = TimeSpan.FromMinutes(5);
+            var step = TIME_INTERVAL;
             var groups = groupData(data).ToArray();
 
             int size = hotspots.Length * 2;
