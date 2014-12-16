@@ -62,7 +62,30 @@ namespace Webservice.Models
 
         public static IEnumerable<Prediction> GetPredictions()
         {
-            throw new NotImplementedException();
+            MarkovChain markov;
+            Vector init;
+            using (Database db = new Database())
+            {
+                markov = db.RunSession(session => MarkovChain.LoadMarkovChain(session));
+                init = db.RunSession(session => markov.BuildInitialState(session));
+            }
+
+            for (int i = 0; i < markov.Hotspots.Length; i++)
+            {
+                var hs = markov.Hotspots[i];
+                var m2 = markov.CloneWithWaitState(hs);
+
+                var probs = init;
+                TimeSpan time = TimeSpan.Zero;
+
+                while (probs[i * 2] < 1)
+                {
+                    probs *= markov.Probabilities;
+                    time = time.Add(MarkovChain.TIME_INTERVAL);
+                }
+
+                yield return new Prediction(Hotspot.ConvertFromHotspot(hs), time);
+            }
         }
     }
 }
