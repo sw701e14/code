@@ -50,25 +50,14 @@ namespace Webservice.Models
             }
         }
 
-        public static IEnumerable<Webservice.Models.Hotspot> GetAllHotspots()
+        public static IEnumerable<Hotspot> GetAllHotspots()
         {
             Shared.DTO.Hotspot[] hotspots;
             using (Database context = new Database())
                 hotspots = context.RunSession(s => Shared.DTO.Hotspot.LoadAllHotspots(s));
 
             foreach (var hs in hotspots)
-            {
-                Webservice.Models.Hotspot tempHotspot = new Webservice.Models.Hotspot();
-
-                foreach (GPSLocation gpsLoc in hs.getDataPoints())
-                {
-                    Coordinate tempCoordinate = new Coordinate();
-                    tempCoordinate.Latitude = gpsLoc.Latitude;
-                    tempCoordinate.Longtitude = gpsLoc.Longitude;
-                    tempHotspot.Coordinates.Add(tempCoordinate);
-                }
-                yield return tempHotspot;
-            }
+                yield return Hotspot.ConvertFromHotspot(hs);
         }
 
         public static IEnumerable<Prediction> GetPredictions()
