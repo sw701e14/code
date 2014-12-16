@@ -151,6 +151,27 @@ namespace Shared.DTO
 
         #endregion
 
+        public MarkovChain CloneWithWaitState(Hotspot hotspot)
+        {
+            int index = -1;
+            for (int i = 0; i < hotspots.Length; i++)
+                if (hotspots[i] == hotspot)
+                {
+                    index = i;
+                    break;
+                }
+
+            if (index == -1)
+                throw new ArgumentOutOfRangeException("hotspot", "The provided hotspot is not part of this Markov chain.");
+            index *= 2;
+
+            var data = probabilities.ToArray();
+            for (int i = 0; i < data.GetLength(0); i++)
+                data[i, index] = i == index ? 1 : 0;
+
+            return new MarkovChain(hotspots, new Matrix(data));
+        }
+
         private MarkovChain(Hotspot[] hotspots, Matrix matrix)
         {
             this.hotspots = hotspots;
