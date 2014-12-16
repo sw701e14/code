@@ -16,7 +16,7 @@ namespace Webservice.Models
 
         public static Hotspot ConvertFromHotspot(Shared.DTO.Hotspot hotspot)
         {
-            return new Hotspot(hotspot.getDataPoints().Select(x => Coordinate.ConvertFromLocation(x));
+            return new Hotspot(hotspot.getDataPoints().Select(x => Coordinate.ConvertFromLocation(x)));
         }
     }
 }
