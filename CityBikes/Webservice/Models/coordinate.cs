@@ -10,6 +10,8 @@ namespace Webservice.Models
         public decimal Latitude { get; private set; }
         public decimal Longtitude { get; private set; }
 
+        private Coordinate() { }
+
         public Coordinate(decimal latitude, decimal longitude) 
         {
             this.Latitude = latitude;

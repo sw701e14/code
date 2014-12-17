@@ -9,6 +9,8 @@ namespace Webservice.Models
     {
         public List<Coordinate> Coordinates { get; private set; }
 
+        private Hotspot() { }
+
         public Hotspot(IEnumerable<Coordinate> coordinates)
         {
             this.Coordinates = coordinates.ToList();
