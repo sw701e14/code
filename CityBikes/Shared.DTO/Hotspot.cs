@@ -137,11 +137,13 @@ namespace Shared.DTO
 
         public double DistanceTo(GPSLocation location)
         {
-            double dist = double.MaxValue;
+            double dist = Math.Min(distanceToLine(dataPoints[0], dataPoints[dataPoints.Length], location), dataPoints[0].DistanceTo(location));
 
-            for (int i = 0; i < dataPoints.Length; i++)
+            for (int i = 1; i < dataPoints.Length; i++)
             {
                 var d = dataPoints[i].DistanceTo(location);
+                if (d < dist) dist = d;
+                d = distanceToLine(dataPoints[i], dataPoints[i - 1], location);
                 if (d < dist) dist = d;
             }
 
@@ -150,6 +152,14 @@ namespace Shared.DTO
         public double DistanceTo(GPSData data)
         {
             return DistanceTo(data.Location);
+        }
+
+        private static double distanceToLine(GPSLocation lineA, GPSLocation lineB, GPSLocation point)
+        {
+            var y = lineB.Latitude - lineA.Latitude;
+            var x = lineB.Longitude - lineA.Longitude;
+            var val = Math.Abs(y * point.Longitude - x * point.Latitude + lineB.Longitude * lineA.Latitude - lineB.Latitude * lineA.Longitude);
+            return Math.Sqrt(y * y + x * x);
         }
 
         public GPSLocation[] getDataPoints()
