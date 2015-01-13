@@ -159,7 +159,7 @@ namespace Shared.DTO
             var y = lineB.Latitude - lineA.Latitude;
             var x = lineB.Longitude - lineA.Longitude;
             var val = Math.Abs(y * point.Longitude - x * point.Latitude + lineB.Longitude * lineA.Latitude - lineB.Latitude * lineA.Longitude);
-            return Math.Sqrt(y * y + x * x);
+            return (double)val / Math.Sqrt((double)(y * y + x * x));
         }
 
         public GPSLocation[] getDataPoints()
