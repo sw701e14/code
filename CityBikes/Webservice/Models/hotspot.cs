@@ -7,11 +7,18 @@ namespace Webservice.Models
 {
     public class Hotspot
     {
-        public List<Coordinate> Coordinates { get; set; }
+        public List<Coordinate> Coordinates { get; private set; }
 
-        public Hotspot()
+        private Hotspot() { }
+
+        public Hotspot(IEnumerable<Coordinate> coordinates)
         {
-            Coordinates = new List<Coordinate>();
+            this.Coordinates = coordinates.ToList();
+        }
+
+        public static Hotspot ConvertFromHotspot(Shared.DTO.Hotspot hotspot)
+        {
+            return new Hotspot(hotspot.getDataPoints().Select(x => Coordinate.ConvertFromLocation(x)));
         }
     }
 }

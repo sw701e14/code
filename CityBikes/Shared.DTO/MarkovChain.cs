@@ -9,6 +9,8 @@ namespace Shared.DTO
 {
     public class MarkovChain
     {
+        public static readonly TimeSpan TIME_INTERVAL = TimeSpan.FromMinutes(5);
+
         private Matrix probabilities;
         private Hotspot[] hotspots;
 
@@ -36,7 +38,7 @@ namespace Shared.DTO
             var start = data.Min(d => d.QueryTime);
             var end = data.Max(d => d.QueryTime);
 
-            var step = TimeSpan.FromMinutes(5);
+            var step = TIME_INTERVAL;
             var groups = groupData(data).ToArray();
 
             int size = hotspots.Length * 2;
@@ -148,6 +150,27 @@ namespace Shared.DTO
         }
 
         #endregion
+
+        public MarkovChain CloneWithWaitState(Hotspot hotspot)
+        {
+            int index = -1;
+            for (int i = 0; i < hotspots.Length; i++)
+                if (hotspots[i] == hotspot)
+                {
+                    index = i;
+                    break;
+                }
+
+            if (index == -1)
+                throw new ArgumentOutOfRangeException("hotspot", "The provided hotspot is not part of this Markov chain.");
+            index *= 2;
+
+            var data = probabilities.ToArray();
+            for (int i = 0; i < data.GetLength(0); i++)
+                data[i, index] = i == index ? 1 : 0;
+
+            return new MarkovChain(hotspots, new Matrix(data));
+        }
 
         private MarkovChain(Hotspot[] hotspots, Matrix matrix)
         {

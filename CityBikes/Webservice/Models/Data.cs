@@ -50,30 +50,42 @@ namespace Webservice.Models
             }
         }
 
-        public static IEnumerable<Webservice.Models.Hotspot> GetAllHotspots()
+        public static IEnumerable<Hotspot> GetAllHotspots()
         {
             Shared.DTO.Hotspot[] hotspots;
             using (Database context = new Database())
                 hotspots = context.RunSession(s => Shared.DTO.Hotspot.LoadAllHotspots(s));
 
             foreach (var hs in hotspots)
-            {
-                Webservice.Models.Hotspot tempHotspot = new Webservice.Models.Hotspot();
-
-                foreach (GPSLocation gpsLoc in hs.getDataPoints())
-                {
-                    Coordinate tempCoordinate = new Coordinate();
-                    tempCoordinate.Latitude = gpsLoc.Latitude;
-                    tempCoordinate.Longtitude = gpsLoc.Longitude;
-                    tempHotspot.Coordinates.Add(tempCoordinate);
-                }
-                yield return tempHotspot;
-            }
+                yield return Hotspot.ConvertFromHotspot(hs);
         }
 
         public static IEnumerable<Prediction> GetPredictions()
         {
-            throw new NotImplementedException();
+            MarkovChain markov;
+            Vector init;
+            using (Database db = new Database())
+            {
+                markov = db.RunSession(session => MarkovChain.LoadMarkovChain(session));
+                init = db.RunSession(session => markov.BuildInitialState(session));
+            }
+
+            for (int i = 0; i < markov.Hotspots.Length; i++)
+            {
+                var hs = markov.Hotspots[i];
+                var m2 = markov.CloneWithWaitState(hs);
+
+                var probs = init;
+                TimeSpan time = TimeSpan.Zero;
+
+                while (probs[i * 2] < 1)
+                {
+                    probs *= markov.Probabilities;
+                    time = time.Add(MarkovChain.TIME_INTERVAL);
+                }
+
+                yield return new Prediction(Hotspot.ConvertFromHotspot(hs), time);
+            }
         }
     }
 }
