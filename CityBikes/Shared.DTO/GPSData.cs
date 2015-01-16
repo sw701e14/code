@@ -42,6 +42,10 @@ namespace Shared.DTO
         {
             return session.GetAllGPSNotMovedData().Select(x => new GPSData(new Bike(x.Item1), new GPSLocation(x.Item2, x.Item3), x.Item4, x.Item5, x.Item6)).ToArray();
         }
+        public static GPSData[] GetAllHasMoved(DatabaseSession session)
+        {
+            return session.GetAllGPSHasMovedData().Select(x => new GPSData(new Bike(x.Item1), new GPSLocation(x.Item2, x.Item3), x.Item4, x.Item5, x.Item6)).ToArray();
+        }
 
         public static GPSData[] GetBikeData(DatabaseSession session, Bike bike, bool latestFirst)
         {
