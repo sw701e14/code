@@ -16,7 +16,7 @@ namespace LocationService.LocationSource
 
         #region Addresses
 
-        
+
 
         private static string[] bycykelstations =
         {
@@ -74,7 +74,7 @@ namespace LocationService.LocationSource
         /// <returns>A <see cref="IDataSource"/> from which the location of the bike can be extracted continuosly.</returns>
         public static IDataSource GetSource(uint bike, DateTime startTime, int iterations)
         {
-            return GetSource(bike, allAdresses, startTime, iterations,null);
+            return GetSource(bike, allAdresses, startTime, iterations, null);
         }
 
         /// <summary>
@@ -87,15 +87,15 @@ namespace LocationService.LocationSource
         /// <returns>A <see cref="IDataSource"/> from which the location of the bike can be extracted continuosly.</returns>
         public static IDataSource GetSource(uint bike, string[] destinations, DateTime startTime, int iterations, int[] distribution)
         {
-            IEnumerable<GPSInput> enumeration = generateBikeRoute(bike, destinations, startTime, iterations,distribution);
+            IEnumerable<GPSInput> enumeration = generateBikeRoute(bike, destinations, startTime, iterations, distribution);
 
             return new EnumerationDataSource(enumeration.ConvertToInterval(interval).Select(s => { s.AddNoise(); return s; }));
         }
 
         private static IEnumerable<GPSInput> generateBikeRoute(uint bike, string[] destinations, DateTime startTime, int iterations, int[] distribution = null)
         {
-            string startPoint = nextDestination(destinations, "",distribution);
-            string destination = nextDestination(destinations, startPoint,distribution);
+            string startPoint = nextDestination(destinations, "", distribution);
+            string destination = nextDestination(destinations, startPoint, distribution);
 
             Debug.WriteLine("Bike: {0}", bike);
             for (int i = 0; i < iterations; i++)
@@ -108,17 +108,11 @@ namespace LocationService.LocationSource
                 startTime = route.Last().Timestamp.AddMinutes(r.Next(MAX_WAIT_MINUTES));
 
                 startPoint = destination;
-                destination = nextDestination(destinations, startPoint,distribution);
+                destination = nextDestination(destinations, startPoint, distribution);
             }
         }
 
-        /// <summary>
-        /// Returns a random destination from the destinations array that is not the exclude string
-        /// </summary>
-        /// <param name="destinations">An array of destinastions</param>
-        /// <param name="exclude">The string to exclude</param>
-        /// <returns>The next destination</returns>
-        private static string nextDestination(string[] destinations, string exclude)
+        private static string nextDestination(string[] destinations, string exclude, int[] distributions = null)
         {
             if (destinations.Length == 1)
                 throw new InvalidOperationException("destinations must contain more than one string");
@@ -127,22 +121,10 @@ namespace LocationService.LocationSource
 
             while (dest == exclude)
             {
-                dest = destinations[r.Next(destinations.Length)];
-            }
-
-            return dest;
-        }
-
-        private static string nextDestination(string[] destinations, string exclude, int[] distributions=null)
-        {
-            if (destinations.Length == 1)
-                throw new InvalidOperationException("destinations must contain more than one string");
-
-            string dest = exclude;
-
-            while (dest == exclude)
-            {
-                dest = chooseDestinationWithDistribution(destinations, distributions, r.Next(100));
+                if (distributions == null)
+                    dest = destinations[r.Next(destinations.Length)];
+                else
+                    dest = chooseDestinationWithDistribution(destinations, distributions, r.Next(100));
             }
 
             return dest;
