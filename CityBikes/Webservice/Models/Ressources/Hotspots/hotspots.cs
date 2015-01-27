@@ -15,9 +15,9 @@ namespace Webservice.Models.Hotspots
 
         public AllHotspots()
         {
-            Hotspots = new List<Webservice.Models.Hotspot>();
+            Hotspots = new List<Hotspot>();
 
-            Hotspots.AddRange(Data.GetAllHotspots());
+            Hotspots = Data.GetAllHotspots().Values.ToList();
             
         }
     }

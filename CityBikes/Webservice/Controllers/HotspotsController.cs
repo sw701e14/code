@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Webservice.Models;
 using Webservice.Models.Hotspots;
 
 namespace Webservice.Controllers
@@ -27,6 +28,23 @@ namespace Webservice.Controllers
             AllHotspots hotspotResources = new AllHotspots();
 
             return Request.CreateResponse(HttpStatusCode.OK, hotspotResources);
+        }
+
+        [Route("{hotspotId}")]
+        [HttpGet]
+        public HttpResponseMessage get(uint hotspotId)
+        {
+            Hotspot hotspot;
+            try
+            {
+                hotspot = Data.GetAllHotspots()[hotspotId];
+            }
+            catch (NullReferenceException)
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK, hotspot);
         }
     }
 }

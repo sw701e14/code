@@ -50,14 +50,16 @@ namespace Webservice.Models
             }
         }
 
-        public static IEnumerable<Hotspot> GetAllHotspots()
+        public static Dictionary<uint, Hotspot> GetAllHotspots()
         {
             Shared.DTO.Hotspot[] hotspots;
             using (Database context = new Database())
                 hotspots = context.RunSession(s => Shared.DTO.Hotspot.LoadAllHotspots(s));
 
+            Dictionary<uint, Hotspot> hsl = new Dictionary<uint, Hotspot>();
             foreach (var hs in hotspots)
-                yield return Hotspot.ConvertFromHotspot(hs);
+                hsl.Add(hs.GetId(hs), Hotspot.ConvertFromHotspot(hs));
+            return hsl;
         }
 
         public static IEnumerable<Prediction> GetPredictions()
