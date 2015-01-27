@@ -168,6 +168,8 @@
     <Compile Include="Models\Ressources\Hotspots\Hotspots.cs" />
     <Compile Include="Models\Prediction.cs" />
     <Compile Include="Models\Ressources\Prediction\Predictions.cs" />
+    <Compile Include="Models\Ressources\References\Hotspot.cs" />
+    <Compile Include="Models\Ressources\ResourceAdressing.cs" />
     <Compile Include="Models\Ressources\RootResource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

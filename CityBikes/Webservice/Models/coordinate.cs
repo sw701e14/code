@@ -7,8 +7,8 @@ namespace Webservice.Models
 {
     public class Coordinate
     {
-        public decimal Latitude { get; private set; }
-        public decimal Longtitude { get; private set; }
+        public decimal Latitude { get; set; }
+        public decimal Longtitude { get; set; }
 
         private Coordinate() { }
 

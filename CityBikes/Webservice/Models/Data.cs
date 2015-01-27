@@ -86,7 +86,7 @@ namespace Webservice.Models
                     time = time.Add(MarkovChain.TIME_INTERVAL);
                 }
 
-                Prediction p = new Prediction() { Hotspot = Hotspot.ConvertFromHotspot(hs), Time = (int)time.TotalMinutes };
+                Prediction p = new Prediction() { Hotspot = new Ressources.References.Hotspot(hs.GetId()), Time = (int)time.TotalMinutes };
                 yield return p;
             }
         }

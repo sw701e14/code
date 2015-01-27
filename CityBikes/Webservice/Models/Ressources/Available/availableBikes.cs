@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Shared.DAL;
 using Shared.DTO;
+using Webservice.Models.Ressources;
 
 namespace Webservice.Models.Available
 {
@@ -17,7 +18,7 @@ namespace Webservice.Models.Available
             Bikes = new List<AvailableBike>();
             foreach (Tuple<Shared.DTO.Bike, GPSLocation> item in Data.GetAvailableBikes())
             {
-                Bikes.Add(new AvailableBike() { Href = HttpContext.Current.Request.Url.AbsoluteUri + "/" + item.Item1.Id.ToString() });
+                Bikes.Add(new AvailableBike() { Href = ResourceAdressing.GetAvailableBike(item.Item1.Id) });
             }
         }
     }

@@ -7,7 +7,7 @@ namespace Webservice.Models
 {
     public class Hotspot
     {
-        public List<Coordinate> Coordinates { get; private set; }
+        public List<Coordinate> Coordinates { get; set; }
         public uint Id { get; set; }
 
         private Hotspot() { }

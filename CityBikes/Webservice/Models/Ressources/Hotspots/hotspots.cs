@@ -9,16 +9,14 @@ namespace Webservice.Models.Hotspots
 {
     public class AllHotspots
     {
-        public int Count { get { return Hotspots.Count; } }
+        //public int Count { get { return Hotspots.Count; } }
 
-        public List<Webservice.Models.Hotspot> Hotspots { get; set; }
+        public List<Webservice.Models.Ressources.References.Hotspot> Hotspots { get; set; }
+        //public List<Webservice.Models.Hotspot> Hotspots { get; set; }
 
         public AllHotspots()
         {
-            Hotspots = new List<Hotspot>();
-
-            Hotspots = Data.GetAllHotspots().Values.ToList();
-            
+            Hotspots = Data.GetAllHotspots().Keys.Select(x=> new Webservice.Models.Ressources.References.Hotspot(x)).ToList();
         }
     }
 }

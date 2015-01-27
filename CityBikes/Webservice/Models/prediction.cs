@@ -7,7 +7,7 @@ namespace Webservice.Models
 {
     public class Prediction
     {
-        public Hotspot Hotspot { get; set; }
+        public Webservice.Models.Ressources.References.Hotspot Hotspot { get; set; }
 
         public int Time { get; set; }
 
