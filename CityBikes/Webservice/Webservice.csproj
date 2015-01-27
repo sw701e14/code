@@ -151,7 +151,6 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Controllers\BikesController.cs" />
     <Compile Include="Controllers\AvailableBikesController.cs" />
     <Compile Include="Controllers\HotspotsController.cs" />
     <Compile Include="Controllers\PredictionController.cs" />
@@ -161,8 +160,6 @@
     </Compile>
     <Compile Include="Models\AvailableBike.cs" />
     <Compile Include="Models\Bike.cs" />
-    <Compile Include="Models\Ressources\All\Bikes.cs" />
-    <Compile Include="Models\Ressources\All\SingleBike.cs" />
     <Compile Include="Models\Ressources\Available\SingleAvailableBike.cs" />
     <Compile Include="Models\Ressources\Available\AvailableBikes.cs" />
     <Compile Include="Models\Data.cs" />

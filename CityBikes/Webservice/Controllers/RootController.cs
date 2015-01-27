@@ -28,7 +28,6 @@ namespace Webservice.Controllers
         {
             List<RootResource.Resource> resources = new List<RootResource.Resource>();
             resources.Add(new RootResource.Resource() { href = "availablebikes" });
-            resources.Add(new RootResource.Resource() { href = "bikes" });
             resources.Add(new RootResource.Resource() { href = "hotspots" });
             resources.Add(new RootResource.Resource() { href = "predictions" });
 
