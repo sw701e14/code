@@ -82,11 +82,12 @@ namespace Webservice.Models
 
                 while (probs[i * 2] < 1)
                 {
-                    probs *= markov.Probabilities;
+                    probs *= m2.Probabilities;
                     time = time.Add(MarkovChain.TIME_INTERVAL);
                 }
 
-                yield return new Prediction(Hotspot.ConvertFromHotspot(hs), time);
+                Prediction p = new Prediction() { Hotspot = Hotspot.ConvertFromHotspot(hs), Time = (int)time.TotalMinutes };
+                yield return p;
             }
         }
     }

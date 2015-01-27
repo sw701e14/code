@@ -7,15 +7,15 @@ namespace Webservice.Models.Ressources.Predictions
 {
     public class AllPredictions
     {
-        List<Prediction> Predictions;
+        public int Count { get { return Predictions.Count; } }
 
-        public int Count { get { return Predictions.Count(); } }
+        public List<Webservice.Models.Prediction> Predictions { get; set; }
+
         public AllPredictions()
         {
             Predictions = new List<Prediction>();
 
             Predictions.AddRange(Data.GetPredictions());
-
         }
     }
 }
