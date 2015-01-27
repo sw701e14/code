@@ -137,7 +137,7 @@ namespace Shared.DTO
 
         public double DistanceTo(GPSLocation location)
         {
-            double dist = Math.Min(distanceToLine(dataPoints[0], dataPoints[dataPoints.Length], location), dataPoints[0].DistanceTo(location));
+            double dist = Math.Min(distanceToLine(dataPoints[0], dataPoints[dataPoints.Length - 1], location), dataPoints[0].DistanceTo(location));
 
             for (int i = 1; i < dataPoints.Length; i++)
             {
