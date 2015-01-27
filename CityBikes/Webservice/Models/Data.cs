@@ -58,7 +58,7 @@ namespace Webservice.Models
 
             Dictionary<uint, Hotspot> hsl = new Dictionary<uint, Hotspot>();
             foreach (var hs in hotspots)
-                hsl.Add(hs.GetId(hs), Hotspot.ConvertFromHotspot(hs));
+                hsl.Add(hs.GetId(), Hotspot.ConvertFromHotspot(hs));
             return hsl;
         }
 

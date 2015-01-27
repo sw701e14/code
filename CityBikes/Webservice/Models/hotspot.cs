@@ -12,15 +12,15 @@ namespace Webservice.Models
 
         private Hotspot() { }
 
-        public Hotspot(uint id, IEnumerable<Coordinate> coordinates)
-        {
-            Id = id;
-            this.Coordinates = coordinates.ToList();
-        }
 
         public static Hotspot ConvertFromHotspot(Shared.DTO.Hotspot hotspot)
         {
-            return new Hotspot(hotspot.GetId(hotspot), hotspot.getDataPoints().Select(x => Coordinate.ConvertFromLocation(x)));
+            Hotspot h = new Hotspot();
+
+            h.Id= hotspot.GetId();
+            h.Coordinates = hotspot.getDataPoints().Select(x => Coordinate.ConvertFromLocation(x)).ToList();
+
+            return h;
         }
     }
 }

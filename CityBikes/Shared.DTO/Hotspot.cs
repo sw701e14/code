@@ -167,9 +167,9 @@ namespace Shared.DTO
             return dataPoints;
         }
 
-        public uint GetId(Hotspot h)
+        public uint GetId()
         {
-            return hotspots.FirstOrDefault(x => x.Value == h).Key;
+            return id;
         }
     }
 }
