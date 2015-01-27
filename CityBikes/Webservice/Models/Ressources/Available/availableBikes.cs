@@ -17,7 +17,7 @@ namespace Webservice.Models.Available
             Bikes = new List<AvailableBike>();
             foreach (Tuple<Shared.DTO.Bike, GPSLocation> item in Data.GetAvailableBikes())
             {
-                Bikes.Add(new AvailableBike() { Href = item.Item1.Id.ToString() });
+                Bikes.Add(new AvailableBike() { Href = HttpContext.Current.Request.Url.AbsoluteUri + "/" + item.Item1.Id.ToString() });
             }
         }
     }
